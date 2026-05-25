@@ -1,0 +1,70 @@
+/* CELEBIOS — tokens-v2 (elevación). Cargar DESPUÉS de tokens.css.
+   Aplica: ámbar=acento, escala tipográfica con más contraste, surface cálido,
+   grade de marca para fotos, estados a11y. Todo portable a Kajabi Basic (CSS por página). */
+
+:root{
+  /* Escala fluida (contraste display↔body) */
+  --step--1: clamp(0.83rem, 0.80rem + 0.15vw, 0.92rem);
+  --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --step-1:  clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
+  --step-2:  clamp(1.6rem, 1.35rem + 1.2vw, 2.2rem);
+  --step-3:  clamp(2.1rem, 1.6rem + 2.4vw, 3.4rem);
+  --step-4:  clamp(2.8rem, 1.9rem + 4.5vw, 5.6rem);
+
+  --surface-raised: oklch(98.5% 0.008 90);     /* blanco cálido, no #fff */
+  --focus: oklch(66% 0.15 55);
+  --shadow-md: 0 1px 2px oklch(22% .03 155/.10), 0 12px 28px oklch(22% .03 155/.12);
+  --shadow-sm: 0 1px 2px oklch(22% .03 155/.08), 0 3px 10px oklch(22% .03 155/.07);
+
+  /* Velos de marca para unificar fotografía de orígenes distintos */
+  --duotone-green: linear-gradient(180deg, oklch(22% .035 155/.10) 0%, oklch(22% .035 155/.55) 55%, oklch(18% .03 155/.92) 100%);
+  --tint-warm: oklch(74% .135 65 / .12);
+  --ease-soft: cubic-bezier(.16,.84,.44,1);
+}
+
+/* Body un punto más grande = look publicación */
+body{ font-size: var(--step-0); line-height: 1.6; }
+h1,h2,h3{ font-feature-settings:"liga" 1,"dlig" 1; }
+.section-title{ font-size: var(--step-3); }
+.section-lede{ font-size: var(--step-1); line-height:1.5; }
+
+/* Ámbar = acento raro (≤10%). De-ambar de bloques dominantes → verde profundo */
+.convoc{ background: var(--green-950); color: var(--cream); }
+.convoc .convoc__tag{ background: var(--amber-500); color: var(--green-950); }
+.convoc .convoc__txt{ color: var(--cream); }
+.convoc .convoc__txt span{ color: var(--green-100); }
+.convoc .convoc__cta{ color: var(--amber-500); border-bottom-color: var(--amber-500); }
+/* cta-final en crema (rompe la racha oscura misión→footer; botón ámbar resalta) */
+.cta-final{ background: var(--cream); color: var(--green-950); }
+.cta-final p{ color: var(--muted); }
+.cta-final .btn-primary{ background: var(--amber-500); color: var(--green-950); }
+.cta-final .btn-ghost, .cta-final__wa{ color: var(--green-900); }
+
+/* Mapeo Kajabi: documentado en el HTML (data-kajabi) pero oculto en el demo visual */
+.kajabi-tag{ display:none !important; }
+
+/* Cards en blanco cálido + sombra con tinte */
+.card-curso, .tcard{ background: var(--surface-raised); box-shadow: var(--shadow-sm); }
+
+/* Grade de marca sobre fotografía (aplicar a hero/cards/misión/avatares).
+   NOTA Kajabi: el velo/grano requiere que la foto vaya como background-image
+   en CSS por sección, NO por el uploader nativo (que la mete en <img> sin envolver). */
+.img-grade{ filter: saturate(.93) contrast(1.03); }
+.veil{ position:absolute; inset:0; pointer-events:none; }
+.veil--green{ background: var(--duotone-green); }
+.veil--warm{ background: var(--tint-warm); mix-blend-mode: soft-light; }
+.grain::after{
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:1; opacity:.05; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Estados / accesibilidad */
+:where(a,button,summary,input,textarea):focus-visible{ outline:2px solid var(--focus); outline-offset:3px; border-radius:4px; }
+::selection{ background: var(--amber-100); color: var(--green-950); }
+html{ scroll-behavior:smooth; } :where([id]){ scroll-margin-top: 84px; }
+
+/* Cifras editoriales en stats / números grandes */
+.stat__n, .porque__num{ font-variant-numeric: oldstyle-nums proportional-nums; }
+
+/* Placeholder honesto pero diseñado (se llena en fase de datos duros) */
+.phbox{ background: var(--amber-100); color: var(--amber-600); border-radius:4px; padding:0 6px; font-size:.85em; font-weight:600; }

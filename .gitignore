@@ -1,0 +1,14 @@
+# Dependencias
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Previews de exploración (pesados, regenerables con screenshot)
+**/PREVIEW-*.jpeg
+**/PREVIEW-*.jpg
+**/PREVIEW-*.png
+
+# Build / temporales
+dist/
+.cache/
+*.log

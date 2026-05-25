@@ -1,0 +1,373 @@
+/* CELEBIOS — Design tokens (Fase 1)
+   En Kajabi Basic, estos se configuran en theme settings + CSS por página. */
+
+:root {
+  /* Palette — verde institucional + ámbar cálido + crema */
+  --green-950: oklch(22% 0.035 155);
+  --green-900: oklch(28% 0.045 155);
+  --green-800: oklch(35% 0.055 155);
+  --green-700: oklch(45% 0.060 155);
+  --green-100: oklch(94% 0.018 155);
+  --green-050: oklch(97% 0.010 155);
+
+  --amber-500: oklch(74% 0.135 65);
+  --amber-600: oklch(66% 0.150 55);
+  --amber-100: oklch(94% 0.040 75);
+
+  --cream:     oklch(96% 0.012 80);
+  --bone:      oklch(92% 0.015 80);
+  --ink:       oklch(22% 0.010 60);
+  --muted:     oklch(48% 0.012 60);
+  --line:      oklch(86% 0.010 80);
+
+  /* Type */
+  --font-display: 'Spectral', 'Newsreader', Georgia, serif;
+  --font-body:    'Manrope', 'DM Sans', system-ui, sans-serif;
+
+  /* Spacing scale — múltiplos de 8 */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 16px;
+  --s-4: 24px;
+  --s-5: 32px;
+  --s-6: 48px;
+  --s-7: 64px;
+  --s-8: 96px;
+  --s-9: 128px;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.06), 0 2px 8px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.08), 0 12px 32px rgb(0 0 0 / 0.06);
+
+  --container: 1280px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+p { margin: 0; text-wrap: pretty; }
+button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+
+.container { max-width: var(--container); margin: 0 auto; padding-inline: var(--s-5); }
+
+/* Reusable building blocks shared across variants */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: var(--r-pill);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+  transition: transform .15s ease, background .15s ease, color .15s ease;
+}
+.btn-primary {
+  background: var(--amber-500);
+  color: var(--green-950);
+}
+.btn-primary:hover { background: var(--amber-600); transform: translateY(-1px); }
+.btn-ghost {
+  background: transparent;
+  border: 1.5px solid currentColor;
+  color: inherit;
+}
+.btn-ghost:hover { background: rgb(255 255 255 / 0.08); }
+.btn-wa {
+  background: #25D366;
+  color: #062b16;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--green-700);
+}
+
+/* Site header — diseñado para mapear al header de Kajabi (logo + items + 1 botón) */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--cream);
+  border-bottom: 1px solid var(--line);
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+  padding: 14px var(--s-5);
+  max-width: var(--container);
+  margin: 0 auto;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  color: var(--green-900);
+}
+.brand__logomark {
+  display: inline-flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 28px;
+}
+.brand__logomark span {
+  width: 7px; border-radius: 1.5px;
+  background: var(--green-800);
+}
+.brand__logomark span:nth-child(1) { height: 18px; background: var(--green-700); }
+.brand__logomark span:nth-child(2) { height: 28px; background: var(--green-900); }
+.brand__logomark span:nth-child(3) { height: 22px; background: var(--amber-500); }
+.brand__name { font-weight: 500; }
+.brand__name em { font-style: normal; font-weight: 400; color: var(--muted); display: block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; margin-top: 2px; }
+
+.nav {
+  display: flex;
+  gap: var(--s-4);
+  margin-left: auto;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.nav a { padding: 8px 4px; position: relative; }
+.nav a.is-active { color: var(--green-900); }
+.nav a.is-active::after {
+  content: ''; position: absolute; left: 4px; right: 4px; bottom: 2px;
+  height: 2px; background: var(--amber-500); border-radius: 2px;
+}
+.nav a:hover { color: var(--green-900); }
+.header__cta {
+  background: var(--green-900); color: var(--cream);
+  padding: 10px 18px; border-radius: var(--r-pill);
+  font-size: 14px; font-weight: 600;
+}
+.header__cta:hover { background: var(--green-800); }
+
+/* Section helpers used by low-fi parts */
+.section { padding: var(--s-8) 0; }
+.section-eyebrow {
+  display: flex; align-items: center; gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+.section-eyebrow::after {
+  content: ''; flex: 1; height: 1px; background: var(--line);
+}
+.section-title {
+  font-size: clamp(32px, 3.6vw, 48px);
+  line-height: 1.05;
+  color: var(--green-950);
+  max-width: 22ch;
+}
+.section-lede {
+  margin-top: var(--s-3);
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+/* Allies strip */
+.allies {
+  display: grid;
+  grid-template-columns: auto repeat(4, 1fr);
+  align-items: center;
+  gap: var(--s-5);
+  padding-block: var(--s-5);
+}
+.allies__label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  border-right: 1px solid var(--line);
+  padding-right: var(--s-4);
+  max-width: 12ch;
+  line-height: 1.4;
+}
+.ally {
+  height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  border: 1px dashed var(--line);
+  border-radius: var(--r-sm);
+  filter: grayscale(1) opacity(0.7);
+  transition: filter .2s;
+}
+.ally:hover { filter: grayscale(0) opacity(1); }
+.ally small { display: block; font-weight: 400; font-size: 10px; color: var(--muted); letter-spacing: 0; text-transform: none; }
+
+/* Course card — usada en oferta + landing de curso */
+.card-curso {
+  background: white;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s, box-shadow .2s;
+}
+.card-curso:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.card-curso__media {
+  aspect-ratio: 4/3;
+  background: var(--bone);
+  position: relative;
+  overflow: hidden;
+}
+.card-curso__media img { width: 100%; height: 100%; object-fit: cover; }
+.card-curso__badge {
+  position: absolute; top: 12px; left: 12px;
+  background: var(--green-900); color: var(--cream);
+  padding: 5px 10px; border-radius: var(--r-pill);
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+}
+.card-curso__body { padding: var(--s-4); display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.card-curso__title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--green-950);
+  font-weight: 500;
+}
+.card-curso__meta {
+  display: flex; gap: var(--s-3); flex-wrap: wrap;
+  font-size: 13px; color: var(--muted);
+}
+.card-curso__meta span { display: inline-flex; gap: 4px; align-items: center; }
+.card-curso__cta {
+  margin-top: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--green-800);
+  font-weight: 600;
+  font-size: 14px;
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line);
+}
+.card-curso__cta::after { content: '→'; transition: transform .2s; }
+.card-curso:hover .card-curso__cta::after { transform: translateX(3px); }
+
+/* Footer (low-fi but real-ish) */
+.site-footer {
+  background: var(--green-950);
+  color: var(--green-100);
+  padding: var(--s-8) 0 var(--s-5);
+  margin-top: var(--s-8);
+}
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(3, 1fr);
+  gap: var(--s-6);
+}
+.site-footer h4 {
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber-500);
+  font-weight: 600;
+  margin-bottom: var(--s-3);
+}
+.site-footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; }
+.site-footer ul a:hover { color: var(--amber-500); }
+.site-footer__brand { font-family: var(--font-display); font-size: 28px; color: white; letter-spacing: 0.04em; }
+.site-footer__tagline { color: var(--green-100); opacity: 0.7; font-size: 14px; margin-top: var(--s-3); max-width: 30ch; font-style: italic; }
+.site-footer__base {
+  margin-top: var(--s-7);
+  padding-top: var(--s-4);
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+  display: flex; justify-content: space-between;
+  font-size: 13px; color: rgb(255 255 255 / 0.5);
+}
+
+/* Floating WhatsApp — el prompt lo pide en mobile pero lo mostramos en desktop también */
+.fab-wa {
+  position: fixed;
+  right: 24px; bottom: 24px;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 28px rgb(37 211 102 / 0.4);
+  z-index: 100;
+  font-size: 24px;
+}
+
+/* Annotation pill — etiqueta cada sección con su tipo Kajabi */
+.kajabi-tag {
+  position: absolute;
+  top: 8px; right: 12px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  background: rgb(255 255 255 / 0.85);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  pointer-events: none;
+  z-index: 5;
+}
+[data-kajabi] { position: relative; }
+
+/* Low-fi placeholder visuals */
+.lofi-text {
+  background: var(--bone);
+  border-radius: 4px;
+  height: 14px;
+  display: block;
+}
+.lofi-text.w-full { width: 100%; }
+.lofi-text.w-3\/4 { width: 75%; }
+.lofi-text.w-1\/2 { width: 50%; }
+.lofi-text.h-lg { height: 22px; }
+.lofi-img {
+  background:
+    repeating-linear-gradient(135deg, transparent 0 8px, rgb(0 0 0 / 0.04) 8px 9px),
+    var(--green-050);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+/* Section label for Kajabi mapping */
+.section[data-kajabi]::before {
+  /* Optional visible label on the side — disabled by default, toggled by tweak */
+  display: none;
+}
+.show-kajabi .kajabi-tag { display: inline-block; }

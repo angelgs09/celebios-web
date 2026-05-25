@@ -1,0 +1,93 @@
+/* CELEBIOS — motion.css · PAQUETE PORTABLE (Kajabi Basic, CSS por página).
+   Scroll-driven nativo (view()/scroll()): Apple-style sin JS ni librería.
+   Degrada perfecto: sin soporte, el contenido se ve estático y completo (indexable).
+   Cargar después de tokens.css + tokens-v2.css. */
+
+/* ---- Guard de accesibilidad (primero, gana a todo) ---- */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{ animation: none !important; transition: none !important; }
+  .hero__bg, .mision__bg, .curso__img{ transform:none !important; clip-path:none !important; }
+}
+
+/* ---- Entrada de carga del hero (CSS puro, sin JS) ---- */
+.reveal{ animation: rise .8s var(--ease-soft) both; }
+@keyframes rise{ from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none} }
+
+/* ---- Hero Ken Burns ---- */
+.hero__bg{ animation: heroZoom 18s ease-out forwards; will-change: transform; }
+@keyframes heroZoom{ from{transform:scale(1.06)} to{transform:scale(1)} }
+
+/* ============ SCROLL-DRIVEN (nativo) ============ */
+@supports (animation-timeline: view()){
+  .section-title, .section-lede, .porque__item, .stat, .tcard, .convoc__inner, .mision__inner, .cta-final .container{
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 32%;
+  }
+  @keyframes reveal-up{ from{opacity:0; transform:translateY(24px)} to{opacity:1; transform:none} }
+
+  /* Cards: reveal con cascada + descubierto por clip-path */
+  .curso{
+    animation: reveal-up linear both;
+    animation-timeline: view(); animation-range: entry 4% cover 30%;
+  }
+  .curso:nth-child(2){ animation-range: entry 8% cover 33% }
+  .curso:nth-child(3){ animation-range: entry 11% cover 35% }
+  .curso:nth-child(4){ animation-range: entry 9% cover 34% }
+  .curso:nth-child(5){ animation-range: entry 12% cover 36% }
+  .curso:nth-child(6){ animation-range: entry 14% cover 38% }
+  .curso__img{
+    animation: clip-in linear both;
+    animation-timeline: view(); animation-range: entry 0% cover 26%;
+  }
+  @keyframes clip-in{ from{ clip-path: inset(0 0 100% 0) } to{ clip-path: inset(0 0 0 0) } }
+
+  /* Parallax sutil (máx ~6%) — solo transform */
+  .hero__bg{ animation: heroZoom 18s ease-out forwards, para linear both; animation-timeline: auto, scroll(root); animation-range: auto, cover; }
+  .mision__bg{ animation: para linear both; animation-timeline: scroll(root); animation-range: cover; will-change: transform; }
+  @keyframes para{ from{transform:translateY(-6%)} to{transform:translateY(6%)} }
+}
+
+/* ---- Micro-interacciones (CSS puro) ---- */
+.curso{ transition: transform .25s var(--ease-soft), box-shadow .25s var(--ease-soft); }
+.curso:hover, .curso:focus-within{ transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.curso__img{ transition: transform .5s var(--ease-soft), filter .5s var(--ease-soft); }
+.curso:hover .curso__img{ transform: scale(1.06); filter: saturate(1.06); }
+
+/* CTA sheen + lift */
+.btn-primary{ position:relative; overflow:hidden; }
+.btn-primary::after{
+  content:''; position:absolute; top:0; left:-120%; width:60%; height:100%;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255/.45), transparent);
+  transform: skewX(-18deg); transition: left .6s var(--ease-soft);
+}
+.btn-primary:hover::after{ left:140%; }
+
+/* Convocatoria — pulso ámbar discreto (solo opacity) */
+.convoc__tag{ position:relative; }
+.convoc__tag::before{
+  content:''; position:absolute; inset:-3px; border-radius:inherit;
+  box-shadow:0 0 0 0 var(--amber-500); animation: pulse 2.4s ease-in-out infinite; opacity:.0;
+}
+@keyframes pulse{ 0%,100%{opacity:.0} 50%{opacity:.35} }
+
+/* FAQ — altura animada (donde haya soporte; si no, abre/cierra instantáneo) */
+@supports (interpolate-size: allow-keywords){
+  :root{ interpolate-size: allow-keywords; }
+  .faq details::details-content{ height:0; overflow:hidden; transition: height .3s var(--ease-soft), content-visibility .3s allow-discrete; }
+  .faq details[open]::details-content{ height:auto; }
+}
+.faq summary::after{ transition: transform .2s var(--ease-soft); }
+
+/* Sticky CTA móvil (CRO) — oculto en desktop */
+.sticky-cta{ display:none; }
+@media (max-width: 760px){
+  .sticky-cta{
+    display:flex; position:fixed; left:0; right:0; bottom:0; z-index:90;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom)); gap:10px;
+    background: oklch(22% .035 155 / .92); backdrop-filter: blur(10px);
+    border-top:1px solid rgb(255 255 255/.12);
+  }
+  .sticky-cta .btn{ flex:1; justify-content:center; }
+  .fab-wa{ bottom: 76px; } /* no chocar con sticky bar */
+}

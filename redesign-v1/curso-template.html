@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diplomado en Rescate y Rehabilitación de Fauna Silvestre — CELEBIOS</title>
+<!--
+  PLANTILLA DE LANDING DE CURSO (reutilizable). Orden CRO del SPEC.
+  Mapeo Kajabi por sección (theme gratis + page builder + CSS por página):
+  hero          -> Hero (background-image full-bleed + overlay) + CSS por página
+  paraquien     -> Cards/Columns (2 col: para quién / requisitos)
+  incluye       -> Cards/Columns (4 bullets)
+  temario       -> Accordion/FAQ (nativo, <details> por módulo)
+  profesores    -> Cards/Columns (3 credenciales)
+  precio        -> Pricing/CTA Banner (modalidad + precio .phbox)
+  fechas        -> CTA Banner (convocatoria con urgencia honesta)
+  faq           -> Accordion/FAQ (nativo)
+  social        -> Cards (1 testimonio roman cerca del CTA)
+  cta-final     -> CTA Banner -> celebios.online + microcopy de continuidad
+  footer        -> Footer del theme ; sticky-cta -> barra fija móvil
+-->
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="system/tokens-v2.css">
+<link rel="stylesheet" href="system/motion.css">
+<style>
+/* ============ Landing de curso (scoped a esta página) ============ */
+
+/* ---------- HERO de curso full-bleed (grade + grano) ---------- */
+.hero { position: relative; min-height: 92svh; display: flex; flex-direction: column; color: var(--cream); isolation: isolate; }
+.hero__bg { position: absolute; inset: 0; z-index: -2; background: url('assets/fauna-guacamaya.jpg') center 30% / cover no-repeat; filter: saturate(.93) contrast(1.03); }
+.hero__scrim { position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(18,32,24,.80) 0%, rgba(18,32,24,.38) 36%, rgba(18,32,24,.58) 70%, rgba(12,22,16,.94) 100%),
+    radial-gradient(120% 80% at 14% 24%, rgba(12,22,16,.55), transparent 60%); }
+/* header transparente sobre hero */
+.hero .site-header { position: absolute; top:0; left:0; right:0; background: transparent; border-bottom: 1px solid rgba(255,255,255,.14); }
+.hero .brand, .hero .nav, .hero .nav a { color: var(--cream); }
+.hero .brand__logomark span:nth-child(1){background:var(--green-100)} .hero .brand__logomark span:nth-child(2){background:#fff} .hero .brand__logomark span:nth-child(3){background:var(--amber-500)}
+.hero .brand__name em{ color: rgba(255,255,255,.65) }
+.hero .nav a:hover{ color:#fff } .hero .nav a.is-active{ color:#fff }
+.hero .header__cta{ background:#fff; color:var(--green-950) } .hero .header__cta:hover{ background:var(--amber-500) }
+
+.hero__body { flex: 1; display: flex; align-items: flex-end; }
+.hero__inner { max-width: var(--container); margin: 0 auto; width:100%; padding: 0 var(--s-5) var(--s-8); }
+.hero__eyebrow { display:inline-flex; align-items:center; gap:12px; font-size:12px; letter-spacing:.2em; text-transform:uppercase; font-weight:600; color:var(--amber-500); margin-bottom: var(--s-4); }
+.hero__eyebrow::before{ content:''; width:34px; height:1px; background:var(--amber-500); display:inline-block }
+.hero__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(38px, 5.6vw, 76px); line-height: 1.0; letter-spacing: -.02em; max-width: 18ch; text-shadow: 0 2px 30px rgba(0,0,0,.35); }
+.hero__title em { font-style: italic; font-weight: 400; color: var(--amber-500); }
+.hero__outcome { margin-top: var(--s-4); font-size: clamp(16px,1.5vw,20px); max-width: 54ch; color: rgba(255,255,255,.90); }
+.hero__outcome b{ color:#fff; font-weight:600 }
+.hero__meta { margin-top: var(--s-5); display:flex; align-items:center; gap: var(--s-4); flex-wrap:wrap; }
+.hero__metaitem{ display:inline-flex; flex-direction:column; gap:2px; }
+.hero__metaitem b{ font-family:var(--font-display); font-size: clamp(22px,2vw,28px); font-weight:500; color:#fff; line-height:1; }
+.hero__metaitem span{ font-size:12px; letter-spacing:.06em; color:rgba(255,255,255,.72) }
+.hero__metasep{ width:1px; height:34px; background:rgba(255,255,255,.22) }
+.hero__actions { margin-top: var(--s-5); display:flex; gap: var(--s-3); flex-wrap: wrap; align-items:center; }
+.hero__micro { margin-top: var(--s-3); font-size:13.5px; color: rgba(255,255,255,.78); display:flex; align-items:center; gap:8px; }
+.hero__micro .dot{ width:6px;height:6px;border-radius:50%;background:var(--amber-500);display:inline-block; box-shadow:0 0 0 0 var(--amber-500); animation:pulse 2.4s ease-in-out infinite }
+
+/* ---------- Para quién / requisitos ---------- */
+.paraquien{ background: var(--cream); }
+.twocol{ display:grid; grid-template-columns: 1.1fr .9fr; gap: var(--s-7); margin-top: var(--s-6); align-items:start; }
+.twocol h3{ font-size: var(--step-1); color:var(--green-950); margin-bottom: var(--s-4); }
+.checklist{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap: var(--s-3); }
+.checklist li{ display:grid; grid-template-columns: auto 1fr; gap: var(--s-3); font-size:16px; color:var(--ink); }
+.checklist li::before{ content:''; width:22px; height:22px; border-radius:50%; background:var(--green-100); position:relative; }
+.checklist li{ position:relative; }
+.checklist li::after{ content:'✓'; position:absolute; left:5px; top:1px; color:var(--green-800); font-size:13px; font-weight:700; }
+.req{ background: var(--surface-raised); border:1px solid var(--line); border-radius: var(--r-lg); padding: var(--s-5); box-shadow: var(--shadow-sm); }
+.req ul{ list-style:none; margin: var(--s-2) 0 0; padding:0; display:flex; flex-direction:column; gap: var(--s-3); font-size:15px; color:var(--muted); }
+.req li{ padding-left: var(--s-4); position:relative; }
+.req li::before{ content:'—'; position:absolute; left:0; color:var(--amber-600) }
+
+/* ---------- Qué incluye ---------- */
+.incluye{ background: var(--green-050); }
+.incluye__grid{ display:grid; grid-template-columns: repeat(4,1fr); gap: var(--s-4); margin-top: var(--s-6); }
+.inc{ background: var(--surface-raised); border:1px solid var(--line); border-radius: var(--r-lg); padding: var(--s-5); box-shadow: var(--shadow-sm); display:flex; flex-direction:column; gap:10px; }
+.inc__ico{ width:44px; height:44px; border-radius:12px; background:var(--green-100); color:var(--green-900); display:flex; align-items:center; justify-content:center; font-size:22px; }
+.inc h3{ font-size:18px; color:var(--green-950); }
+.inc p{ font-size:14.5px; color:var(--muted); }
+
+/* ---------- Temario (accordion <details>) ---------- */
+.temario{ background: var(--cream); }
+.temario .container{ max-width: 920px; }
+.mods{ margin-top: var(--s-5); border-top:1px solid var(--line); }
+.mod{ border-bottom:1px solid var(--line); }
+.mod summary{ list-style:none; cursor:pointer; padding: var(--s-4) 0; display:grid; grid-template-columns: auto 1fr auto; gap: var(--s-4); align-items:center; }
+.mod summary::-webkit-details-marker{ display:none }
+.mod__n{ font-family:var(--font-display); font-variant-numeric: oldstyle-nums; color:var(--amber-600); font-size:20px; min-width:2.4ch; }
+.mod__t{ font-family:var(--font-display); font-size:19px; color:var(--green-950); line-height:1.2; }
+.mod summary::after{ content:'+'; font-size:24px; color:var(--amber-600); transition:transform .2s var(--ease-soft); }
+.mod[open] summary::after{ transform:rotate(45deg) }
+.mod__body{ padding: 0 0 var(--s-4) calc(2.4ch + var(--s-4)); color:var(--muted); font-size:15.5px; max-width:72ch; }
+.mod__body ul{ margin: var(--s-2) 0 0; padding-left: 1.1em; }
+.mod__body li{ margin-bottom:6px; }
+.temario__more{ margin-top: var(--s-5); font-size:14.5px; color:var(--muted); }
+.temario__more .phbox{ font-size:.95em; }
+
+/* ---------- Profesores ---------- */
+.profes{ background: var(--green-050); }
+.profes__grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: var(--s-4); margin-top: var(--s-6); }
+.profe{ background: var(--surface-raised); border:1px solid var(--line); border-radius: var(--r-lg); padding: var(--s-5); box-shadow: var(--shadow-sm); display:flex; flex-direction:column; gap: var(--s-3); }
+.profe__top{ display:flex; align-items:center; gap: var(--s-4); }
+.profe__av{ width:64px; height:64px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:22px; font-weight:500; color:var(--cream); background: var(--green-800); overflow:hidden; }
+.profe__av img{ width:100%; height:100%; object-fit:cover; }
+.profe__name{ font-family:var(--font-display); font-size:19px; color:var(--green-950); font-weight:500; line-height:1.1; }
+.profe__title{ font-size:13px; color:var(--muted); margin-top:3px; }
+.profe__cred{ font-size:14.5px; color:var(--ink); }
+.profe__cred b{ color:var(--green-900); font-weight:600; }
+.profe__author{ display:inline-flex; align-items:center; gap:8px; font-size:12.5px; letter-spacing:.04em; color:var(--amber-600); font-weight:600; margin-top:auto; padding-top: var(--s-2); }
+.profe__author::before{ content:'✎'; font-size:13px; }
+
+/* ---------- Modalidad + precio ---------- */
+.precio{ background: var(--cream); }
+.precio__wrap{ display:grid; grid-template-columns: 1.2fr .8fr; gap: var(--s-7); margin-top: var(--s-6); align-items:center; }
+.precio__modal h3{ font-size: var(--step-1); color:var(--green-950); margin-bottom: var(--s-3); }
+.precio__modal ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap: var(--s-3); font-size:16px; }
+.precio__modal li{ display:grid; grid-template-columns:auto 1fr; gap:12px; color:var(--ink); }
+.precio__modal li strong{ color:var(--green-950) }
+.precio__modal li::before{ content:'›'; color:var(--amber-600); font-weight:700; }
+.pricecard{ background: var(--green-950); color: var(--cream); border-radius: var(--r-lg); padding: var(--s-6); box-shadow: var(--shadow-md); text-align:center; }
+.pricecard__tag{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:var(--amber-500); }
+.pricecard__amount{ font-family:var(--font-display); font-size: clamp(40px,4.5vw,56px); font-weight:500; line-height:1; margin: var(--s-3) 0 4px; }
+.pricecard__amount .phbox{ font-size:.7em; vertical-align:middle; }
+.pricecard__unit{ font-size:14px; color:var(--green-100); }
+.pricecard__note{ font-size:13px; color:rgba(255,255,255,.7); margin-top: var(--s-3); }
+.pricecard .btn{ margin-top: var(--s-5); width:100%; justify-content:center; }
+.pricecard__sub{ display:block; margin-top: var(--s-3); font-size:12.5px; color:rgba(255,255,255,.62); }
+.pricecard__sub a{ color:var(--amber-500); border-bottom:1px solid var(--amber-500); padding-bottom:1px; }
+
+/* ---------- Fechas / convocatoria (urgencia honesta, verde no ámbar) ---------- */
+.convoc { background: var(--green-950); color: var(--cream); }
+.convoc__inner { max-width: var(--container); margin:0 auto; padding: var(--s-5); display:flex; align-items:center; gap: var(--s-4); flex-wrap:wrap; }
+.convoc__tag { font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; background: var(--amber-500); color:var(--green-950); padding:5px 10px; border-radius:var(--r-pill); display:inline-flex; align-items:center; gap:7px; }
+.convoc__tag::before{ content:'●'; font-size:9px; }
+.convoc__txt { font-family:var(--font-display); font-size: clamp(17px,1.6vw,22px); font-weight:500; flex:1; min-width:260px; color:var(--cream); }
+.convoc__txt span{ display:block; opacity:.8; font-family:var(--font-body); font-size:13.5px; font-weight:500; margin-top:4px; color:var(--green-100); }
+.convoc__cta { display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:14.5px; color:var(--amber-500); border-bottom:2px solid var(--amber-500); padding-bottom:2px; }
+.convoc__cta::after{ content:'→' }
+
+/* ---------- FAQ del curso ---------- */
+.faq{ background: var(--green-050) }
+.faq .container{ max-width: 860px; }
+.faq__list{ margin-top: var(--s-5); border-top:1px solid var(--line) }
+.faq details{ border-bottom:1px solid var(--line) }
+.faq summary{ list-style:none; cursor:pointer; padding: var(--s-4) 0; display:flex; justify-content:space-between; gap: var(--s-4); align-items:center; font-family:var(--font-display); font-size:18px; color:var(--green-950) }
+.faq summary::-webkit-details-marker{ display:none }
+.faq summary::after{ content:'+'; font-size:22px; color:var(--amber-600); transition:transform .2s }
+.faq details[open] summary::after{ transform:rotate(45deg) }
+.faq p{ padding: 0 0 var(--s-4); color:var(--muted); font-size:15.5px; max-width:70ch }
+
+/* ---------- Prueba social (1 testimonio roman cerca del CTA) ---------- */
+.social{ background: var(--cream); }
+.social .container{ max-width: 900px; }
+.tquote{ background: var(--surface-raised); border:1px solid var(--line); border-radius: var(--r-lg); padding: var(--s-7) var(--s-6); box-shadow: var(--shadow-sm); text-align:center; position:relative; }
+.tquote__mark{ font-family:var(--font-display); font-size:64px; line-height:0; color:var(--amber-500); display:block; height:30px; }
+.tquote__text{ font-family:var(--font-display); font-style:normal; font-size: clamp(20px,2.2vw,28px); line-height:1.4; color:var(--green-950); max-width:38ch; margin: var(--s-3) auto var(--s-5); }
+.tquote__who{ display:inline-flex; align-items:center; gap:14px; }
+.tquote__av{ width:48px; height:48px; border-radius:50%; object-fit:cover; object-position:center; background:var(--green-100); }
+.tquote__name{ font-weight:600; font-size:15px; color:var(--green-950); text-align:left; }
+.tquote__role{ font-size:13px; color:var(--muted); text-align:left; }
+
+/* ---------- CTA final (verde, microcopy de continuidad) ---------- */
+.cta-final{ background: var(--green-950); color: var(--cream); text-align:center; padding: var(--s-9) 0 }
+.cta-final h2{ font-family:var(--font-display); font-size: clamp(30px,3.6vw,52px); line-height:1.04; max-width:20ch; margin:0 auto; color:var(--cream) }
+.cta-final h2 em{ font-style:italic; font-weight:400; color:var(--amber-500) }
+.cta-final p{ margin-top: var(--s-3); color: var(--green-100); font-weight:500 }
+.cta-final .hero__actions{ justify-content:center; margin-top: var(--s-5) }
+.cta-final .btn-ghost{ color:var(--cream) }
+.cta-final__micro{ margin-top: var(--s-4); font-size:13.5px; color:rgba(255,255,255,.7); display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; }
+.cta-final__micro .lock{ color:var(--amber-500) }
+.cta-final__micro .sep{ width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.4);display:inline-block }
+
+/* ---------- Sticky CTA móvil ---------- */
+.sticky-cta__price{ display:flex; flex-direction:column; justify-content:center; color:var(--cream); flex:none; }
+.sticky-cta__price b{ font-family:var(--font-display); font-size:17px; line-height:1; }
+.sticky-cta__price span{ font-size:11px; color:rgba(255,255,255,.7) }
+
+/* ---------- responsive ---------- */
+@media (max-width: 920px){
+  .nav{ display:none }
+  .incluye__grid{ grid-template-columns: repeat(2,1fr) }
+  .profes__grid{ grid-template-columns:1fr }
+  .twocol{ grid-template-columns:1fr; gap: var(--s-6) }
+  .precio__wrap{ grid-template-columns:1fr; gap: var(--s-5) }
+  .site-footer__grid{ grid-template-columns:1fr 1fr }
+}
+@media (max-width: 560px){
+  .incluye__grid{ grid-template-columns:1fr }
+  .hero__inner{ padding-bottom: var(--s-7) }
+  .hero__meta{ gap: var(--s-3) }
+  .mod summary{ grid-template-columns:auto 1fr auto }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO DE CURSO ===================== -->
+<header class="hero grain" data-kajabi="Hero">
+  <span class="kajabi-tag">Hero + CSS</span>
+  <div class="hero__bg"></div><div class="hero__scrim"></div>
+
+  <div class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="inicio-v2.html">
+        <span class="brand__logomark"><span></span><span></span><span></span></span>
+        <span class="brand__name">CELEBIOS<em>Eliminando fronteras</em></span>
+      </a>
+      <nav class="nav">
+        <a href="inicio-v2.html">Inicio</a>
+        <a href="inicio-v2.html#oferta" class="is-active">Diplomados</a>
+        <a href="inicio-v2.html#porque">Nosotros</a>
+        <a href="inicio-v2.html#egresados">Egresados</a>
+        <a href="#">Galería</a>
+        <a href="#">Contacto</a>
+      </nav>
+      <a class="header__cta" href="https://www.celebios.online" target="_blank" rel="noopener">Aula Virtual ↗</a>
+    </div>
+  </div>
+
+  <div class="hero__body">
+    <div class="hero__inner">
+      <div class="hero__eyebrow reveal">Diplomado · Modalidad semipresencial</div>
+      <h1 class="hero__title reveal" style="animation-delay:.08s">Rescate y Rehabilitación de <em>Fauna Silvestre</em></h1>
+      <p class="hero__outcome reveal" style="animation-delay:.16s">Al terminar podrás <b>evaluar, estabilizar, rehabilitar y liberar fauna silvestre rescatada</b> aplicando protocolos clínicos reales — desde tu propio país.</p>
+      <div class="hero__meta reveal" style="animation-delay:.24s">
+        <span class="hero__metaitem"><b>170</b><span>horas</span></span>
+        <span class="hero__metasep"></span>
+        <span class="hero__metaitem"><b>13</b><span>módulos</span></span>
+        <span class="hero__metasep"></span>
+        <span class="hero__metaitem"><b>Semipresencial</b><span>en vivo + grabado</span></span>
+      </div>
+      <div class="hero__actions reveal" style="animation-delay:.32s">
+        <a class="btn btn-primary" href="https://www.celebios.online" target="_blank" rel="noopener">Inscríbete</a>
+        <a class="btn btn-ghost" href="https://wa.me/529581033574" target="_blank" rel="noopener" style="color:#fff">Pregunta por WhatsApp</a>
+      </div>
+      <p class="hero__micro reveal" style="animation-delay:.40s"><span class="dot"></span> Inicia <span class="phbox">[fecha]</span> · inscripciones abiertas · cupo limitado</p>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== PARA QUIÉN ES / REQUISITOS ===================== -->
+<section class="section paraquien" id="paraquien" data-kajabi="Cards/Columns">
+  <span class="kajabi-tag">Cards/Columns</span>
+  <div class="container">
+    <div class="section-eyebrow"><span class="eyebrow">¿Para quién es?</span></div>
+    <h2 class="section-title">Pensado para quien ya trabaja —o quiere trabajar— con fauna.</h2>
+    <div class="twocol">
+      <div>
+        <h3>Este diplomado es para ti si…</h3>
+        <ul class="checklist">
+          <li>Eres MVZ, biólogo/a o estudiante de últimos semestres y quieres especializarte en fauna silvestre.</li>
+          <li>Trabajas en centros de rescate, zoológicos, UMA, santuarios o instituciones de conservación.</li>
+          <li>Atiendes fauna decomisada o rescatada y necesitas protocolos clínicos sólidos.</li>
+          <li>Vives fuera de México y buscas formación seria sin tener que viajar cada semana.</li>
+        </ul>
+      </div>
+      <aside class="req">
+        <h3 style="font-size:16px;letter-spacing:.04em;text-transform:uppercase;color:var(--green-900);">Requisitos</h3>
+        <ul>
+          <li>Formación o estudios en MVZ, biología o áreas afines (deseable, no excluyente).</li>
+          <li>Conexión a internet estable para clases en vivo y material descargable.</li>
+          <li>Compromiso de tiempo para sesiones en vivo y actividades por módulo.</li>
+          <li>Documentación de inscripción según convocatoria <span class="phbox">[fecha]</span>.</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== QUÉ INCLUYE ===================== -->
+<section class="section incluye" id="incluye" data-kajabi="Cards/Columns">
+  <span class="kajabi-tag">Cards/Columns</span>
+  <div class="container">
+    <div class="section-eyebrow"><span class="eyebrow">Qué incluye</span></div>
+    <h2 class="section-title">Todo lo que necesitas para formarte, en un solo lugar.</h2>
+    <div class="incluye__grid">
+      <article class="inc">
+        <div class="inc__ico" aria-hidden="true">▶</div>
+        <h3>Clases grabadas</h3>
+        <p>Cada módulo explicado a profundidad por su autor. Estúdialas a tu ritmo, las veces que necesites.</p>
+      </article>
+      <article class="inc">
+        <div class="inc__ico" aria-hidden="true">⤓</div>
+        <h3>Material descargable</h3>
+        <p>Guías, protocolos clínicos y lecturas de apoyo para descargar y consultar cuando lo requieras.</p>
+      </article>
+      <article class="inc">
+        <div class="inc__ico" aria-hidden="true">◉</div>
+        <h3>Sesiones en vivo</h3>
+        <p>Encuentros en directo con los autores de cada módulo para resolver dudas y revisar casos reales.</p>
+      </article>
+      <article class="inc">
+        <div class="inc__ico" aria-hidden="true">✦</div>
+        <h3>Diploma</h3>
+        <p>Al concluir y cumplir los requisitos recibes diploma con aval de <span class="phbox">[institución a confirmar]</span>.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEMARIO (ACCORDION) ===================== -->
+<section class="section temario" id="temario" data-kajabi="Accordion/FAQ">
+  <span class="kajabi-tag">Accordion (nativo)</span>
+  <div class="container">
+    <div class="section-eyebrow"><span class="eyebrow">Temario</span></div>
+    <h2 class="section-title">13 módulos, del rescate a la liberación.</h2>
+    <p class="section-lede">Una ruta clínica completa. Despliega cada módulo para ver su contenido.</p>
+    <div class="mods">
+      <details class="mod" open>
+        <summary><span class="mod__n">01</span><span class="mod__t">Fundamentos del rescate de fauna silvestre</span></summary>
+        <div class="mod__body">
+          Marco legal, bioseguridad y primer contacto con el animal rescatado.
+          <ul>
+            <li>Normativa de fauna silvestre y manejo de decomisos en LATAM.</li>
+            <li>Bioseguridad, zoonosis y protección del rescatista.</li>
+            <li>Triage de campo y traslado seguro del ejemplar.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="mod">
+        <summary><span class="mod__n">02</span><span class="mod__t">Contención física y química</span></summary>
+        <div class="mod__body">
+          Técnicas seguras para manejar fauna estresada o peligrosa.
+          <ul>
+            <li>Contención física por grupo taxonómico (aves, mamíferos, reptiles).</li>
+            <li>Principios de anestesia y sedación de fauna silvestre.</li>
+            <li>Monitoreo y manejo de complicaciones durante la contención.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="mod">
+        <summary><span class="mod__n">03</span><span class="mod__t">Evaluación clínica y diagnóstico</span></summary>
+        <div class="mod__body">
+          Cómo leer al paciente silvestre cuando no puede contarte qué le pasa.
+          <ul>
+            <li>Examen físico, valoración del estado corporal y signos de estrés.</li>
+            <li>Toma de muestras, imagenología y pruebas de laboratorio.</li>
+            <li>Construcción del problema clínico y pronóstico.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="mod">
+        <summary><span class="mod__n">04</span><span class="mod__t">Urgencias, trauma y estabilización</span></summary>
+        <div class="mod__body">
+          Las primeras horas definen el resultado.
+          <ul>
+            <li>Manejo del shock, fluidoterapia y soporte de urgencia.</li>
+            <li>Trauma por colisión, electrocución y ataque de fauna doméstica.</li>
+            <li>Manejo del dolor y cuidados intensivos básicos.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="mod">
+        <summary><span class="mod__n">05</span><span class="mod__t">Nutrición y rehabilitación funcional</span></summary>
+        <div class="mod__body">
+          Recuperar la condición física y los comportamientos para sobrevivir libre.
+          <ul>
+            <li>Requerimientos nutricionales por grupo y realimentación segura.</li>
+            <li>Rehabilitación física, acondicionamiento y recuperación de aptitudes.</li>
+            <li>Diseño de recintos de rehabilitación.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="mod">
+        <summary><span class="mod__n">06</span><span class="mod__t">Criterios de liberación y seguimiento</span></summary>
+        <div class="mod__body">
+          La meta es devolverlos al hábitat con probabilidad real de sobrevivir.
+          <ul>
+            <li>Evaluación de aptitud para liberación y selección de sitio.</li>
+            <li>Protocolos de liberación, marcaje y monitoreo posliberación.</li>
+            <li>Qué hacer cuando la liberación no es viable.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+    <p class="temario__more">Los 13 módulos completos —con clínica por taxón, casos especiales y proyecto final— se detallan en la guía de la convocatoria <span class="phbox">[fecha]</span>.</p>
+  </div>
+</section>
+
+<!-- ===================== PROFESORES ===================== -->
+<section class="section profes" id="profesores" data-kajabi="Cards/Columns">
+  <span class="kajabi-tag">Cards/Columns</span>
+  <div class="container">
+    <div class="section-eyebrow"><span class="eyebrow">Cuerpo docente</span></div>
+    <h2 class="section-title">Te enseña quien escribió el tema.</h2>
+    <p class="section-lede">Cada módulo lo imparte el especialista que lo investiga y lo practica — no presentadores genéricos.</p>
+    <div class="profes__grid">
+      <article class="profe">
+        <div class="profe__top">
+          <div class="profe__av" aria-hidden="true">PN</div>
+          <div>
+            <div class="profe__name"><span class="phbox">[Nombre profesor]</span></div>
+            <div class="profe__title">MVZ, Esp. en Fauna Silvestre</div>
+          </div>
+        </div>
+        <p class="profe__cred">Especialista en <b>medicina de urgencias y estabilización</b> de fauna rescatada, con ejercicio clínico en centros de rescate.</p>
+        <span class="profe__author">Autor del módulo de Urgencias y estabilización</span>
+      </article>
+      <article class="profe">
+        <div class="profe__top">
+          <div class="profe__av" aria-hidden="true">PN</div>
+          <div>
+            <div class="profe__name"><span class="phbox">[Nombre profesora]</span></div>
+            <div class="profe__title">Bióloga, M. en C. Conservación</div>
+          </div>
+        </div>
+        <p class="profe__cred">Investigadora en <b>rehabilitación y liberación</b> de fauna silvestre y monitoreo posliberación en campo.</p>
+        <span class="profe__author">Autora del módulo de Criterios de liberación</span>
+      </article>
+      <article class="profe">
+        <div class="profe__top">
+          <div class="profe__av" aria-hidden="true"><img src="assets/alumnos-terrario.jpg" alt=""></div>
+          <div>
+            <div class="profe__name"><span class="phbox">[Nombre profesor]</span></div>
+            <div class="profe__title">MVZ, Esp. en Anestesia</div>
+          </div>
+        </div>
+        <p class="profe__cred">Referente en <b>contención química y anestesia</b> de fauna silvestre bajo cuidado humano.</p>
+        <span class="profe__author">Autor del módulo de Contención física y química</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MODALIDAD + PRECIO ===================== -->
+<section class="section precio" id="precio" data-kajabi="Pricing/CTA">
+  <span class="kajabi-tag">Pricing/CTA</span>
+  <div class="container">
+    <div class="section-eyebrow"><span class="eyebrow">Modalidad e inversión</span></div>
+    <h2 class="section-title">Estudia semipresencial, paga por módulo.</h2>
+    <div class="precio__wrap">
+      <div class="precio__modal">
+        <h3>Cómo funciona la modalidad semipresencial</h3>
+        <ul>
+          <li><strong>Clases grabadas</strong> que ves a tu ritmo, las veces que necesites.</li>
+          <li><strong>Sesiones en vivo</strong> con los autores para dudas y casos clínicos.</li>
+          <li><strong>Prácticas presenciales</strong> en sede según el calendario del diplomado.</li>
+          <li><strong>Acceso 100% en línea</strong> desde celebios.online, desde cualquier país.</li>
+        </ul>
+      </div>
+      <aside class="pricecard">
+        <span class="pricecard__tag">Inversión por módulo</span>
+        <div class="pricecard__amount">$<span class="phbox">[precio]</span></div>
+        <div class="pricecard__unit">MXN por módulo · 13 módulos</div>
+        <p class="pricecard__note">Puedes inscribirte al diplomado completo o avanzar módulo por módulo.</p>
+        <a class="btn btn-primary" href="https://www.celebios.online" target="_blank" rel="noopener">Inscríbete</a>
+        <span class="pricecard__sub">¿Dudas sobre el pago? <a href="https://wa.me/529581033574" target="_blank" rel="noopener">Escríbenos por WhatsApp</a></span>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FECHAS / CONVOCATORIA ===================== -->
+<section class="convoc" data-kajabi="CTA Banner">
+  <span class="kajabi-tag" style="color:#fff;background:rgba(0,0,0,.4);border-color:transparent">CTA Banner</span>
+  <div class="convoc__inner">
+    <span class="convoc__tag">Convocatoria abierta</span>
+    <p class="convoc__txt">El grupo inicia el <span class="phbox">[fecha]</span><span>Las inscripciones cierran al completar el cupo del grupo · los lugares se asignan por orden de registro.</span></p>
+    <a class="convoc__cta" href="https://www.celebios.online" target="_blank" rel="noopener">Aparta tu lugar</a>
+  </div>
+</section>
+
+<!-- ===================== FAQ DEL CURSO ===================== -->
+<section class="section faq" data-kajabi="Accordion/FAQ">
+  <span class="kajabi-tag">Accordion (nativo)</span>
+  <div class="container">
+    <div class="section-eyebrow"><span class="eyebrow">Preguntas frecuentes</span></div>
+    <h2 class="section-title">Antes de inscribirte.</h2>
+    <div class="faq__list">
+      <details open><summary>¿Cómo es el pago?</summary><p>Puedes pagar el diplomado completo o por módulo (<span class="phbox">$[precio]</span> MXN por módulo). El cobro se realiza en el pago seguro de celebios.online al momento de inscribirte.</p></details>
+      <details><summary>¿Recibo certificado al terminar?</summary><p>Sí. Al concluir los módulos y cumplir los requisitos académicos recibes un diploma con aval de <span class="phbox">[institución a confirmar]</span>.</p></details>
+      <details><summary>¿Cómo son las sesiones en vivo?</summary><p>Son encuentros en directo con los autores de cada módulo, donde se resuelven dudas y se revisan casos clínicos reales. Si no puedes asistir en vivo, las clases grabadas y el material quedan disponibles para ti.</p></details>
+      <details><summary>¿Puedo cursarlo desde otro país?</summary><p>Sí. Tenemos alumnos activos en varios países de LATAM. La modalidad está pensada para estudiar desde cualquier país; solo las prácticas presenciales requieren asistir a sede según calendario.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRUEBA SOCIAL (cerca del CTA) ===================== -->
+<section class="section social" data-kajabi="Cards">
+  <span class="kajabi-tag">Cards</span>
+  <div class="container">
+    <figure class="tquote">
+      <span class="tquote__mark" aria-hidden="true">&ldquo;</span>
+      <blockquote class="tquote__text">Testimonio real — placeholder. Una egresada describe cómo el diplomado le dio los protocolos clínicos que hoy aplica todos los días con fauna rescatada en su centro.</blockquote>
+      <figcaption class="tquote__who">
+        <img class="tquote__av" src="assets/alumna-erizo.jpg" alt="">
+        <span>
+          <span class="tquote__name"><span class="phbox">[Nombre egresada]</span></span>
+          <span class="tquote__role">MVZ · Centro de rescate · <span class="phbox">[País]</span></span>
+        </span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===================== CTA FINAL ===================== -->
+<section class="cta-final" data-kajabi="CTA Banner">
+  <span class="kajabi-tag" style="color:#fff;background:rgba(0,0,0,.4);border-color:transparent">CTA Banner</span>
+  <div class="container">
+    <h2>Empieza tu especialización en <em>rescate de fauna</em>.</h2>
+    <p>Inicia <span class="phbox">[fecha]</span> · sesiones en vivo con los autores · cupo limitado</p>
+    <div class="hero__actions">
+      <a class="btn btn-primary" href="https://www.celebios.online" target="_blank" rel="noopener">Inscríbete</a>
+      <a class="btn btn-ghost" href="https://wa.me/529581033574" target="_blank" rel="noopener">Pregunta por WhatsApp</a>
+    </div>
+    <p class="cta-final__micro"><span class="lock" aria-hidden="true">🔒</span> Te llevamos al pago seguro <span class="sep"></span> apartas tu cupo al registrarte</p>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer" data-kajabi="Footer del theme">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div>
+        <div class="site-footer__brand">CELEBIOS</div>
+        <p class="site-footer__tagline">Eliminando fronteras, acercando al mundo.</p>
+      </div>
+      <div><h4>Educación</h4><ul><li><a href="inicio-v2.html#oferta">Diplomados</a></li><li><a href="#">Cursos online</a></li><li><a href="#">Convocatorias</a></li><li><a href="https://www.celebios.online">Aula Virtual ↗</a></li></ul></div>
+      <div><h4>Institución</h4><ul><li><a href="inicio-v2.html#porque">Nosotros</a></li><li><a href="inicio-v2.html#egresados">Egresados</a></li><li><a href="#">Galería</a></li><li><a href="#">Aliados</a></li></ul></div>
+      <div><h4>Contacto</h4><ul><li><a href="mailto:contacto@celebios.com">contacto@celebios.com</a></li><li><a href="https://wa.me/529581033574">WhatsApp +52 958 103 3574</a></li><li><a href="https://instagram.com/celebios_edu">@celebios_edu</a></li></ul></div>
+    </div>
+    <div class="site-footer__base"><span>© CELEBIOS S.C.</span><a href="#">Aviso de privacidad</a></div>
+  </div>
+</footer>
+
+<!-- ===================== STICKY CTA MÓVIL ===================== -->
+<div class="sticky-cta" data-kajabi="Sticky bar">
+  <div class="sticky-cta__price"><b>$<span class="phbox" style="font-size:.8em">[precio]</span></b><span>MXN / módulo</span></div>
+  <a class="btn btn-primary" href="https://www.celebios.online" target="_blank" rel="noopener">Inscríbete</a>
+</div>
+
+<a class="fab-wa" href="https://wa.me/529581033574" target="_blank" rel="noopener" aria-label="WhatsApp">✆</a>
+
+</body>
+</html>
