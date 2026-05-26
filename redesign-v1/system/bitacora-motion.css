@@ -1,0 +1,33 @@
+/* CELEBIOS — bitácora-motion.css · scroll-driven nativo (view()/scroll()), sin librería.
+   Degrada perfecto: sin soporte, el contenido se ve estático y completo (indexable).
+   Cargar después de bitacora.css. */
+
+/* ---- Guard de accesibilidad (primero, gana a todo) ---- */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .hero__bg,.cta .bg,.biome .bg{transform:none!important}
+  [data-parallax]{transform:none!important;translate:none!important}
+}
+
+/* ---- Ken Burns del hero (CSS puro) ---- */
+.hero__bg{transform:scale(1.06);animation:kb 20s ease-out forwards}
+@keyframes kb{to{transform:scale(1)}}
+
+@supports (animation-timeline: view()){
+  /* reveal base: subida suave que aterriza antes de entrar del todo */
+  .reveal{animation:ru linear both;animation-timeline:view();animation-range:entry 5% cover 32%}
+  @keyframes ru{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+  /* clip-reveal para media (fotos docentes): wipe up */
+  .clip{animation:cl linear both;animation-timeline:view();animation-range:entry 2% cover 26%}
+  @keyframes cl{from{clip-path:inset(0 0 100% 0);transform:scale(1.06)}to{clip-path:inset(0 0 0 0);transform:none}}
+
+  /* STAGGER — los hijos comparten timeline y desfasan su inicio vía animation-range */
+  .biome__grid .reveal:nth-child(1),.fac__grid .reveal:nth-child(1),.stats__grid .reveal:nth-child(1){animation-range:entry 6%  cover 30%}
+  .biome__grid .reveal:nth-child(2),.fac__grid .reveal:nth-child(2),.stats__grid .reveal:nth-child(2){animation-range:entry 11% cover 34%}
+  .biome__grid .reveal:nth-child(3),.fac__grid .reveal:nth-child(3),.stats__grid .reveal:nth-child(3){animation-range:entry 16% cover 38%}
+  .dip.reveal{animation-range:entry 8% cover 26%}
+
+  /* capas de fondo persistentes: will-change solo aquí (hint de compositor) */
+  .hero__bg,.cta .bg,.biome .bg{will-change:transform}
+}

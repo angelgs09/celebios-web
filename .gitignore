@@ -12,3 +12,6 @@ Thumbs.db
 dist/
 .cache/
 *.log
+
+# Firecrawl scrapes (datos extraídos, no versionar)
+.firecrawl/
