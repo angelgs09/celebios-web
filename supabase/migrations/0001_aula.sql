@@ -165,7 +165,14 @@ alter table progreso             enable row level security;
 create policy "perfil propio" on perfiles for select
   using (id = auth.uid() or es_admin());
 create policy "editar perfil propio" on perfiles for update
-  using (id = auth.uid()) with check (id = auth.uid() and rol = (select rol from perfiles where id = auth.uid()));
+  using (id = auth.uid()) with check (id = auth.uid());
+
+-- El alumno edita su nombre y pais, nunca su rol. Se hace con permisos POR
+-- COLUMNA y no dentro de la policy: una policy sobre perfiles que consultara
+-- perfiles recursa infinito, porque la subconsulta vuelve a pasar por RLS.
+-- (es_admin() se salva de eso solo porque es security definer.)
+revoke update on perfiles from authenticated;
+grant update (nombre, pais) on perfiles to authenticated;
 
 create policy "cursos publicados" on cursos for select
   using (publicado or es_admin());

@@ -76,8 +76,8 @@ usar los M4A (358 MB) y no los MP4 (1.23 GB) — Whisper solo lee el audio.
 | | Qué | Estado |
 |---|---|---|
 | 0 | Sitio de marketing fuera de Kajabi | **construido, renderizado y subido**; deploy sin verificar en vivo |
-| 1 | Aula: login, cursos, video, progreso | **esquema escrito**, sin aplicar |
-| 2 | Exámenes | **contenido y seed listos**, sin aplicar |
+| 1 | Aula: login, cursos, video, progreso | **aplicado y probado** en Supabase |
+| 2 | Exámenes | **cargados y cotejados** contra el docx |
 | 3 | Stripe: checkout y panel de pagos | pendiente |
 | 4 | Subir los videos y apagar Kajabi | pendiente |
 
@@ -100,13 +100,40 @@ tablas: `perfiles`, `cursos`, `lecciones`, `inscripciones`, `preguntas`,
 - **`calificar()` se queda con la mejor calificación**, no con la última:
   reprobar un reintento no debe borrar un examen ya aprobado.
 
-**Este SQL no se ha ejecutado nunca.** No hay Postgres local ni proyecto de
-Supabase donde correrlo. Está revisado, no probado.
+**Proyecto: `celebios-aula`, ref `lwawpdjsfjvlyvqwqiqp`, región us-east-1, plan
+Free ($0/mes).** Crearlo no costó nada — la suposición previa de que hacían
+falta $25 era errónea; el Pro solo se necesita cuando entren alumnos de verdad,
+porque el Free **pausa el proyecto tras una semana sin tráfico** (es lo que ya
+les pasó a `Expedix` y `dinero-montse`, ambos INACTIVE hoy).
 
-**Fase 2 — hecho:** `Quiz 1-11.docx` extraído de Drive a
+**Probado contra la base real, no solo revisado:**
+
+| Prueba | Resultado |
+|---|---|
+| ¿El alumno puede leer `respuestas_correctas`? | **No — 0 filas** |
+| ¿Ve su curso, lección y preguntas estando inscrito? | Sí |
+| ¿Puede ascenderse a `admin`? | **Bloqueado**, sigue `alumno` |
+| Examen real del Módulo 1, clave real (D C C A B C) | 100, aprobado |
+| Reintento peor sobre el mismo módulo | **Conserva el 100** |
+| Módulo 2 con 3 de 6 | 50, reprobado (umbral 70) |
+| `calificar()` sin inscripción | Excepción `no inscrito en este curso` |
+
+Un bug que salió al aplicarlo: la política de "editar perfil propio" consultaba
+`perfiles` dentro de su propia política, lo que **recursa infinito bajo RLS**.
+Se corrigió con permisos por columna (`grant update (nombre, pais)`), que es lo
+que Postgres ya trae para esto. `es_admin()` se salva de esa recursión solo
+porque es `security definer`.
+
+**Fase 2 — hecho y cargado.** `Quiz 1-11.docx` extraído de Drive a
 `contenido/quiz-gatos.txt`, y `parse_quiz.py` lo convierte a JSON verificando
 11 módulos × 6 preguntas = 66, cada una con 4 opciones y respuesta válida. Si
 el docx cambia y algo se rompe, el script revienta al parsear, no en producción.
+
+Ya están en la base: 11 lecciones, 66 preguntas, 66 claves. **Cotejado, no
+asumido:** la secuencia completa de respuestas y los md5 de enunciados
+(`459cacc…`) y de opciones (`62e0084…`) coinciden byte por byte con el JSON
+derivado del docx. Los títulos de lección son `Módulo N` — marcador honesto,
+el título real está solo en Kajabi.
 
 ---
 
@@ -148,7 +175,10 @@ El `vercel.json` lleva el redirect que más vale del proyecto: 301 de
 
 ## Decisiones abiertas
 
-1. **¿Equipo de Vercel?** Hoy el proyecto quedó dentro de `konecta-estudio`,
+0. **Los proyectos `Expedix` y `dinero-montse` están PAUSADOS en Supabase.** Un
+   proyecto pausado no despierta solo: hay que reactivarlo a mano. Si alguna
+   app apunta a esas bases, lleva días caída. Revisar aparte de esto.
+1. **¿Equipo de Vercel y org de Supabase?** Hoy el proyecto quedó dentro de `konecta-estudio`,
    que mezcla negocios. La alternativa es un equipo propio de CELEBIOS
    (+$20/mes). No es puerta de un solo sentido: los proyectos se transfieren
    entre equipos después.
