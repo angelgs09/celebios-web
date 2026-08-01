@@ -168,6 +168,26 @@ begin
     where p.alumno_id = auth.uid() and p.leccion_id = p_leccion;
 end $$;
 
+-- El alumno acepta los terminos por esta funcion y no por una policy de UPDATE.
+-- Motivo: RLS filtra filas, no columnas. Una policy "puede actualizar su propia
+-- inscripcion" le dejaria tocar tambien estado y expira_en, o sea auto-renovarse
+-- el acceso. Aqui solo se escribe la fecha de aceptacion y nada mas.
+create function aceptar_terminos(p_curso uuid)
+returns timestamptz
+language plpgsql security definer set search_path = public as $$
+declare v_cuando timestamptz;
+begin
+  update inscripciones
+     set acepto_terminos_en = coalesce(acepto_terminos_en, now())
+   where alumno_id = auth.uid() and curso_id = p_curso and estado = 'activa'
+  returning acepto_terminos_en into v_cuando;
+
+  if v_cuando is null then
+    raise exception 'no hay inscripcion activa en este curso';
+  end if;
+  return v_cuando;
+end $$;
+
 -- --------------------------------------------------------------------- RLS
 
 alter table perfiles             enable row level security;

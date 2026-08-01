@@ -108,6 +108,10 @@ def construir():
     # indexarse, asi que no pasa por el mapeo de rutas de arriba.
     shutil.copytree(RAIZ / "aula", OUT / "aula")
 
+    # Lo unico que no es estatico: la funcion que firma las URLs de video.
+    shutil.copytree(RAIZ / "api", OUT / "api")
+    shutil.copy2(RAIZ / "package.json", OUT / "package.json")
+
     # cleanUrls sirve /cursos/x desde cursos/x.html. El redirect es la palanca
     # de SEO: esa URL de Wix rankea #3 nacional y hoy dice "inscripciones
     # cerradas"; mandarla al diplomado vivo es lo unico que recupera ese trafico.
@@ -155,6 +159,24 @@ def verificar():
                 relativos.append(f"{nombre}: {attr}=\"{valor}\"")
             elif valor.rstrip("/") not in archivos and valor not in assets:
                 rotos.append(f"{nombre}: {attr}=\"{valor}\"")
+
+    # Un <script> con un error de sintaxis rompe la pagina entera sin avisar, y
+    # el aula se edita a mano seguido. `node --check` lo caza antes de publicar.
+    import subprocess, tempfile
+    for pagina in sorted(OUT.rglob("*.html")):
+        for i, js in enumerate(re.findall(r'<script type="module">(.*?)</script>',
+                                          pagina.read_text(encoding="utf-8"), re.S)):
+            with tempfile.NamedTemporaryFile("w", suffix=".mjs", delete=False,
+                                             encoding="utf-8") as f:
+                f.write(js)
+            r = subprocess.run(["node", "--check", f.name], capture_output=True, text=True)
+            Path(f.name).unlink()
+            if r.returncode:
+                # node imprime ruta, linea, el codigo, el error y su version;
+                # la linea util es la del Error, no la ultima.
+                detalle = next((l.strip() for l in r.stderr.splitlines()
+                                if "Error" in l), r.stderr.strip()[:120])
+                rotos.append(f"{pagina.relative_to(OUT).as_posix()}: script {i} no parsea — {detalle}")
 
     for etiqueta, lista in (("ENLACE ROTO", rotos), ("RUTA RELATIVA", relativos)):
         for x in lista:

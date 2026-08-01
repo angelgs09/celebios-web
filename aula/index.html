@@ -119,6 +119,70 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
     <div id="lista-cursos"></div>
   </section>
 
+  <!-- ============ introduccion y aceptacion ============ -->
+  <!-- Reproduce la seccion "Introducción" de Kajabi. El Código de Ética es de
+       CELEBIOS entero, no de este curso; el texto de arriba sí es del curso, y
+       habrá que moverlo a la base el día que haya un segundo. -->
+  <section id="v-intro" hidden>
+    <p class="kicker">Antes de empezar</p>
+    <h1>Introducción al curso</h1>
+    <div class="placa">
+      <p>Bienvenid@ al aula virtual del curso <b>Lenguaje y comunicación de los gatos</b>.
+         A través de este sitio tendrás acceso a todo el contenido.</p>
+      <p>Encontrarás <b>11 módulos</b>, que podrás consultar cuantas veces sea necesario,
+         disponibles todos los días las 24 horas.</p>
+      <p><b>Tendrás acceso a todo el material por 5 meses.</b></p>
+      <p>Al finalizar cada módulo hay un cuestionario de 6 preguntas. Si resuelves todos
+         obteniendo una calificación mayor a <b>80/100</b>, obtendrás una constancia de
+         participación con validez curricular.</p>
+      <p>Si no acreditas alguno, puedes estudiar la clase de nuevo y volver a presentarlo:
+         se conserva tu mejor calificación.</p>
+      <p>Cada módulo requiere aproximadamente <b>1 hora</b> de estudio. Administra tu tiempo
+         para alcanzar a completar los 11 módulos y sus evaluaciones dentro de los 5 meses.</p>
+    </div>
+
+    <h2>Código de ética y conducta</h2>
+    <div class="placa">
+      <p>En nuestra comunidad educativa CELEBIOS nos comprometemos a mantener altos
+         estándares de ética y conducta para fomentar un entorno de aprendizaje seguro,
+         respetuoso y colaborativo. Al inscribirte en cualquiera de nuestros cursos o
+         diplomados aceptas adherirte a los siguientes principios:</p>
+      <ul>
+        <li><b>Respeto mutuo:</b> trata a tus compañeros, profesores y personal administrativo
+            con cortesía, respeto y consideración en todas las interacciones.</li>
+        <li><b>Integridad académica:</b> no participes en el plagio, la copia ni ninguna otra
+            forma de fraude académico. Todas tus contribuciones deben reflejar tu propio trabajo.</li>
+        <li><b>Participación activa y constructiva:</b> contribuye al enriquecimiento del debate
+            y la comprensión colectiva.</li>
+        <li><b>Cumplimiento de las normas tecnológicas:</b> usa los recursos de CELEBIOS de manera
+            responsable; no comprometas la seguridad ni la privacidad de otros usuarios.</li>
+        <li><b>Tolerancia y diversidad:</b> respeta las diferencias individuales y abstente de
+            cualquier forma de discriminación, acoso o comportamiento ofensivo.</li>
+        <li><b>Confidencialidad y privacidad:</b> no divulgues información personal o confidencial
+            sin consentimiento explícito.</li>
+        <li><b>Responsabilidad personal:</b> asume la responsabilidad de tu propio aprendizaje.</li>
+        <li><b>Cumplimiento de las políticas institucionales:</b> acata las políticas, reglamentos
+            y procedimientos establecidos por CELEBIOS.</li>
+      </ul>
+      <p>Además, el material del aula virtual es de <b>uso personal</b> y solo puede utilizarse
+         dentro del ámbito académico en esta misma aula. Respetar esta normativa protege la
+         propiedad intelectual de todos los involucrados.</p>
+    </div>
+
+    <form id="f-acepto">
+      <fieldset>
+        <legend>Para continuar</legend>
+        <label><input type="checkbox" id="ac1" required>
+          <span>Leí y estoy de acuerdo con la información proporcionada en el apartado
+                “Introducción al curso”.</span></label>
+        <label><input type="checkbox" id="ac2" required>
+          <span>Leí y estoy de acuerdo en adherirme al Código de Ética y Conducta de CELEBIOS.</span></label>
+      </fieldset>
+      <button type="submit">Aceptar y entrar al curso</button>
+    </form>
+    <div id="msg-intro" role="alert" aria-live="polite"></div>
+  </section>
+
   <!-- ============ leccion ============ -->
   <section id="v-leccion" hidden>
     <button id="volver" class="btn-min">← Volver a mis cursos</button>
@@ -148,6 +212,7 @@ const APROBATORIA = 80   // debe coincidir con calificar() en 0001_aula.sql.
 
 let usuario = null
 let leccionAbierta = null
+let cursoPorAceptar = null
 
 function mostrar (vista) {
   for (const s of document.querySelectorAll('main > section')) s.hidden = true
@@ -196,7 +261,7 @@ $('#salir').addEventListener('click', async () => {
 
 async function cargarCursos () {
   const [insc, lecs, prog] = await Promise.all([
-    sb.from('inscripciones').select('curso_id, cursos(titulo, descripcion)').eq('estado', 'activa'),
+    sb.from('inscripciones').select('curso_id, acepto_terminos_en, cursos(titulo, descripcion)').eq('estado', 'activa'),
     sb.from('lecciones').select('id, curso_id, numero, titulo').order('numero'),
     sb.from('progreso').select('leccion_id, video_visto_en, calificacion, aprobado')
   ])
@@ -208,6 +273,13 @@ async function cargarCursos () {
     $('#lista-cursos').innerHTML =
       '<p class="vacio">Todavía no tienes cursos activos.<br>Si ya pagaste y no lo ves, escríbenos a contacto@celebios.com</p>'
     return
+  }
+
+  // Igual que en Kajabi: la aceptacion de terminos va antes de los modulos.
+  const sinAceptar = insc.data.find(i => !i.acepto_terminos_en)
+  if (sinAceptar) {
+    cursoPorAceptar = sinAceptar.curso_id
+    return mostrar('#v-intro')
   }
 
   const porLeccion = new Map(prog.data.map(p => [p.leccion_id, p]))
@@ -245,6 +317,19 @@ async function cargarCursos () {
   }))
 }
 
+// ------------------------------------------------------- aceptar terminos
+
+$('#f-acepto').addEventListener('submit', async e => {
+  e.preventDefault()
+  const boton = e.target.querySelector('button')
+  boton.disabled = true
+  const { error } = await sb.rpc('aceptar_terminos', { p_curso: cursoPorAceptar })
+  boton.disabled = false
+  if (error) return aviso('#msg-intro', 'No se pudo registrar tu aceptación. Intenta de nuevo.')
+  mostrar('#v-cursos')
+  cargarCursos()
+})
+
 // ---------------------------------------------------------------- leccion
 
 async function abrirLeccion (l) {
@@ -254,10 +339,30 @@ async function abrirLeccion (l) {
   aviso('#msg-examen', '')
   mostrar('#v-leccion')
 
-  const { data: lec } = await sb.from('lecciones').select('video_url').eq('id', l.id).single()
-  $('#lec-video').innerHTML = lec?.video_url
-    ? `<video controls playsinline style="width:100%;border-radius:6px" src="${lec.video_url}"></video>`
-    : '<p class="sinvideo">El video de esta lección todavía no se ha subido.</p>'
+  // El video no se sirve por una ruta fija: se pide una URL firmada que caduca.
+  // Quien autoriza es el RLS, dentro de /api/video — aqui no se decide nada.
+  $('#lec-video').innerHTML = '<p class="sinvideo">Cargando el video…</p>'
+  const { data: { session } } = await sb.auth.getSession()
+  const res = await fetch(`/api/video?leccion=${encodeURIComponent(l.id)}`,
+    { headers: { Authorization: `Bearer ${session?.access_token ?? ''}` } })
+  const cuerpo = await res.json().catch(() => ({}))
+
+  if (res.ok && cuerpo.url) {
+    const v = document.createElement('video')
+    v.controls = true; v.playsInline = true; v.preload = 'metadata'
+    v.style.cssText = 'width:100%;border-radius:6px;background:#000'
+    v.src = cuerpo.url            // como propiedad, no interpolado en HTML
+    $('#lec-video').replaceChildren(v)
+  } else {
+    const p = document.createElement('p')
+    p.className = 'sinvideo'
+    p.textContent = res.status === 404
+      ? 'El video de esta lección todavía no se ha subido.'
+      : res.status === 403
+        ? 'Tu acceso a este curso no está vigente. Escríbenos a contacto@celebios.com'
+        : 'No pudimos cargar el video. Recarga la página e intenta de nuevo.'
+    $('#lec-video').replaceChildren(p)
+  }
 
   const { data: preguntas, error } = await sb
     .from('preguntas').select('numero, enunciado, opciones').eq('leccion_id', l.id).order('numero')
