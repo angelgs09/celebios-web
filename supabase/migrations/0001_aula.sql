@@ -247,6 +247,26 @@ grant insert (alumno_id, leccion_id, video_visto_en) on progreso to authenticate
 grant update (video_visto_en) on progreso to authenticated;
 -- calificar() no se ve afectada: es security definer y corre como el dueno.
 
+-- ------------------------------------------------- defensa en profundidad
+-- Supabase le da a `authenticated` permisos sobre todo por default, asi que sin
+-- esto la policy es la UNICA capa. Se quitan los permisos que ninguna pantalla
+-- usa, para que hagan falta dos errores y no uno: hoy RLS ya los niega por no
+-- tener policy, pero el dia que alguien agregue una policy permisiva por
+-- descuido, sin el grant sigue cerrado.
+--
+-- En cursos, lecciones e inscripciones el INSERT/UPDATE se deja abierto porque
+-- el admin escribe desde el navegador y comparte el rol `authenticated` con el
+-- alumno: ahi la policy es la unica capa posible, y es es_admin().
+
+-- Nadie borra nunca desde el cliente.
+revoke delete on perfiles, cursos, lecciones, inscripciones,
+                 preguntas, respuestas_correctas, progreso from authenticated;
+-- Los examenes y su clave se cambian por migracion, nunca desde la UI.
+revoke insert, update on preguntas, respuestas_correctas from authenticated;
+-- Los perfiles los crea el trigger; los cursos, una migracion.
+revoke insert on perfiles from authenticated;
+revoke insert on cursos   from authenticated;
+
 -- Escrituras del panel de admin. Van desde el navegador igual que las del
 -- alumno: no hace falta servidor porque es_admin() se evalua en la base y es
 -- security definer, asi que el permiso no depende de que el cliente diga la
