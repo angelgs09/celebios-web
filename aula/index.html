@@ -142,7 +142,9 @@ const sb = createClient(
 )
 
 const $ = s => document.querySelector(s)
-const APROBATORIA = 70   // debe coincidir con calificar() en 0001_aula.sql
+const APROBATORIA = 80   // debe coincidir con calificar() en 0001_aula.sql.
+// El curso promete constancia "con calificacion mayor a 80/100" (leccion
+// "Introduccion al curso" en Kajabi): el umbral no lo decide el codigo.
 
 let usuario = null
 let leccionAbierta = null

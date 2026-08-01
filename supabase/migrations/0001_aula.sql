@@ -78,6 +78,13 @@ create table inscripciones (
   stripe_payment_intent text unique,
   monto_mxn int check (monto_mxn >= 0),
   creada_en timestamptz not null default now(),
+  -- "Tendras acceso a todo el material por 5 meses" — se lo promete la leccion
+  -- "Introduccion al curso" en Kajabi. Sin esto el acceso seria eterno, o sea
+  -- mas de lo que se vende.
+  expira_en timestamptz not null default now() + interval '5 months',
+  -- El "Quiz" de la seccion Introduccion son dos casillas de aceptacion (la
+  -- informacion del curso y el Codigo de Etica), no un examen: es consentimiento.
+  acepto_terminos_en timestamptz,
   unique (alumno_id, curso_id)
 );
 
@@ -86,9 +93,13 @@ create table inscripciones (
 
 create function inscrito_en(p_curso uuid) returns boolean
 language sql stable security definer set search_path = public as $$
+  -- La vigencia se revisa AQUI y en ningun otro lado: esta es la funcion por la
+  -- que pasan todas las policies del alumno (lecciones, preguntas) y tambien
+  -- calificar(). Un solo lugar, ningun llamador que se pueda olvidar.
   select exists (
     select 1 from inscripciones
-    where alumno_id = auth.uid() and curso_id = p_curso and estado = 'activa'
+    where alumno_id = auth.uid() and curso_id = p_curso
+      and estado = 'activa' and expira_en > now()
   );
 $$;
 
@@ -145,7 +156,7 @@ begin
   v_pct := round(v_bien * 100.0 / v_total);
 
   insert into progreso (alumno_id, leccion_id, calificacion, aprobado)
-  values (auth.uid(), p_leccion, v_pct, v_pct >= 70)
+  values (auth.uid(), p_leccion, v_pct, v_pct >= 80)  -- 80 lo promete el curso, no lo elige el codigo
   on conflict (alumno_id, leccion_id) do update
     -- Se queda la mejor calificacion, no la ultima: reprobar un reintento no
     -- debe borrar un examen ya aprobado.

@@ -92,8 +92,18 @@ no hace falta tabla de módulos. Pero antes del Módulo 1 hay una sección
 - Profesora
 - **Quiz** ← sus preguntas no vienen en `Quiz 1-11.docx`
 
-Esa sección hay que sacarla de Kajabi aparte. Es el único hueco de contenido
-que queda.
+**Ya extraída: `contenido/introduccion.md`.** Ninguna de las cuatro piezas tiene
+video. Y traía **tres reglas del negocio que no estaban en ningún otro lado**:
+
+| Regla | Estado |
+|---|---|
+| **Acceso de 5 meses** | Corregido: `inscripciones.expira_en` + `inscrito_en()` lo respeta. Antes el acceso era eterno, o sea más de lo que se vende |
+| **Se aprueba con más de 80, no con 70** | Corregido en `calificar()` y en el aula. Con 6 preguntas hay que acertar 5 |
+| **Constancia con validez curricular** al aprobar todos los quizes | 🔴 **NO implementada.** Es una promesa hecha al alumno que la plataforma nueva hoy no cumple |
+
+Y el "Quiz" de esa sección **no es un examen**: son dos casillas de aceptación
+(la información del curso y el Código de Ética). Modelarlo como examen
+calificado habría sido un error; se guarda en `inscripciones.acepto_terminos_en`.
 
 **Y hay 21 alumnos (`Customers (21)`) que migrar.** Se exportan por
 `Contacts → Bulk Actions → Export`; el CSV llega por correo y el link expira a
