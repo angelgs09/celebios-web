@@ -138,6 +138,30 @@ examen de 6 preguntas → sacar 100% → volver y ver el avance ya en "1 de 11
 lecciones aprobadas · 9%". Las lecciones sin video muestran un aviso honesto,
 no un reproductor vacío.
 
+**Panel de admin: `aula/admin.html`, publicado en `/aula/admin`.** Muestra
+alumnos registrados, inscripciones activas y total registrado como pagado; una
+tabla con quién pagó, cómo, cuánto y su avance; alta manual de un alumno a un
+curso; y el editor donde se ponen **los títulos reales de los módulos y la liga
+del video** de cada lección. Escribe desde el navegador, sin servidor, porque
+`es_admin()` se evalúa en la base y es `security definer`: el permiso no
+depende de que el cliente diga la verdad.
+
+Probado con un admin y una alumna reales, ambos borrados después. Lo que se
+verificó del lado del alumno, saltándose la interfaz y usando su propia sesión:
+
+| Intento | Resultado |
+|---|---|
+| Entrar al panel | Pantalla "esta cuenta no es de administración" |
+| Editar una lección por API | **0 filas tocadas**, `Módulo 2` intacta |
+| Auto-inscribirse a un curso | **403** |
+| Leer `respuestas_correctas` | Arreglo **vacío** |
+| Leer perfiles de otros | Solo el suyo (1) |
+
+⚠️ **Detalle que engaña:** el PATCH bloqueado devuelve **200 con arreglo
+vacío**, no 403. RLS filtra filas en silencio en los `UPDATE`. Quien pruebe
+seguridad mirando solo el código de estado va a concluir que la escritura
+funcionó. Hay que revisar el cuerpo, o mejor, la base.
+
 ### ⚠️ Para la Fase 4: importar alumnos a `auth.users` por SQL casi no funciona
 
 Crear usuarios con `INSERT` directo falla de formas que no dicen la verdad. Lo

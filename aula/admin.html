@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel — CELEBIOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --charca:#14294F; --charca-2:#1E3768; --ceibo:#2FA8C9; --cobalto:#7A5797;
+  --sage:#6FB07A; --hueso:#EEF2EC; --lodo-soft:#9DB2C2; --lodo-line:#93A6AC; --rojo:#E4796B;
+  --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem; --s6:2rem; --r:6px; --pill:999px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--charca);color:var(--hueso);
+  font-family:"Instrument Sans",system-ui,sans-serif;line-height:1.55}
+h1,h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;line-height:1.1;margin:0 0 var(--s4)}
+h1{font-size:clamp(1.5rem,4vw,2.2rem)} h2{font-size:1.25rem;margin-top:var(--s6)}
+.kicker{font-family:"Space Grotesk",monospace;font-size:.72rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ceibo);margin:0 0 var(--s2)}
+header{display:flex;justify-content:space-between;align-items:center;
+  padding:var(--s4) var(--s5);border-bottom:1px solid rgba(147,166,172,.25)}
+.marca{font-family:"Bricolage Grotesque",sans-serif;font-weight:800}
+main{max-width:68rem;margin:0 auto;padding:var(--s6) var(--s5) 4rem}
+[hidden]{display:none !important}
+
+button{font:inherit;font-weight:600;cursor:pointer;border-radius:var(--pill);
+  padding:.6rem 1.2rem;border:2px solid var(--ceibo);background:var(--ceibo);color:#08243B}
+button:disabled{opacity:.5;cursor:not-allowed}
+.btn-min{background:none;border:none;color:var(--lodo-soft);text-decoration:underline;padding:var(--s2)}
+:focus-visible{outline:3px solid var(--sage);outline-offset:2px}
+
+label{display:block;font-size:.8rem;color:var(--lodo-soft);margin-bottom:.3rem}
+input,select{width:100%;font:inherit;padding:.55rem .8rem;border-radius:var(--r);
+  border:1px solid var(--lodo-line);background:var(--charca-2);color:var(--hueso)}
+form.caja{max-width:24rem;display:grid;gap:var(--s4)}
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:var(--s4);align-items:end}
+
+table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:var(--s4)}
+th,td{text-align:left;padding:.6rem .5rem;border-bottom:1px solid rgba(147,166,172,.25);vertical-align:middle}
+th{font-family:"Space Grotesk",monospace;font-size:.7rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--lodo-soft);font-weight:500}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.envoltura{overflow-x:auto}
+
+.tarjetas{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:var(--s4);margin:var(--s5) 0}
+.tarjeta{border:2px solid rgba(47,168,201,.4);border-radius:var(--r);background:var(--charca-2);padding:var(--s4)}
+.tarjeta b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:1.7rem;line-height:1.1}
+.tarjeta span{font-size:.75rem;color:var(--lodo-soft)}
+
+.aviso{border-radius:var(--r);padding:var(--s3) var(--s4);font-size:.9rem;margin:var(--s4) 0}
+.aviso.err{background:rgba(228,121,107,.14);border:1px solid var(--rojo);color:#FFD9D3}
+.aviso.ok{background:rgba(111,176,122,.14);border:1px solid var(--sage);color:#DDF0DF}
+.aviso.nota{background:rgba(122,87,151,.16);border:1px solid var(--cobalto);color:#E6DCF0}
+.vacio{color:var(--lodo-soft);border:1px dashed var(--lodo-line);border-radius:var(--r);
+  padding:var(--s6);text-align:center}
+.barra{height:6px;border-radius:var(--pill);background:rgba(147,166,172,.25);
+  overflow:hidden;min-width:5rem}
+.barra>i{display:block;height:100%;background:var(--sage)}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="marca">CELEBIOS · Panel</span>
+  <button id="salir" class="btn-min" hidden>Cerrar sesión</button>
+</header>
+
+<main>
+  <section id="v-login" hidden>
+    <p class="kicker">Solo administración</p>
+    <h1>Entrar al panel</h1>
+    <form id="f-login" class="caja">
+      <div><label for="correo">Correo</label><input id="correo" type="email" autocomplete="email" required></div>
+      <div><label for="clave">Contraseña</label><input id="clave" type="password" autocomplete="current-password" required></div>
+      <button type="submit">Entrar</button>
+    </form>
+    <div id="msg-login" role="alert" aria-live="polite"></div>
+  </section>
+
+  <section id="v-negado" hidden>
+    <h1>Esta cuenta no es de administración</h1>
+    <p>Si necesitas acceso al panel, pídelo. Tu cuenta de alumno sigue funcionando
+       en <a href="/aula" style="color:var(--ceibo)">el aula</a>.</p>
+    <button id="salir2" class="btn-min">Cerrar sesión</button>
+  </section>
+
+  <section id="v-panel" hidden>
+    <p class="kicker">Administración</p>
+    <h1>Alumnos y pagos</h1>
+    <div id="tarjetas" class="tarjetas"></div>
+    <div class="envoltura"><table id="tabla"></table></div>
+
+    <h2>Inscribir a un alumno</h2>
+    <div class="aviso nota">
+      El alumno tiene que haberse registrado antes en el aula. Este panel
+      inscribe a alguien que ya existe; no crea cuentas nuevas.
+    </div>
+    <form id="f-alta" class="rejilla">
+      <div><label for="a-alumno">Alumno</label><select id="a-alumno" required></select></div>
+      <div><label for="a-curso">Curso</label><select id="a-curso" required></select></div>
+      <div><label for="a-monto">Monto pagado (MXN)</label><input id="a-monto" type="number" min="0" step="1" required></div>
+      <div><label for="a-origen">Cómo pagó</label>
+        <select id="a-origen">
+          <option value="manual">Transferencia o depósito</option>
+          <option value="migracion">Venía de Kajabi</option>
+        </select></div>
+      <div><button type="submit">Inscribir</button></div>
+    </form>
+    <div id="msg-alta" role="alert" aria-live="polite"></div>
+
+    <h2>Lecciones</h2>
+    <p style="color:var(--lodo-soft);font-size:.9rem;margin-top:0">
+      Aquí se ponen los títulos reales y la liga del video de cada módulo.
+    </p>
+    <div class="envoltura"><table id="tabla-lecciones"></table></div>
+    <div id="msg-leccion" role="alert" aria-live="polite"></div>
+  </section>
+</main>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+const sb = createClient(
+  'https://lwawpdjsfjvlyvqwqiqp.supabase.co',
+  'sb_publishable_ERuFbuD18eSA27_ggnnIVQ_49iNxV89'
+)
+const $ = s => document.querySelector(s)
+const mxn = n => n == null ? '—' : '$' + Number(n).toLocaleString('es-MX')
+
+function mostrar (vista) {
+  for (const s of document.querySelectorAll('main > section')) s.hidden = true
+  $(vista).hidden = false
+  $('#salir').hidden = vista !== '#v-panel'
+}
+function aviso (donde, texto, tipo = 'err') {
+  $(donde).innerHTML = texto ? `<p class="aviso ${tipo}"></p>` : ''
+  if (texto) $(donde + ' p').textContent = texto
+}
+function celda (fila, texto, clase) {
+  const td = fila.insertCell(); td.textContent = texto; if (clase) td.className = clase; return td
+}
+
+// ---------------------------------------------------------------- acceso
+
+$('#f-login').addEventListener('submit', async e => {
+  e.preventDefault()
+  aviso('#msg-login', '')
+  const { error } = await sb.auth.signInWithPassword({
+    email: $('#correo').value.trim(), password: $('#clave').value
+  })
+  if (error) return aviso('#msg-login', 'No pudimos entrar. Revisa tu correo y contraseña.')
+  arrancar()
+})
+for (const id of ['#salir', '#salir2']) {
+  $(id).addEventListener('click', async () => { await sb.auth.signOut(); mostrar('#v-login') })
+}
+
+// ---------------------------------------------------------------- datos
+
+let cursos = [], alumnos = [], lecciones = []
+
+async function cargar () {
+  const [pf, ins, cs, lc, pr] = await Promise.all([
+    sb.from('perfiles').select('id, nombre, correo, rol'),
+    sb.from('inscripciones').select('alumno_id, curso_id, estado, origen, monto_mxn, creada_en'),
+    sb.from('cursos').select('id, titulo, precio_mxn, publicado'),
+    sb.from('lecciones').select('id, curso_id, numero, titulo, video_url').order('numero'),
+    sb.from('progreso').select('alumno_id, leccion_id, aprobado')
+  ])
+  if ([pf, ins, cs, lc, pr].some(r => r.error)) {
+    return aviso('#msg-alta', 'No pudimos cargar los datos. Vuelve a entrar.')
+  }
+  cursos = cs.data; alumnos = pf.data; lecciones = lc.data
+
+  const porCurso = new Map(cs.data.map(c => [c.id, c]))
+  const totalLec = id => lc.data.filter(l => l.curso_id === id).length
+  const aprobadas = (alumno, curso) => pr.data.filter(p =>
+    p.alumno_id === alumno && p.aprobado &&
+    lc.data.some(l => l.id === p.leccion_id && l.curso_id === curso)).length
+
+  // Resumen
+  const recaudado = ins.data.reduce((s, i) => s + (i.monto_mxn || 0), 0)
+  const activas = ins.data.filter(i => i.estado === 'activa').length
+  $('#tarjetas').innerHTML = `
+    <div class="tarjeta"><b>${alumnos.filter(a => a.rol === 'alumno').length}</b><span>Alumnos registrados</span></div>
+    <div class="tarjeta"><b>${activas}</b><span>Inscripciones activas</span></div>
+    <div class="tarjeta"><b>${mxn(recaudado)}</b><span>Registrado como pagado</span></div>`
+
+  // Tabla de alumnos
+  const t = $('#tabla'); t.replaceChildren()
+  if (!ins.data.length) {
+    $('#tabla').outerHTML = '<div class="vacio" id="tabla">Todavía no hay inscripciones.</div>'
+  } else {
+    const thead = t.createTHead().insertRow()
+    for (const h of ['Alumno','Correo','Curso','Estado','Cómo pagó','Monto','Avance'])
+      thead.insertCell().outerHTML = `<th>${h}</th>`
+    const tb = t.createTBody()
+    for (const i of ins.data) {
+      const a = alumnos.find(x => x.id === i.alumno_id)
+      const c = porCurso.get(i.curso_id)
+      const tot = totalLec(i.curso_id)
+      const ok = aprobadas(i.alumno_id, i.curso_id)
+      const pct = tot ? Math.round(ok * 100 / tot) : 0
+      const f = tb.insertRow()
+      celda(f, a?.nombre ?? '—'); celda(f, a?.correo ?? '—'); celda(f, c?.titulo ?? '—')
+      celda(f, i.estado); celda(f, i.origen); celda(f, mxn(i.monto_mxn), 'num')
+      const td = f.insertCell()
+      td.innerHTML = `<div class="barra"><i style="width:${pct}%"></i></div>`
+      td.title = `${ok} de ${tot} lecciones`
+      td.insertAdjacentText('beforeend', ` ${ok}/${tot}`)
+    }
+  }
+
+  $('#a-alumno').replaceChildren(...alumnos.filter(a => a.rol === 'alumno').map(a => {
+    const o = document.createElement('option'); o.value = a.id
+    o.textContent = `${a.nombre} — ${a.correo ?? 'sin correo'}`; return o
+  }))
+  $('#a-curso').replaceChildren(...cursos.map(c => {
+    const o = document.createElement('option'); o.value = c.id; o.textContent = c.titulo; return o
+  }))
+
+  // Tabla de lecciones editable
+  const tl = $('#tabla-lecciones'); tl.replaceChildren()
+  const th2 = tl.createTHead().insertRow()
+  for (const h of ['#','Título','Liga del video',''])
+    th2.insertCell().outerHTML = `<th>${h}</th>`
+  const tb2 = tl.createTBody()
+  for (const l of lecciones) {
+    const f = tb2.insertRow()
+    celda(f, String(l.numero).padStart(2, '0'), 'num')
+    const it = document.createElement('input'); it.value = l.titulo
+    const iv = document.createElement('input'); iv.value = l.video_url ?? ''
+    iv.placeholder = 'https://…'
+    f.insertCell().append(it); f.insertCell().append(iv)
+    const b = document.createElement('button'); b.textContent = 'Guardar'
+    b.addEventListener('click', async () => {
+      b.disabled = true
+      const { error } = await sb.from('lecciones')
+        .update({ titulo: it.value.trim(), video_url: iv.value.trim() || null }).eq('id', l.id)
+      b.disabled = false
+      aviso('#msg-leccion',
+        error ? `No se pudo guardar la lección ${l.numero}.` : `Lección ${l.numero} guardada.`,
+        error ? 'err' : 'ok')
+    })
+    f.insertCell().append(b)
+  }
+}
+
+$('#f-alta').addEventListener('submit', async e => {
+  e.preventDefault()
+  aviso('#msg-alta', '')
+  const { error } = await sb.from('inscripciones').insert({
+    alumno_id: $('#a-alumno').value, curso_id: $('#a-curso').value,
+    origen: $('#a-origen').value, monto_mxn: Number($('#a-monto').value)
+  })
+  if (error) {
+    return aviso('#msg-alta', error.code === '23505'
+      ? 'Ese alumno ya está inscrito en ese curso.'
+      : 'No se pudo inscribir. Revisa los datos.')
+  }
+  aviso('#msg-alta', 'Alumno inscrito.', 'ok')
+  $('#f-alta').reset()
+  cargar()
+})
+
+// ---------------------------------------------------------------- arranque
+
+async function arrancar () {
+  const { data: { session } } = await sb.auth.getSession()
+  if (!session) return mostrar('#v-login')
+  const { data: perfil } = await sb.from('perfiles').select('rol').eq('id', session.user.id).single()
+  if (perfil?.rol !== 'admin') return mostrar('#v-negado')
+  mostrar('#v-panel')
+  cargar()
+}
+
+arrancar()
+</script>
+</body>
+</html>

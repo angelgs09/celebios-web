@@ -15,6 +15,9 @@ create extension if not exists pgcrypto;
 create table perfiles (
   id            uuid primary key references auth.users on delete cascade,
   nombre        text not null,
+  -- auth.users no es legible desde el cliente, asi que el correo se copia aqui
+  -- al registrarse: sin el, el panel de admin no puede identificar a nadie.
+  correo        text,
   pais          text,
   rol           text not null default 'alumno' check (rol in ('alumno','admin')),
   -- Kajabi solo exporta el porcentaje global por alumno, no el detalle por
@@ -33,8 +36,10 @@ $$;
 create function crear_perfil() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
-  insert into perfiles (id, nombre)
-  values (new.id, coalesce(new.raw_user_meta_data->>'nombre', split_part(new.email,'@',1)));
+  insert into perfiles (id, nombre, correo)
+  values (new.id,
+          coalesce(new.raw_user_meta_data->>'nombre', split_part(new.email,'@',1)),
+          new.email);
   return new;
 end $$;
 
@@ -200,6 +205,13 @@ create policy "marcar video visto" on progreso for insert
 create policy "actualizar video visto" on progreso for update
   using (alumno_id = auth.uid()) with check (alumno_id = auth.uid());
 
--- Escrituras de catalogo, inscripciones y examenes: solo el admin, y solo por
--- el panel (que usa la service key del servidor). Sin policy de insert/update
--- para el cliente, RLS las niega por defecto.
+-- Escrituras del panel de admin. Van desde el navegador igual que las del
+-- alumno: no hace falta servidor porque es_admin() se evalua en la base y es
+-- security definer, asi que el permiso no depende de que el cliente diga la
+-- verdad. Lo que no tiene policy (preguntas, respuestas_correctas, borrar
+-- inscripciones) queda negado por defecto: se toca por migracion, no por la UI.
+create policy "admin inscribe"              on inscripciones for insert with check (es_admin());
+create policy "admin actualiza inscripcion" on inscripciones for update using (es_admin());
+create policy "admin edita curso"           on cursos        for update using (es_admin());
+create policy "admin edita leccion"         on lecciones     for update using (es_admin());
+create policy "admin crea leccion"          on lecciones     for insert with check (es_admin());
