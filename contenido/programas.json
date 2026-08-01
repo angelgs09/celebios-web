@@ -1,0 +1,115 @@
+{
+  "programas": [
+    {
+      "slug": "/curso-lenguaje-felino",
+      "title": "Lenguaje y Comunicación de los Gatos",
+      "status": "disponible",
+      "category": "curso",
+      "topic": "Comportamiento y comunicación felina",
+      "summary": "Curso 100% en línea sobre lenguaje y comunicación felina: 12 horas de contenido grabado organizadas en 11 temas (territorialidad, percepción, expresiones faciales, vocalizaciones, señales de estrés y afecto, entre otros), acceso 5 meses 24/7 y constancia con valor curricular. Impartido por la Dra. Camila Hernández (médica veterinaria chilena, Máster en Etología Clínica por la Universidad Autónoma de Barcelona, autora de \"Miaulogía: Guía de comportamiento felino\"). Es la única convocatoria abierta hoy en el catálogo de CELEBIOS.",
+      "evidence": [
+        "redesign-v1/CONTENIDO-REAL.md",
+        "redesign-v2/DATOS-REALES-harvest.md",
+        "migracion/redirects.csv"
+      ],
+      "interest_topic": "gatos",
+      "offer": {
+        "price_mxn": 1400,
+        "payment_type": "pago_unico",
+        "hours": 12,
+        "topics_count": 11,
+        "access_months": 5
+      }
+    },
+    {
+      "slug": "/cursos/anestesia-contencion-fauna",
+      "title": "Anestesia y Contención de Fauna",
+      "status": "historico",
+      "category": "curso",
+      "topic": "Anestesia y contención de fauna silvestre",
+      "summary": "Programa histórico dentro de los ~14 temas que CELEBIOS ha impartido desde 2010, y registrado como tema histórico \"anestesia\" en el inventario de migración. Las fuentes revisadas no confirman duración, docentes ni fechas de edición específicas para este programa.",
+      "evidence": [
+        "redesign-v1/CONTENIDO-REAL.md",
+        "migracion/redirects.csv"
+      ],
+      "interest_topic": "anestesia"
+    },
+    {
+      "slug": "/cursos/manejo-conductual-fauna",
+      "title": "Manejo Conductual de Fauna",
+      "status": "historico",
+      "category": "curso",
+      "topic": "Manejo conductual de fauna silvestre",
+      "summary": "Programa histórico dentro de los ~14 temas que CELEBIOS ha impartido desde 2010, y registrado como tema histórico \"conductual\" en el inventario de migración. Las fuentes revisadas no confirman duración, docentes ni fechas de edición específicas para este programa.",
+      "evidence": [
+        "redesign-v1/CONTENIDO-REAL.md",
+        "migracion/redirects.csv"
+      ],
+      "interest_topic": "conductual"
+    },
+    {
+      "slug": "/cursos/nutricion-fauna-cautiverio",
+      "title": "Nutrición de Fauna en Cautiverio",
+      "status": "historico",
+      "category": "curso",
+      "topic": "Nutrición de fauna en cautiverio",
+      "summary": "Programa histórico dentro de los ~14 temas que CELEBIOS ha impartido desde 2010, y registrado como tema histórico \"nutricion\" en el inventario de migración. Un hallazgo de Instagram sin confirmar (ver INVESTIGACION.md, pendiente) sugiere una generación en curso bajo otro nombre; hasta no confirmarse con Angel, este programa se trata como histórico y sin oferta vigente.",
+      "evidence": [
+        "redesign-v1/CONTENIDO-REAL.md",
+        "migracion/redirects.csv"
+      ],
+      "interest_topic": "nutricion"
+    },
+    {
+      "slug": "/cursos/ortopedia-aves",
+      "title": "Ortopedia de Aves",
+      "status": "historico",
+      "category": "curso",
+      "topic": "Ortopedia de aves silvestres",
+      "summary": "Programa histórico dentro de los ~14 temas que CELEBIOS ha impartido desde 2010, y registrado como tema histórico \"ortopedia-aves\" en el inventario de migración. Las fuentes revisadas no confirman duración, docentes ni fechas de edición específicas para este programa.",
+      "evidence": [
+        "redesign-v1/CONTENIDO-REAL.md",
+        "migracion/redirects.csv"
+      ],
+      "interest_topic": "ortopedia-aves"
+    },
+    {
+      "slug": "/cursos/primeros-auxilios-fauna",
+      "title": "Primeros Auxilios para Fauna Silvestre",
+      "status": "historico",
+      "category": "curso",
+      "topic": "Primeros auxilios para fauna silvestre",
+      "summary": "Programa presente como página propia en el sitio de CELEBIOS (canonical /cursos/primeros-auxilios-fauna). Ninguna de las fuentes de evidencia revisadas (CONTENIDO-REAL.md, DATOS-REALES-harvest.md, PENDIENTES-CONTENIDO.md) confirma contenido, duración, docentes o fechas para este programa: queda pendiente de investigación adicional antes de publicar cualquier dato específico.",
+      "evidence": [
+        "redesign-v2/curso-primeros-auxilios.html"
+      ],
+      "interest_topic": "primeros-auxilios"
+    },
+    {
+      "slug": "/cursos/manejo-reptiles",
+      "title": "Manejo de Reptiles",
+      "status": "historico",
+      "category": "curso",
+      "topic": "Manejo de reptiles",
+      "summary": "Programa presente como página propia en el sitio de CELEBIOS (canonical /cursos/manejo-reptiles). Ninguna de las fuentes de evidencia revisadas (CONTENIDO-REAL.md, DATOS-REALES-harvest.md, PENDIENTES-CONTENIDO.md) confirma contenido, duración, docentes o fechas para este programa: queda pendiente de investigación adicional antes de publicar cualquier dato específico.",
+      "evidence": [
+        "redesign-v2/curso-reptiles.html"
+      ],
+      "interest_topic": "reptiles"
+    },
+    {
+      "slug": "/diplomado-rescate-rehabilitacion-fauna",
+      "title": "Diplomado en Rescate y Rehabilitación de Fauna Silvestre",
+      "status": "historico",
+      "category": "diplomado",
+      "topic": "Rescate y rehabilitación de fauna silvestre",
+      "summary": "Diplomado histórico de CELEBIOS, documentado en su 3ª edición (cerrada el 30 de junio de 2025): 170 horas (130 en línea + 40 presenciales) en 13 módulos teóricos más un módulo práctico presencial optativo en la UMA Selva Teenek (San Luis Potosí, México). No hay evidencia de una edición vigente ni de precio actual; la fecha y el precio de una eventual 4ª edición quedan pendientes de confirmación con Angel.",
+      "evidence": [
+        "redesign-v1/CONTENIDO-REAL.md",
+        "PENDIENTES-CONTENIDO.md",
+        "migracion/redirects.csv"
+      ],
+      "interest_topic": "rehabilitacion"
+    }
+  ]
+}

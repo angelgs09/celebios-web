@@ -3,6 +3,11 @@
   "name": "celebios-aula",
   "description": "Sitio publico y aula de CELEBIOS. El sitio es HTML estatico generado por build.py; lo unico que se compila es la funcion que firma las URLs de video.",
   "type": "module",
+  "scripts": {
+    "build": "python build.py",
+    "check": "python build.py --check",
+    "test": "python -m unittest discover -s tests"
+  },
   "dependencies": {
     "@vercel/blob": "^2.0.0"
   }
