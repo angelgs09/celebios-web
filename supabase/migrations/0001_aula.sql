@@ -236,6 +236,17 @@ create policy "marcar video visto" on progreso for insert
 create policy "actualizar video visto" on progreso for update
   using (alumno_id = auth.uid()) with check (alumno_id = auth.uid());
 
+-- Estas dos policies por si solas eran un agujero: decian "el alumno puede
+-- escribir su propia fila de progreso", y RLS filtra filas pero NO columnas.
+-- Un alumno inscrito podia insertar calificacion=100 y aprobado=true en las 11
+-- lecciones sin contestar un examen, y la constancia depende justo de eso.
+-- Se encontro probandolo, no leyendolo. Igual que con perfiles.rol: el limite
+-- por columna lo pone el grant, no la policy.
+revoke insert, update on progreso from authenticated;
+grant insert (alumno_id, leccion_id, video_visto_en) on progreso to authenticated;
+grant update (video_visto_en) on progreso to authenticated;
+-- calificar() no se ve afectada: es security definer y corre como el dueno.
+
 -- Escrituras del panel de admin. Van desde el navegador igual que las del
 -- alumno: no hace falta servidor porque es_admin() se evalua en la base y es
 -- security definer, asi que el permiso no depende de que el cliente diga la
