@@ -16,6 +16,7 @@ import re
 import shutil
 import sys
 from pathlib import Path
+from xml.sax.saxutils import escape
 
 RAIZ = Path(__file__).resolve().parent
 SRC = RAIZ / "redesign-v2"
@@ -28,12 +29,14 @@ CANONICAL = re.compile(r'<link[^>]*rel=["\']canonical["\'][^>]*>', re.I)
 HREF_CANON = re.compile(r'href=["\']([^"\']+)["\']', re.I)
 MARCA = "\x00CANONICAL\x00"
 
-ESTADOS_VALIDOS = {"disponible", "historico"}
-CAMPOS_PROHIBIDOS_HISTORICO = {
-    "offer", "price", "enrollment_state", "opening_date",
-    "availability", "teacher_affiliations",
+ESTADOS_VALIDOS = {"available", "historical"}
+CAMPOS_REQUERIDOS = {
+    "slug", "title", "status", "category", "topic",
+    "summary", "evidence", "interest_topic",
 }
-GA4_RE = re.compile(r'^G-[A-Z0-9]+$')
+CAMPOS_OFFER = {"price_mxn", "payment_type", "hours", "topics_count", "access_months"}
+EVIDENCIA_ANCLA_RE = re.compile(r'^(?P<path>[^#]+)#L(?P<inicio>\d+)(?:-L(?P<fin>\d+))?$')
+GA4_RE = re.compile(r'G-[A-Z0-9]+')
 
 
 def ruta_canonica(html):
@@ -69,10 +72,41 @@ def cargar_programas(path=CONTENIDO_PROGRAMAS):
     return datos["programas"]
 
 
+def _validar_evidencia(slug, fuente):
+    """fuente debe ser 'path#Lx' o 'path#Lx-Ly' (ancla de linea auditable), o
+    una URL publica http(s) ya formateada con claridad. Revienta si el
+    archivo base no existe, si el rango de lineas es invalido, o si el rango
+    citado esta vacio (sin texto)."""
+    if fuente.startswith(("http://", "https://")):
+        if not re.match(r'^https?://\S+$', fuente):
+            raise ValueError(f"{slug}: evidencia URL mal formateada: {fuente}")
+        return
+
+    m = EVIDENCIA_ANCLA_RE.match(fuente)
+    if not m:
+        raise ValueError(
+            f"{slug}: evidencia sin ancla de linea (formato esperado 'path#Lx' o 'path#Lx-Ly'): {fuente}"
+        )
+    ruta = RAIZ / m.group("path")
+    if not ruta.exists():
+        raise ValueError(f"{slug}: evidencia inexistente: {fuente}")
+
+    lineas = ruta.read_text(encoding="utf-8").splitlines()
+    inicio = int(m.group("inicio"))
+    fin = int(m.group("fin") or inicio)
+    if inicio < 1 or fin < inicio or fin > len(lineas):
+        raise ValueError(
+            f"{slug}: rango de linea invalido en {fuente} (archivo tiene {len(lineas)} lineas)"
+        )
+    if not any(l.strip() for l in lineas[inicio - 1:fin]):
+        raise ValueError(f"{slug}: rango de linea citado esta vacio: {fuente}")
+
+
 def validar_programas(programas, rutas_validas=None):
     """Revienta con ValueError ante cualquier violacion del contrato de
-    contenido/programas.json: enum cerrado de status, un solo disponible,
-    campos prohibidos en historicos, evidencia real, slugs unicos y
+    contenido/programas.json: campos requeridos, enum cerrado de status, un
+    solo disponible, cierre estricto de campos por status, oferta con forma
+    exacta, evidencia con ancla de linea auditable, slugs unicos y
     consistencia canonica contra redesign-v2."""
     if rutas_validas is None:
         rutas_validas = rutas_canonicas_fuente()
@@ -80,26 +114,38 @@ def validar_programas(programas, rutas_validas=None):
     slugs_vistos = set()
     disponibles = []
     for p in programas:
+        if "slug" not in p:
+            raise ValueError("programa sin campo requerido 'slug'")
         slug = p["slug"]
         if slug in slugs_vistos:
             raise ValueError(f"slug duplicado: {slug}")
         slugs_vistos.add(slug)
 
+        faltantes = CAMPOS_REQUERIDOS - p.keys()
+        if faltantes:
+            raise ValueError(f"{slug}: faltan campos requeridos: {sorted(faltantes)}")
+
         if p["status"] not in ESTADOS_VALIDOS:
             raise ValueError(f"status invalido en {slug}: {p['status']!r}")
-        if p["status"] == "disponible":
+
+        permitidos = CAMPOS_REQUERIDOS | ({"offer"} if p["status"] == "available" else set())
+        extra = p.keys() - permitidos
+        if extra:
+            raise ValueError(f"{slug}: campos no permitidos para status={p['status']!r}: {sorted(extra)}")
+
+        if p["status"] == "available":
             disponibles.append(p)
-        else:
-            prohibidos = CAMPOS_PROHIBIDOS_HISTORICO & p.keys()
-            if prohibidos:
-                raise ValueError(f"{slug} es historico pero trae campos prohibidos: {prohibidos}")
+            offer = p.get("offer")
+            if not isinstance(offer, dict) or offer.keys() != CAMPOS_OFFER:
+                raise ValueError(
+                    f"{slug}: 'offer' debe traer exactamente {sorted(CAMPOS_OFFER)}, trae {sorted((offer or {}).keys())}"
+                )
 
         evidencia = p.get("evidence") or []
         if not evidencia:
             raise ValueError(f"{slug} no trae evidencia")
         for fuente in evidencia:
-            if not (RAIZ / fuente).exists():
-                raise ValueError(f"{slug}: evidencia inexistente: {fuente}")
+            _validar_evidencia(slug, fuente)
 
         if slug not in rutas_validas:
             raise ValueError(f"{slug} no tiene pagina canonica en {SRC}")
@@ -117,7 +163,7 @@ def generar_sitemap(rutas):
         if r != "/404" and not r.startswith("/aula")
     )
     urls = "".join(
-        f"  <url><loc>{DOMINIO}{'' if r == '/' else r}{'/' if r == '/' else ''}</loc></url>\n"
+        f"  <url><loc>{escape(DOMINIO + ('' if r == '/' else r) + ('/' if r == '/' else ''))}</loc></url>\n"
         for r in entradas
     )
     return (
@@ -175,7 +221,7 @@ def generar_vercel_json():
             {
                 "source": "/brand/(.*)",
                 "headers": [
-                    {"key": "Cache-Control", "value": "public, max-age=31536000, immutable"},
+                    {"key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400"},
                 ],
             },
         ],
@@ -188,14 +234,30 @@ def url_a_ruta(url):
     return re.sub(r'^https?://[^/]+', '', url) or "/"
 
 
-def convertir_redirects_bulk(filas):
+def _ruta_base(destino):
+    """/cursos#historico-x -> /cursos ; /egresados?x=1 -> /egresados"""
+    return re.split(r"[#?]", destino, maxsplit=1)[0] or "/"
+
+
+def convertir_redirects_bulk(filas, rutas_publicadas):
     """migracion/redirects.csv (source_url,destination_path,status_code,...)
     -> formato bulk de Vercel [{source,destination,statusCode}]. Solo 301 con
     destino no vacio; sin auto-redirects (origen == destino tras normalizar a
     ruta); duplicados identicos se colapsan; un mismo origen con destinos
-    distintos revienta (dos hosts viejos no pueden pelear la misma ruta)."""
+    distintos revienta (dos hosts viejos no pueden pelear la misma ruta).
+
+    rutas_publicadas es el conjunto de rutas canonicas que este build esta
+    publicando ahora mismo. Una regla se DIFIERE (no se emite) en vez de
+    publicarse si su origen es hoy una pagina publicada (la sombrearia) o si
+    la base de su destino no esta publicada todavia (301 a un 404), salvo
+    '/aula', que es un destino real preservado aunque no tenga canonical.
+
+    Devuelve (reglas_activas, reglas_diferidas); reglas_diferidas trae
+    {source, destination, reasons} para que quien llame decida si eso es
+    aceptable (preview) o debe reventar el build (--cutover)."""
     vistos = {}
-    resultado = []
+    activas = []
+    diferidas = []
     for fila in filas:
         if str(fila["status_code"]) != "301":
             continue
@@ -212,12 +274,23 @@ def convertir_redirects_bulk(filas):
                 )
             continue
         vistos[origen] = destino
-        resultado.append({"source": origen, "destination": destino, "statusCode": 301})
-    return resultado
+
+        razones = []
+        if origen in rutas_publicadas:
+            razones.append("source_shadows_published_page")
+        base = _ruta_base(destino)
+        if base not in rutas_publicadas and base != "/aula":
+            razones.append("destination_not_published")
+
+        if razones:
+            diferidas.append({"source": origen, "destination": destino, "reasons": razones})
+            continue
+        activas.append({"source": origen, "destination": destino, "statusCode": 301})
+    return activas, diferidas
 
 
 def validar_ga4(measurement_id):
-    if measurement_id is not None and not GA4_RE.match(measurement_id):
+    if measurement_id is not None and not GA4_RE.fullmatch(measurement_id):
         raise ValueError(f"GA4_MEASUREMENT_ID invalido: {measurement_id!r}")
 
 
@@ -269,7 +342,9 @@ def reescribir(html, mapa):
     return html
 
 
-def construir():
+def construir(salida=None, cutover=False):
+    salida = Path(salida) if salida is not None else OUT
+
     try:
         validar_programas(cargar_programas())
     except ValueError as e:
@@ -296,68 +371,87 @@ def construir():
             raise SystemExit(f"ERROR: {f.name} y {vistas[ruta].name} declaran {ruta}")
         vistas[ruta] = f
 
+    rutas_publicadas = set(paginas.values())
+    with REDIRECTS_CSV.open(encoding="utf-8") as f:
+        try:
+            reglas_bulk, diferidas = convertir_redirects_bulk(list(csv.DictReader(f)), rutas_publicadas)
+        except ValueError as e:
+            raise SystemExit(f"ERROR: {REDIRECTS_CSV}: {e}")
+
+    # La validacion de arriba no toca disco: si --cutover va a reventar,
+    # revienta antes de tocar `salida`, para no dejar un build a medias.
+    if cutover and diferidas:
+        detalle = "; ".join(
+            f"{d['source']} -> {d['destination']} ({'+'.join(d['reasons'])})"
+            for d in diferidas[:5]
+        )
+        mas = f" (+{len(diferidas) - 5} mas)" if len(diferidas) > 5 else ""
+        raise SystemExit(
+            f"ERROR --cutover: {len(diferidas)} regla(s) de redirect diferida(s) "
+            f"por conflicto con el build actual: {detalle}{mas}"
+        )
+    if diferidas:
+        print(f"  {len(diferidas)} regla(s) de redirect diferida(s) (preview, no publicadas)")
+
     mapa = {f.name: ruta for f, ruta in paginas.items()}
 
-    # Se vacia el contenido en vez de borrar site/ entero, por dos razones:
-    # .vercel guarda a que proyecto publica el CLI (si se pierde, el deploy se
-    # va a un proyecto nuevo), y en Windows rmtree revienta si algun proceso
-    # tiene la carpeta como directorio actual.
-    OUT.mkdir(parents=True, exist_ok=True)
-    for hijo in OUT.iterdir():
+    # Se vacia el contenido en vez de borrar la carpeta entera, por dos
+    # razones: .vercel guarda a que proyecto publica el CLI (si se pierde, el
+    # deploy se va a un proyecto nuevo), y en Windows rmtree revienta si algun
+    # proceso tiene la carpeta como directorio actual.
+    salida.mkdir(parents=True, exist_ok=True)
+    for hijo in salida.iterdir():
         if hijo.name == ".vercel":
             continue
         shutil.rmtree(hijo) if hijo.is_dir() else hijo.unlink()
     for f, ruta in paginas.items():
         html = reescribir(f.read_text(encoding="utf-8"), mapa)
         html = inyectar_ga4(html, ga4_id)
-        destino = OUT / archivo_destino(ruta)
+        destino = salida / archivo_destino(ruta)
         destino.parent.mkdir(parents=True, exist_ok=True)
         destino.write_text(html, encoding="utf-8")
 
-    shutil.copytree(SRC / "brand", OUT / "brand")
+    shutil.copytree(SRC / "brand", salida / "brand")
 
     # El aula es estatica y va tal cual: no tiene canonical porque no debe
     # indexarse, asi que no pasa por el mapeo de rutas de arriba. Byte a byte,
     # sin tocar (ni GA4 le entra): es codigo fuente, no una vista publica.
-    shutil.copytree(RAIZ / "aula", OUT / "aula")
+    shutil.copytree(RAIZ / "aula", salida / "aula")
 
     # Lo unico que no es estatico: la funcion que firma las URLs de video.
-    shutil.copytree(RAIZ / "api", OUT / "api")
-    shutil.copy2(RAIZ / "package.json", OUT / "package.json")
+    shutil.copytree(RAIZ / "api", salida / "api")
+    shutil.copy2(RAIZ / "package.json", salida / "package.json")
 
-    (OUT / "404.html").write_text(inyectar_ga4(generar_404(), ga4_id), encoding="utf-8")
-    (OUT / "sitemap.xml").write_text(generar_sitemap(paginas.values()), encoding="utf-8")
-    (OUT / "robots.txt").write_text(generar_robots(), encoding="utf-8")
-    (OUT / "vercel.json").write_text(generar_vercel_json(), encoding="utf-8")
+    (salida / "404.html").write_text(inyectar_ga4(generar_404(), ga4_id), encoding="utf-8")
+    (salida / "sitemap.xml").write_text(generar_sitemap(paginas.values()), encoding="utf-8")
+    (salida / "robots.txt").write_text(generar_robots(), encoding="utf-8")
+    (salida / "vercel.json").write_text(generar_vercel_json(), encoding="utf-8")
 
-    with REDIRECTS_CSV.open(encoding="utf-8") as f:
-        try:
-            filas_bulk = convertir_redirects_bulk(list(csv.DictReader(f)))
-        except ValueError as e:
-            raise SystemExit(f"ERROR: {REDIRECTS_CSV}: {e}")
-    (OUT / "migracion").mkdir(parents=True, exist_ok=True)
-    with (OUT / "migracion" / "redirects.csv").open("w", encoding="utf-8", newline="") as f:
+    (salida / "migracion").mkdir(parents=True, exist_ok=True)
+    with (salida / "migracion" / "redirects.csv").open("w", encoding="utf-8", newline="") as f:
         escritor = csv.DictWriter(f, fieldnames=["source", "destination", "statusCode"])
         escritor.writeheader()
-        escritor.writerows(filas_bulk)
+        escritor.writerows(reglas_bulk)
 
-    print(f"  {len(paginas)} paginas + sitemap/robots/404/vercel.json -> {OUT}")
+    print(f"  {len(paginas)} paginas + sitemap/robots/404/vercel.json -> {salida}")
+    print(f"  {len(reglas_bulk)} redirects activos, {len(diferidas)} diferidos")
     return paginas
 
 
-def verificar():
+def verificar(salida=None):
     """Ningun enlace interno puede apuntar a algo que no existe en site/."""
+    salida = Path(salida) if salida is not None else OUT
     archivos = {
-        "/" + p.relative_to(OUT).as_posix().removesuffix(".html").removesuffix("/index")
-        for p in OUT.rglob("*.html")
+        "/" + p.relative_to(salida).as_posix().removesuffix(".html").removesuffix("/index")
+        for p in salida.rglob("*.html")
     }
     archivos.add("/")
-    assets = {"/" + p.relative_to(OUT).as_posix() for p in OUT.rglob("*") if p.is_file()}
+    assets = {"/" + p.relative_to(salida).as_posix() for p in salida.rglob("*") if p.is_file()}
 
     rotos, relativos = [], []
-    for pagina in sorted(OUT.rglob("*.html")):
+    for pagina in sorted(salida.rglob("*.html")):
         html = pagina.read_text(encoding="utf-8")
-        nombre = pagina.relative_to(OUT).as_posix()
+        nombre = pagina.relative_to(salida).as_posix()
         # Dentro de <script> hay plantillas JS como src="${url}" que no son
         # marcado; escanearlas da falsos positivos.
         html = re.sub(r"<script\b.*?</script>", "", html, flags=re.S | re.I)
@@ -377,7 +471,7 @@ def verificar():
     # Un <script> con un error de sintaxis rompe la pagina entera sin avisar, y
     # el aula se edita a mano seguido. `node --check` lo caza antes de publicar.
     import subprocess, tempfile
-    for pagina in sorted(OUT.rglob("*.html")):
+    for pagina in sorted(salida.rglob("*.html")):
         for i, js in enumerate(re.findall(r'<script type="module">(.*?)</script>',
                                           pagina.read_text(encoding="utf-8"), re.S)):
             with tempfile.NamedTemporaryFile("w", suffix=".mjs", delete=False,
@@ -390,19 +484,19 @@ def verificar():
                 # la linea util es la del Error, no la ultima.
                 detalle = next((l.strip() for l in r.stderr.splitlines()
                                 if "Error" in l), r.stderr.strip()[:120])
-                rotos.append(f"{pagina.relative_to(OUT).as_posix()}: script {i} no parsea — {detalle}")
+                rotos.append(f"{pagina.relative_to(salida).as_posix()}: script {i} no parsea — {detalle}")
 
     for etiqueta, lista in (("ENLACE ROTO", rotos), ("RUTA RELATIVA", relativos)):
         for x in lista:
             print(f"  {etiqueta}  {x}")
     if rotos or relativos:
         raise SystemExit(f"FALLO: {len(rotos)} rotos, {len(relativos)} relativos")
-    print(f"  ok: {len(list(OUT.rglob('*.html')))} paginas, 0 enlaces rotos")
+    print(f"  ok: {len(list(salida.rglob('*.html')))} paginas, 0 enlaces rotos")
 
 
 if __name__ == "__main__":
     if "--check" not in sys.argv:
         print("Construyendo:")
-        construir()
+        construir(cutover="--cutover" in sys.argv)
     print("Verificando:")
     verificar()

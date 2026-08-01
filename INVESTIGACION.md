@@ -60,6 +60,32 @@ Un programa histórico solo lleva slug/título/categoría/tema/resumen/evidencia
 | "Claustro internacional — 12 especialistas de México, España, Costa Rica y Estados Unidos" | `redesign-v2/diplomado-rehab.html:1382` (ya marcado `<span class="ph">por confirmar</span>` en el propio HTML) | La cifra "12" no aparece en ninguna fuente verificada (ni scrape del sitio ni harvest de Facebook/Instagram). Página de un producto de $19,500: no publicar el número hasta tener fuente, o sustituir por una lista nominal de docentes sin conteo. |
 | "Esa URL rankea #3 nacional" (sobre `celebios.com/rehabilitacion-fauna-2024`) | `build.py` (comentario, no visible al usuario) y tesis de `redesign-v2/SEO-COPY-STRATEGY.md:18` | Afirmación de ranking sin captura de Google Search Console adjunta en el repo; es una inferencia de la estrategia SEO, no un dato medido. Se rechaza como hecho hasta que exista evidencia fresca de GSC (fecha, keyword, posición) en el repo. No bloquea el 301 en sí (que se conserva por prudencia SEO), solo la afirmación de la posición exacta. |
 
+## Evidencia externa citada
+
+| Claim | Fuente | Fecha de acceso |
+|---|---|---|
+| `bulkRedirectsPath` es una propiedad válida de `vercel.json` para importar redirects en bloque desde un archivo CSV/JSON/JSONL, procesados en el momento del deploy | https://vercel.com/docs/routing/redirects/bulk-redirects/getting-started | 2026-08-01 |
+
+**Riesgo detectado, no resuelto en esta ronda:** la documentación oficial muestra el CSV de
+bulk redirects con encabezado `source,destination,permanent` (`permanent` booleano
+`true`/`false`), no `source,destination,statusCode` (entero) como emite hoy `build.py`. La
+decisión vinculante de esta ronda mantiene `statusCode` porque cambiar el esquema del CSV no
+fue autorizado aquí. El esquema real solo se puede confirmar con un despliegue de preview
+—que sigue siendo la puerta de verificación externa y esta tarea no ejecuta (no se hizo ningún
+`vercel deploy`)—. Si Vercel rechaza o ignora la columna `statusCode`, las reglas activas del
+CSV no tendrían efecto en producción pese a pasar todos los tests locales. Antes de Task 5 o de
+cualquier cutover real conviene correr un preview deploy y confirmar en los logs de build que
+el CSV se procesó sin errores, o migrar el CSV al esquema `permanent` documentado.
+
+**Nota sobre `/aula`:** una fila del inventario de migración redirige `/aula-virtual` (host
+`celebios.com`) a `/aula`. `/aula` no tiene `<link rel="canonical">` y `robots.txt` lo excluye
+(`Disallow: /aula`) porque es una zona autenticada, no una página pública indexable — así lo
+exige el plan de este redesign, que preserva `/aula` byte a byte y noindex. Esa regla de
+redirect se conserva como excepción explícita en `convertir_redirects_bulk` (no se difiere aun
+cuando `/aula` no aparece en las rutas canónicas publicadas), porque es el alias público
+heredado del área que sí existe como salida real del build, a diferencia de destinos que Task 3
+todavía no ha creado.
+
 ---
 
 ## Alcance de esta revisión
