@@ -75,13 +75,33 @@ usar los M4A (358 MB) y no los MP4 (1.23 GB) — Whisper solo lee el audio.
 
 | | Qué | Estado |
 |---|---|---|
-| 0 | Sitio de marketing fuera de Kajabi | **construido y renderizado**; deploy sin verificar en vivo |
-| 1 | Aula: login, cursos, video, progreso | pendiente |
-| 2 | Exámenes | **contenido listo** en `contenido/quiz-gatos.json` |
+| 0 | Sitio de marketing fuera de Kajabi | **construido, renderizado y subido**; deploy sin verificar en vivo |
+| 1 | Aula: login, cursos, video, progreso | **esquema escrito**, sin aplicar |
+| 2 | Exámenes | **contenido y seed listos**, sin aplicar |
 | 3 | Stripe: checkout y panel de pagos | pendiente |
 | 4 | Subir los videos y apagar Kajabi | pendiente |
 
 Kajabi no se cancela hasta que la fase 4 esté verificada.
+
+**Fase 1 — esquema en `supabase/migrations/0001_aula.sql`, SIN APLICAR.** Seis
+tablas: `perfiles`, `cursos`, `lecciones`, `inscripciones`, `preguntas`,
+`progreso`, más `respuestas_correctas`. Decisiones que vale la pena conocer:
+
+- **No hay tabla de módulos.** Hoy cada módulo del curso de gatos es un video
+  más su examen, o sea una lección. Si el Diplomado resulta tener varias
+  lecciones por módulo, se agrega entonces.
+- **La clave de respuestas vive en su propia tabla, sin política de lectura.**
+  RLS filtra filas, no columnas: si la respuesta correcta estuviera en
+  `preguntas`, cualquier alumno con la sesión abierta podría leerla desde el
+  navegador y el examen no valdría nada. Solo `calificar()` la consulta, por
+  dentro, como `security definer`.
+- **Nadie se borra.** Un alumno des-inscrito se marca `cancelada`. En Kajabi
+  borrar un contacto borra su progreso sin recuperación; no repetir eso.
+- **`calificar()` se queda con la mejor calificación**, no con la última:
+  reprobar un reintento no debe borrar un examen ya aprobado.
+
+**Este SQL no se ha ejecutado nunca.** No hay Postgres local ni proyecto de
+Supabase donde correrlo. Está revisado, no probado.
 
 **Fase 2 — hecho:** `Quiz 1-11.docx` extraído de Drive a
 `contenido/quiz-gatos.txt`, y `parse_quiz.py` lo convierte a JSON verificando
