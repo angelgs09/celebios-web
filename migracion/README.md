@@ -6,7 +6,7 @@ Contrato de redirects para retirar `celebios.com` (Wix) y, más adelante,
 ## Cómo se generó
 
 ```
-pip install requests
+pip install -r requirements.txt
 python scripts/sync_migration_inventory.py
 ```
 
@@ -30,16 +30,25 @@ el CSV a mano.
 `source_url,destination_path,status_code,category,topic_or_cohort,clicks,impressions,position,backlinks,priority,confidence,manual_review`
 
 - **status_code**: `301` si hay `destination_path`, `404` si no.
-- **destination_path**: ruta raíz-relativa del sitio nuevo. Nunca es `/`
-  salvo la propia home; nunca es una URL arbitraria de relleno.
+- **destination_path**: ruta raíz-relativa contra la arquitectura de
+  información FINAL planeada del sitio nuevo (no el sitio actual — ver
+  `DESTINOS_BASE_VALIDOS` en el script). Puede traer un fragmento (`#...`)
+  que Task 3 implementa como ancla; la base antes del `#` siempre es una de:
+  `/`, `/aula`, `/cursos`, `/curso-lenguaje-felino`, `/historia`,
+  `/egresados`, `/practicas-de-campo`, `/docentes`, `/admisiones`,
+  `/contacto`, `/aviso-de-privacidad`. Nunca es `/` salvo la propia home.
 - **clicks, impressions, position, backlinks**: **vacíos a propósito.** No
   hay una sesión autenticada de Google Search Console ni de Wix Analytics
   todavía — importar ese export es un paso externo pendiente, y no se
   inventan métricas para llenar la tabla.
-- **manual_review**: `true` en las filas donde no hay un destino seguro que
-  ofrecer (hoy solo `/aviso-de-privacidad`: el sitio nuevo no tiene todavía
-  página de privacidad, así que queda en 404 marcada para revisión en vez de
-  redirigirse a algo que no corresponde).
+- **confidence**: `alta` para mapeos explícitos o basura de editor curada a
+  mano; `media` para páginas de egresado con año de cohorte o tema inferido
+  con evidencia en la URL; `baja` para páginas de egresado sin ninguna
+  evidencia inferible (solo un nombre propio en el slug).
+- **manual_review**: `true` únicamente cuando `confidence` es `baja` — hoy
+  eso son las páginas de egresado que solo traen un nombre propio en el
+  slug (van a `/egresados` sin ancla, pero conviene revisar a mano si algún
+  caso amerita una ancla que el script no pudo inferir).
 
 ## Categorías
 
@@ -47,21 +56,28 @@ el CSV a mano.
 |---|---|---|
 | `home` | La raíz del sitio. | 301 → `/` |
 | `curso_disponible` | Lenguaje y Comunicación de los Gatos — el único curso a la venta hoy. | 301 → `/curso-lenguaje-felino` |
-| `curso_historico` | Cualquier otro curso, diplomado o cohorte (disponible como página informativa o no). | 301 → la página del curso si existe, si no al catálogo `/cursos` |
-| `institucional` | Nosotros, contacto, aviso de privacidad, aula. | 301 a la página viva, o 404 + `manual_review` si no hay una todavía |
-| `sin_equivalente` | Certificados de egresados individuales sin ningún curso reconocible en la URL (ej. `/lopez-hernandez`), y páginas de andamiaje del editor de Wix (`blank`, `copia-de-*`, `keeper`, `galeria-1`, …). Sin valor de negocio y sin nombres propios en `topic_or_cohort`. | 404 |
+| `curso_historico` | Programa, diplomado o catálogo histórico. | 301 → `/cursos#historico-<tema>` (o `/cursos` si es el catálogo/calendario) |
+| `institucional` | Nosotros→historia, contacto, aviso de privacidad, aula, docentes, prácticas de campo, admisión. | 301 a la página viva correspondiente |
+| `egresado` | Perfil o certificado individual de egresado. Nunca expone el nombre de la persona en `topic_or_cohort` ni en el destino. | 301 → `/egresados`, `/egresados#cohorte-YYYY` o `/egresados#tema-<tema>` según lo que sea inferible con confianza |
+| `sin_equivalente` | Basura real del editor de Wix/Kajabi: `blank`, `copia-de-*`, `keeper`, `galeria-N`, `/test`. Sin contenido real. | 404 |
 
-Una certificación individual cuya URL sí trae un curso reconocible (ej.
-`/felidos-torres-barraza`, `/ortopedia-lopez-hernandez`) se clasifica por ese
-curso, no por el nombre: cae en `curso_historico` y 301 a su destino, igual
-que cualquier otra cohorte de ese mismo curso. El apellido nunca se copia a
-`topic_or_cohort`. Solo cuando la URL no trae ninguna señal de curso
-(`/lopez-hernandez`) se considera sin equivalente y va a 404.
+Una página de egresado con año de cohorte reconocible en la URL
+(`/vazquez-santiago-2016`) preserva ese valor con
+`/egresados#cohorte-2016`; una con un tema de curso reconocible pero sin año
+(`/egresadosbioetica`) usa `/egresados#tema-bioetica`; una sin ninguna señal
+(`/lopez-hernandez`) cae en `/egresados` sin ancla, con `confidence=baja` y
+`manual_review=true`. El apellido nunca se copia a `topic_or_cohort` ni al
+destino.
+
+Un certificado cuya URL trae un curso reconocible pero no el prefijo
+`egresados`/`gen<año>` (ej. `/felidos-torres-barraza`,
+`/ortopedia-lopez-hernandez`) se clasifica por ese curso histórico, igual
+que cualquier otra cohorte del mismo programa: cae en `curso_historico` con
+`/cursos#historico-<tema>`.
 
 **Regla de negocio explícita:** solo Lenguaje y Comunicación de los Gatos
 está disponible para inscripción. Ningún otro curso o diplomado se redirige
-a `/` — cada uno cae en su página informativa si el sitio nuevo ya la
-construyó, o en el catálogo `/cursos` como destino histórico.
+a `/` — cada uno cae en su ancla de archivo histórico en `/cursos`.
 
 ## Lo que este inventario NO hace
 

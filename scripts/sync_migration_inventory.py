@@ -6,8 +6,14 @@ No hay export autenticado de GSC ni de Wix Analytics todavia: clicks,
 impressions, position y backlinks quedan vacios a proposito. Se llenan
 importando ese export mas adelante, no se inventan aqui.
 
-Requiere: pip install requests (urllib.request choca con la proteccion
-anti-bot de Wix; ver el comentario en _descargar).
+Los destinos se validan contra la arquitectura de informacion FINAL
+planeada (ver migracion/README.md), no contra el sitio actual: paginas como
+/cursos/anestesia-contencion-fauna existen hoy pero Task 3 las reemplaza por
+anclas de archivo historico en /cursos, asi que los redirects apuntan ahi
+directamente para no generar un salto doble cuando el rediseno se publique.
+
+Requiere: pip install -r requirements.txt (urllib.request choca con la
+proteccion anti-bot de Wix; ver el comentario en _descargar).
 
 Uso:
     python scripts/sync_migration_inventory.py
@@ -19,6 +25,7 @@ import csv
 import re
 import sys
 import time
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -46,6 +53,15 @@ CSV_FIELDS = [
     "priority", "confidence", "manual_review",
 ]
 
+# Las unicas bases de destino que existiran en la arquitectura final del
+# sitio (ver plan de rediseno). Cualquier fragmento (#...) es adicional a
+# esto, nunca reemplaza la base.
+DESTINOS_BASE_VALIDOS = {
+    "/", "/aula", "/cursos", "/curso-lenguaje-felino", "/historia",
+    "/egresados", "/practicas-de-campo", "/docentes", "/admisiones",
+    "/contacto", "/aviso-de-privacidad",
+}
+
 _LOC_RE = re.compile(r"<loc>(.*?)</loc>", re.I)
 _SITEMAPINDEX_RE = re.compile(r"<sitemapindex\b", re.I)
 
@@ -55,21 +71,38 @@ def _descargar(url: str) -> str:
     proteccion anti-bot de Wix bloquea con 429 el fingerprint TLS/HTTP de
     urllib.request incluso en la primera peticion, mientras que requests (y
     curl) pasan sin problema -- no es throttling real por volumen. Respeta
-    Retry-After si lo manda."""
+    Retry-After si lo manda, en segundos o en formato de fecha HTTP
+    (RFC 9110 permite ambos)."""
     encabezados = {"User-Agent": "Mozilla/5.0"}
     for intento in range(_REINTENTOS_429):
         respuesta = requests.get(url, headers=encabezados, timeout=20)
         if respuesta.status_code == 429:
             if intento == _REINTENTOS_429 - 1:
                 respuesta.raise_for_status()
-            espera = int(respuesta.headers.get("Retry-After", 0)) or (
+            espera = _segundos_de_retry_after(respuesta.headers.get("Retry-After")) or (
                 _ESPERA_BASE_SEGUNDOS * (2 ** intento)
             )
             time.sleep(espera)
             continue
         respuesta.raise_for_status()
         return respuesta.text
-    raise AssertionError("inalcanzable")  # el ultimo intento siempre retorna o revienta
+
+
+def _segundos_de_retry_after(valor) -> int:
+    if not valor:
+        return 0
+    try:
+        return int(valor)
+    except ValueError:
+        pass
+    try:
+        from datetime import datetime, timezone
+        fecha = parsedate_to_datetime(valor)
+        if fecha.tzinfo is None:
+            fecha = fecha.replace(tzinfo=timezone.utc)
+        return max(0, int((fecha - datetime.now(timezone.utc)).total_seconds()))
+    except (TypeError, ValueError):
+        return 0
 
 
 def fetch_sitemap_urls(url: str) -> list[str]:
@@ -84,21 +117,36 @@ def fetch_sitemap_urls(url: str) -> list[str]:
     return ubicaciones
 
 
-def normalize_source_url(url: str) -> str:
-    """Forma canonica para deduplicar: host sin 'www.', ruta decodificada
-    y en minusculas, sin slash final, sin query ni fragmento."""
+def _host_y_ruta(url: str) -> tuple[str, str]:
+    """host sin 'www.' en minusculas, y ruta decodificada tal cual (con
+    mayusculas y slash final intactos: quien llama decide si normaliza)."""
     partes = urlsplit(url.strip())
     host = partes.netloc.lower()
     if host.startswith("www."):
         host = host[4:]
-    ruta = unquote(partes.path).rstrip("/").lower()
-    return f"{host}{ruta}"
+    return host, unquote(partes.path)
+
+
+def normalize_source_url(url: str) -> str:
+    """Forma canonica para deduplicar: host sin 'www.', ruta decodificada
+    y en minusculas, sin slash final, sin query ni fragmento."""
+    host, ruta = _host_y_ruta(url)
+    return f"{host}{ruta.rstrip('/').lower()}"
 
 
 # --------------------------------------------------------------------------
 # Reglas de clasificacion. Wix (celebios.com) es el sitio institucional
 # viejo: casi todo son certificados de egresados y cohortes historicas.
 # Kajabi (celebios.online) es chico y se enumera completo a mano.
+#
+# Orden de prioridad en classify_source (de mas a menos especifico):
+#   1. home exacto
+#   2. paginas institucionales explicitas (contacto, historia, aula, aviso...)
+#   3. paginas de egresados/generaciones (prefijo egresados*/gen<anio>)
+#   4. paginas de inscripcion/convocatoria (formularios de admision)
+#   5. paginas de curso (vivo o historico, por palabra clave)
+#   6. residual: basura del editor -> 404; cualquier otra cosa -> perfil de
+#      egresado individual (nunca se expone el nombre de la persona)
 # --------------------------------------------------------------------------
 
 _KAJABI_MAP = {
@@ -106,63 +154,89 @@ _KAJABI_MAP = {
     "/home": ("home", "home", "/"),
     "/cursos": ("curso_historico", "catalogo", "/cursos"),
     "/store": ("curso_historico", "catalogo", "/cursos"),
-    "/nosotros": ("institucional", "nosotros", "/nosotros"),
-    "/about": ("institucional", "nosotros", "/nosotros"),
-    "/contact": ("institucional", "contacto", "/nosotros"),
+    "/nosotros": ("institucional", "historia", "/historia"),
+    "/about": ("institucional", "historia", "/historia"),
+    "/contact": ("institucional", "contacto", "/contacto"),
     "/test": ("sin_equivalente", "", ""),
-    "/nutricionfauna": ("curso_historico", "nutricion", "/cursos/nutricion-fauna-cautiverio"),
-    "/nutricion2024": ("curso_historico", "nutricion", "/cursos/nutricion-fauna-cautiverio"),
-    "/nutricion2025": ("curso_historico", "nutricion", "/cursos/nutricion-fauna-cautiverio"),
+    "/nutricionfauna": ("curso_historico", "nutricion", "/cursos#historico-nutricion"),
+    "/nutricion2024": ("curso_historico", "nutricion", "/cursos#historico-nutricion"),
+    "/nutricion2025": ("curso_historico", "nutricion", "/cursos#historico-nutricion"),
     "/lenguaje-y-comunicacion-de-los-gatos": ("curso_disponible", "gatos", "/curso-lenguaje-felino"),
     "/curso-lenguaje-felino": ("curso_disponible", "gatos", "/curso-lenguaje-felino"),
-    "/diplomado-rescate-rehabilitacion-fauna": ("curso_historico", "rehabilitacion", "/diplomado-rescate-rehabilitacion-fauna"),
-    "/curso-anestesia": ("curso_historico", "anestesia", "/cursos/anestesia-contencion-fauna"),
+    "/diplomado-rescate-rehabilitacion-fauna": ("curso_historico", "rehabilitacion", "/cursos#historico-rehabilitacion"),
+    "/curso-anestesia": ("curso_historico", "anestesia", "/cursos#historico-anestesia"),
 }
 
 _WIX_EXPLICITAS = {
-    "/nosotros": ("institucional", "nosotros", "/nosotros"),
-    "/contacto": ("institucional", "contacto", "/nosotros"),
-    # Sin pagina de privacidad todavia en el sitio nuevo: no se fabrica un
-    # destino. Queda 404 y marcada para revision manual (ver README).
-    "/aviso-de-privacidad": ("institucional", "aviso-privacidad", ""),
+    "/nosotros": ("institucional", "historia", "/historia"),
+    "/contacto": ("institucional", "contacto", "/contacto"),
+    "/aviso-de-privacidad": ("institucional", "aviso-privacidad", "/aviso-de-privacidad"),
     "/aula-virtual": ("institucional", "aula", "/aula"),
     "/cursos": ("curso_historico", "catalogo", "/cursos"),
-    # Mismo trato que /inscripcion*: formularios de admision sin curso propio.
-    "/formato-ingreso": ("curso_historico", "admision", "/cursos"),
+    "/formato-ingreso": ("institucional", "admision", "/admisiones"),
+    # Pagina de calendario/oferta vigente, no un formulario de admision ni un
+    # programa historico puntual: se queda en el catalogo vivo.
     "/programacion": ("curso_historico", "programacion", "/cursos"),
 }
 
-# (patron, destino, tema, categoria), probado en orden: el primero que haga
-# match gana. "felidos" es un diplomado historico sobre felidos silvestres
-# y domesticos, NO el curso vivo de Lenguaje y Comunicacion de los Gatos.
+# (patron, tema, categoria), probado en orden: el primero que haga match
+# gana. "felidos" es un diplomado historico sobre felidos silvestres y
+# domesticos, NO el curso vivo de Lenguaje y Comunicacion de los Gatos.
 _WIX_CURSOS = [
-    (r"gatos|felino|lenguaje-y-comunicacion", "/curso-lenguaje-felino", "gatos", "curso_disponible"),
-    (r"rehabilitacion|rescate", "/diplomado-rescate-rehabilitacion-fauna", "rehabilitacion", "curso_historico"),
-    (r"anestesia", "/cursos/anestesia-contencion-fauna", "anestesia", "curso_historico"),
-    (r"conductual", "/cursos/manejo-conductual-fauna", "conductual", "curso_historico"),
-    (r"nutri", "/cursos/nutricion-fauna-cautiverio", "nutricion", "curso_historico"),
-    (r"ortopedia|aves", "/cursos/ortopedia-aves", "ortopedia-aves", "curso_historico"),
-    (r"reptil", "/cursos/manejo-reptiles", "reptiles", "curso_historico"),
-    (r"auxilio", "/cursos/primeros-auxilios-fauna", "primeros-auxilios", "curso_historico"),
-    (r"felidos", "/cursos", "felidos", "curso_historico"),
-    (r"medicina-interna|medint", "/cursos", "medicina-interna", "curso_historico"),
-    (r"medicina-preventiva", "/cursos", "medicina-preventiva", "curso_historico"),
-    (r"bioetica", "/cursos", "bioetica", "curso_historico"),
-    (r"caballos", "/cursos", "imagenologia-caballos", "curso_historico"),
-    (r"imagen", "/cursos", "imagenologia", "curso_historico"),
-    (r"\bsig\d*\b|cartografia", "/cursos", "sig-cartografia", "curso_historico"),
-    (r"dato", "/cursos", "manejo-datos", "curso_historico"),
-    (r"impacto-ambiental", "/cursos", "impacto-ambiental", "curso_historico"),
-    (r"diagnostico-terapeutica", "/cursos", "diagnostico-terapeutica", "curso_historico"),
+    (r"gatos|felino|lenguaje-y-comunicacion", "gatos", "curso_disponible"),
+    (r"rehabilitacion|rescate", "rehabilitacion", "curso_historico"),
+    (r"anestesia", "anestesia", "curso_historico"),
+    (r"conductual", "conductual", "curso_historico"),
+    (r"nutri", "nutricion", "curso_historico"),
+    (r"ortopedia|aves", "ortopedia-aves", "curso_historico"),
+    (r"reptil", "reptiles", "curso_historico"),
+    (r"auxilio", "primeros-auxilios", "curso_historico"),
+    (r"felidos", "felidos", "curso_historico"),
+    (r"medicina-interna|medint", "medicina-interna", "curso_historico"),
+    (r"medicina-preventiva", "medicina-preventiva", "curso_historico"),
+    (r"bioetica", "bioetica", "curso_historico"),
+    (r"caballos", "imagenologia-caballos", "curso_historico"),
+    (r"imagen", "imagenologia", "curso_historico"),
+    (r"\bsig\d*\b|cartografia", "sig-cartografia", "curso_historico"),
+    (r"dato", "manejo-datos", "curso_historico"),
+    (r"impacto-ambiental", "impacto-ambiental", "curso_historico"),
+    (r"diagnostico-terapeutica", "diagnostico-terapeutica", "curso_historico"),
 ]
-_WIX_CURSOS = [(re.compile(patron), destino, tema, categoria)
-               for patron, destino, tema, categoria in _WIX_CURSOS]
+_WIX_CURSOS = [(re.compile(patron), tema, categoria)
+               for patron, tema, categoria in _WIX_CURSOS]
 
-# Certificados/cohortes historicas sin curso reconocible en la ruta: van al
-# catalogo, no a la raiz ni a un 404 (todavia son trafico de la academia).
-_WIX_PREFIJOS_GENERICOS = re.compile(r"^/(egresados|inscripcion|convoc|gen\d)")
+# Paginas de perfil/certificado de egresados: prefijo literal "egresados" o
+# "gen<anio>" (generacion). Van a /egresados, nunca a un 404 ni al catalogo:
+# son trafico real de exalumnos, no basura del editor.
+_WIX_PREFIJO_EGRESADOS = re.compile(r"^/(egresados|gen\d)")
 
-_REVISION_MANUAL_WIX = {"/aviso-de-privacidad"}
+# Formularios de inscripcion/convocatoria: intencion de admision, no
+# contenido de curso, aunque el slug mencione un curso especifico.
+_WIX_PREFIJO_ADMISION = re.compile(r"^/(inscripcion|convoc)")
+
+_WIX_DOCENTES = re.compile(r"docente|profesor|instructor")
+_WIX_PRACTICAS = re.compile(r"practica.*campo|campo.*practica|estacion.*campo")
+
+# Basura real del editor de Wix (paginas de andamiaje, nunca contenido):
+# nombres de plantilla sin editar, copias duplicadas, galerias vacias.
+_WIX_BASURA_EDITOR = re.compile(r"^/(blank|keeper|galeria-\d+|copia-de-.+)$")
+
+_ANIO_RE = re.compile(r"(19|20)\d{2}")
+
+
+def _fragmento_egresado(ruta: str) -> tuple[str, str]:
+    """topic_or_cohort y destino para una pagina de egresado: nunca incluye
+    el nombre de la persona. Prioriza la cohorte (si hay un anio en la URL)
+    sobre el tema del curso, y cae a /egresados sin ancla si no hay ninguna
+    evidencia confiable de ninguno de los dos."""
+    anio = _ANIO_RE.search(ruta)
+    if anio:
+        cohorte = anio.group(0)
+        return (f"cohorte-{cohorte}", f"/egresados#cohorte-{cohorte}")
+    for patron, tema, _categoria in _WIX_CURSOS:
+        if patron.search(ruta):
+            return (tema, f"/egresados#tema-{tema}")
+    return ("", "/egresados")
 
 
 def classify_source(path: str, host: str) -> tuple[str, str, str]:
@@ -187,12 +261,23 @@ def classify_source(path: str, host: str) -> tuple[str, str, str]:
         return ("home", "home", "/")
     if ruta in _WIX_EXPLICITAS:
         return _WIX_EXPLICITAS[ruta]
-    for patron, destino, tema, categoria in _WIX_CURSOS:
+    if _WIX_DOCENTES.search(ruta):
+        return ("institucional", "docentes", "/docentes")
+    if _WIX_PRACTICAS.search(ruta):
+        return ("institucional", "practicas-de-campo", "/practicas-de-campo")
+    if _WIX_PREFIJO_EGRESADOS.match(ruta):
+        tema, destino = _fragmento_egresado(ruta)
+        return ("egresado", tema, destino)
+    if _WIX_PREFIJO_ADMISION.match(ruta):
+        return ("institucional", "admision", "/admisiones")
+    for patron, tema, categoria in _WIX_CURSOS:
         if patron.search(ruta):
+            destino = "/curso-lenguaje-felino" if categoria == "curso_disponible" else f"/cursos#historico-{tema}"
             return (categoria, tema, destino)
-    if _WIX_PREFIJOS_GENERICOS.match(ruta):
-        return ("curso_historico", "cohorte-historica", "/cursos")
-    return ("sin_equivalente", "", "")
+    if _WIX_BASURA_EDITOR.match(ruta):
+        return ("sin_equivalente", "", "")
+    tema, destino = _fragmento_egresado(ruta)
+    return ("egresado", tema, destino)
 
 
 _PRIORIDAD_POR_CATEGORIA = {
@@ -200,6 +285,7 @@ _PRIORIDAD_POR_CATEGORIA = {
     "curso_disponible": "alta",
     "institucional": "media",
     "curso_historico": "media",
+    "egresado": "media",
     "sin_equivalente": "baja",
 }
 
@@ -209,13 +295,13 @@ def _status_code(destino: str) -> int:
 
 
 def _confianza(categoria: str, tema: str) -> str:
-    if categoria == "curso_historico" and tema == "cohorte-historica":
-        return "media"
+    if categoria == "egresado":
+        return "media" if tema else "baja"
     return "alta"
 
 
-def _revision_manual(ruta: str, host: str) -> bool:
-    return host == "celebios.com" and ruta in _REVISION_MANUAL_WIX
+def _revision_manual(confianza: str) -> bool:
+    return confianza == "baja"
 
 
 def build_inventory_rows(urls: list[str]) -> list[dict]:
@@ -229,15 +315,10 @@ def build_inventory_rows(urls: list[str]) -> list[dict]:
             continue
         vistas.add(clave)
 
-        partes = urlsplit(url.strip())
-        host = partes.netloc.lower()
-        if host.startswith("www."):
-            host = host[4:]
-        ruta = unquote(partes.path)
-        ruta_normalizada = ruta if (ruta == "" or ruta.startswith("/")) else f"/{ruta}"
-        ruta_normalizada = ruta_normalizada.lower() or "/"
+        host, ruta = _host_y_ruta(url)
 
         categoria, tema, destino = classify_source(ruta, host)
+        confianza = _confianza(categoria, tema)
         filas.append({
             "source_url": url.strip(),
             "destination_path": destino,
@@ -249,8 +330,8 @@ def build_inventory_rows(urls: list[str]) -> list[dict]:
             "position": "",
             "backlinks": "",
             "priority": _PRIORIDAD_POR_CATEGORIA[categoria],
-            "confidence": _confianza(categoria, tema),
-            "manual_review": "true" if _revision_manual(ruta_normalizada, host) else "false",
+            "confidence": confianza,
+            "manual_review": "true" if _revision_manual(confianza) else "false",
         })
     return filas
 
