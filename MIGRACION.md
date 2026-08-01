@@ -62,9 +62,42 @@ propia** — si revoca el acceso se pierde. Copiar a una cuenta de la academia.
 
 Es el curso de **Lenguaje y Comunicación de los Gatos** ($1,400).
 
-**Pendiente de confirmar:** si estos MP4 son el mismo corte que está montado en
-Kajabi o una versión previa sin editar. Se resuelve comparando la duración de
-un módulo en los dos lados.
+**RESUELTO (1-ago): los MP4 de Drive son las lecciones reales.** Ya no hace
+falta bajar 11 videos a mano de Kajabi.
+
+Se comparó la duración en Kajabi contra el peso del archivo en Drive, en dos
+módulos y en dos tipos de archivo distintos:
+
+| | Kajabi | Video | kbps | Audio | kbps |
+|---|---|---|---|---|---|
+| Módulo 1 | 50:24 | 100.7 MB | 266 | 30.1 MB | 80 |
+| Módulo 2 | 1:08:54 | 147.2 MB | 285 | 40.2 MB | 78 |
+
+Las cuatro tasas caen en la misma banda, y son exactamente las que produce una
+presentación narrada con diapositivas casi estáticas. Extrapolando el curso
+completo salen **dos estimaciones independientes que coinciden al 2%: 9.9 h por
+el video y 10.1 h por el audio.** No falta contenido.
+
+Lo único que no queda probado es que sean idénticos pixel por pixel; si hubo
+retoque, no fue de duración.
+
+### Estructura real del curso en Kajabi (producto 2149395985)
+
+**12 secciones, no 11.** Cada módulo es 1 lección de video + 1 quiz — por eso
+no hace falta tabla de módulos. Pero antes del Módulo 1 hay una sección
+**Introducción** con 4 piezas que **no están ni en Drive ni en el docx**:
+
+- Introducción al curso
+- Codigo de ética y conducta
+- Profesora
+- **Quiz** ← sus preguntas no vienen en `Quiz 1-11.docx`
+
+Esa sección hay que sacarla de Kajabi aparte. Es el único hueco de contenido
+que queda.
+
+**Y hay 21 alumnos (`Customers (21)`) que migrar.** Se exportan por
+`Contacts → Bulk Actions → Export`; el CSV llega por correo y el link expira a
+los 3 días. Para darlos de alta, Admin API, no `INSERT` (ver abajo).
 
 **Transcripción con Whisper: no ahora**, no es parte de migrar. Cuando toque,
 usar los M4A (358 MB) y no los MP4 (1.23 GB) — Whisper solo lee el audio.
@@ -190,8 +223,10 @@ el docx cambia y algo se rompe, el script revienta al parsear, no en producción
 Ya están en la base: 11 lecciones, 66 preguntas, 66 claves. **Cotejado, no
 asumido:** la secuencia completa de respuestas y los md5 de enunciados
 (`459cacc…`) y de opciones (`62e0084…`) coinciden byte por byte con el JSON
-derivado del docx. Los títulos de lección son `Módulo N` — marcador honesto,
-el título real está solo en Kajabi.
+derivado del docx. **Los 11 títulos reales ya están puestos** (tomados de Kajabi el 1-ago), y
+calzan uno a uno con los exámenes: el Módulo 6 "Marcaje y territorialidad" con
+el quiz de feromonas, el 7 "Vocalizaciones y tacto" con el del ronroneo y el
+cacareo. Eso confirma que el docx corresponde a estos módulos y en este orden.
 
 ---
 
