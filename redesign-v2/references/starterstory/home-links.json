@@ -1,0 +1,366 @@
+[
+ {
+  "t": "S Starter Story",
+  "h": "/"
+ },
+ {
+  "t": "Home",
+  "h": "/home"
+ },
+ {
+  "t": "All Ideas",
+  "h": "/data"
+ },
+ {
+  "t": "SaaS Ideas",
+  "h": "/data/micro-saas-ideas"
+ },
+ {
+  "t": "App Ideas",
+  "h": "/data/ios-app-ideas"
+ },
+ {
+  "t": "AI Ideas",
+  "h": "/data/gpt-wrapper-ideas"
+ },
+ {
+  "t": "More Ideas",
+  "h": "/ideas"
+ },
+ {
+  "t": "All Case Studies",
+  "h": "/explore"
+ },
+ {
+  "t": "Saved",
+  "h": "/saved"
+ },
+ {
+  "t": "Random",
+  "h": "/random"
+ },
+ {
+  "t": "All Episodes",
+  "h": "/episodes"
+ },
+ {
+  "t": "Must Watch",
+  "h": "/episodes?sort=most_popular"
+ },
+ {
+  "t": "Academy",
+  "h": "/academy"
+ },
+ {
+  "t": "Build",
+  "h": "https://build.starterstory.com"
+ },
+ {
+  "t": "Browse the data Thousands of real businesses, filterable by ",
+  "h": "/data"
+ },
+ {
+  "t": "Explore case studies Founder stories, broken down step by st",
+  "h": "/explore"
+ },
+ {
+  "t": "Watch episodes Video interviews with real founders.",
+  "h": "/episodes"
+ },
+ {
+  "t": "All episodes →",
+  "h": "/episodes"
+ },
+ {
+  "t": "FEATURED · JUL 20, 2025 I make $40K/month with this one webs",
+  "h": "/angus"
+ },
+ {
+  "t": "FEATURED · OCT 04, 2025 I Built a $1M SaaS Using YouTube",
+  "h": "/vasco"
+ },
+ {
+  "t": "FEATURED · MAR 23, 2026 I Make $250K/Month From 13 Businesse",
+  "h": "/jacky"
+ },
+ {
+  "t": "632 IDEAS Micro-SaaS $50K /mo median",
+  "h": "/data/micro-saas-ideas"
+ },
+ {
+  "t": "901 IDEAS Solopreneur $20K /mo median",
+  "h": "/data/solopreneur-ideas"
+ },
+ {
+  "t": "311 IDEAS No-code $30K /mo median",
+  "h": "/data/no-code-ideas"
+ },
+ {
+  "t": "570 IDEAS Vibe Coding $20K /mo median",
+  "h": "/data/vibe-coding-ideas"
+ },
+ {
+  "t": "452 IDEAS Digital Products $20K /mo median",
+  "h": "/data/digital-product-ideas"
+ },
+ {
+  "t": "144 IDEAS GPT Wrappers $30K /mo median",
+  "h": "/data/gpt-wrapper-ideas"
+ },
+ {
+  "t": "57 IDEAS One-page Sites $20K /mo median",
+  "h": "/data/one-page-websites"
+ },
+ {
+  "t": "229 IDEAS Solo Developer $40K /mo median",
+  "h": "/data/solo-developer-ideas"
+ },
+ {
+  "t": "Browse all →",
+  "h": "/data"
+ },
+ {
+  "t": "Typefully $100K/mo AI-powered writing and scheduling tool fo",
+  "h": "/businesses/typefully"
+ },
+ {
+  "t": "Senja $80K/mo Micro-SaaS for collecting and sharing testimon",
+  "h": "/businesses/senja"
+ },
+ {
+  "t": "Nothing Much Happens $40K/mo Soothing bedtime stories for ad",
+  "h": "/businesses/nothing-much-happens"
+ },
+ {
+  "t": "Podscan $1K/mo Podcast transcription and analysis platform",
+  "h": "/businesses/podscan"
+ },
+ {
+  "t": "Valkre Solutions $300K/mo Specialized SaaS for effective key",
+  "h": "/businesses/valkre-solutions"
+ },
+ {
+  "t": "BetterPic $300K/mo AI tool for creating professional headsho",
+  "h": "/businesses/betterpic"
+ },
+ {
+  "t": "Lemlist $3M/mo Sales automation platform for personalized em",
+  "h": "/businesses/lemlist"
+ },
+ {
+  "t": "She Knows SEO $100K/mo SEO training and resources for blogge",
+  "h": "/businesses/she-knows-seo"
+ },
+ {
+  "t": "Design Buffs $10K/mo Design subscription service for B2B mar",
+  "h": "/businesses/design-buffs"
+ },
+ {
+  "t": "See all →",
+  "h": "/explore"
+ },
+ {
+  "t": "EDUCATION I Teach AI to Senior IT Professionals and Make $6K",
+  "h": "/stories/ai-ml-etc"
+ },
+ {
+  "t": "C SAAS My Niche Appointment Software Makes $5K/Month $5K/mo ",
+  "h": "/stories/calday"
+ },
+ {
+  "t": "HIRING We Built A $20K/Month AI Resume App $30K/mo · about 1",
+  "h": "/stories/sheets-resume"
+ },
+ {
+  "t": "MARKETING How I Built a $5M/Year Social Media Firm $500K/mo ",
+  "h": "/stories/1-leading-consumer-and-personal-brand-social-media-firm"
+ },
+ {
+  "t": "SAAS My Weekend AI Project Hit $16K/Month In Just 3 Months $",
+  "h": "/stories/parakeetai"
+ },
+ {
+  "t": "SAAS I Bought a Data Scraping Business and Grew It to $1.7M/",
+  "h": "/stories/mrscraper"
+ },
+ {
+  "t": "TECHNOLOGY How I Started and Got Customers For My Kubernetes",
+  "h": "/stories/syself"
+ },
+ {
+  "t": "SAAS We Built A $30K/Month Tax Saving App $100K/mo · over 1 ",
+  "h": "/stories/your-passport-to-tax-savings"
+ },
+ {
+  "t": "E SAAS I Make $6K/Mo Teaching People How to Use Excel $4K/mo",
+  "h": "/stories/excel-exercises-fun-hands-on-excel-practice-problems"
+ },
+ {
+  "t": "FINANCE How My Startup Hit $4M in 18 Months $60K/mo · over 1",
+  "h": "/stories/monevate-monetization-and-pricing-strategy-consulting"
+ },
+ {
+  "t": "All →",
+  "h": "/data"
+ },
+ {
+  "t": "Side Project Ideas You Can Build With Your 9-5",
+  "h": "/data/side-project-ideas-you-can-build-with-your-9-5"
+ },
+ {
+  "t": "Solo Devs Making $10K+ Per Month",
+  "h": "/data/solo-devs-earning-10k-20k-month"
+ },
+ {
+  "t": "Productized Services",
+  "h": "/data/productized-services"
+ },
+ {
+  "t": "Weird But Profitable Ideas",
+  "h": "/data/weird-but-profitable-ideas"
+ },
+ {
+  "t": "M2M: By Makers, For Makers",
+  "h": "/data/m2m-by-makers-for-makers"
+ },
+ {
+  "t": "Automation Ideas",
+  "h": "/data/automation-ideas"
+ },
+ {
+  "t": "Businesses Launched with a Website Builder",
+  "h": "/data/launched-with-website-builder"
+ },
+ {
+  "t": "Apps and Products for Travelers & Digital Nomads",
+  "h": "/data/travel-and-digital-nomad-ideas"
+ },
+ {
+  "t": "Apps So Simple Yet So Profitable",
+  "h": "/data/apps-so-simple"
+ },
+ {
+  "t": "No Audience Required",
+  "h": "/data/no-audience-required"
+ },
+ {
+  "t": "Niche Sites",
+  "h": "/data/niche-sites"
+ },
+ {
+  "t": "Marketplaces",
+  "h": "/data/marketplaces"
+ },
+ {
+  "t": "Niche Blog Ideas",
+  "h": "/data/niche-blog-ideas"
+ },
+ {
+  "t": "Freemium and Open Source Ideas",
+  "h": "/data/freemium-and-open-source-ideas"
+ },
+ {
+  "t": "Ideas You Can Build Today with No-Code Tools",
+  "h": "/data/ideas-you-can-build-today-with-no-code-tools"
+ },
+ {
+  "t": "How Million-Dollar Ideas Are Found",
+  "h": "/data/how-million-dollar-ideas-are-found"
+ },
+ {
+  "t": "The Most Popular Stories of all Time",
+  "h": "/data/greatest-hits"
+ },
+ {
+  "t": "Weekend Projects",
+  "h": "/data/weekend-projects"
+ },
+ {
+  "t": "App Ideas for Solopreneurs",
+  "h": "/data/app-ideas-for-solopreneurs"
+ },
+ {
+  "t": "Big Acquisitions",
+  "h": "/data/big-acquisitions"
+ },
+ {
+  "t": "iOS App Ideas",
+  "h": "/data/ios-app-ideas"
+ },
+ {
+  "t": "Ideas Built With Bubble",
+  "h": "/data/bubble-ideas"
+ },
+ {
+  "t": "$1M APIs",
+  "h": "/data/1m-apis"
+ },
+ {
+  "t": "Google Search Revenue Data Control Group",
+  "h": "/data/google-search-revenue-control-group"
+ },
+ {
+  "t": "Pdf bank statement ...",
+  "h": "/data"
+ },
+ {
+  "t": "Crm marketing attri...",
+  "h": "/data"
+ },
+ {
+  "t": "Social media growth...",
+  "h": "/data"
+ },
+ {
+  "t": "Data import tool fo...",
+  "h": "/data"
+ },
+ {
+  "t": "S Starter Story",
+  "h": "https://www.starterstory.com/"
+ },
+ {
+  "t": "About",
+  "h": "https://www.starterstory.com/about"
+ },
+ {
+  "t": "Support",
+  "h": "https://www.starterstory.com/support"
+ },
+ {
+  "t": "Privacy",
+  "h": "https://legal.hubspot.com/privacy-policy"
+ },
+ {
+  "t": "Website Terms of Use",
+  "h": "https://legal.hubspot.com/website-terms-of-use"
+ },
+ {
+  "t": "",
+  "h": "https://x.com/starter_story"
+ },
+ {
+  "t": "",
+  "h": "https://www.youtube.com/@starterstory"
+ },
+ {
+  "t": "",
+  "h": "https://www.tiktok.com/@starterstory"
+ },
+ {
+  "t": "",
+  "h": "https://www.instagram.com/starter_story"
+ },
+ {
+  "t": "My Account",
+  "h": "/account"
+ },
+ {
+  "t": "My Profile",
+  "h": "/myprofile"
+ },
+ {
+  "t": "My Subscription",
+  "h": "/d/subscription"
+ }
+]

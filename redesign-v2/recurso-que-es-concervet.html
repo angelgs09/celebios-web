@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Que es CONCERVET y por que importa certificarse | CELEBIOS</title>
+<meta name="description" content="Que es CONCERVET: el consejo de certificacion de medicos veterinarios en Mexico, como certifica y por que un curso avalado da validez a tu formacion.">
+<link rel="canonical" href="https://www.celebios.com/recursos/que-es-concervet">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="CELEBIOS">
+<meta property="og:title" content="Que es CONCERVET y por que importa certificarse | CELEBIOS">
+<meta property="og:description" content="Que es CONCERVET, como funciona la certificacion de MVZ en Mexico y por que un curso avalado da respaldo real a tu formacion.">
+<meta property="og:url" content="https://www.celebios.com/recursos/que-es-concervet">
+<meta property="og:image" content="https://www.celebios.com/brand/logo-white.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Que es CONCERVET y por que importa certificarse | CELEBIOS">
+<meta name="twitter:description" content="Que es CONCERVET, como certifica a los MVZ en Mexico y por que un curso avalado da validez a tu formacion.">
+<meta name="twitter:image" content="https://www.celebios.com/brand/logo-white.png">
+<meta name="theme-color" content="#14294F">
+<link rel="icon" href="brand/logo-white.png" type="image/png">
+<link rel="apple-touch-icon" href="brand/logo-white.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+ /* ============================================================
+ CELEBIOS - Direccion "LAMINA VIVA"
+ Atlas naturalista latinoamericano. Alternancia editorial
+ placa-oscura (Charca) <-> pliego-claro (Hueso).
+ ============================================================ */
+
+ :root{
+ /* === PALETA DE MARCA (colores del logo CELEBIOS) === */
+ --charca: #14294F; /* marino canvas (marca) */
+ --charca-2: #1E3768; /* panel marino */
+ --ceibo: #2FA8C9; /* CIAN del logo = disponible + accion */
+ --ceibo-deep: #1B6076;
+ --coral: #2FA8C9; /* signal/accion (cian): frames, CTAs, focus */
+ --cobalto: #7A5797; /* MORADO del logo = proxima edicion */
+ --sage: #6FB07A; /* VERDE-SALVIA del logo = acento de vida */
+ --hueso: #EEF2EC; /* texto sobre marino / fondo claro */
+ --hueso-2: #E1E8E1;
+ --lodo: #4D5F7C; /* texto secundario sobre claro (navy-gray, AA) */
+ --lodo-line: #93A6AC; /* bordes/filetes atenuados (no texto) */
+ --lodo-soft: #9DB2C2; /* texto secundario sobre marino (AA) */
+
+ /* Tokens semanticos */
+ --paper: var(--hueso);
+ --ink: #16294C; /* marino ink */
+ --ink-soft: #45587A;
+
+ /* Espaciado (escala 4) */
+ --s1: .25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem;
+ --s6:2rem; --s7:3rem; --s8:4rem; --s9:6rem; --s10:8rem;
+
+ /* Radios y filetes */
+ --r-plate: 6px;
+ --r-pill: 999px;
+ --frame: 2px;
+
+ --shadow-plate: 0 1px 0 rgba(11,43,46,.04), 0 18px 40px -28px rgba(11,43,46,.55);
+ --shadow-lift: 0 2px 0 rgba(11,43,46,.06), 0 34px 64px -30px rgba(11,43,46,.6);
+
+ --maxw: 1240px;
+ --ease: cubic-bezier(.2,.7,.2,1);
+ }
+
+ *,*::before,*::after{ box-sizing:border-box; }
+
+ html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+ @media (prefers-reduced-motion: reduce){
+ html{ scroll-behavior:auto; }
+ *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+ }
+
+ body{
+ margin:0;
+ font-family:"Instrument Sans", system-ui, sans-serif;
+ color:var(--ink);
+ background:var(--paper);
+ line-height:1.5;
+ font-weight:400;
+ -webkit-font-smoothing:antialiased;
+ text-rendering:optimizeLegibility;
+ }
+
+ /* Tipos utilitarios */
+ .display{
+ font-family:"Bricolage Grotesque", sans-serif;
+ font-weight:800;
+ letter-spacing:-.02em;
+ line-height:.95;
+ }
+ .mono{
+ font-family:"Space Grotesk", monospace;
+ text-transform:uppercase;
+ letter-spacing:.18em;
+ font-weight:500;
+ }
+ .mono-soft{ font-family:"Space Grotesk", monospace; letter-spacing:.06em; }
+
+ a{ color:inherit; text-decoration:none; }
+ img,svg{ display:block; max-width:100%; }
+
+ :focus-visible{
+ outline:3px solid var(--coral);
+ outline-offset:3px;
+ border-radius:3px;
+ }
+ .on-dark :focus-visible{ outline-color:var(--ceibo); }
+
+ .wrap{ width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:clamp(1.1rem, 4vw, 3rem); }
+
+ /* ====== Superficies ====== */
+ .surface-dark{
+ background:
+ radial-gradient(120% 120% at 85% -10%, rgba(47,168,201,.14), transparent 55%),
+ radial-gradient(90% 90% at 0% 110%, rgba(122,87,151,.12), transparent 50%),
+ var(--charca);
+ color:var(--hueso);
+ }
+ .surface-light{ background:var(--paper); color:var(--ink); }
+
+ /* ============================================================
+ HEADER
+ ============================================================ */
+ header.site{
+ position:sticky; top:0; z-index:50;
+ background:rgba(20,41,79,.92);
+ backdrop-filter:saturate(140%) blur(10px);
+ border-bottom:1px solid rgba(238,242,236,.12);
+ color:var(--hueso);
+ }
+ .nav{
+ display:flex; align-items:center; gap:var(--s5);
+ height:68px;
+ }
+ .wordmark{
+ display:flex; align-items:center; gap:.6rem;
+ font-family:"Bricolage Grotesque", sans-serif;
+ font-weight:800; letter-spacing:-.01em; font-size:1.18rem;
+ color:var(--hueso);
+ }
+ .wordmark .glyph{ width:30px; height:30px; flex:0 0 auto; }
+ .wordmark .glyph svg{ width:100%; height:100%; }
+ .brandlogo{ height:38px; width:auto; display:block; }
+ .foot-brand .brandlogo{ height:46px; margin-bottom:var(--s4); }
+ .nav-links{
+ display:flex; align-items:center; gap:.2rem;
+ margin-left:auto;
+ }
+ .nav-links a{
+ font-size:.86rem; font-weight:500;
+ padding:.5rem .8rem; border-radius:var(--r-pill);
+ color:rgba(238,242,236,.82);
+ transition:color .2s var(--ease), background .2s var(--ease);
+ }
+ .nav-links a:hover{ color:var(--hueso); background:rgba(238,242,236,.08); }
+ .nav-links a.is-active{ color:var(--hueso); background:rgba(238,242,236,.12); }
+ .nav-links a[aria-current="page"]{ color:var(--hueso); background:rgba(47,168,201,.16); }
+ .nav-cta{
+ display:inline-flex; align-items:center; gap:.45rem;
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.72rem; font-weight:600;
+ padding:.62rem 1.05rem; border-radius:var(--r-pill);
+ background:var(--coral); color:#0C2447;
+ border:1px solid transparent;
+ transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+ box-shadow:0 8px 22px -12px rgba(47,168,201,.9);
+ }
+ .nav-cta:hover{ transform:translateY(-1px); background:#3FB8D8; box-shadow:0 12px 26px -12px rgba(47,168,201,1); }
+
+ .menu-btn{
+ display:none; margin-left:auto;
+ background:transparent; border:1px solid rgba(238,242,236,.25);
+ color:var(--hueso); width:42px; height:42px; border-radius:10px;
+ cursor:pointer;
+ }
+ .menu-btn svg{ width:20px; height:20px; margin:auto; }
+
+ @media (max-width: 880px){
+ .nav-links{
+ position:absolute; top:68px; left:0; right:0;
+ flex-direction:column; align-items:stretch; gap:.1rem;
+ background:var(--charca); padding:var(--s4) clamp(1.1rem,4vw,3rem) var(--s5);
+ border-bottom:1px solid rgba(238,242,236,.12);
+ margin-left:0;
+ display:none;
+ }
+ .nav-links.open{ display:flex; }
+ .nav-links a{ padding:.8rem .6rem; font-size:1rem; }
+ .nav-cta{ justify-content:center; padding:.8rem 1rem; font-size:.78rem; }
+ .menu-btn{ display:flex; }
+ }
+
+ /* ============================================================
+ HERO DE ARTICULO (placa oscura)
+ ============================================================ */
+ .art-hero{ position:relative; overflow:hidden; padding-block:clamp(2.8rem, 7vw, 5rem); }
+ .art-hero .wrap{ max-width:880px; }
+ .art-kicker{
+ display:inline-flex; align-items:center; gap:.65rem;
+ color:var(--ceibo); font-size:.72rem;
+ margin-bottom:var(--s5);
+ }
+ .art-kicker .rule{ width:46px; height:1px; background:linear-gradient(90deg,var(--ceibo),transparent); }
+ .art-hero h1{
+ font-size:clamp(2.1rem, 5.2vw, 3.5rem);
+ margin:0 0 var(--s5);
+ max-width:20ch;
+ }
+ .art-hero h1 .accent{ color:var(--sage); }
+ .art-meta{
+ display:flex; flex-wrap:wrap; align-items:center; gap:.55rem;
+ font-family:"Space Grotesk", monospace; letter-spacing:.04em;
+ font-size:.8rem; color:var(--lodo-soft);
+ }
+ .art-meta .dot{ width:6px; height:6px; border-radius:50%; background:var(--sage); flex:0 0 auto; }
+ .art-meta .by{ color:var(--hueso); }
+ .art-meta .sep{ color:rgba(238,242,236,.3); }
+
+ /* ============================================================
+ CUERPO DE LECTURA (columna centrada)
+ ============================================================ */
+ .article-body{ padding-block:clamp(2.6rem, 6vw, 4.5rem); }
+ .reading{ max-width:72ch; margin-inline:auto; }
+ .reading > .lead{
+ font-size:clamp(1.1rem, 1.7vw, 1.28rem);
+ line-height:1.6; color:var(--ink);
+ font-weight:500;
+ margin:0 0 var(--s6);
+ }
+ .reading p{ font-size:1.04rem; line-height:1.72; color:var(--ink-soft); margin:0 0 var(--s5); }
+ .reading p strong{ color:var(--ink); font-weight:600; }
+ .reading p a, .reading li a{ color:var(--ceibo-deep); text-decoration:underline; text-underline-offset:3px; }
+ .reading p a:hover, .reading li a:hover{ color:var(--ceibo); }
+ .reading h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em;
+ font-size:clamp(1.5rem, 3vw, 2rem); line-height:1.08;
+ color:var(--ink);
+ margin:var(--s8) 0 var(--s4);
+ scroll-margin-top:90px;
+ }
+ .reading h3{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.015em;
+ font-size:clamp(1.18rem, 2.2vw, 1.4rem); line-height:1.12;
+ color:var(--ink);
+ margin:var(--s7) 0 var(--s3);
+ display:flex; align-items:baseline; gap:.7rem;
+ scroll-margin-top:90px;
+ }
+ .reading h3 .signo-no{
+ font-family:"Space Grotesk", monospace; letter-spacing:.04em;
+ font-size:.9rem; font-weight:600; color:var(--ceibo);
+ flex:0 0 auto;
+ }
+ .reading ul, .reading ol{ margin:0 0 var(--s5); padding-left:0; list-style:none; }
+ .reading ul li{
+ position:relative; padding-left:1.6rem; margin-bottom:.7rem;
+ font-size:1.02rem; line-height:1.65; color:var(--ink-soft);
+ }
+ .reading ul li::before{
+ content:""; position:absolute; left:.1rem; top:.62em;
+ width:.5rem; height:.5rem; border-radius:50%;
+ background:var(--ceibo);
+ }
+ .reading ol{ counter-reset:paso; }
+ .reading ol li{
+ position:relative; padding-left:2.2rem; margin-bottom:.7rem;
+ font-size:1.02rem; line-height:1.65; color:var(--ink-soft);
+ counter-increment:paso;
+ }
+ .reading ol li::before{
+ content:counter(paso);
+ position:absolute; left:0; top:.05em;
+ font-family:"Space Grotesk", monospace; font-weight:600;
+ font-size:.82rem; color:var(--ceibo);
+ width:1.5rem; height:1.5rem; border:1.5px solid var(--ceibo); border-radius:50%;
+ display:inline-flex; align-items:center; justify-content:center;
+ }
+ .reading ul li strong, .reading ol li strong{ color:var(--ink); font-weight:600; }
+
+ /* callout / nota destacada */
+ .callout{
+ background:#fff; border:1px solid var(--hueso-2); border-left:3px solid var(--ceibo);
+ border-radius:var(--r-plate); box-shadow:var(--shadow-plate);
+ padding:var(--s5); margin:var(--s6) 0;
+ }
+ .callout .c-k{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.66rem; font-weight:600; color:var(--ceibo);
+ display:block; margin-bottom:.5rem;
+ }
+ .callout p{ margin:0; font-size:.98rem; color:var(--ink-soft); line-height:1.65; }
+ .callout p a{ color:var(--ceibo-deep); text-decoration:underline; text-underline-offset:3px; }
+ .callout.warn{ border-left-color:var(--cobalto); }
+ .callout.warn .c-k{ color:var(--cobalto); }
+
+ /* tabla de lectura */
+ .table-wrap{ overflow-x:auto; margin:var(--s6) 0; border:1px solid var(--hueso-2); border-radius:var(--r-plate); box-shadow:var(--shadow-plate); }
+ table.read-table{ width:100%; border-collapse:collapse; background:#fff; font-size:.95rem; min-width:460px; }
+ table.read-table caption{ text-align:left; padding:var(--s4) var(--s5) 0; font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.12em; font-size:.66rem; color:var(--lodo); }
+ table.read-table th, table.read-table td{ text-align:left; padding:.85rem var(--s5); border-bottom:1px solid var(--hueso-2); vertical-align:top; line-height:1.5; }
+ table.read-table thead th{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.08em;
+ font-size:.7rem; color:var(--lodo); font-weight:600;
+ background:rgba(47,168,201,.06);
+ }
+ table.read-table td{ color:var(--ink-soft); }
+ table.read-table td strong{ color:var(--ink); font-weight:600; }
+ table.read-table tr:last-child td{ border-bottom:none; }
+
+ /* ============================================================
+ BLOQUE CTA AL CURSO
+ ============================================================ */
+ .cta-course{ padding-block:clamp(2.4rem, 5vw, 4rem); }
+ .cta-card{
+ position:relative;
+ display:grid; grid-template-columns: 1.2fr .8fr; gap:clamp(1.6rem,4vw,3rem);
+ align-items:center;
+ border-radius:var(--r-plate);
+ background:linear-gradient(155deg, rgba(47,168,201,.16), rgba(122,87,151,.12) 70%, rgba(11,43,46,.3));
+ border:1px solid rgba(238,242,236,.16);
+ box-shadow:var(--shadow-plate);
+ padding:clamp(1.6rem,4vw,2.8rem);
+ }
+ .cta-card::after{
+ content:""; position:absolute; inset:16px;
+ border:var(--frame) solid var(--coral); border-radius:5px; pointer-events:none;
+ }
+ .cta-card .cc-copy{ position:relative; z-index:2; }
+ .cta-card .cc-kicker{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.16em;
+ font-size:.66rem; font-weight:600; color:var(--ceibo);
+ display:block; margin-bottom:var(--s3);
+ }
+ .cta-card h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em;
+ font-size:clamp(1.5rem,3vw,2.1rem); line-height:1.04; margin:0 0 var(--s3);
+ color:var(--hueso); max-width:22ch;
+ }
+ .cta-card p{ color:rgba(238,242,236,.82); margin:0; max-width:46ch; line-height:1.6; }
+ .cta-card .cc-action{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:flex-start; gap:var(--s4); }
+ .cta-card .cc-price{ font-family:"Space Grotesk", monospace; }
+ .cta-card .cc-price .from{ font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(238,242,236,.86); display:block; }
+ .cta-card .cc-price .val{ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em; font-size:clamp(2rem,4vw,2.8rem); color:var(--ceibo); line-height:1; }
+ .btn{
+ display:inline-flex; align-items:center; gap:.5rem;
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.13em;
+ font-size:.76rem; font-weight:600;
+ padding:.92rem 1.4rem; border-radius:var(--r-pill);
+ cursor:pointer; border:1px solid transparent;
+ transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
+ }
+ .btn-primary{ background:var(--coral); color:#0C2447; box-shadow:0 14px 30px -14px rgba(47,168,201,.95); }
+ .btn-primary:hover{ transform:translateY(-2px); background:#3FB8D8; box-shadow:0 20px 38px -16px rgba(47,168,201,1); }
+ .cta-card .cc-note{ font-size:.72rem; color:rgba(238,242,236,.8); font-family:"Space Grotesk", monospace; letter-spacing:.05em; }
+ @media (max-width:760px){ .cta-card{ grid-template-columns:1fr; } }
+
+ /* ============================================================
+ SECCIONES CLARAS + ARTICULOS RELACIONADOS
+ ============================================================ */
+ .sec{ padding-block:clamp(2.6rem, 5vw, 4.2rem); }
+ .sec-kicker{ color:var(--sage); font-size:.72rem; margin-bottom:var(--s3); display:block; }
+ .sec-head h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em;
+ font-size:clamp(1.5rem, 3vw, 2.2rem); margin:0 0 var(--s7); color:var(--ink);
+ }
+
+ .grid-rel{
+ display:grid; grid-template-columns: repeat(3, 1fr);
+ gap:clamp(1rem, 2vw, 1.6rem);
+ }
+ @media (max-width:820px){ .grid-rel{ grid-template-columns:repeat(2,1fr); } }
+ @media (max-width:520px){ .grid-rel{ grid-template-columns:1fr; } }
+
+ .lamina{
+ position:relative; display:flex; flex-direction:column;
+ background:#fff;
+ border:1px solid var(--hueso-2);
+ border-radius:var(--r-plate);
+ padding:var(--s5);
+ box-shadow:var(--shadow-plate);
+ transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+ }
+ .lamina-top{
+ display:flex; align-items:center; justify-content:space-between;
+ margin-bottom:var(--s4);
+ }
+ .lam-no{ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.18em; font-size:.66rem; color:var(--lodo); }
+ .pill{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.6rem; font-weight:600;
+ padding:.3rem .6rem; border-radius:var(--r-pill);
+ white-space:nowrap; line-height:1;
+ }
+ .pill-disp{ background:var(--ceibo); color:#0C2447; }
+ .pill-prox{ background:transparent; color:var(--cobalto); border:1px solid var(--cobalto); }
+ .lamina h3{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.015em;
+ font-size:1.1rem; line-height:1.12; margin:0 0 .55rem;
+ color:var(--ink);
+ }
+ .lamina p.lam-dek{ margin:0 0 var(--s4); color:var(--ink-soft); font-size:.92rem; line-height:1.5; }
+ .lam-foot{
+ margin-top:auto; padding-top:var(--s4);
+ display:flex; align-items:center; justify-content:space-between; gap:.6rem;
+ border-top:1px solid var(--hueso-2);
+ }
+ .lam-state{ font-size:.66rem; letter-spacing:.04em; color:var(--lodo); white-space:nowrap; font-family:"Space Grotesk", monospace; }
+ .ccta{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.12em;
+ font-size:.66rem; font-weight:600;
+ padding:.55rem .85rem; border-radius:var(--r-pill);
+ border:1px solid; cursor:pointer; white-space:nowrap;
+ transition:transform .2s var(--ease), background .2s var(--ease), color .2s var(--ease), box-shadow .2s var(--ease);
+ }
+ .ccta-disp{ background:var(--ceibo); border-color:var(--ceibo); color:#0C2447; }
+ .ccta-disp:hover{ background:var(--ceibo-deep); border-color:var(--ceibo-deep); color:#fff; transform:translateY(-1px); }
+ .ccta-prox{ background:transparent; border-color:var(--cobalto); color:var(--cobalto); }
+ .ccta-prox:hover{ background:var(--cobalto); color:#fff; transform:translateY(-1px); }
+ .lamina.is-disp:hover{ transform:translateY(-6px); box-shadow:var(--shadow-lift); border-color:var(--ceibo); }
+ .lamina.is-prox:hover{ transform:translateY(-6px); box-shadow:var(--shadow-lift); border-color:var(--cobalto); }
+
+ /* ============================================================
+ FOOTER
+ ============================================================ */
+ footer.site{ padding-block:clamp(3rem,6vw,4.5rem) var(--s7); border-top:1px solid rgba(238,242,236,.1); }
+ .foot-grid{ display:flex; flex-wrap:wrap; gap:var(--s7); justify-content:space-between; align-items:flex-start; }
+ .foot-brand .wordmark{ font-size:1.4rem; margin-bottom:var(--s4); }
+ .foot-brand p{ color:var(--lodo-soft); max-width:40ch; font-size:.9rem; margin:0 0 var(--s5); }
+ .foot-tag{ display:inline-block; color:var(--ceibo); font-size:.72rem; border-left:2px solid var(--coral); padding-left:.8rem; }
+ .foot-contact{ display:flex; flex-direction:column; gap:var(--s3); }
+ .foot-contact .ck{ font-size:.64rem; color:var(--lodo); margin-bottom:.2rem; }
+ .foot-contact a, .foot-contact span{ color:var(--hueso); font-size:.92rem; }
+ .foot-contact a:hover{ color:var(--ceibo); }
+ .foot-rule{ margin-top:var(--s7); padding-top:var(--s5); border-top:1px solid rgba(238,242,236,.1);
+ display:flex; flex-wrap:wrap; gap:var(--s4); justify-content:space-between; align-items:center; }
+ .foot-rule small{ color:var(--lodo); font-size:.7rem; }
+ .foot-meta{ font-family:"Space Grotesk", monospace; letter-spacing:.14em; text-transform:uppercase; font-size:.62rem; color:var(--lodo); }
+</style>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+ {
+ "@type": "EducationalOrganization",
+ "@id": "https://www.celebios.com/#org",
+ "name": "CELEBIOS",
+ "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+ "url": "https://www.celebios.com",
+ "logo": "https://www.celebios.com/brand/logo-white.png",
+ "foundingDate": "2010",
+ "areaServed": ["MX", "LATAM"],
+ "sameAs": ["https://instagram.com/celebios_edu"]
+ },
+ {
+ "@type": "BlogPosting",
+ "headline": "Que es CONCERVET y por que importa la certificacion",
+ "description": "Que es CONCERVET, el consejo de certificacion de medicos veterinarios zootecnistas en Mexico, como funciona la certificacion y por que un curso avalado da validez a tu formacion.",
+ "url": "https://www.celebios.com/recursos/que-es-concervet",
+ "mainEntityOfPage": "https://www.celebios.com/recursos/que-es-concervet",
+ "inLanguage": "es",
+ "image": "https://www.celebios.com/brand/logo-white.png",
+ "author": { "@id": "https://www.celebios.com/#org" },
+ "publisher": { "@id": "https://www.celebios.com/#org" },
+ "about": [
+ { "@type": "Thing", "name": "CONCERVET" },
+ { "@type": "Thing", "name": "Certificacion de medicos veterinarios zootecnistas" },
+ { "@type": "Thing", "name": "Educacion continua veterinaria" }
+ ]
+ },
+ {
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+ { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.celebios.com/" },
+ { "@type": "ListItem", "position": 2, "name": "Recursos", "item": "https://www.celebios.com/recursos" },
+ { "@type": "ListItem", "position": 3, "name": "Que es CONCERVET y por que importa la certificacion", "item": "https://www.celebios.com/recursos/que-es-concervet" }
+ ]
+ },
+ {
+ "@type": "FAQPage",
+ "mainEntity": [
+ {
+ "@type": "Question",
+ "name": "Que es CONCERVET?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "CONCERVET es el Consejo Nacional de Certificacion en Medicina Veterinaria y Zootecnia, A.C., una asociacion civil mexicana constituida en 2011 que avala la calidad del ejercicio profesional de la medicina veterinaria y zootecnia en Mexico a traves de la certificacion profesional de los medicos veterinarios zootecnistas."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "Para que sirve la certificacion CONCERVET?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Sirve para acreditar de forma independiente que un MVZ posee los conocimientos y habilidades actualizados en su area, segun criterios nacionales e internacionales. Es una garantia de calidad voluntaria que respalda la competencia profesional ante colegas, empleadores y el publico, mas alla del titulo y la cedula."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "Por que importa que un curso este avalado por CONCERVET?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Porque un aval indica que el evento de educacion continua fue revisado y registrado por el consejo segun sus criterios de calidad. Para el MVZ, esto significa que las horas de formacion cuentan como respaldo serio y pueden aportar al proceso de certificacion o recertificacion."
+ }
+ }
+ ]
+ }
+ ]
+}
+</script>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site on-dark">
+ <div class="wrap nav">
+ <a class="wordmark" href="lamina-viva.html" aria-label="CELEBIOS inicio">
+ <img class="brandlogo" src="brand/logo-white.png" alt="CELEBIOS" width="100" height="38">
+ </a>
+
+ <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+ </button>
+
+ <nav class="nav-links" id="navLinks" aria-label="Principal">
+ <a href="catalogo.html">Cursos</a>
+ <a href="diplomado-rehab.html">Diplomado</a>
+ <a href="recursos.html" class="is-active" aria-current="page">Recursos</a>
+ <a href="nosotros.html">Nosotros</a>
+ <a class="nav-cta" href="catalogo.html">Explorar cursos</a>
+ </nav>
+ </div>
+</header>
+
+<main id="top">
+
+<!-- ===================== HERO DEL ARTICULO ===================== -->
+<section class="surface-dark art-hero on-dark">
+ <div class="wrap">
+ <span class="art-kicker mono"><span class="rule"></span>Recursos &middot; certificacion veterinaria</span>
+ <h1 class="display">Que es CONCERVET y por que importa la <span class="accent">certificacion</span></h1>
+ <p class="art-meta">
+ <span class="dot" aria-hidden="true"></span>
+ <span class="by">Por el equipo de CELEBIOS</span>
+ <span class="sep">&middot;</span>
+ <span>Revision academica Equipo CELEBIOS</span>
+ <span class="sep">&middot;</span>
+ <span>Lectura 8 min</span>
+ </p>
+ </div>
+</section>
+
+<!-- ===================== CUERPO DE LECTURA ===================== -->
+<article class="surface-light article-body">
+ <div class="wrap">
+ <div class="reading">
+
+ <p class="lead">CONCERVET es el Consejo Nacional de Certificacion en Medicina Veterinaria y Zootecnia, A.C., una asociacion civil mexicana fundada en 2011 que avala la calidad del ejercicio profesional de la medicina veterinaria y zootecnia mediante la certificacion de los medicos veterinarios zootecnistas, conforme a criterios nacionales e internacionales.</p>
+
+ <p>En Mexico, el titulo y la cedula profesional acreditan que un MVZ termino su carrera. Pero no dicen si esa persona sigue actualizada en su area diez anos despues, ni que tan profunda es su especializacion. Ahi entra CONCERVET: es un mecanismo voluntario, gremial, que verifica de forma independiente la competencia de un profesional y la calidad de los eventos de educacion continua que lo forman. Entender que es y como funciona te ayuda a leer mejor cualquier curso o diplomado antes de pagarlo.</p>
+
+ <div class="callout">
+ <span class="c-k mono">Antes de avanzar</span>
+ <p>Este articulo es informativo y explica el papel general de CONCERVET segun su informacion publica oficial. Los requisitos exactos, vigencias y costos los define el propio consejo y pueden cambiar; consulta siempre la fuente directa en <a href="https://concervet.org.mx" target="_blank" rel="noopener">concervet.org.mx</a> .</p>
+ </div>
+
+ <h2>Que es CONCERVET exactamente?</h2>
+ <p>CONCERVET es el organismo que, en Mexico, se dedica a certificar profesionalmente a los medicos veterinarios zootecnistas. Su nombre completo es <strong>Consejo Nacional de Certificacion en Medicina Veterinaria y Zootecnia, A.C.</strong> Se constituyo formalmente como asociacion civil ante notario en 2011 y reune a representantes de varios sectores con interes en la calidad de la profesion.</p>
+ <p>No es una sola universidad ni una empresa: es un <strong>consejo gremial colegiado</strong>. Segun su informacion oficial, lo integran instituciones educativas, colegios profesionales, asociaciones de especialistas y empleadores tanto del sector publico como privado. Esa composicion plural es justo lo que le da peso: la certificacion no la otorga quien imparte el curso, sino un tercero independiente.</p>
+
+ <h2>Para que sirve la certificacion profesional?</h2>
+ <p>La certificacion sirve para acreditar, de manera independiente del titulo, que un profesional posee los conocimientos y las habilidades requeridas en su area, y que las mantiene actualizadas. Es una garantia de calidad voluntaria: nadie esta obligado por ley a certificarse, pero hacerlo comunica un nivel de competencia comprobado ante colegas, empleadores y el publico.</p>
+ <p>Conviene distinguir tres cosas que a menudo se confunden:</p>
+ <div class="table-wrap" role="region" aria-label="Tabla comparativa de credenciales veterinarias" tabindex="0">
+ <table class="read-table">
+ <caption>Titulo, cedula y certificacion: que acredita cada uno</caption>
+ <thead>
+ <tr>
+ <th scope="col">Credencial</th>
+ <th scope="col">Quien la otorga</th>
+ <th scope="col">Que acredita</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td><strong>Titulo</strong></td>
+ <td>La universidad</td>
+ <td>Que concluiste el plan de estudios de la carrera</td>
+ </tr>
+ <tr>
+ <td><strong>Cedula profesional</strong></td>
+ <td>Autoridad educativa (DGP/SEP)</td>
+ <td>Permiso legal para ejercer la profesion</td>
+ </tr>
+ <tr>
+ <td><strong>Certificacion CONCERVET</strong></td>
+ <td>Consejo gremial independiente</td>
+ <td>Competencia y actualizacion vigente en un area</td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ <p>Dicho simple: el titulo y la cedula son el punto de partida; la certificacion es la senal de que sigues vigente y especializado. Por eso pesa cada vez mas en areas clinicas exigentes, donde el conocimiento cambia rapido.</p>
+
+ <h2>Como se obtiene la certificacion CONCERVET?</h2>
+ <p>La evaluacion la realizan comites tecnicos de certificacion, organos colegiados integrados por medicos veterinarios zootecnistas mexicanos con cedula profesional y, segun el reglamento del consejo, un minimo de cinco anos de ejercicio. De acuerdo con su informacion publica, existen dos rutas principales:</p>
+ <ul>
+ <li><strong>Por curriculum:</strong> el profesional demuestra trayectoria comprobable en su area de especialidad durante varios anos, y un comite tecnico revisa esa evidencia.</li>
+ <li><strong>Por examen:</strong> se acredita un examen disenado por expertos reconocidos por el consejo y avalado por el comite de certificacion correspondiente.</li>
+ </ul>
+ <p>La certificacion no es permanente: tiene una vigencia y debe renovarse mediante un proceso de <strong>recertificacion</strong>. En esa renovacion suele pesar la educacion continua acumulada, es decir, los cursos, diplomados y eventos academicos que el profesional cursa para mantenerse al dia. La vigencia exacta y los puntos requeridos los define el consejo por confirmar.</p>
+
+ <div class="callout warn">
+ <span class="c-k mono">Dato a verificar</span>
+ <p>El periodo de vigencia de una certificacion, el numero de creditos de educacion continua y los costos cambian con el tiempo y por area. No te guies por cifras de blogs; toma siempre el reglamento y los formatos oficiales vigentes como referencia.</p>
+ </div>
+
+ <h2>Que significa que un curso este avalado por CONCERVET?</h2>
+ <p>Una de las funciones del consejo es registrar y dar aval a eventos de educacion continua de calidad. Cuando un curso o diplomado esta <strong>avalado por CONCERVET</strong>, quiere decir que su contenido, sus horas y su rigor fueron revisados frente a los criterios del consejo, no solo declarados por quien lo organiza.</p>
+ <p>Para ti, como profesional o estudiante, eso se traduce en tres ventajas concretas:</p>
+ <ol>
+ <li><strong>Respaldo de calidad verificado por un tercero.</strong> Un aval externo es muy distinto a un "diploma de participacion" que cualquiera emite. Reduce el riesgo de pagar por formacion vacia.</li>
+ <li><strong>Horas que suman a tu trayectoria.</strong> La educacion continua avalada puede contar dentro de tu proceso de certificacion o recertificacion, en lugar de quedar solo como una constancia suelta.</li>
+ <li><strong>Una senal de seriedad para tu CV.</strong> Frente a empleadores, comites o clientes, "curso avalado por CONCERVET" comunica que tu formacion tiene un piso de calidad reconocido por el gremio.</li>
+ </ol>
+ <p>Es importante ser preciso con el lenguaje: un aval respalda la <strong>calidad del curso y sus horas</strong>; no equivale, por si mismo, a que ya estes "certificado". La certificacion personal sigue siendo un proceso aparte ante el consejo. Cualquier oferta que prometa "certificarte" solo por inscribirte a un curso deberia encender tus alarmas.</p>
+
+ <h2>Como verificar un aval antes de inscribirte?</h2>
+ <p>Antes de pagar cualquier curso que se anuncie como avalado, vale la pena hacer una revision rapida. Sigue estos pasos:</p>
+ <ol>
+ <li><strong>Pide el dato concreto.</strong> Que la institucion indique con claridad que el evento esta registrado o avalado, idealmente con un folio o referencia verificable.</li>
+ <li><strong>Confirma en la fuente.</strong> Consulta el sitio oficial del consejo para entender que tipo de aval ofrece y como se valida por confirmar.</li>
+ <li><strong>Revisa horas y temario.</strong> Un evento serio publica sus horas, modulos y docentes; la opacidad en estos datos suele ser mala senal.</li>
+ <li><strong>Distingue aval de certificacion.</strong> Verifica que la oferta no confunda "curso avalado" con "certificacion profesional", que son cosas distintas.</li>
+ </ol>
+
+ <div class="callout">
+ <span class="c-k mono">La idea clave</span>
+ <p>El aval es una herramienta para que tu inviertas tu tiempo y dinero en formacion que de verdad cuenta. No reemplaza tu criterio: lo refuerza. Un buen curso une <strong>aval + horas claras + docentes reales + temario publico</strong>.</p>
+ </div>
+
+ <h2>Por que esto importa para tu formacion en CELEBIOS</h2>
+ <p>En el terreno de la fauna silvestre, donde el conocimiento clinico se actualiza rapido y un error de manejo puede costarle la vida a un animal, la calidad de la formacion no es un detalle. Por eso en CELEBIOS la presencia del aval CONCERVET no es un sello decorativo: es la garantia de que las horas que inviertes responden a criterios revisados por el gremio, y de que tu constancia tiene un respaldo que otros pueden verificar.</p>
+ <p>Si quieres entender exactamente como esto se traduce en nuestros programas, lo desarrollamos en la pagina donde explicamos <a href="nosotros.html">quienes somos y por que nuestros cursos estan avalados por CONCERVET</a>. Ahi encuentras el detalle de nuestro respaldo, nuestro claustro y nuestra trayectoria.</p>
+
+ </div>
+ </div>
+</article>
+
+<!-- ===================== BLOQUE CTA AL CURSO ===================== -->
+<section class="surface-dark cta-course on-dark" aria-labelledby="cch">
+ <div class="wrap">
+ <div class="cta-card">
+ <div class="cc-copy">
+ <span class="cc-kicker mono">Formacion con respaldo real</span>
+ <h2 id="cch">Cursos de fauna silvestre con aval CONCERVET</h2>
+ <p>Mas alla del sello, lo que importa es que tu formacion cuente. Conoce <a href="nosotros.html" style="color:var(--ceibo); text-decoration:underline; text-underline-offset:3px;">quienes somos y por que nuestros cursos estan avalados por CONCERVET</a>: 16 anos formando profesionales de fauna silvestre en LATAM, con docentes reales y horas verificables.</p>
+ </div>
+ <div class="cc-action">
+ <div class="cc-price">
+ <span class="from">Aval gremial</span>
+ <span class="val">CONCERVET</span>
+ </div>
+ <a class="btn btn-primary" href="nosotros.html">Conocer a CELEBIOS</a>
+ <span class="cc-note">16 anos en LATAM &middot; docentes reales &middot; horas verificables</span>
+ </div>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== ARTICULOS RELACIONADOS ===================== -->
+<section class="surface-light sec" aria-labelledby="relh">
+ <div class="wrap">
+ <div class="sec-head">
+ <span class="sec-kicker mono">Sigue leyendo</span>
+ <h2 id="relh">Articulos relacionados</h2>
+ </div>
+
+ <div class="grid-rel">
+
+ <!-- Nosotros / aval · disponible -->
+ <article class="lamina is-disp">
+ <div class="lamina-top">
+ <span class="lam-no">Pagina</span>
+ <span class="pill pill-disp">Sobre CELEBIOS</span>
+ </div>
+ <h3>Quienes somos: aval CONCERVET y 16 anos de fauna</h3>
+ <p class="lam-dek">Nuestro respaldo, nuestro claustro y por que nuestros cursos estan avalados por CONCERVET.</p>
+ <div class="lam-foot">
+ <span class="lam-state">E-E-A-T</span>
+ <a class="ccta ccta-disp" href="nosotros.html">Conocer a CELEBIOS</a>
+ </div>
+ </article>
+
+ <!-- Catalogo · disponible -->
+ <article class="lamina is-disp">
+ <div class="lamina-top">
+ <span class="lam-no">Catalogo</span>
+ <span class="pill pill-disp">Cursos</span>
+ </div>
+ <h3>Cursos de fauna silvestre online en Mexico y LATAM</h3>
+ <p class="lam-dek">El catalogo completo de cursos y diplomados a distancia, con certificado avalado CONCERVET.</p>
+ <div class="lam-foot">
+ <span class="lam-state">A tu ritmo</span>
+ <a class="ccta ccta-disp" href="catalogo.html">Ver el catalogo de cursos</a>
+ </div>
+ </article>
+
+ <!-- Diplomado · disponible -->
+ <article class="lamina is-disp">
+ <div class="lamina-top">
+ <span class="lam-no">Diplomado</span>
+ <span class="pill pill-disp">Disponible</span>
+ </div>
+ <h3>Diplomado en Rescate y Rehabilitacion de Fauna</h3>
+ <p class="lam-dek">170 h, 13 modulos, docentes IFAW y UNAM. Aval CONCERVET. Del rescate en campo a la liberacion.</p>
+ <div class="lam-foot">
+ <span class="lam-state">170 h &middot; 13 modulos</span>
+ <a class="ccta ccta-disp" href="diplomado-rehab.html">Ver el diplomado</a>
+ </div>
+ </article>
+
+ </div>
+ </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="surface-dark site on-dark">
+ <div class="wrap">
+ <div class="foot-grid">
+ <div class="foot-brand">
+ <img class="brandlogo" src="brand/logo-white.png" alt="CELEBIOS" width="120" height="46">
+
+ <p>Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal.</p>
+ <span class="foot-tag mono-soft">Eliminando fronteras, acercando al mundo.</span>
+ </div>
+
+ <div class="foot-contact">
+ <div>
+ <div class="ck mono">Correo</div>
+ <a href="mailto:contacto@celebios.com">contacto@celebios.com</a>
+ </div>
+ <div>
+ <div class="ck mono">WhatsApp</div>
+ <a href="https://wa.me/529581033574">+52 958 103 3574</a>
+ </div>
+ <div>
+ <div class="ck mono">Instagram</div>
+ <a href="https://instagram.com/celebios_edu">@celebios_edu</a>
+ </div>
+ </div>
+ </div>
+
+ <div class="foot-rule">
+ <small>&copy; 2026 CELEBIOS &middot; Avalada por CONCERVET &middot; 16 anos en LATAM</small>
+ <span class="foot-meta">Atlas Lat. &middot; Ed. Lamina Viva</span>
+ </div>
+ </div>
+</footer>
+
+<script>
+ (function{
+ // menu movil
+ var btn = document.getElementById("menuBtn");
+ var links = document.getElementById("navLinks");
+ if(btn && links){
+ btn.addEventListener("click", function{
+ var open = links.classList.toggle("open");
+ btn.setAttribute("aria-expanded", open ? "true" : "false");
+ });
+ links.addEventListener("click", function(e){
+ if(e.target.tagName === "A"){
+ links.classList.remove("open");
+ btn.setAttribute("aria-expanded", "false");
+ }
+ });
+ }
+ });
+</script>
+
+</body>
+</html>

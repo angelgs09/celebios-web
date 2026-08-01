@@ -1,0 +1,34 @@
+<!-- ============================================================
+     CELEBIOS — Parche global de QA (pegar UNA sola vez)
+     Arregla en TODO el sitio sin re-pegar cada pagina:
+     1) contraste: texto navy en botones cian (en vez de blanco)
+     2) links cian mas oscuros (accesibilidad AA)
+     3) placeholders [CONFIRMAR] -> "por confirmar" (sutil)
+     DONDE PEGAR: Kajabi -> Settings (o Website) -> codigo de cabecera/footer
+     del SITIO (head/footer code, donde van pixeles/analytics). Si tu plan
+     no tiene codigo global, entonces re-pega los archivos /kajabi corregidos.
+     ============================================================ -->
+<style>
+  /* 1) Contraste: texto navy en botones/CTA cian (AA) */
+  .btn-primary, .nav-cta, .ccta-disp { color:#0C2447 !important; }
+  /* 2) Links cian sobre claro mas oscuros (AA) */
+  .faq-body a, .sec-head .sub a, .voice a, .anchor-lede a { color:#1B6076 !important; }
+  /* 3) Placeholders sutiles (no morado-dashed alarmante) */
+  .ph { color:inherit !important; opacity:.7 !important; border-bottom:none !important;
+        font-style:italic !important; font-family:inherit !important; letter-spacing:normal !important; }
+</style>
+<script>
+(function(){
+  function grace(){
+    try{
+      var re=/\[CONFIRMAR[^\]]*\]/g;
+      var w=document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      var nodes=[], n;
+      while(n=w.nextNode()){ if(re.test(n.nodeValue)) nodes.push(n); }
+      nodes.forEach(function(t){ t.nodeValue=t.nodeValue.replace(/\[CONFIRMAR[^\]]*\]/g,"por confirmar"); });
+    }catch(e){}
+  }
+  if(document.readyState!=="loading"){ grace(); }
+  else { document.addEventListener("DOMContentLoaded", grace); }
+})();
+</script>

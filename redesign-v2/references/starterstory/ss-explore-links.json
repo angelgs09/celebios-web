@@ -1,0 +1,222 @@
+[
+ {
+  "t": "S Starter Story",
+  "h": "/"
+ },
+ {
+  "t": "Home",
+  "h": "/home"
+ },
+ {
+  "t": "All Ideas",
+  "h": "/data"
+ },
+ {
+  "t": "SaaS Ideas",
+  "h": "/data/micro-saas-ideas"
+ },
+ {
+  "t": "App Ideas",
+  "h": "/data/ios-app-ideas"
+ },
+ {
+  "t": "AI Ideas",
+  "h": "/data/gpt-wrapper-ideas"
+ },
+ {
+  "t": "More Ideas",
+  "h": "/ideas"
+ },
+ {
+  "t": "All Case Studies",
+  "h": "/explore"
+ },
+ {
+  "t": "Saved",
+  "h": "/saved"
+ },
+ {
+  "t": "Random",
+  "h": "/random"
+ },
+ {
+  "t": "All Episodes",
+  "h": "/episodes"
+ },
+ {
+  "t": "Must Watch",
+  "h": "/episodes?sort=most_popular"
+ },
+ {
+  "t": "Academy",
+  "h": "/academy"
+ },
+ {
+  "t": "Build",
+  "h": "https://build.starterstory.com"
+ },
+ {
+  "t": "ECOMMERCE · HOME · DENVER, COLORADO, USA I Grew A Drinkware Brand To $",
+  "h": "/stories/brumate"
+ },
+ {
+  "t": "SOFTWARE · SAAS · NEW YORK How My Demo App Makes $200K/Month We made p",
+  "h": "/stories/supademo"
+ },
+ {
+  "t": "SOFTWARE · TECHNOLOGY · GUJARAT, AHMEDABAD, INDIA My Saas Templates Ma",
+  "h": "/stories/themeselection"
+ },
+ {
+  "t": "PUBLICATION · TRAVEL · UNITED STATES How This Journalist Started A $20",
+  "h": "/stories/the-wayward-home"
+ },
+ {
+  "t": "PUBLICATION · NEWS · SYDNEY NSW, AUSTRALIA Growing To $4M/Year With A ",
+  "h": "/stories/man-of-many"
+ },
+ {
+  "t": "PUBLICATION · TRAVEL · OAXACA, MEXICO How I Run Four Travel Blogs And ",
+  "h": "/stories/travel-blogging-101"
+ },
+ {
+  "t": "PUBLICATION · MARKETING · BARCELONA, SPAIN How We Built A $1.4M/Year W",
+  "h": "/stories/tooltester-s-l"
+ },
+ {
+  "t": "PUBLICATION · HEALTH · SAN DIEGO, CA, USA I Quit My 9 To 5 & Built An ",
+  "h": "/stories/zenmaster-wellness"
+ },
+ {
+  "t": "PUBLICATION · BEAUTY · WINTER SPRINGS How I Make $96K/Year As A Beauty",
+  "h": "/stories/the-holistic-enchilada"
+ },
+ {
+  "t": "PUBLICATION · MARKETING · DELHI, INDIA I Left My Full-Time Job To Star",
+  "h": "/stories/i-left-my-full-time-job-to-start-a-1-2m-year-blog-with-just-50"
+ },
+ {
+  "t": "PUBLICATION · TRANSPORTATION · HIGHLAND My Affiliate Marketing Busines",
+  "h": "/stories/my-affiliate-marketing-business-earns-500k-year-profit-no-employees"
+ },
+ {
+  "t": "PUBLICATION · CONTENT · SAN DIEGO, CA, USA How I Started A $4K/Month W",
+  "h": "/how-to-start-a-book-club-website"
+ },
+ {
+  "t": "PUBLICATION · FASHION · JACKSONVILLE, FL, USA On Growing A Blog About ",
+  "h": "/sustainable-fashion-blog"
+ },
+ {
+  "t": "PUBLICATION · MARKETING · BENGALURU, KARNATAKA, INDIA How I Started A ",
+  "h": "/blog-to-help-women-build-creative-online-businesses"
+ },
+ {
+  "t": "PUBLICATION · FINANCE · HOUSTON, TEXAS, USA How I Started A $88K/Month",
+  "h": "/how-to-start-a-finanical-website"
+ },
+ {
+  "t": "PUBLICATION · OTHER · CAMBRIDGE This VC Taught Himself How To Code And",
+  "h": "/stories/this-vc-taught-himself-how-to-code-and-is-bootstrapping-his-own-startup"
+ },
+ {
+  "t": "PUBLICATION · OTHER · VIRGINIA BEACH, VIRGINIA, USA How We Grew Our Pe",
+  "h": "/personal-finance-blog"
+ },
+ {
+  "t": "PUBLICATION · FOOD · FERNDALE, WA, USA I Built A Resource Site For Che",
+  "h": "/stories/i-created-a-resources-site-for-chefs-like-me-that-generates-60k-of-extra-income"
+ },
+ {
+  "t": "PUBLICATION · FOOD · CALIFORNIA, MD, USA How I Started A Profitable Fo",
+  "h": "/stories/how-i-started-a-profitable-food-entrepreneurship-blog"
+ },
+ {
+  "t": "PUBLICATION · GAMES · BRATISLAVA How I Started A $500K/Month Website A",
+  "h": "/start-a-website-about-online-casinos"
+ },
+ {
+  "t": "PUBLICATION · WRITING · LIVING ON A SAILBOAT How I Started A $100K/Mon",
+  "h": "/stories/how-i-started-a-100k-month-blog-about-personal-finance"
+ },
+ {
+  "t": "PUBLICATION · BABY · CHAPEL HILL NORTH CAROLINA How Jodi Carlson Grew ",
+  "h": "/stories/how-jodi-carlson-grew-a-niche-blog-to-6-5k-month"
+ },
+ {
+  "t": "SOFTWARE · PRODUCTIVITY · ORLANDO, FL, USA I Turned My Side Project in",
+  "h": "/stories/excelformulabot"
+ },
+ {
+  "t": "ECOMMERCE · SOCIAL_MEDIA · ACCORD, NY, USA How Justin Welsh Built A $2",
+  "h": "/stories/justin-welsh"
+ },
+ {
+  "t": "Next Page",
+  "h": "/explore?page=2"
+ },
+ {
+  "t": "Excel formula gener...",
+  "h": "/data"
+ },
+ {
+  "t": "Pdf bank statement ...",
+  "h": "/data"
+ },
+ {
+  "t": "Crm marketing attri...",
+  "h": "/data"
+ },
+ {
+  "t": "Social media growth...",
+  "h": "/data"
+ },
+ {
+  "t": "S Starter Story",
+  "h": "https://www.starterstory.com/"
+ },
+ {
+  "t": "About",
+  "h": "https://www.starterstory.com/about"
+ },
+ {
+  "t": "Support",
+  "h": "https://www.starterstory.com/support"
+ },
+ {
+  "t": "Privacy",
+  "h": "https://legal.hubspot.com/privacy-policy?__hstc=115193176.50d0770cea7ec38b6b492969fc428119.1781930446001.1781930883203.1781931060401.4&__hssc=115193176.1.1781931060401&__hsfp=922a9d8fd06683861e2f20881e3c836d"
+ },
+ {
+  "t": "Website Terms of Use",
+  "h": "https://legal.hubspot.com/website-terms-of-use?__hstc=115193176.50d0770cea7ec38b6b492969fc428119.1781930446001.1781930883203.1781931060401.4&__hssc=115193176.1.1781931060401&__hsfp=922a9d8fd06683861e2f20881e3c836d"
+ },
+ {
+  "t": "",
+  "h": "https://x.com/starter_story"
+ },
+ {
+  "t": "",
+  "h": "https://www.youtube.com/@starterstory"
+ },
+ {
+  "t": "",
+  "h": "https://www.tiktok.com/@starterstory"
+ },
+ {
+  "t": "",
+  "h": "https://www.instagram.com/starter_story"
+ },
+ {
+  "t": "My Account",
+  "h": "/account"
+ },
+ {
+  "t": "My Profile",
+  "h": "/myprofile"
+ },
+ {
+  "t": "My Subscription",
+  "h": "/d/subscription"
+ }
+]

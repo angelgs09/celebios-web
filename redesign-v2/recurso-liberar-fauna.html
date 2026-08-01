@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo liberar fauna silvestre: soft-release | CELEBIOS</title>
+<meta name="description" content="Cómo liberar fauna silvestre correctamente: criterios de aptitud, soft-release vs hard-release y monitoreo post-liberación. Guía clara con marco legal MX.">
+<link rel="canonical" href="https://www.celebios.com/recursos/como-liberar-fauna-silvestre">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="CELEBIOS">
+<meta property="og:title" content="Cómo liberar fauna silvestre: soft-release | CELEBIOS">
+<meta property="og:description" content="Criterios de aptitud, soft-release vs hard-release y monitoreo post-liberación. Cómo liberar fauna silvestre sin condenar al animal.">
+<meta property="og:url" content="https://www.celebios.com/recursos/como-liberar-fauna-silvestre">
+<meta property="og:image" content="https://www.celebios.com/brand/logo-white.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cómo liberar fauna silvestre: soft-release | CELEBIOS">
+<meta name="twitter:description" content="Criterios de aptitud, soft vs hard release y monitoreo post-liberación. Guía para rescatistas y profesionales de fauna.">
+<meta name="twitter:image" content="https://www.celebios.com/brand/logo-white.png">
+<meta name="theme-color" content="#14294F">
+<link rel="icon" href="brand/logo-white.png" type="image/png">
+<link rel="apple-touch-icon" href="brand/logo-white.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+ /* ============================================================
+ CELEBIOS - Direccion "LAMINA VIVA"
+ Atlas naturalista latinoamericano. Alternancia editorial
+ placa-oscura (Charca) <-> pliego-claro (Hueso).
+ ============================================================ */
+
+ :root{
+ /* === PALETA DE MARCA (colores del logo CELEBIOS) === */
+ --charca: #14294F; /* marino canvas (marca) */
+ --charca-2: #1E3768; /* panel marino */
+ --ceibo: #2FA8C9; /* CIAN del logo = disponible + accion */
+ --ceibo-deep: #1B6076;
+ --coral: #2FA8C9; /* signal/accion (cian): frames, CTAs, focus */
+ --cobalto: #7A5797; /* MORADO del logo = proxima edicion */
+ --sage: #6FB07A; /* VERDE-SALVIA del logo = acento de vida */
+ --hueso: #EEF2EC; /* texto sobre marino / fondo claro */
+ --hueso-2: #E1E8E1;
+ --lodo: #4D5F7C; /* texto secundario sobre claro (navy-gray, AA) */
+ --lodo-line: #93A6AC; /* bordes/filetes atenuados (no texto) */
+ --lodo-soft: #9DB2C2; /* texto secundario sobre marino (AA) */
+
+ /* Tokens semanticos */
+ --paper: var(--hueso);
+ --ink: #16294C; /* marino ink */
+ --ink-soft: #45587A;
+
+ /* Espaciado (escala 4) */
+ --s1: .25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem;
+ --s6:2rem; --s7:3rem; --s8:4rem; --s9:6rem; --s10:8rem;
+
+ /* Radios y filetes */
+ --r-plate: 6px;
+ --r-pill: 999px;
+ --frame: 2px;
+
+ --shadow-plate: 0 1px 0 rgba(11,43,46,.04), 0 18px 40px -28px rgba(11,43,46,.55);
+ --shadow-lift: 0 2px 0 rgba(11,43,46,.06), 0 34px 64px -30px rgba(11,43,46,.6);
+
+ --maxw: 1240px;
+ --ease: cubic-bezier(.2,.7,.2,1);
+ }
+
+ *,*::before,*::after{ box-sizing:border-box; }
+
+ html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+ @media (prefers-reduced-motion: reduce){
+ html{ scroll-behavior:auto; }
+ *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+ }
+
+ body{
+ margin:0;
+ font-family:"Instrument Sans", system-ui, sans-serif;
+ color:var(--ink);
+ background:var(--paper);
+ line-height:1.5;
+ font-weight:400;
+ -webkit-font-smoothing:antialiased;
+ text-rendering:optimizeLegibility;
+ }
+
+ /* Tipos utilitarios */
+ .display{
+ font-family:"Bricolage Grotesque", sans-serif;
+ font-weight:800;
+ letter-spacing:-.02em;
+ line-height:.95;
+ }
+ .mono{
+ font-family:"Space Grotesk", monospace;
+ text-transform:uppercase;
+ letter-spacing:.18em;
+ font-weight:500;
+ }
+ .mono-soft{ font-family:"Space Grotesk", monospace; letter-spacing:.06em; }
+
+ a{ color:inherit; text-decoration:none; }
+ img,svg{ display:block; max-width:100%; }
+
+ :focus-visible{
+ outline:3px solid var(--coral);
+ outline-offset:3px;
+ border-radius:3px;
+ }
+ .on-dark :focus-visible{ outline-color:var(--ceibo); }
+
+ .wrap{ width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:clamp(1.1rem, 4vw, 3rem); }
+
+ /* ====== Superficies ====== */
+ .surface-dark{
+ background:
+ radial-gradient(120% 120% at 85% -10%, rgba(47,168,201,.14), transparent 55%),
+ radial-gradient(90% 90% at 0% 110%, rgba(122,87,151,.12), transparent 50%),
+ var(--charca);
+ color:var(--hueso);
+ }
+ .surface-light{ background:var(--paper); color:var(--ink); }
+
+ /* ============================================================
+ HEADER
+ ============================================================ */
+ header.site{
+ position:sticky; top:0; z-index:50;
+ background:rgba(20,41,79,.92);
+ backdrop-filter:saturate(140%) blur(10px);
+ border-bottom:1px solid rgba(238,242,236,.12);
+ color:var(--hueso);
+ }
+ .nav{
+ display:flex; align-items:center; gap:var(--s5);
+ height:68px;
+ }
+ .wordmark{
+ display:flex; align-items:center; gap:.6rem;
+ font-family:"Bricolage Grotesque", sans-serif;
+ font-weight:800; letter-spacing:-.01em; font-size:1.18rem;
+ color:var(--hueso);
+ }
+ .wordmark .glyph{ width:30px; height:30px; flex:0 0 auto; }
+ .wordmark .glyph svg{ width:100%; height:100%; }
+ .brandlogo{ height:38px; width:auto; display:block; }
+ .foot-brand .brandlogo{ height:46px; margin-bottom:var(--s4); }
+ .nav-links{
+ display:flex; align-items:center; gap:.2rem;
+ margin-left:auto;
+ }
+ .nav-links a{
+ font-size:.86rem; font-weight:500;
+ padding:.5rem .8rem; border-radius:var(--r-pill);
+ color:rgba(238,242,236,.82);
+ transition:color .2s var(--ease), background .2s var(--ease);
+ }
+ .nav-links a:hover{ color:var(--hueso); background:rgba(238,242,236,.08); }
+ .nav-links a.is-active{ color:var(--hueso); background:rgba(238,242,236,.12); }
+ .nav-links a[aria-current="page"]{ color:var(--hueso); background:rgba(47,168,201,.16); }
+ .nav-cta{
+ display:inline-flex; align-items:center; gap:.45rem;
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.72rem; font-weight:600;
+ padding:.62rem 1.05rem; border-radius:var(--r-pill);
+ background:var(--coral); color:#0C2447;
+ border:1px solid transparent;
+ transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+ box-shadow:0 8px 22px -12px rgba(47,168,201,.9);
+ }
+ .nav-cta:hover{ transform:translateY(-1px); background:#3FB8D8; box-shadow:0 12px 26px -12px rgba(47,168,201,1); }
+
+ .menu-btn{
+ display:none; margin-left:auto;
+ background:transparent; border:1px solid rgba(238,242,236,.25);
+ color:var(--hueso); width:42px; height:42px; border-radius:10px;
+ cursor:pointer;
+ }
+ .menu-btn svg{ width:20px; height:20px; margin:auto; }
+
+ @media (max-width: 880px){
+ .nav-links{
+ position:absolute; top:68px; left:0; right:0;
+ flex-direction:column; align-items:stretch; gap:.1rem;
+ background:var(--charca); padding:var(--s4) clamp(1.1rem,4vw,3rem) var(--s5);
+ border-bottom:1px solid rgba(238,242,236,.12);
+ margin-left:0;
+ display:none;
+ }
+ .nav-links.open{ display:flex; }
+ .nav-links a{ padding:.8rem .6rem; font-size:1rem; }
+ .nav-cta{ justify-content:center; padding:.8rem 1rem; font-size:.78rem; }
+ .menu-btn{ display:flex; }
+ }
+
+ /* ============================================================
+ HERO DE ARTICULO (placa oscura)
+ ============================================================ */
+ .art-hero{ position:relative; overflow:hidden; padding-block:clamp(2.8rem, 7vw, 5rem); }
+ .art-hero .wrap{ max-width:880px; }
+ .art-kicker{
+ display:inline-flex; align-items:center; gap:.65rem;
+ color:var(--ceibo); font-size:.72rem;
+ margin-bottom:var(--s5);
+ }
+ .art-kicker .rule{ width:46px; height:1px; background:linear-gradient(90deg,var(--ceibo),transparent); }
+ .art-hero h1{
+ font-size:clamp(2.1rem, 5.2vw, 3.5rem);
+ margin:0 0 var(--s5);
+ max-width:20ch;
+ }
+ .art-hero h1 .accent{ color:var(--sage); }
+ .art-meta{
+ display:flex; flex-wrap:wrap; align-items:center; gap:.55rem;
+ font-family:"Space Grotesk", monospace; letter-spacing:.04em;
+ font-size:.8rem; color:var(--lodo-soft);
+ }
+ .art-meta .dot{ width:6px; height:6px; border-radius:50%; background:var(--sage); flex:0 0 auto; }
+ .art-meta .by{ color:var(--hueso); }
+ .art-meta .sep{ color:rgba(238,242,236,.3); }
+
+ /* ============================================================
+ CUERPO DE LECTURA (columna centrada)
+ ============================================================ */
+ .article-body{ padding-block:clamp(2.6rem, 6vw, 4.5rem); }
+ .reading{ max-width:72ch; margin-inline:auto; }
+ .reading > .lead{
+ font-size:clamp(1.1rem, 1.7vw, 1.28rem);
+ line-height:1.6; color:var(--ink);
+ font-weight:500;
+ margin:0 0 var(--s6);
+ }
+ .reading p{ font-size:1.04rem; line-height:1.72; color:var(--ink-soft); margin:0 0 var(--s5); }
+ .reading p strong{ color:var(--ink); font-weight:600; }
+ .reading h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em;
+ font-size:clamp(1.5rem, 3vw, 2rem); line-height:1.08;
+ color:var(--ink);
+ margin:var(--s8) 0 var(--s4);
+ scroll-margin-top:90px;
+ }
+ .reading h3{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.015em;
+ font-size:clamp(1.18rem, 2.2vw, 1.4rem); line-height:1.12;
+ color:var(--ink);
+ margin:var(--s7) 0 var(--s3);
+ display:flex; align-items:baseline; gap:.7rem;
+ scroll-margin-top:90px;
+ }
+ .reading h3 .signo-no{
+ font-family:"Space Grotesk", monospace; letter-spacing:.04em;
+ font-size:.9rem; font-weight:600; color:var(--ceibo);
+ flex:0 0 auto;
+ }
+ .reading ul, .reading ol{ margin:0 0 var(--s5); padding-left:0; list-style:none; }
+ .reading ul li{
+ position:relative; padding-left:1.6rem; margin-bottom:.7rem;
+ font-size:1.02rem; line-height:1.65; color:var(--ink-soft);
+ }
+ .reading ul li::before{
+ content:""; position:absolute; left:.1rem; top:.62em;
+ width:.5rem; height:.5rem; border-radius:50%;
+ background:var(--ceibo);
+ }
+ .reading ol{ counter-reset:paso; }
+ .reading ol li{
+ position:relative; padding-left:2.2rem; margin-bottom:.7rem;
+ font-size:1.02rem; line-height:1.65; color:var(--ink-soft);
+ counter-increment:paso;
+ }
+ .reading ol li::before{
+ content:counter(paso);
+ position:absolute; left:0; top:.05em;
+ font-family:"Space Grotesk", monospace; font-weight:600;
+ font-size:.82rem; color:var(--ceibo);
+ width:1.5rem; height:1.5rem; border:1.5px solid var(--ceibo); border-radius:50%;
+ display:inline-flex; align-items:center; justify-content:center;
+ }
+ .reading ul li strong, .reading ol li strong{ color:var(--ink); font-weight:600; }
+
+ /* callout / nota destacada */
+ .callout{
+ background:#fff; border:1px solid var(--hueso-2); border-left:3px solid var(--ceibo);
+ border-radius:var(--r-plate); box-shadow:var(--shadow-plate);
+ padding:var(--s5); margin:var(--s6) 0;
+ }
+ .callout .c-k{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.66rem; font-weight:600; color:var(--ceibo);
+ display:block; margin-bottom:.5rem;
+ }
+ .callout p{ margin:0; font-size:.98rem; color:var(--ink-soft); line-height:1.65; }
+ .callout.warn{ border-left-color:var(--cobalto); }
+ .callout.warn .c-k{ color:var(--cobalto); }
+
+ /* tabla de lectura */
+ .table-wrap{ overflow-x:auto; margin:var(--s6) 0; border:1px solid var(--hueso-2); border-radius:var(--r-plate); box-shadow:var(--shadow-plate); }
+ table.read-table{ width:100%; border-collapse:collapse; background:#fff; font-size:.95rem; min-width:460px; }
+ table.read-table caption{ text-align:left; padding:var(--s4) var(--s5) 0; font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.12em; font-size:.66rem; color:var(--lodo); }
+ table.read-table th, table.read-table td{ text-align:left; padding:.85rem var(--s5); border-bottom:1px solid var(--hueso-2); vertical-align:top; line-height:1.5; }
+ table.read-table thead th{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.08em;
+ font-size:.7rem; color:var(--lodo); font-weight:600;
+ background:rgba(47,168,201,.06);
+ }
+ table.read-table td{ color:var(--ink-soft); }
+ table.read-table td strong{ color:var(--ink); font-weight:600; }
+ table.read-table tr:last-child td{ border-bottom:none; }
+
+ /* ============================================================
+ BLOQUE CTA AL CURSO
+ ============================================================ */
+ .cta-course{ padding-block:clamp(2.4rem, 5vw, 4rem); }
+ .cta-card{
+ position:relative;
+ display:grid; grid-template-columns: 1.2fr .8fr; gap:clamp(1.6rem,4vw,3rem);
+ align-items:center;
+ border-radius:var(--r-plate);
+ background:linear-gradient(155deg, rgba(47,168,201,.16), rgba(122,87,151,.12) 70%, rgba(11,43,46,.3));
+ border:1px solid rgba(238,242,236,.16);
+ box-shadow:var(--shadow-plate);
+ padding:clamp(1.6rem,4vw,2.8rem);
+ }
+ .cta-card::after{
+ content:""; position:absolute; inset:16px;
+ border:var(--frame) solid var(--coral); border-radius:5px; pointer-events:none;
+ }
+ .cta-card .cc-copy{ position:relative; z-index:2; }
+ .cta-card .cc-kicker{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.16em;
+ font-size:.66rem; font-weight:600; color:var(--ceibo);
+ display:block; margin-bottom:var(--s3);
+ }
+ .cta-card h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em;
+ font-size:clamp(1.5rem,3vw,2.1rem); line-height:1.04; margin:0 0 var(--s3);
+ color:var(--hueso); max-width:22ch;
+ }
+ .cta-card p{ color:rgba(238,242,236,.82); margin:0; max-width:46ch; line-height:1.6; }
+ .cta-card .cc-action{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:flex-start; gap:var(--s4); }
+ .cta-card .cc-price{ font-family:"Space Grotesk", monospace; }
+ .cta-card .cc-price .from{ font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(238,242,236,.86); display:block; }
+ .cta-card .cc-price .val{ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em; font-size:clamp(2rem,4vw,2.8rem); color:var(--ceibo); line-height:1; }
+ .btn{
+ display:inline-flex; align-items:center; gap:.5rem;
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.13em;
+ font-size:.76rem; font-weight:600;
+ padding:.92rem 1.4rem; border-radius:var(--r-pill);
+ cursor:pointer; border:1px solid transparent;
+ transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
+ }
+ .btn-primary{ background:var(--coral); color:#0C2447; box-shadow:0 14px 30px -14px rgba(47,168,201,.95); }
+ .btn-primary:hover{ transform:translateY(-2px); background:#3FB8D8; box-shadow:0 20px 38px -16px rgba(47,168,201,1); }
+ .cta-card .cc-note{ font-size:.72rem; color:rgba(238,242,236,.8); font-family:"Space Grotesk", monospace; letter-spacing:.05em; }
+ @media (max-width:760px){ .cta-card{ grid-template-columns:1fr; } }
+
+ /* ============================================================
+ SECCIONES CLARAS + ARTICULOS RELACIONADOS
+ ============================================================ */
+ .sec{ padding-block:clamp(2.6rem, 5vw, 4.2rem); }
+ .sec-kicker{ color:var(--sage); font-size:.72rem; margin-bottom:var(--s3); display:block; }
+ .sec-head h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em;
+ font-size:clamp(1.5rem, 3vw, 2.2rem); margin:0 0 var(--s7); color:var(--ink);
+ }
+
+ .grid-rel{
+ display:grid; grid-template-columns: repeat(3, 1fr);
+ gap:clamp(1rem, 2vw, 1.6rem);
+ }
+ @media (max-width:820px){ .grid-rel{ grid-template-columns:repeat(2,1fr); } }
+ @media (max-width:520px){ .grid-rel{ grid-template-columns:1fr; } }
+
+ .lamina{
+ position:relative; display:flex; flex-direction:column;
+ background:#fff;
+ border:1px solid var(--hueso-2);
+ border-radius:var(--r-plate);
+ padding:var(--s5);
+ box-shadow:var(--shadow-plate);
+ transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+ }
+ .lamina-top{
+ display:flex; align-items:center; justify-content:space-between;
+ margin-bottom:var(--s4);
+ }
+ .lam-no{ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.18em; font-size:.66rem; color:var(--lodo); }
+ .pill{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.6rem; font-weight:600;
+ padding:.3rem .6rem; border-radius:var(--r-pill);
+ white-space:nowrap; line-height:1;
+ }
+ .pill-disp{ background:var(--ceibo); color:#0C2447; }
+ .pill-prox{ background:transparent; color:var(--cobalto); border:1px solid var(--cobalto); }
+ .lamina h3{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.015em;
+ font-size:1.1rem; line-height:1.12; margin:0 0 .55rem;
+ color:var(--ink);
+ }
+ .lamina p.lam-dek{ margin:0 0 var(--s4); color:var(--ink-soft); font-size:.92rem; line-height:1.5; }
+ .lam-foot{
+ margin-top:auto; padding-top:var(--s4);
+ display:flex; align-items:center; justify-content:space-between; gap:.6rem;
+ border-top:1px solid var(--hueso-2);
+ }
+ .lam-state{ font-size:.66rem; letter-spacing:.04em; color:var(--lodo); white-space:nowrap; font-family:"Space Grotesk", monospace; }
+ .ccta{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.12em;
+ font-size:.66rem; font-weight:600;
+ padding:.55rem .85rem; border-radius:var(--r-pill);
+ border:1px solid; cursor:pointer; white-space:nowrap;
+ transition:transform .2s var(--ease), background .2s var(--ease), color .2s var(--ease), box-shadow .2s var(--ease);
+ }
+ .ccta-disp{ background:var(--ceibo); border-color:var(--ceibo); color:#0C2447; }
+ .ccta-disp:hover{ background:var(--ceibo-deep); border-color:var(--ceibo-deep); color:#fff; transform:translateY(-1px); }
+ .ccta-prox{ background:transparent; border-color:var(--cobalto); color:var(--cobalto); }
+ .ccta-prox:hover{ background:var(--cobalto); color:#fff; transform:translateY(-1px); }
+ .lamina.is-disp:hover{ transform:translateY(-6px); box-shadow:var(--shadow-lift); border-color:var(--ceibo); }
+ .lamina.is-prox:hover{ transform:translateY(-6px); box-shadow:var(--shadow-lift); border-color:var(--cobalto); }
+
+ /* ============================================================
+ FOOTER
+ ============================================================ */
+ footer.site{ padding-block:clamp(3rem,6vw,4.5rem) var(--s7); border-top:1px solid rgba(238,242,236,.1); }
+ .foot-grid{ display:flex; flex-wrap:wrap; gap:var(--s7); justify-content:space-between; align-items:flex-start; }
+ .foot-brand .wordmark{ font-size:1.4rem; margin-bottom:var(--s4); }
+ .foot-brand p{ color:var(--lodo-soft); max-width:40ch; font-size:.9rem; margin:0 0 var(--s5); }
+ .foot-tag{ display:inline-block; color:var(--ceibo); font-size:.72rem; border-left:2px solid var(--coral); padding-left:.8rem; }
+ .foot-contact{ display:flex; flex-direction:column; gap:var(--s3); }
+ .foot-contact .ck{ font-size:.64rem; color:var(--lodo); margin-bottom:.2rem; }
+ .foot-contact a, .foot-contact span{ color:var(--hueso); font-size:.92rem; }
+ .foot-contact a:hover{ color:var(--ceibo); }
+ .foot-rule{ margin-top:var(--s7); padding-top:var(--s5); border-top:1px solid rgba(238,242,236,.1);
+ display:flex; flex-wrap:wrap; gap:var(--s4); justify-content:space-between; align-items:center; }
+ .foot-rule small{ color:var(--lodo); font-size:.7rem; }
+ .foot-meta{ font-family:"Space Grotesk", monospace; letter-spacing:.14em; text-transform:uppercase; font-size:.62rem; color:var(--lodo); }
+</style>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+ {
+ "@type": "EducationalOrganization",
+ "@id": "https://www.celebios.com/#org",
+ "name": "CELEBIOS",
+ "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+ "url": "https://www.celebios.com",
+ "logo": "https://www.celebios.com/brand/logo-white.png",
+ "foundingDate": "2010",
+ "areaServed": ["MX", "LATAM"],
+ "sameAs": ["https://instagram.com/celebios_edu"]
+ },
+ {
+ "@type": "BlogPosting",
+ "headline": "Como liberar fauna silvestre correctamente: soft-release paso a paso",
+ "description": "Guia para rescatistas y profesionales: criterios de aptitud para liberacion, soft-release vs hard-release, monitoreo post-liberacion y el marco legal en Mexico.",
+ "url": "https://www.celebios.com/recursos/como-liberar-fauna-silvestre",
+ "mainEntityOfPage": "https://www.celebios.com/recursos/como-liberar-fauna-silvestre",
+ "inLanguage": "es",
+ "image": "https://www.celebios.com/brand/logo-white.png",
+ "author": { "@id": "https://www.celebios.com/#org" },
+ "publisher": { "@id": "https://www.celebios.com/#org" },
+ "about": [
+ { "@type": "Thing", "name": "Liberacion de fauna silvestre" },
+ { "@type": "Thing", "name": "Rehabilitacion de fauna silvestre" },
+ { "@type": "Thing", "name": "Soft-release" }
+ ]
+ },
+ {
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+ { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.celebios.com/" },
+ { "@type": "ListItem", "position": 2, "name": "Recursos", "item": "https://www.celebios.com/recursos" },
+ { "@type": "ListItem", "position": 3, "name": "Como liberar fauna silvestre correctamente", "item": "https://www.celebios.com/recursos/como-liberar-fauna-silvestre" }
+ ]
+ },
+ {
+ "@type": "FAQPage",
+ "mainEntity": [
+ {
+ "@type": "Question",
+ "name": "¿Como se libera correctamente la fauna silvestre?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Una liberacion correcta no es soltar al animal: es el ultimo paso de un proceso. Se confirma que el ejemplar esta sano y conserva sus conductas de supervivencia, se elige un habitat adecuado dentro de su rango natural, se libera con el metodo apropiado (soft o hard release) y se monitorea despues para verificar que se adapta."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "¿Que diferencia hay entre soft-release y hard-release?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "En la liberacion blanda (soft-release) el animal pasa por una fase de aclimatacion en el sitio, con apoyo temporal de refugio o alimento que se retira de forma gradual. En la liberacion dura (hard-release) se suelta directamente sin transicion. La blanda se prefiere en animales rehabilitados, criados a mano o territoriales."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "¿Por que es importante el monitoreo post-liberacion?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Porque sin seguimiento no se sabe si la liberacion funciono. El monitoreo verifica que el animal se alimenta, se desplaza y sobrevive en su nuevo entorno, permite intervenir si falla la adaptacion y genera datos para mejorar futuras liberaciones. Soltar sin monitorear es un acto de fe, no un protocolo."
+ }
+ }
+ ]
+ }
+ ]
+}
+</script>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site on-dark">
+ <div class="wrap nav">
+ <a class="wordmark" href="lamina-viva.html" aria-label="CELEBIOS inicio">
+ <img class="brandlogo" src="brand/logo-white.png" alt="CELEBIOS" width="100" height="38">
+ </a>
+
+ <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+ </button>
+
+ <nav class="nav-links" id="navLinks" aria-label="Principal">
+ <a href="catalogo.html">Cursos</a>
+ <a href="diplomado-rehab.html">Diplomado</a>
+ <a href="recursos.html" class="is-active" aria-current="page">Recursos</a>
+ <a href="nosotros.html">Nosotros</a>
+ <a class="nav-cta" href="catalogo.html">Explorar cursos</a>
+ </nav>
+ </div>
+</header>
+
+<main id="top">
+
+<!-- ===================== HERO DEL ARTICULO ===================== -->
+<section class="surface-dark art-hero on-dark">
+ <div class="wrap">
+ <span class="art-kicker mono"><span class="rule"></span>Recursos · rescate y rehabilitación</span>
+ <h1 class="display">Cómo liberar fauna silvestre correctamente: <span class="accent">soft-release</span> paso a paso</h1>
+ <p class="art-meta">
+ <span class="dot" aria-hidden="true"></span>
+ <span class="by">Por el equipo de CELEBIOS</span>
+ <span class="sep">·</span>
+ <span>Revisión veterinaria Equipo CELEBIOS</span>
+ <span class="sep">·</span>
+ <span>Lectura 8 min</span>
+ </p>
+ </div>
+</section>
+
+<!-- ===================== CUERPO DE LECTURA ===================== -->
+<article class="surface-light article-body">
+ <div class="wrap">
+ <div class="reading">
+
+ <p class="lead">Liberar fauna silvestre correctamente no es soltar al animal: es el último paso de un proceso. Primero se confirma que está sano y conserva sus conductas de supervivencia; luego se elige un hábitat adecuado, se aplica el método de liberación apropiado (soft o hard release) y se monitorea después para comprobar que de verdad sobrevive.</p>
+
+ <p>La imagen de abrir una jaula y ver volar a un animal es poderosa, pero engañosa. Una liberación apresurada o en el sitio equivocado condena al ejemplar tanto como dejarlo en cautiverio: muere de hambre, no reconoce depredadores, no encuentra pareja o desplaza a otro de su misma especie. Por eso la rehabilitación de fauna mide su éxito en lo que ocurre <strong>después</strong>, no en el momento de soltar. A continuación verás los criterios de aptitud, la diferencia entre liberación blanda y dura, el monitoreo y el marco legal mexicano.</p>
+
+ <div class="callout warn">
+ <span class="c-k mono">Importante</span>
+ <p>En México la liberación de fauna silvestre está regulada. No es una decisión individual: requiere coordinación con la autoridad ambiental (SEMARNAT) y, según el caso, con los centros oficiales (CIVS). Este artículo es informativo y describe principios; nunca sustituye la normativa vigente ni la asesoría de la autoridad y de un médico veterinario responsable.</p>
+ </div>
+
+ <h2>¿Qué significa liberar fauna silvestre correctamente?</h2>
+ <p>Liberar bien significa devolver al animal a la naturaleza con una probabilidad real de sobrevivir y, además, sin dañar al ecosistema que lo recibe. Implica responder a tres preguntas en orden: <strong>¿este individuo es apto?</strong>, <strong>¿este sitio es adecuado?</strong> y <strong>¿con qué método y seguimiento?</strong> Si alguna respuesta es "no", la liberación se pospone o se descarta, y se busca un destino alternativo conforme a la ley.</p>
+ <p>El error más frecuente del rescatista bienintencionado es saltarse la evaluación: ve al animal "recuperado" y lo suelta donde lo encontró o donde le resulta cómodo. La rehabilitación profesional invierte ese impulso. El objetivo no es liberar rápido, sino liberar a quien puede ganarse la vida solo.</p>
+
+ <h2>¿Qué criterios debe cumplir un animal antes de liberarlo?</h2>
+ <p>Antes de cualquier liberación se hace una evaluación integral. Un ejemplar es candidato cuando reúne, en conjunto, las siguientes condiciones (no basta una sola):</p>
+ <ul>
+ <li><strong>Salud física plena:</strong> recuperado de la lesión o enfermedad, con peso y condición corporal normales, sin secuelas que impidan moverse, cazar, volar o nadar.</li>
+ <li><strong>Funcionalidad completa:</strong> visión, audición, locomoción y, en aves, capacidad de vuelo sostenido verificada. Un ala que suelda torcida o una garra perdida pueden ser descalificantes.</li>
+ <li><strong>Conductas de supervivencia intactas:</strong> sabe buscar y procesar su alimento natural, reconoce y evita depredadores, y no se ha habituado ni "improntado" en humanos.</li>
+ <li><strong>Sin riesgo sanitario:</strong> no porta enfermedades transmisibles que pongan en peligro a las poblaciones silvestres del sitio receptor.</li>
+ <li><strong>Identidad de especie y origen claros:</strong> se conoce la especie, idealmente su procedencia, y que el sitio de liberación cae dentro de su distribución natural.</li>
+ </ul>
+
+ <div class="callout">
+ <span class="c-k mono">La trampa de la impronta</span>
+ <p>Un animal criado a mano que asocia al humano con comida o seguridad casi nunca es apto para liberación directa: se acercará a personas, perderá miedo a perros y autos, y morirá pronto. La prevención de la impronta empieza el primer día del rescate, no antes de soltarlo.</p>
+ </div>
+
+ <h2>¿Qué diferencia hay entre soft-release y hard-release?</h2>
+ <p>Hay dos grandes estrategias para devolver un animal al medio. No son rivales: cada una sirve para perfiles distintos, y la elección es parte del protocolo.</p>
+
+ <h3><span class="signo-no">A</span> Liberación blanda (soft-release)</h3>
+ <p>El animal se traslada al sitio y pasa por una <strong>fase de aclimatación</strong> antes de quedar totalmente libre. Suele haber un encierro temporal en el lugar (un aviario o corral de preliberación), o un periodo en que se ofrece refugio y alimento que se va retirando de forma gradual. La idea es que el animal aprenda el terreno, ubique recursos y agua, y haga la transición sin un choque brusco. Es el enfoque preferido para ejemplares rehabilitados, criados a mano (cuando son recuperables), especies territoriales o individuos que estuvieron mucho tiempo en cautiverio.</p>
+
+ <h3><span class="signo-no">B</span> Liberación dura (hard-release)</h3>
+ <p>El animal se suelta directamente en el sitio, sin fase de transición. Es apropiada cuando el ejemplar estuvo poco tiempo bajo cuidado, conserva plenamente sus instintos y se libera en su propio territorio o muy cerca, sobre todo en especies de amplio desplazamiento. Tiene la ventaja de minimizar el contacto humano y el estrés del manejo prolongado, pero exige que el animal ya esté en condiciones óptimas.</p>
+
+ <div class="table-wrap" role="region" aria-label="Tabla comparativa soft-release y hard-release" tabindex="0">
+ <table class="read-table">
+ <caption>Soft-release vs. hard-release: cuándo usar cada una</caption>
+ <thead>
+ <tr>
+ <th scope="col">Aspecto</th>
+ <th scope="col">Soft-release (blanda)</th>
+ <th scope="col">Hard-release (dura)</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td><strong>Cómo se hace</strong></td>
+ <td>Aclimatación en sitio + apoyo gradual que se retira</td>
+ <td>Suelta directa, sin transición</td>
+ </tr>
+ <tr>
+ <td><strong>Perfil ideal</strong></td>
+ <td>Rehabilitados, criados a mano, territoriales, cautiverio largo</td>
+ <td>Poco tiempo en cuidado, instintos intactos, su propio territorio</td>
+ </tr>
+ <tr>
+ <td><strong>Ventaja</strong></td>
+ <td>Mejor adaptación; reduce dispersión y mortalidad temprana</td>
+ <td>Menos contacto humano; menor costo y manejo</td>
+ </tr>
+ <tr>
+ <td><strong>Costo / esfuerzo</strong></td>
+ <td>Alto: infraestructura y tiempo en campo</td>
+ <td>Bajo: logística sencilla</td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+
+ <h2>¿Dónde y cuándo se debe liberar?</h2>
+ <p>El individuo apto puede fracasar si el sitio o el momento son malos. La elección del lugar y la fecha es tan técnica como la evaluación clínica:</p>
+ <ul>
+ <li><strong>Dentro de la distribución natural de la especie:</strong> nunca en una región donde la especie no existe, para no crear poblaciones exóticas ni alterar el ecosistema receptor.</li>
+ <li><strong>Hábitat de calidad y con capacidad de carga:</strong> con alimento, agua y refugio suficientes, y sin saturar a las poblaciones que ya viven ahí.</li>
+ <li><strong>Lejos de amenazas evidentes:</strong> carreteras, zonas urbanas, cultivos con agroquímicos, áreas de caza o de alto conflicto con personas.</li>
+ <li><strong>En la temporada adecuada:</strong> evitar épocas de escasez extrema, climas hostiles o momentos reproductivos sensibles; el clima del día de la suelta también cuenta.</li>
+ <li><strong>Respetando la estructura social:</strong> en especies territoriales o de grupos, considerar que llega un individuo nuevo a un sistema que ya tiene reglas.</li>
+ </ul>
+
+ <h2>¿Cómo se hace el monitoreo post-liberación?</h2>
+ <p>El monitoreo es lo que separa una liberación profesional de un acto de fe. Sin seguimiento no hay forma de saber si el animal sobrevivió, y se pierde la información que mejoraría las siguientes liberaciones. Según la especie y los recursos, el seguimiento va de lo simple a lo sofisticado:</p>
+ <ol>
+ <li><strong>Observación directa en los primeros días.</strong> En soft-release, vigilar desde distancia si el animal se alimenta, se desplaza y usa el refugio antes de retirar el apoyo.</li>
+ <li><strong>Marcaje visible.</strong> Anillos, crotales o marcas que permiten reidentificar al individuo si reaparece, sin equipo costoso.</li>
+ <li><strong>Telemetría.</strong> Radiotransmisores o collares/dispositivos GPS para seguir desplazamientos, uso del hábitat y supervivencia en especies y proyectos que lo justifican.</li>
+ <li><strong>Estaciones de apoyo monitoreadas.</strong> Comederos o bebederos con cámaras trampa que documentan si el ejemplar (u otros) usan el sitio.</li>
+ <li><strong>Registro y análisis.</strong> Documentar qué funcionó y qué no, para retroalimentar el protocolo. Un dato bien registrado vale más que diez liberaciones sin notas.</li>
+ </ol>
+ <p>El monitoreo también define un plan de contingencia: <strong>qué se hace si el animal no se adapta</strong>. Recapturarlo a tiempo, reforzar el apoyo alimenticio o reevaluar el sitio son decisiones que solo se pueden tomar si alguien está observando.</p>
+
+ <h2>¿Cuál es el marco legal para liberar fauna en México?</h2>
+ <p>En México, la liberación de fauna silvestre se rige por la <strong>Ley General de Vida Silvestre</strong> y su Reglamento, bajo la rectoría de la <strong>SEMARNAT</strong>. La ley define la liberación como dejar en libertad a ejemplares en un hábitat natural de la especie, y contempla a los <strong>Centros para la Conservación e Investigación de la Vida Silvestre (CIVS)</strong>, encargados de recibir, rehabilitar y reintroducir ejemplares producto de rescates, entregas o aseguramientos. En la práctica esto significa que liberar no es un acto particular: debe coordinarse con la autoridad, que evalúa el hábitat previo a la suelta y da seguimiento a los ejemplares liberados.</p>
+
+ <div class="callout warn">
+ <span class="c-k mono">Verifica con la autoridad</span>
+ <p>Los requisitos específicos (permisos, predios habilitados, especies en riesgo bajo la NOM-059-SEMARNAT, especies de jurisdicción especial) cambian y dependen del caso. Antes de planear una liberación, consulta la normativa vigente y a la autoridad ambiental competente. Para especies en riesgo o decomisos, el cauce correcto suele pasar por un CIVS. No liberes por cuenta propia un animal cuyo estatus legal o sanitario no conoces.</p>
+ </div>
+
+ <p>Fuentes de consulta del marco legal: <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LGVS.pdf" rel="nofollow noopener" target="_blank" style="color:var(--ceibo); text-decoration:underline; text-underline-offset:3px;">Ley General de Vida Silvestre</a>, su <a href="https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LGVS.pdf" rel="nofollow noopener" target="_blank" style="color:var(--ceibo); text-decoration:underline; text-underline-offset:3px;">Reglamento</a> y la <a href="https://www.gob.mx/semarnat" rel="nofollow noopener" target="_blank" style="color:var(--ceibo); text-decoration:underline; text-underline-offset:3px;">SEMARNAT</a>. Para criterios técnicos de reintroducción, la literatura de referencia internacional son las directrices de la UICN sobre reintroducciones y traslocaciones para la conservación.</p>
+
+ <h2>¿Qué errores evitar al liberar fauna silvestre?</h2>
+ <p>La mayoría de las liberaciones fallidas repiten los mismos errores. Conocerlos es la mitad de la prevención:</p>
+ <ul>
+ <li><strong>Soltar antes de tiempo:</strong> confundir "ya se ve bien" con "ya está listo". La aptitud se evalúa, no se intuye.</li>
+ <li><strong>Liberar un animal improntado:</strong> que asocia humanos con comida; volverá a buscarlos y morirá o causará conflicto.</li>
+ <li><strong>Elegir mal el sitio:</strong> fuera de su rango, en hábitat pobre o junto a una amenaza obvia.</li>
+ <li><strong>No monitorear:</strong> soltar y desentenderse; sin seguimiento no hay aprendizaje ni rescate posible.</li>
+ <li><strong>Ignorar la ley:</strong> liberar por cuenta propia sin coordinar con la autoridad, sobre todo en especies en riesgo o decomisadas.</li>
+ <li><strong>Olvidar la bioseguridad:</strong> liberar un animal que podría introducir patógenos a poblaciones sanas.</li>
+ </ul>
+
+ </div>
+ </div>
+</article>
+
+<!-- ===================== BLOQUE CTA AL CURSO ===================== -->
+<section class="surface-dark cta-course on-dark" aria-labelledby="cch">
+ <div class="wrap">
+ <div class="cta-card">
+ <div class="cc-copy">
+ <span class="cc-kicker mono">¿Quieres formarte en esto?</span>
+ <h2 id="cch">Del rescate en campo al monitoreo post-liberación</h2>
+ <p>La liberación es el último eslabón de una cadena que empieza con el triaje y termina con el seguimiento. En el <a href="diplomado-rehab.html" style="color:var(--ceibo); text-decoration:underline; text-underline-offset:3px;">Diplomado de Rescate y Rehabilitación de Fauna Silvestre</a> cubres todo el flujo, con docentes de IFAW y UNAM, práctica en campo y aval CONCERVET. Para MVZ, biólogos y carreras afines.</p>
+ </div>
+ <div class="cc-action">
+ <div class="cc-price">
+ <span class="from">Desde</span>
+ <span class="val">$19,500 MXN</span>
+ </div>
+ <a class="btn btn-primary" href="diplomado-rehab.html">Ver el diplomado</a>
+ <span class="cc-note">170 h · 13 módulos · aval CONCERVET</span>
+ </div>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== ARTICULOS RELACIONADOS ===================== -->
+<section class="surface-light sec" aria-labelledby="relh">
+ <div class="wrap">
+ <div class="sec-head">
+ <span class="sec-kicker mono">Sigue leyendo</span>
+ <h2 id="relh">Artículos relacionados</h2>
+ </div>
+
+ <div class="grid-rel">
+
+ <!-- Animal herido · disponible -->
+ <article class="lamina is-disp">
+ <div class="lamina-top">
+ <span class="lam-no">Recurso 05</span>
+ <span class="pill pill-disp">Recurso</span>
+ </div>
+ <h3>Qué hacer si encuentras un animal silvestre herido</h3>
+ <p class="lam-dek">Los primeros pasos correctos (y lo que NUNCA debes hacer) cuando hallas fauna silvestre lastimada.</p>
+ <div class="lam-foot">
+ <span class="lam-state">Guía práctica</span>
+ <a class="ccta ccta-disp" href="recurso-animal-herido.html">Leer qué hacer ante un animal herido</a>
+ </div>
+ </article>
+
+ <!-- Requisitos legales · disponible -->
+ <article class="lamina is-disp">
+ <div class="lamina-top">
+ <span class="lam-no">Recurso 02</span>
+ <span class="pill pill-disp">Recurso</span>
+ </div>
+ <h3>Requisitos legales para rehabilitar fauna silvestre en México</h3>
+ <p class="lam-dek">SEMARNAT, UMA y CIVS: qué marco regula la rehabilitación y por dónde empezar de forma legal.</p>
+ <div class="lam-foot">
+ <span class="lam-state">Guía profesional</span>
+ <a class="ccta ccta-disp" href="recurso-requisitos-rehabilitar.html">Leer los requisitos legales</a>
+ </div>
+ </article>
+
+ <!-- Diplomado · disponible -->
+ <article class="lamina is-disp">
+ <div class="lamina-top">
+ <span class="lam-no">Diplomado</span>
+ <span class="pill pill-disp">Disponible</span>
+ </div>
+ <h3>Diplomado de Rescate y Rehabilitación de Fauna Silvestre</h3>
+ <p class="lam-dek">170 h, 13 módulos, docentes IFAW y UNAM, práctica en campo y aval CONCERVET. México y LATAM.</p>
+ <div class="lam-foot">
+ <span class="lam-state">$19,500 MXN</span>
+ <a class="ccta ccta-disp" href="diplomado-rehab.html">Ver diplomado</a>
+ </div>
+ </article>
+
+ </div>
+ </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="surface-dark site on-dark">
+ <div class="wrap">
+ <div class="foot-grid">
+ <div class="foot-brand">
+ <img class="brandlogo" src="brand/logo-white.png" alt="CELEBIOS" width="120" height="46">
+
+ <p>Centro Latinoamericano de Estudios en Ciencias Biológicas y de la Salud Animal.</p>
+ <span class="foot-tag mono-soft">Eliminando fronteras, acercando al mundo.</span>
+ </div>
+
+ <div class="foot-contact">
+ <div>
+ <div class="ck mono">Correo</div>
+ <a href="mailto:contacto@celebios.com">contacto@celebios.com</a>
+ </div>
+ <div>
+ <div class="ck mono">WhatsApp</div>
+ <a href="https://wa.me/529581033574">+52 958 103 3574</a>
+ </div>
+ <div>
+ <div class="ck mono">Instagram</div>
+ <a href="https://instagram.com/celebios_edu">@celebios_edu</a>
+ </div>
+ </div>
+ </div>
+
+ <div class="foot-rule">
+ <small>© 2026 CELEBIOS · Avalada por CONCERVET · 16 años en LATAM</small>
+ <span class="foot-meta">Atlas Lat. · Ed. Lámina Viva</span>
+ </div>
+ </div>
+</footer>
+
+<script>
+ (function{
+ // menu movil
+ var btn = document.getElementById("menuBtn");
+ var links = document.getElementById("navLinks");
+ if(btn && links){
+ btn.addEventListener("click", function{
+ var open = links.classList.toggle("open");
+ btn.setAttribute("aria-expanded", open ? "true" : "false");
+ });
+ links.addEventListener("click", function(e){
+ if(e.target.tagName === "A"){
+ links.classList.remove("open");
+ btn.setAttribute("aria-expanded", "false");
+ }
+ });
+ }
+ });
+</script>
+
+</body>
+</html>

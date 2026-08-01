@@ -1,0 +1,182 @@
+[
+ {
+  "t": "",
+  "h": "/discover/apps/ios/latest"
+ },
+ {
+  "t": "Apps",
+  "h": "/discover/apps/ios/latest"
+ },
+ {
+  "t": "Sites",
+  "h": "/discover/sites/latest"
+ },
+ {
+  "t": "",
+  "h": "/saved/mobile/screens"
+ },
+ {
+  "t": "",
+  "h": "/community/mobile/featured"
+ },
+ {
+  "t": "Apps",
+  "h": "/discover/apps/ios/latest"
+ },
+ {
+  "t": "Sites",
+  "h": "/discover/sites/latest"
+ },
+ {
+  "t": "Shopping",
+  "h": "/search/apps/ios?content_type=apps&sort=popularity&filter=appCategories.Shopping"
+ },
+ {
+  "t": "Health & Fitness",
+  "h": "/search/apps/ios?content_type=apps&sort=popularity&filter=appCategories.Health+%26+Fitness"
+ },
+ {
+  "t": "Business",
+  "h": "/search/apps/ios?content_type=apps&sort=popularity&filter=appCategories.Business"
+ },
+ {
+  "t": "Lifestyle",
+  "h": "/search/apps/ios?content_type=apps&sort=popularity&filter=appCategories.Lifestyle"
+ },
+ {
+  "t": "AI",
+  "h": "/search/apps/ios?content_type=apps&sort=popularity&filter=appCategories.AI"
+ },
+ {
+  "t": "Welcome & Get Started",
+  "h": "/search/apps/ios?content_type=screens&sort=popularity&filter=screenPatterns.Welcome+%26+Get+Started"
+ },
+ {
+  "t": "Filter & Sort",
+  "h": "/search/apps/ios?content_type=screens&sort=popularity&filter=screenPatterns.Filter+%26+Sort"
+ },
+ {
+  "t": "Payment Method",
+  "h": "/search/apps/ios?content_type=screens&sort=popularity&filter=screenPatterns.Payment+Method"
+ },
+ {
+  "t": "Signup",
+  "h": "/search/apps/ios?content_type=screens&sort=popularity&filter=screenPatterns.Signup"
+ },
+ {
+  "t": "My Account & Profile",
+  "h": "/search/apps/ios?content_type=screens&sort=popularity&filter=screenPatterns.My+Account+%26+Profile"
+ },
+ {
+  "t": "Button",
+  "h": "/search/apps/ios?content_type=ui-elements&sort=popularity&filter=screenElements.Button"
+ },
+ {
+  "t": "Banner",
+  "h": "/search/apps/ios?content_type=ui-elements&sort=popularity&filter=screenElements.Banner"
+ },
+ {
+  "t": "Text Field",
+  "h": "/search/apps/ios?content_type=ui-elements&sort=popularity&filter=screenElements.Text+Field"
+ },
+ {
+  "t": "Table",
+  "h": "/search/apps/ios?content_type=ui-elements&sort=popularity&filter=screenElements.Table"
+ },
+ {
+  "t": "Progress Indicator",
+  "h": "/search/apps/ios?content_type=ui-elements&sort=popularity&filter=screenElements.Progress+Indicator"
+ },
+ {
+  "t": "Editing Profile",
+  "h": "/search/apps/ios?content_type=flows&sort=popularity&filter=flowActions.Editing+Profile"
+ },
+ {
+  "t": "Onboarding",
+  "h": "/search/apps/ios?content_type=flows&sort=popularity&filter=flowActions.Onboarding"
+ },
+ {
+  "t": "Chatting & Sending Messages",
+  "h": "/search/apps/ios?content_type=flows&sort=popularity&filter=flowActions.Chatting+%26+Sending+Messages"
+ },
+ {
+  "t": "Creating Account",
+  "h": "/search/apps/ios?content_type=flows&sort=popularity&filter=flowActions.Creating+Account"
+ },
+ {
+  "t": "Subscribing & Upgrading",
+  "h": "/search/apps/ios?content_type=flows&sort=popularity&filter=flowActions.Subscribing+%26+Upgrading"
+ },
+ {
+  "t": "iOS",
+  "h": "/discover/apps/ios/latest"
+ },
+ {
+  "t": "Web",
+  "h": "/discover/apps/web/latest"
+ },
+ {
+  "t": "Latest",
+  "h": "/discover/apps/ios/latest"
+ },
+ {
+  "t": "Most popular",
+  "h": "/discover/apps/ios/popular"
+ },
+ {
+  "t": "Top rated",
+  "h": "/discover/apps/ios/top"
+ },
+ {
+  "t": "Animations",
+  "h": "/discover/apps/ios/animations"
+ },
+ {
+  "t": "",
+  "h": "/apps/hypelist-ios-5601988a-32b9-4b2d-8eca-bb1591a1a7f2/bf74a19a-0364-4293-96de-35d01e9dfb58/screens"
+ },
+ {
+  "t": "Updated",
+  "h": "/apps/hypelist-ios-5601988a-32b9-4b2d-8eca-bb1591a1a7f2/bf74a19a-0364-4293-96de-35d01e9dfb58/screens"
+ },
+ {
+  "t": "",
+  "h": "/apps/breathwrk-ios-3107d716-8d07-4962-b6ec-29eb360653a1/c1143163-c56e-47be-a155-075e1fdbcd5c/screens"
+ },
+ {
+  "t": "New",
+  "h": "/apps/breathwrk-ios-3107d716-8d07-4962-b6ec-29eb360653a1/c1143163-c56e-47be-a155-075e1fdbcd5c/screens"
+ },
+ {
+  "t": "",
+  "h": "/apps/ny-times-ios-d56ccbd6-843a-4fae-a697-e9a58529fabd/5d216662-a365-434e-a9f0-09a7e3864e5d/screens"
+ },
+ {
+  "t": "Updated",
+  "h": "/apps/ny-times-ios-d56ccbd6-843a-4fae-a697-e9a58529fabd/5d216662-a365-434e-a9f0-09a7e3864e5d/screens"
+ },
+ {
+  "t": "",
+  "h": "/apps/photoroom-ios-dc962dd8-e6a0-4553-9939-ac906e1fd84b/7f9925f2-5a17-40cb-9828-ff314e3191d0/screens"
+ },
+ {
+  "t": "New",
+  "h": "/apps/photoroom-ios-dc962dd8-e6a0-4553-9939-ac906e1fd84b/7f9925f2-5a17-40cb-9828-ff314e3191d0/screens"
+ },
+ {
+  "t": "",
+  "h": "/apps/apple-news-ios-2ba30e05-f5ad-4666-82d8-677904a0c82e/265b7905-18b6-4f2f-9f7f-1174f0420c78/screens"
+ },
+ {
+  "t": "Updated",
+  "h": "/apps/apple-news-ios-2ba30e05-f5ad-4666-82d8-677904a0c82e/265b7905-18b6-4f2f-9f7f-1174f0420c78/screens"
+ },
+ {
+  "t": "",
+  "h": "/apps/whatnot-ios-e004776c-e3b6-46f6-935b-234af5ecac45/ac33d719-7992-44ec-aef0-e5700251a1c6/screens"
+ },
+ {
+  "t": "Updated",
+  "h": "/apps/whatnot-ios-e004776c-e3b6-46f6-935b-234af5ecac45/ac33d719-7992-44ec-aef0-e5700251a1c6/screens"
+ }
+]

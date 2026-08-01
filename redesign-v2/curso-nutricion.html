@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curso de Nutrición de Fauna en Cautiverio | CELEBIOS</title>
+<meta name="description" content="Nutrición de fauna en cautiverio: requerimientos por taxón, formulación de dietas y errores que enferman. En desarrollo. Únete a la lista de espera.">
+<link rel="canonical" href="https://www.celebios.com/cursos/nutricion-fauna-cautiverio">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CELEBIOS">
+<meta property="og:title" content="Curso de Nutrición de Fauna en Cautiverio | CELEBIOS">
+<meta property="og:description" content="Nutrición de fauna en cautiverio: requerimientos por grupo taxonómico, formulación de dietas y errores de alimentación que enferman. En desarrollo: déjanos tu correo y entra a la lista de espera.">
+<meta property="og:url" content="https://www.celebios.com/cursos/nutricion-fauna-cautiverio">
+<meta property="og:image" content="https://www.celebios.com/brand/logo-white.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Curso de Nutrición de Fauna en Cautiverio | CELEBIOS">
+<meta name="twitter:description" content="Requerimientos por taxón, formulación de dietas y errores de alimentación en cautiverio. Curso en desarrollo. Únete a la lista de espera.">
+<meta name="twitter:image" content="https://www.celebios.com/brand/logo-white.png">
+<meta name="theme-color" content="#14294F">
+<link rel="icon" href="brand/logo-white.png" type="image/png">
+<link rel="apple-touch-icon" href="brand/logo-white.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+ /* ============================================================
+ CELEBIOS - Direccion "LAMINA VIVA"
+ Atlas naturalista latinoamericano. Alternancia editorial
+ placa-oscura (Charca) <-> pliego-claro (Hueso).
+ ============================================================ */
+
+ :root{
+ /* Paleta */
+ /* === PALETA DE MARCA (colores del logo CELEBIOS) === */
+ --charca: #14294F; /* marino canvas (marca) */
+ --charca-2: #1E3768; /* panel marino */
+ --ceibo: #2FA8C9; /* CIAN del logo = disponible + accion */
+ --ceibo-deep: #1B6076;
+ --coral: #2FA8C9; /* signal/accion (cian): frames, CTAs, focus */
+ --cobalto: #7A5797; /* MORADO del logo = proxima edicion */
+ --sage: #6FB07A; /* VERDE-SALVIA del logo = acento de vida */
+ --hueso: #EEF2EC; /* texto sobre marino / fondo claro */
+ --hueso-2: #E1E8E1;
+ --lodo: #4D5F7C; /* texto secundario sobre claro (navy-gray, AA) */
+ --lodo-line: #93A6AC; /* bordes/filetes atenuados (no texto) */
+ --lodo-soft: #9DB2C2; /* texto secundario sobre marino (AA) */
+
+ /* Tokens semanticos */
+ --paper: var(--hueso);
+ --ink: #16294C; /* marino ink */
+ --ink-soft: #45587A;
+
+ /* Espaciado (escala 4) */
+ --s1: .25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem;
+ --s6:2rem; --s7:3rem; --s8:4rem; --s9:6rem; --s10:8rem;
+
+ /* Radios y filetes */
+ --r-plate: 6px;
+ --r-pill: 999px;
+ --frame: 2px;
+
+ --shadow-plate: 0 1px 0 rgba(11,43,46,.04), 0 18px 40px -28px rgba(11,43,46,.55);
+ --shadow-lift: 0 2px 0 rgba(11,43,46,.06), 0 34px 64px -30px rgba(11,43,46,.6);
+
+ --maxw: 1240px;
+ --ease: cubic-bezier(.2,.7,.2,1);
+ }
+
+ *,*::before,*::after{ box-sizing:border-box; }
+
+ html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+ @media (prefers-reduced-motion: reduce){
+ html{ scroll-behavior:auto; }
+ *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+ }
+
+ body{
+ margin:0;
+ font-family:"Instrument Sans", system-ui, sans-serif;
+ color:var(--ink);
+ background:var(--paper);
+ line-height:1.5;
+ font-weight:400;
+ -webkit-font-smoothing:antialiased;
+ text-rendering:optimizeLegibility;
+ }
+
+ /* Tipos utilitarios */
+ .display{
+ font-family:"Bricolage Grotesque", sans-serif;
+ font-weight:800;
+ letter-spacing:-.02em;
+ line-height:.95;
+ }
+ .mono{
+ font-family:"Space Grotesk", monospace;
+ text-transform:uppercase;
+ letter-spacing:.18em;
+ font-weight:500;
+ }
+ .mono-soft{ font-family:"Space Grotesk", monospace; letter-spacing:.06em; }
+
+ a{ color:inherit; text-decoration:none; }
+ img,svg{ display:block; max-width:100%; }
+
+ :focus-visible{
+ outline:3px solid var(--coral);
+ outline-offset:3px;
+ border-radius:3px;
+ }
+ .on-dark :focus-visible{ outline-color:var(--ceibo); }
+
+ .wrap{ width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:clamp(1.1rem, 4vw, 3rem); }
+
+ /* ====== Superficies ====== */
+ .surface-dark{
+ background:
+ radial-gradient(120% 120% at 85% -10%, rgba(47,168,201,.14), transparent 55%),
+ radial-gradient(90% 90% at 0% 110%, rgba(122,87,151,.12), transparent 50%),
+ var(--charca);
+ color:var(--hueso);
+ }
+ .surface-light{ background:var(--paper); color:var(--ink); }
+
+ /* ============================================================
+ HEADER
+ ============================================================ */
+ header.site{
+ position:sticky; top:0; z-index:50;
+ background:rgba(20,41,79,.92);
+ backdrop-filter:saturate(140%) blur(10px);
+ border-bottom:1px solid rgba(238,242,236,.12);
+ color:var(--hueso);
+ }
+ .nav{
+ display:flex; align-items:center; gap:var(--s5);
+ height:68px;
+ }
+ .wordmark{
+ display:flex; align-items:center; gap:.6rem;
+ font-family:"Bricolage Grotesque", sans-serif;
+ font-weight:800; letter-spacing:-.01em; font-size:1.18rem;
+ color:var(--hueso);
+ }
+ .wordmark .glyph{
+ width:30px; height:30px; flex:0 0 auto;
+ }
+ .wordmark .glyph svg{ width:100%; height:100%; }
+ .brandlogo{ height:38px; width:auto; display:block; }
+ .foot-brand .brandlogo{ height:46px; margin-bottom:var(--s4); }
+ .nav-links{
+ display:flex; align-items:center; gap:.2rem;
+ margin-left:auto;
+ }
+ .nav-links a{
+ font-size:.86rem; font-weight:500;
+ padding:.5rem .8rem; border-radius:var(--r-pill);
+ color:rgba(238,242,236,.82);
+ transition:color .2s var(--ease), background .2s var(--ease);
+ }
+ .nav-links a:hover{ color:var(--hueso); background:rgba(238,242,236,.08); }
+ .nav-links a.is-active{ color:var(--hueso); background:rgba(238,242,236,.12); }
+ /* link activo de la nav */
+ .nav-links a[aria-current="page"]{ color:var(--hueso); background:rgba(47,168,201,.16); }
+ .nav-cta{
+ display:inline-flex; align-items:center; gap:.45rem;
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.72rem; font-weight:600;
+ padding:.62rem 1.05rem; border-radius:var(--r-pill);
+ background:var(--coral); color:#0C2447;
+ border:1px solid transparent;
+ transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+ box-shadow:0 8px 22px -12px rgba(47,168,201,.9);
+ }
+ .nav-cta:hover{ transform:translateY(-1px); background:#3FB8D8; box-shadow:0 12px 26px -12px rgba(47,168,201,1); }
+
+ .menu-btn{
+ display:none; margin-left:auto;
+ background:transparent; border:1px solid rgba(238,242,236,.25);
+ color:var(--hueso); width:42px; height:42px; border-radius:10px;
+ cursor:pointer;
+ }
+ .menu-btn svg{ width:20px; height:20px; margin:auto; }
+
+ @media (max-width: 880px){
+ .nav-links{
+ position:absolute; top:68px; left:0; right:0;
+ flex-direction:column; align-items:stretch; gap:.1rem;
+ background:var(--charca); padding:var(--s4) clamp(1.1rem,4vw,3rem) var(--s5);
+ border-bottom:1px solid rgba(238,242,236,.12);
+ margin-left:0;
+ display:none;
+ }
+ .nav-links.open{ display:flex; }
+ .nav-links a{ padding:.8rem .6rem; font-size:1rem; }
+ .nav-cta{ justify-content:center; padding:.8rem 1rem; font-size:.78rem; }
+ .menu-btn{ display:flex; }
+ }
+
+ /* ============================================================
+ HERO (placa oscura)
+ ============================================================ */
+ .hero{ position:relative; overflow:hidden; padding-block:clamp(3.2rem, 8vw, 6.5rem); }
+ .hero-grid{
+ display:grid; grid-template-columns: 1.15fr .85fr; gap:clamp(2rem,5vw,4rem);
+ align-items:center;
+ }
+ .hero-lam{
+ display:inline-flex; align-items:center; gap:.65rem;
+ color:var(--ceibo); font-size:.72rem;
+ margin-bottom:var(--s5);
+ }
+ .hero-lam .rule{ width:46px; height:1px; background:linear-gradient(90deg,var(--ceibo),transparent); }
+ .hero h1{
+ font-size:clamp(2.7rem, 6.6vw, 5.1rem);
+ margin:0 0 var(--s5);
+ max-width:15ch;
+ }
+ .hero h1 .accent{ color:var(--sage); }
+ .hero p.lede{
+ font-size:clamp(1.02rem, 1.5vw, 1.18rem);
+ color:rgba(238,242,236,.8);
+ max-width:46ch; margin:0 0 var(--s6);
+ line-height:1.62;
+ }
+ .hero-ctas{ display:flex; flex-wrap:wrap; gap:var(--s3); align-items:center; }
+ .btn{
+ display:inline-flex; align-items:center; gap:.5rem;
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.13em;
+ font-size:.76rem; font-weight:600;
+ padding:.92rem 1.4rem; border-radius:var(--r-pill);
+ cursor:pointer; border:1px solid transparent;
+ transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
+ }
+ .btn-primary{ background:var(--coral); color:#0C2447; box-shadow:0 14px 30px -14px rgba(47,168,201,.95); }
+ .btn-primary:hover{ transform:translateY(-2px); background:#3FB8D8; box-shadow:0 20px 38px -16px rgba(47,168,201,1); }
+ .btn-ghost{ background:transparent; color:var(--hueso); border-color:rgba(238,242,236,.32); }
+ .btn-ghost:hover{ border-color:var(--ceibo); color:var(--ceibo); transform:translateY(-2px); }
+ /* CTA primario para area en desarrollo: usa el morado de "proxima edicion" */
+ .btn-wait{ background:var(--cobalto); color:#fff; box-shadow:0 14px 30px -14px rgba(122,87,151,.95); }
+ .btn-wait:hover{ transform:translateY(-2px); background:#8C68A9; box-shadow:0 20px 38px -16px rgba(122,87,151,1); }
+
+ .hero-tag{
+ margin-top:var(--s7);
+ display:inline-block;
+ font-size:.72rem; color:var(--lodo-soft);
+ border-left:2px solid var(--cobalto); padding-left:.8rem;
+ }
+
+ /* Visor del hero: lamina de portada (guacamaya) */
+ .hero-visor{
+ position:relative;
+ aspect-ratio: 3/4;
+ border-radius:var(--r-plate);
+ background:
+ linear-gradient(155deg, rgba(122,87,151,.16), rgba(47,168,201,.1) 60%, rgba(11,43,46,.2)),
+ var(--charca-2);
+ border:1px solid rgba(238,242,236,.14);
+ box-shadow:var(--shadow-plate);
+ overflow:hidden;
+ padding:var(--s5);
+ display:flex; flex-direction:column;
+ }
+ .hero-visor::after{
+ content:""; position:absolute; inset:14px;
+ border:var(--frame) solid var(--cobalto); border-radius:4px;
+ pointer-events:none; opacity:.9;
+ }
+ .hero-visor .visor-top{
+ display:flex; justify-content:space-between; align-items:flex-start;
+ position:relative; z-index:2;
+ font-size:.66rem; color:var(--cobalto);
+ }
+ .hero-visor .visor-badge{
+ font-size:.62rem;
+ border:1px solid var(--cobalto); color:var(--cobalto);
+ padding:.28rem .55rem; border-radius:var(--r-pill);
+ }
+ .hero-visor .art{
+ flex:1; display:flex; align-items:center; justify-content:center;
+ position:relative; z-index:1;
+ }
+ .hero-visor .art svg{ width:78%; height:auto; }
+ .hero-visor .visor-cap{
+ position:relative; z-index:2;
+ font-size:.6rem; color:var(--lodo-soft);
+ display:flex; justify-content:space-between;
+ }
+
+ @media (max-width: 880px){
+ .hero-grid{ grid-template-columns:1fr; }
+ .hero-visor{ max-width:340px; margin-inline:auto; }
+ }
+
+ /* ============================================================
+ STRIP DE CREDIBILIDAD (placa oscura, franja)
+ ============================================================ */
+ .strip{
+ border-top:1px solid rgba(238,242,236,.12);
+ border-bottom:1px solid rgba(238,242,236,.12);
+ padding-block:var(--s5);
+ }
+ .strip-row{
+ display:flex; flex-wrap:wrap; align-items:center;
+ gap:clamp(1rem,3vw,2.4rem);
+ justify-content:space-between;
+ }
+ .strip-item{ display:flex; align-items:baseline; gap:.55rem; }
+ .strip-item .num{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800;
+ font-size:1.5rem; color:var(--sage); letter-spacing:-.02em;
+ }
+ .strip-item .num.tbd{ font-size:1.1rem; color:var(--cobalto); }
+ .strip-item .num-check{
+ display:inline-flex; align-self:center;
+ width:1.5rem; height:1.5rem; color:var(--ceibo);
+ }
+ .strip-item .num-check svg{ width:100%; height:100%; }
+ .strip-item .lbl{ font-size:.74rem; color:rgba(238,242,236,.72); }
+ .strip-sep{ width:1px; height:26px; background:rgba(238,242,236,.16); }
+ .strip-allies{ display:flex; align-items:center; gap:.85rem; flex-wrap:wrap; }
+ .strip-allies .k{ font-size:.64rem; color:var(--lodo-soft); }
+ .ally{
+ font-family:"Space Grotesk", monospace; letter-spacing:.1em;
+ font-size:.74rem; font-weight:600; color:rgba(238,242,236,.86);
+ border:1px solid rgba(238,242,236,.18); border-radius:var(--r-pill);
+ padding:.3rem .7rem;
+ }
+ @media (max-width: 620px){
+ .strip-sep{ display:none; }
+ /* En movil, los 4 datos del curso en grid 2x2 para que no se amontonen */
+ .strip .strip-row{ display:grid; grid-template-columns:1fr 1fr; gap:var(--s5) var(--s4); justify-content:stretch; }
+ .strip .strip-item{ align-items:flex-start; }
+ }
+ @media (max-width: 380px){
+ .strip .strip-row{ grid-template-columns:1fr; }
+ }
+
+ /* ============================================================
+ PILLS / VISOR / SPECIMEN (reusados del catalogo)
+ ============================================================ */
+ .pill{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.6rem; font-weight:600;
+ padding:.3rem .6rem; border-radius:var(--r-pill);
+ white-space:nowrap; line-height:1;
+ }
+ .pill-disp{ background:var(--ceibo); color:#0C2447; }
+ .pill-prox{ background:transparent; color:var(--cobalto); border:1px solid var(--cobalto); }
+ .pill-prod{ background:transparent; color:var(--lodo); border:1px solid var(--lodo-line); }
+
+ .kicker-sci{ color:var(--sage); font-size:.64rem; margin-bottom:.4rem; display:block; }
+
+ .visor{
+ position:relative;
+ aspect-ratio: 4/3.4;
+ border-radius:4px;
+ background:
+ linear-gradient(160deg, rgba(47,168,201,.12), rgba(47,168,201,.04));
+ overflow:hidden;
+ display:flex; align-items:center; justify-content:center;
+ margin-bottom:var(--s4);
+ }
+ .visor.tone-cobalto{ background:linear-gradient(160deg, rgba(122,87,151,.12), rgba(122,87,151,.04)); }
+ .visor::after{
+ content:""; position:absolute; inset:8px;
+ border:var(--frame) solid var(--coral); border-radius:3px;
+ pointer-events:none;
+ }
+ .visor.tone-cobalto::after{ border-color:var(--cobalto); }
+ .visor .specimen{ width:72%; height:auto; position:relative; z-index:1; color:var(--charca); }
+ .visor.tone-cobalto .specimen{ color:var(--cobalto); }
+ .visor .specimen .fill{ fill:transparent; transition:fill .45s var(--ease); }
+ .visor .specimen path,
+ .visor .specimen line,
+ .visor .specimen circle,
+ .visor .specimen polyline{
+ stroke:currentColor; stroke-width:2.1; fill:none;
+ stroke-linecap:round; stroke-linejoin:round;
+ vector-effect:non-scaling-stroke;
+ }
+
+ /* card-cta (reusado en cursos relacionados) */
+ .ccta{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.12em;
+ font-size:.66rem; font-weight:600;
+ padding:.55rem .85rem; border-radius:var(--r-pill);
+ border:1px solid; cursor:pointer; white-space:nowrap;
+ transition:transform .2s var(--ease), background .2s var(--ease), color .2s var(--ease), box-shadow .2s var(--ease);
+ }
+ .ccta-disp{ background:var(--ceibo); border-color:var(--ceibo); color:#0C2447; }
+ .ccta-disp:hover{ background:var(--ceibo-deep); border-color:var(--ceibo-deep); color:#fff; transform:translateY(-1px); }
+ .ccta-prox{ background:transparent; border-color:var(--cobalto); color:var(--cobalto); }
+ .ccta-prox:hover{ background:var(--cobalto); color:#fff; transform:translateY(-1px); }
+
+ /* ============================================================
+ LAMINA card (reusada en "cursos relacionados")
+ ============================================================ */
+ .grid-rel{
+ display:grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap:clamp(1rem, 2vw, 1.6rem);
+ }
+ @media (max-width:820px){ .grid-rel{ grid-template-columns:repeat(2,1fr); } }
+ @media (max-width:520px){ .grid-rel{ grid-template-columns:1fr; } }
+
+ .lamina{
+ position:relative; display:flex; flex-direction:column;
+ background:#fff;
+ border:1px solid var(--hueso-2);
+ border-radius:var(--r-plate);
+ padding:var(--s4);
+ box-shadow:var(--shadow-plate);
+ transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+ }
+ .lamina-top{
+ display:flex; align-items:center; justify-content:space-between;
+ margin-bottom:var(--s3);
+ }
+ .lam-no{ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.18em; font-size:.66rem; color:var(--lodo); }
+ .lamina h3{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.015em;
+ font-size:1.12rem; line-height:1.08; margin:0 0 .55rem;
+ color:var(--ink);
+ }
+ .lam-meta{ font-family:"Space Grotesk", monospace; letter-spacing:.04em; font-size:.72rem; color:var(--lodo); margin-bottom:.7rem; }
+ .lam-foot{
+ margin-top:auto; padding-top:var(--s3);
+ display:flex; align-items:center; justify-content:space-between; gap:.6rem;
+ border-top:1px solid var(--hueso-2);
+ }
+ .lam-price{ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.08em; font-size:.82rem; font-weight:600; color:var(--coral); }
+ .lam-price .from{ font-size:.58rem; letter-spacing:.16em; color:var(--lodo); display:block; }
+ .lam-price-tbd{ text-transform:none; letter-spacing:.04em; font-size:.74rem; font-weight:500; color:var(--lodo); }
+ .lam-state{ font-size:.66rem; letter-spacing:.04em; color:var(--lodo); white-space:nowrap; }
+
+ .lamina.is-disp{ border-color:var(--hueso-2); }
+ .lamina.is-disp .visor::after{ opacity:1; }
+ .lamina.is-prox .visor::after{ border-color:var(--cobalto); }
+ .lamina.is-prox .visor .specimen{ color:var(--cobalto); }
+ .lamina.is-disp:hover{
+ transform:translateY(-6px);
+ box-shadow:var(--shadow-lift);
+ border-color:var(--ceibo);
+ }
+ .lamina.is-disp:hover .visor .specimen .fill{ fill:rgba(47,168,201,.85); }
+ .lamina.is-disp:hover .visor .specimen{ color:var(--coral); }
+ .lamina.is-prox:hover{
+ transform:translateY(-6px);
+ box-shadow:var(--shadow-lift);
+ border-color:var(--cobalto);
+ }
+ .lamina.is-prox:hover .visor::after{ border-color:var(--cobalto); opacity:1; }
+ .lamina.is-prox:hover .visor .specimen .fill{ fill:rgba(122,87,151,.78); }
+ .lamina.is-prox:hover .visor .specimen{ color:var(--cobalto); }
+
+ /* ============================================================
+ FOOTER
+ ============================================================ */
+ footer.site{ padding-block:clamp(3rem,6vw,4.5rem) var(--s7); border-top:1px solid rgba(238,242,236,.1); }
+ .foot-grid{ display:flex; flex-wrap:wrap; gap:var(--s7); justify-content:space-between; align-items:flex-start; }
+ .foot-brand .wordmark{ font-size:1.4rem; margin-bottom:var(--s4); }
+ .foot-brand p{ color:var(--lodo-soft); max-width:40ch; font-size:.9rem; margin:0 0 var(--s5); }
+ .foot-tag{ display:inline-block; color:var(--ceibo); font-size:.72rem; border-left:2px solid var(--coral); padding-left:.8rem; }
+ .foot-contact{ display:flex; flex-direction:column; gap:var(--s3); }
+ .foot-contact .ck{ font-size:.64rem; color:var(--lodo); margin-bottom:.2rem; }
+ .foot-contact a, .foot-contact span{ color:var(--hueso); font-size:.92rem; }
+ .foot-contact a:hover{ color:var(--ceibo); }
+ .foot-rule{ margin-top:var(--s7); padding-top:var(--s5); border-top:1px solid rgba(238,242,236,.1);
+ display:flex; flex-wrap:wrap; gap:var(--s4); justify-content:space-between; align-items:center; }
+ .foot-rule small{ color:var(--lodo); font-size:.7rem; }
+ .foot-meta{ font-family:"Space Grotesk", monospace; letter-spacing:.14em; text-transform:uppercase; font-size:.62rem; color:var(--lodo); }
+
+ .ph{ font-style:italic; color:inherit; opacity:.7; }
+ /* marcador visible por confirmar para datos no confirmados */
+ .tbd-mark{
+ font-family:"Space Grotesk", monospace; letter-spacing:.04em;
+ font-size:.82em; color:var(--cobalto);
+ background:rgba(122,87,151,.1); border:1px dashed var(--cobalto);
+ border-radius:4px; padding:.05em .4em; white-space:nowrap;
+ }
+ .on-dark .tbd-mark{ color:#C7AEDC; border-color:rgba(199,174,220,.65); background:rgba(122,87,151,.22); }
+
+ /* ============================================================
+ EXTENSIONES PROPIAS DE LA LANDING DE CURSO
+ (solo lo que esta pagina necesita; no se redefinen tokens)
+ ============================================================ */
+
+ /* --- HERO de curso: chips de datos + estado + visor --- */
+ .course-chips{ display:flex; flex-wrap:wrap; gap:.5rem; margin:0 0 var(--s6); }
+ .course-chips .chip{
+ font-family:"Space Grotesk", monospace; letter-spacing:.06em; font-size:.72rem;
+ color:var(--hueso); border:1px solid rgba(238,242,236,.22);
+ padding:.34rem .7rem; border-radius:var(--r-pill);
+ }
+ .course-chips .chip-state{ color:#C7AEDC; border-color:rgba(199,174,220,.5); }
+ .hero-sub{
+ font-size:clamp(.94rem, 1.4vw, 1.08rem);
+ color:var(--ceibo); letter-spacing:.02em;
+ margin:0 0 var(--s5); max-width:48ch;
+ }
+ .hero-status{
+ display:inline-flex; align-items:center; gap:.55rem;
+ font-family:"Space Grotesk", monospace; letter-spacing:.04em; font-size:.82rem;
+ color:var(--hueso); margin:0 0 var(--s5);
+ }
+ .hero-status .dot{ width:7px; height:7px; border-radius:50%; background:var(--cobalto); flex:0 0 auto; }
+
+ /* --- Bloques de seccion clara --- */
+ .sec{ padding-block:clamp(3rem, 6vw, 5rem); }
+ .sec-head{
+ display:flex; align-items:flex-end; justify-content:space-between;
+ gap:var(--s5); flex-wrap:wrap; margin-bottom:var(--s7);
+ }
+ .sec-kicker{ color:var(--sage); font-size:.72rem; margin-bottom:var(--s3); display:block; }
+ .sec-head h2{ font-size:clamp(1.7rem, 4vw, 2.7rem); margin:0; }
+ .sec-head .sub{ color:var(--ink-soft); font-size:1.02rem; margin-top:.6rem; max-width:46ch; }
+ /* variante kicker sobre oscuro */
+ .on-dark .sec-kicker{ color:var(--ceibo); }
+
+ /* --- Para quien es --- */
+ .audience{
+ display:grid; grid-template-columns: repeat(3, 1fr); gap:clamp(1rem,2vw,1.6rem);
+ }
+ @media (max-width:760px){ .audience{ grid-template-columns:1fr; } }
+ .aud-card{
+ background:#fff; border:1px solid var(--hueso-2); border-radius:var(--r-plate);
+ padding:var(--s5); box-shadow:var(--shadow-plate);
+ }
+ .aud-card .ico{ display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; color:var(--ceibo); margin-bottom:var(--s3); }
+ .aud-card .ico svg{ display:block; width:100%; height:100%; max-width:40px; max-height:40px; }
+ .aud-card h4{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.01em;
+ font-size:1.05rem; margin:0 0 .35rem; color:var(--ink);
+ }
+ .aud-card p{ margin:0; color:var(--ink-soft); font-size:.94rem; }
+
+ /* --- TEMARIO: indice numerado estilo lamina --- */
+ .temario-wrap{
+ display:grid; grid-template-columns: .42fr .58fr; gap:clamp(2rem,5vw,4rem);
+ align-items:start;
+ }
+ @media (max-width:880px){ .temario-wrap{ grid-template-columns:1fr; } }
+ .temario-aside .visor{ max-width:360px; aspect-ratio:4/3.4; }
+ .temario-note{
+ margin-top:var(--s5); font-size:.86rem; color:var(--ink-soft);
+ border-left:2px solid var(--cobalto); padding-left:.85rem; max-width:36ch;
+ }
+ .indice{ list-style:none; margin:0; padding:0; counter-reset:tema; }
+ .indice li{
+ counter-increment:tema;
+ display:flex; align-items:baseline; gap:var(--s4);
+ padding:.85rem 0;
+ border-bottom:1px solid var(--hueso-2);
+ }
+ .indice li:first-child{ border-top:1px solid var(--hueso-2); }
+ .indice li::before{
+ content:counter(tema,decimal-leading-zero);
+ font-family:"Space Grotesk", monospace; letter-spacing:.06em;
+ font-size:.82rem; font-weight:600; color:var(--cobalto);
+ min-width:2.4ch; flex:0 0 auto;
+ }
+ .indice li .t{ font-size:1rem; color:var(--ink); line-height:1.35; }
+
+ /* --- QUE INCLUYE / aval --- */
+ .incluye{ display:grid; grid-template-columns: repeat(2,1fr); gap:clamp(1rem,2.5vw,1.8rem); }
+ @media (max-width:760px){ .incluye{ grid-template-columns:1fr; } }
+ .inc-item{ display:flex; gap:var(--s4); align-items:flex-start; }
+ .inc-item .check{
+ width:1.7rem; height:1.7rem; flex:0 0 auto; color:var(--ceibo);
+ border:1.5px solid var(--ceibo); border-radius:50%;
+ display:inline-flex; align-items:center; justify-content:center;
+ }
+ .inc-item .check svg{ width:60%; height:60%; }
+ .inc-item h4{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.01em;
+ font-size:1.02rem; margin:0 0 .25rem; color:var(--ink);
+ }
+ .inc-item p{ margin:0; color:var(--ink-soft); font-size:.92rem; }
+ .avales{
+ margin-top:var(--s7); padding-top:var(--s5); border-top:1px solid var(--hueso-2);
+ display:flex; flex-wrap:wrap; align-items:center; gap:.85rem;
+ }
+ .avales .k{ font-size:.64rem; color:var(--lodo); }
+ .aval-pill{
+ font-family:"Space Grotesk", monospace; letter-spacing:.1em; text-transform:uppercase;
+ font-size:.7rem; font-weight:600; color:var(--ink);
+ border:1px solid var(--lodo-line); border-radius:var(--r-pill); padding:.32rem .75rem;
+ }
+
+ /* --- WAIT-BOX (lista de espera, equivalente honesto del buy-box) --- */
+ .buybox-wrap{ padding-block:clamp(3rem, 6vw, 5rem); }
+ .buybox{
+ position:relative;
+ display:grid; grid-template-columns: 1.2fr .8fr; gap:clamp(2rem,5vw,4rem);
+ align-items:center;
+ border-radius:var(--r-plate);
+ background:linear-gradient(155deg, rgba(122,87,151,.16), rgba(47,168,201,.12) 70%, rgba(11,43,46,.3));
+ border:1px solid rgba(238,242,236,.16);
+ box-shadow:var(--shadow-plate);
+ padding:clamp(1.6rem,4vw,3rem);
+ }
+ .buybox::after{
+ content:""; position:absolute; inset:16px;
+ border:var(--frame) solid var(--cobalto); border-radius:5px; pointer-events:none;
+ }
+ .buybox .bb-copy{ position:relative; z-index:2; }
+ .buybox .bb-copy h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em;
+ font-size:clamp(1.5rem,3vw,2.2rem); line-height:1.02; margin:0 0 var(--s3); color:var(--hueso); max-width:22ch;
+ }
+ .buybox .bb-copy p{ color:rgba(238,242,236,.8); margin:0; max-width:42ch; }
+ .buybox .bb-buy{
+ position:relative; z-index:2;
+ display:flex; flex-direction:column; align-items:flex-start; gap:var(--s4);
+ }
+ .buybox .bb-price .from{ font-family:"Space Grotesk", monospace; font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(238,242,236,.86); display:block; }
+ .buybox .bb-price .val{ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em; font-size:clamp(1.6rem,3.4vw,2.4rem); color:#C7AEDC; line-height:1; }
+ .buybox .bb-note{ font-size:.72rem; color:rgba(238,242,236,.82); }
+ @media (max-width:760px){ .buybox{ grid-template-columns:1fr; } }
+
+ /* sticky wait-bar (movil + desktop al hacer scroll) */
+ .buybar{
+ position:fixed; left:0; right:0; bottom:0; z-index:60;
+ background:rgba(20,41,79,.96);
+ backdrop-filter:saturate(140%) blur(10px);
+ border-top:1px solid rgba(238,242,236,.14);
+ transform:translateY(110%);
+ transition:transform .3s var(--ease);
+ }
+ .buybar.show{ transform:translateY(0); }
+ .buybar-in{
+ display:flex; align-items:center; justify-content:space-between; gap:var(--s4);
+ height:64px;
+ }
+ .buybar .bbar-info{ display:flex; flex-direction:column; line-height:1.15; }
+ .buybar .bbar-info .nm{ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; font-size:.92rem; color:var(--hueso); }
+ .buybar .bbar-info .pr{ font-family:"Space Grotesk", monospace; font-size:.76rem; color:#C7AEDC; letter-spacing:.04em; }
+ .buybar .nav-cta{ background:var(--cobalto); box-shadow:0 8px 22px -12px rgba(122,87,151,.9); }
+ .buybar .nav-cta:hover{ background:#8C68A9; box-shadow:0 12px 26px -12px rgba(122,87,151,1); }
+ @media (max-width:520px){ .buybar .bbar-info .nm{ font-size:.8rem; max-width:48vw; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } }
+
+ /* --- micro-linea de reaseguro junto al wait-box --- */
+ .bb-trust{
+ position:relative; z-index:2;
+ font-family:"Space Grotesk", monospace; letter-spacing:.05em;
+ font-size:.68rem; color:rgba(238,242,236,.8);
+ display:flex; flex-wrap:wrap; gap:.4rem .7rem; align-items:center;
+ }
+ .bb-trust .sep{ color:rgba(238,242,236,.4); }
+
+ /* --- QUE CUBRIRA (bullets de contenido del tema) --- */
+ .learn{ display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(1rem,2.5vw,1.8rem); }
+ @media (max-width:760px){ .learn{ grid-template-columns:1fr; } }
+ .learn-item{ display:flex; gap:var(--s4); align-items:flex-start; }
+ .learn-item .check{
+ width:1.7rem; height:1.7rem; flex:0 0 auto; color:var(--ceibo);
+ border:1.5px solid var(--ceibo); border-radius:50%;
+ display:inline-flex; align-items:center; justify-content:center;
+ }
+ .learn-item .check svg{ width:60%; height:60%; }
+ .learn-item p{ margin:0; color:var(--ink); font-size:.98rem; line-height:1.5; }
+ .learn-item p strong{ color:var(--ink); font-weight:600; }
+
+ /* --- FAQ (details/summary nativos) --- */
+ .faq-list{ display:flex; flex-direction:column; gap:var(--s3); max-width:760px; }
+ .faq{
+ background:#fff; border:1px solid var(--hueso-2); border-radius:var(--r-plate);
+ box-shadow:var(--shadow-plate); overflow:hidden;
+ }
+ .faq summary{
+ list-style:none; cursor:pointer;
+ display:flex; align-items:center; justify-content:space-between; gap:var(--s4);
+ padding:var(--s5);
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.01em;
+ font-size:1.04rem; color:var(--ink);
+ }
+ .faq summary::-webkit-details-marker{ display:none; }
+ .faq summary .q-ico{
+ flex:0 0 auto; width:1.4rem; height:1.4rem; color:var(--ceibo);
+ transition:transform .25s var(--ease);
+ }
+ .faq[open] summary .q-ico{ transform:rotate(45deg); }
+ .faq summary:focus-visible{ outline:3px solid var(--coral); outline-offset:-3px; }
+ .faq .faq-a{ padding:0 var(--s5) var(--s5); color:var(--ink-soft); font-size:.96rem; line-height:1.6; }
+ .faq .faq-a p{ margin:0; }
+ .faq h2, .faq h3{ margin:0; }
+
+ /* --- puente al diplomado (funnel) --- */
+ .funnel{ padding-block:clamp(2.6rem,5vw,4rem); }
+ .funnel-card{
+ position:relative;
+ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+ gap:var(--s5);
+ border-radius:var(--r-plate);
+ background:#fff; border:1px solid var(--hueso-2);
+ box-shadow:var(--shadow-plate);
+ padding:clamp(1.4rem,3.5vw,2.2rem) clamp(1.4rem,4vw,2.6rem);
+ }
+ .funnel-card .fn-copy{ max-width:52ch; }
+ .funnel-card .fn-kicker{ color:var(--cobalto); font-size:.66rem; margin-bottom:var(--s2); display:block; }
+ .funnel-card h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.015em;
+ font-size:clamp(1.25rem,2.4vw,1.7rem); line-height:1.08; margin:0 0 .4rem; color:var(--ink);
+ }
+ .funnel-card p{ margin:0; color:var(--ink-soft); font-size:.94rem; }
+ .funnel-card .fn-cta{
+ flex:0 0 auto;
+ display:inline-flex; align-items:center; gap:.5rem;
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.12em;
+ font-size:.72rem; font-weight:600;
+ padding:.8rem 1.25rem; border-radius:var(--r-pill);
+ background:transparent; color:var(--cobalto); border:1px solid var(--cobalto);
+ transition:transform .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
+ }
+ .funnel-card .fn-cta:hover{ background:var(--cobalto); color:#fff; transform:translateY(-1px); }
+</style>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+ {
+ "@type": "EducationalOrganization",
+ "@id": "https://www.celebios.com/#org",
+ "name": "CELEBIOS",
+ "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+ "url": "https://www.celebios.com",
+ "logo": "https://www.celebios.com/brand/logo-white.png",
+ "foundingDate": "2010",
+ "areaServed": ["MX", "LATAM"],
+ "sameAs": ["https://instagram.com/celebios_edu"]
+ },
+ {
+ "@type": "Course",
+ "name": "Curso de Nutricion de Fauna en Cautiverio",
+ "description": "Curso de nutricion de fauna silvestre en cautiverio: requerimientos nutricionales por grupo taxonomico, formulacion y balanceo de dietas, y los errores de alimentacion mas comunes en cautiverio y su impacto en la salud. En desarrollo, con lista de espera abierta. Para MVZ, biologos y personal de zoologicos, UMA y centros de rescate en Mexico y LATAM.",
+ "url": "https://www.celebios.com/cursos/nutricion-fauna-cautiverio",
+ "inLanguage": "es",
+ "provider": { "@id": "https://www.celebios.com/#org" },
+ "hasCourseInstance": {
+ "@type": "CourseInstance",
+ "courseMode": "online",
+ "courseSchedule": {
+ "@type": "Schedule",
+ "scheduleTimezone": "America/Mexico_City"
+ }
+ },
+ "offers": {
+ "@type": "Offer",
+ "availability": "https://schema.org/PreOrder",
+ "priceCurrency": "MXN",
+ "url": "https://www.celebios.com/cursos/nutricion-fauna-cautiverio",
+ "category": "Lista de espera"
+ }
+ },
+ {
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+ { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.celebios.com/" },
+ { "@type": "ListItem", "position": 2, "name": "Cursos de fauna silvestre", "item": "https://www.celebios.com/cursos" },
+ { "@type": "ListItem", "position": 3, "name": "Curso de Nutricion de Fauna en Cautiverio", "item": "https://www.celebios.com/cursos/nutricion-fauna-cautiverio" }
+ ]
+ },
+ {
+ "@type": "FAQPage",
+ "mainEntity": [
+ {
+ "@type": "Question",
+ "name": "El curso de nutricion de fauna en cautiverio ya esta disponible?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Todavia no. El curso esta en desarrollo y la inscripcion aun no abre. Por ahora puedes unirte a la lista de espera dejando tu correo: te avisaremos en cuanto se publique la primera edicion, con el temario final, el precio y la fecha de apertura confirmados."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "Que cubrira el curso de nutricion de fauna en cautiverio?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Aborda tres ejes: los requerimientos nutricionales por grupo taxonomico, la formulacion y el balanceo de dietas para fauna cautiva, y los errores de alimentacion mas frecuentes en cautiverio, esos desbalances, deficiencias y excesos que derivan en enfermedad metabolica, osea o reproductiva."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "Para quien es este curso de nutricion de fauna silvestre?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Esta pensado para medicos veterinarios, biologos y personal tecnico que alimentan o supervisan dietas de fauna en zoologicos, UMA, aviarios, santuarios y centros de rescate. Tambien para estudiantes de ultimos semestres que quieren especializarse en el manejo nutricional de especies silvestres en cautiverio."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "Cuanto costara y cuando abre la inscripcion?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "El precio y la fecha de apertura aun no estan confirmados porque el curso sigue en produccion. No publicamos cifras que no podamos sostener. Las personas en lista de espera son las primeras en recibir el dato exacto y, cuando aplique, condiciones de preventa."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "El curso tendra constancia con valor curricular?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Esa es la intencion: como el resto de la oferta de CELEBIOS, el curso busca emitir constancia con valor curricular avalada por CONCERVET al completarlo. Confirmaremos los terminos exactos de la constancia al cerrar el programa, antes de abrir la inscripcion."
+ }
+ }
+ ]
+ }
+ ]
+}
+</script>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site on-dark">
+ <div class="wrap nav">
+ <a class="wordmark" href="lamina-viva.html" aria-label="CELEBIOS inicio">
+ <img class="brandlogo" src="brand/logo-white.png" alt="CELEBIOS" width="100" height="38">
+ </a>
+
+ <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+ </button>
+
+ <nav class="nav-links" id="navLinks" aria-label="Principal">
+ <a href="catalogo.html" class="is-active" aria-current="page">Cursos</a>
+ <a href="diplomado-rehab.html">Diplomado</a>
+ <a href="recursos.html">Recursos</a>
+ <a href="nosotros.html">Nosotros</a>
+ <a class="nav-cta" href="catalogo.html">Explorar cursos</a>
+ </nav>
+ </div>
+</header>
+
+<main id="top">
+
+<!-- ===================== HERO DE CURSO ===================== -->
+<section class="surface-dark hero on-dark">
+ <div class="wrap">
+ <div class="hero-grid">
+ <div class="hero-copy">
+ <span class="hero-lam mono"><span class="rule"></span>Fauna cautiva · nutrición</span>
+ <h1 class="display">Nutrición de fauna en cautiverio: <span class="accent">la dieta que cura o que enferma.</span></h1>
+ <p class="hero-sub mono-soft">Curso de nutrición de fauna en cautiverio · online en México y LATAM</p>
+
+ <div class="hero-status">
+ <span class="dot" aria-hidden="true"></span>
+ En desarrollo · lista de espera abierta
+ </div>
+
+ <p class="lede">Requerimientos por grupo taxonómico, formulación de dietas y los errores de alimentación que terminan en enfermedad. Estamos construyendo este curso para MVZ, biólogos y personal de zoológicos, UMA y centros de rescate. Aún no abre: déjanos tu correo y serás de los primeros en saber.</p>
+
+ <div class="course-chips" aria-label="Datos clave del curso">
+ <span class="chip chip-state">En desarrollo</span>
+ <span class="chip">100% online</span>
+ <span class="chip">México y LATAM</span>
+ <span class="chip">Duración <span class="tbd-mark">por confirmar</span></span>
+ <span class="chip">Aval CONCERVET <span class="tbd-mark">por confirmar</span></span>
+ </div>
+
+ <div class="hero-ctas">
+ <a class="btn btn-wait" href="mailto:contacto@celebios.com?subject=Lista%20de%20espera%3A%20Nutrici%C3%B3n%20de%20Fauna%20en%20Cautiverio&body=Hola%20CELEBIOS%2C%20quiero%20unirme%20a%20la%20lista%20de%20espera%20del%20curso%20de%20Nutrici%C3%B3n%20de%20Fauna%20en%20Cautiverio.">Unirme a la lista de espera</a>
+ <a class="btn btn-ghost" href="#temario">Ver qué cubrirá</a>
+ </div>
+ <span class="hero-tag mono-soft">Curso en producción · datos comerciales por confirmar antes de abrir inscripción.</span>
+ </div>
+
+ <!-- Lamina-visor del curso: guacamaya line-art (mismo especimen que el catalogo) -->
+ <figure class="hero-visor" aria-label="Lámina del curso, espécimen guacamaya">
+ <div class="visor-top">
+ <span class="mono">Curso · Ara macao</span>
+ <span class="visor-badge mono">En desarrollo</span>
+ </div>
+ <div class="art" aria-hidden="true">
+ <!-- GUACAMAYA line-art (escala hero) -->
+ <svg viewBox="0 0 200 200" fill="none" stroke="#C7AEDC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+ <path d="M118 56 C140 56 152 74 150 98 C148 124 128 150 96 158 C70 164 50 156 44 138 C58 142 76 138 90 126"/>
+ <path d="M118 56 C108 50 96 52 90 62 C86 70 88 80 96 84"/>
+ <path d="M90 62 C78 60 70 66 70 78 C70 88 78 94 88 92"/>
+ <circle cx="112" cy="72" r="3" fill="#C7AEDC" stroke="none"/>
+ <path d="M126 78 C140 76 150 82 150 92 C144 96 136 94 130 90"/>
+ <path d="M96 126 C108 116 116 100 116 84"/>
+ <path d="M90 126 C84 142 82 158 86 172"/>
+ <path d="M104 122 C102 140 104 156 110 170"/>
+ </svg>
+ </div>
+ <figcaption class="visor-cap mono">
+ <span>Ara macao</span>
+ <span>Esc. 1:1</span>
+ </figcaption>
+ </figure>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== STRIP DE DATOS DEL CURSO ===================== -->
+<section class="surface-dark strip on-dark" aria-label="Formato del curso">
+ <div class="wrap">
+ <div class="strip-row">
+ <div class="strip-item"><span class="num tbd">Por definir</span><span class="lbl">horas de<br>contenido <span class="tbd-mark">por confirmar</span></span></div>
+ <span class="strip-sep" aria-hidden="true"></span>
+ <div class="strip-item"><span class="num">100%</span><span class="lbl">online, a tu<br>ritmo</span></div>
+ <span class="strip-sep" aria-hidden="true"></span>
+ <div class="strip-item"><span class="num tbd">3 ejes</span><span class="lbl">requerimientos · dietas<br>· errores</span></div>
+ <span class="strip-sep" aria-hidden="true"></span>
+ <div class="strip-item">
+ <span class="num-check" aria-hidden="true">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg>
+ </span>
+ <span class="lbl">Constancia prevista<br><strong style="color:var(--hueso)">valor curricular</strong> <span class="tbd-mark">por confirmar</span></span>
+ </div>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== PARA QUIEN ES ===================== -->
+<section class="surface-light sec" aria-labelledby="audh">
+ <div class="wrap">
+ <div class="sec-head">
+ <div>
+ <span class="sec-kicker mono">Antes de unirte</span>
+ <h2 class="display" id="audh">¿Para quién es?</h2>
+ <p class="sub">Para quien decide o ejecuta lo que come la fauna bajo cuidado humano. La nutrición es clínica: una dieta mal formulada enferma tan rápido como un patógeno.</p>
+ </div>
+ </div>
+ <div class="audience">
+ <article class="aud-card">
+ <span class="ico" aria-hidden="true">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M17 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15 15c2.8 0 6 2 6 5"/></svg>
+ </span>
+ <h4>MVZ y nutriólogos</h4>
+ <p>Veterinarios clínicos y nutriólogos animales que formulan o ajustan dietas de especies silvestres y exóticas.</p>
+ </article>
+ <article class="aud-card">
+ <span class="ico" aria-hidden="true">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4Z"/><path d="M7 9.5V15c0 1.5 2.2 3 5 3s5-1.5 5-3V9.5"/><path d="M21 7v6"/></svg>
+ </span>
+ <h4>Personal de zoológicos y UMA</h4>
+ <p>Keepers, cuidadores y técnicos de zoológicos, UMA, aviarios y santuarios que preparan y entregan dietas a diario.</p>
+ </article>
+ <article class="aud-card">
+ <span class="ico" aria-hidden="true">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>
+ </span>
+ <h4>Rescate y rehabilitación</h4>
+ <p>Centros de rescate y biólogos que deben sostener nutricionalmente a un animal herido o huérfano hasta su liberación.</p>
+ </article>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== QUÉ CUBRIRÁ (contenido real del tema) ===================== -->
+<section class="surface-light sec" aria-labelledby="learnh" style="padding-top:0;">
+ <div class="wrap">
+ <div class="sec-head">
+ <div>
+ <span class="sec-kicker mono">Contenido</span>
+ <h2 class="display" id="learnh">¿Qué cubrirá el curso?</h2>
+ <p class="sub">El programa gira sobre tres ejes que resuelven el problema real en cautiverio: saber qué necesita cada animal, traducirlo a una dieta y detectar dónde se rompe.</p>
+ </div>
+ </div>
+ <div class="learn">
+ <div class="learn-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <p><strong>Requerimientos por grupo taxonómico:</strong> cómo difieren las necesidades de energía, proteína, calcio y vitaminas entre carnívoros, herbívoros, frugívoros, granívoros, insectívoros y reptiles.</p>
+ </div>
+ <div class="learn-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <p><strong>Anatomía digestiva y estrategia de alimentación:</strong> por qué un fermentador, un ave granívora y un felino estricto no pueden comer lo mismo, aunque convivan en la misma colección.</p>
+ </div>
+ <div class="learn-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <p><strong>Formulación y balanceo de dietas:</strong> traducir el requerimiento a gramos reales: relación calcio-fósforo, densidad energética, raciones y cómo usar el análisis bromatológico de los ingredientes.</p>
+ </div>
+ <div class="learn-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <p><strong>Suplementación dirigida:</strong> cuándo y cómo corregir con calcio, vitamina D3, vitamina A o taurina, y por qué suplementar a ciegas también hace daño.</p>
+ </div>
+ <div class="learn-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <p><strong>Errores comunes de alimentación en cautiverio:</strong> dietas monótonas, exceso de fruta, presas mal suplementadas y "premios" que descompensan la ración; cómo identificarlos y corregirlos.</p>
+ </div>
+ <div class="learn-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <p><strong>Impacto clínico del desbalance:</strong> enfermedad ósea metabólica, obesidad, gota, hipovitaminosis A y problemas reproductivos como consecuencia directa de una dieta mal llevada.</p>
+ </div>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== TEMARIO PROVISIONAL (índice estilo lámina) ===================== -->
+<section class="surface-light sec" id="temario" aria-labelledby="temh" style="padding-top:0;">
+ <div class="wrap">
+ <div class="sec-head">
+ <div>
+ <span class="sec-kicker mono">Atlas · Índice tentativo</span>
+ <h2 class="display" id="temh">Temario provisional</h2>
+ <p class="sub">Este es el recorrido que estamos construyendo. Es un índice <strong>tentativo</strong>: el temario final, su orden y su carga horaria se confirman antes de abrir la inscripción. <span class="tbd-mark">temario por confirmar</span></p>
+ </div>
+ </div>
+
+ <div class="temario-wrap">
+ <aside class="temario-aside" aria-hidden="true">
+ <div class="visor tone-cobalto">
+ <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: guacamaya">
+ <path class="fill" d="M96 40 C118 40 130 56 128 80 C126 104 106 122 80 122 C58 122 44 110 44 92 C58 96 74 92 86 80 C94 70 96 56 96 40 Z"/>
+ <path d="M96 40 C86 34 74 38 70 50 C68 60 74 68 84 68"/>
+ <path d="M70 50 C58 50 50 58 52 70 C56 78 64 80 72 76"/>
+ <circle cx="92" cy="54" r="2.6" fill="currentColor" stroke="none"/>
+ <path d="M104 60 C118 58 128 64 128 74 C122 78 114 76 108 72"/>
+ <path d="M80 80 C74 96 74 112 80 126"/>
+ <path d="M92 78 C92 94 96 110 102 124"/>
+ </svg>
+ </div>
+ <p class="temario-note">Cada bloque combina principios de nutrición animal con casos reales de manejo de fauna cautiva.</p>
+ </aside>
+
+ <ol class="indice">
+ <li><span class="t">Fundamentos de nutrición aplicada a fauna silvestre</span></li>
+ <li><span class="t">Anatomía y fisiología digestiva comparada</span></li>
+ <li><span class="t">Requerimientos nutricionales por grupo taxonómico</span></li>
+ <li><span class="t">Evaluación de ingredientes y análisis bromatológico</span></li>
+ <li><span class="t">Formulación y balanceo de dietas</span></li>
+ <li><span class="t">Suplementación: calcio, vitaminas y minerales</span></li>
+ <li><span class="t">Manejo de la alimentación y enriquecimiento alimentario</span></li>
+ <li><span class="t">Errores comunes de alimentación en cautiverio</span></li>
+ <li><span class="t">Enfermedades de origen nutricional y su prevención</span></li>
+ <li><span class="t">Evaluación de la condición corporal y monitoreo</span></li>
+ </ol>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== ESTADO / DOCENTE (placa oscura, honesta) ===================== -->
+<section class="surface-dark sec on-dark" aria-labelledby="esth">
+ <div class="wrap">
+ <div class="sec-head">
+ <div>
+ <span class="sec-kicker mono">En qué punto está</span>
+ <h2 class="display" id="esth">Estado del curso</h2>
+ <p class="sub" style="color:rgba(238,242,236,.78)">Preferimos decirte la verdad a inventar una fecha. Esto es lo que sí podemos afirmar hoy.</p>
+ </div>
+ </div>
+ <div class="learn">
+ <div class="learn-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <p style="color:rgba(238,242,236,.9)"><strong style="color:var(--hueso)">El temario está en construcción.</strong> El índice de arriba es tentativo y se cerrará con el equipo docente antes de abrir inscripciones.</p>
+ </div>
+ <div class="learn-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <p style="color:rgba(238,242,236,.9)"><strong style="color:var(--hueso)">Docente por anunciar.</strong> El curso lo impartirá un especialista en nutrición de fauna. <span class="tbd-mark">por confirmar</span></p>
+ </div>
+ <div class="learn-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <p style="color:rgba(238,242,236,.9)"><strong style="color:var(--hueso)">Precio y fecha aún sin confirmar.</strong> No publicamos cifras que no podamos sostener. <span class="tbd-mark">fecha y precio por confirmar</span></p>
+ </div>
+ <div class="learn-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <p style="color:rgba(238,242,236,.9)"><strong style="color:var(--hueso)">La lista de espera ya está abierta.</strong> Quien se anota se entera primero del temario final, la fecha y las condiciones de la primera edición.</p>
+ </div>
+ </div>
+ <p style="margin-top:var(--s6)"><a href="nosotros.html" style="color:var(--ceibo); text-decoration:underline; text-underline-offset:3px;">Conoce a nuestro claustro docente</a></p>
+ </div>
+</section>
+
+<!-- ===================== QUÉ INCLUIRÁ / AVAL ===================== -->
+<section class="surface-light sec" aria-labelledby="inch">
+ <div class="wrap">
+ <div class="sec-head">
+ <div>
+ <span class="sec-kicker mono">Formato previsto</span>
+ <h2 class="display" id="inch">Qué incluirá</h2>
+ <p class="sub">El formato que estamos diseñando, en línea con el resto de la oferta de CELEBIOS. Los detalles finales se confirman al cerrar el programa.</p>
+ </div>
+ </div>
+
+ <div class="incluye">
+ <div class="inc-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <div><h4>Clases grabadas, 100% online</h4><p>Contenido en video para avanzar a tu ritmo, sin horarios fijos, desde México y toda LATAM.</p></div>
+ </div>
+ <div class="inc-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <div><h4>Material descargable de trabajo</h4><p>Plantillas de formulación y tablas de requerimientos para aplicar lo aprendido a tus propias dietas. <span class="tbd-mark">por confirmar</span></p></div>
+ </div>
+ <div class="inc-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <div><h4>Constancia con valor curricular</h4><p>Prevista al completar el curso, avalada por CELEBIOS y CONCERVET. <span class="tbd-mark">por confirmar</span></p></div>
+ </div>
+ <div class="inc-item">
+ <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
+ <div><h4>Acceso por tiempo definido</h4><p>Periodo de acceso para repasar el material cuantas veces necesites. Duración exacta <span class="tbd-mark">por confirmar</span>.</p></div>
+ </div>
+ </div>
+
+ <div class="avales">
+ <span class="k mono">Aval previsto</span>
+ <span class="aval-pill">CELEBIOS</span>
+ <span class="aval-pill">CONCERVET <span class="tbd-mark">por confirmar</span></span>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== WAIT-BOX (lista de espera) ===================== -->
+<section class="surface-dark buybox-wrap on-dark" id="lista-espera">
+ <div class="wrap">
+ <div class="buybox">
+ <div class="bb-copy">
+ <span class="kicker-sci mono" style="color:#C7AEDC">Ara macao · en desarrollo</span>
+ <h2>Sé de los primeros en entrar cuando abra.</h2>
+ <p>El curso aún no se publica. Déjanos tu correo y te avisaremos en cuanto cerremos el temario, el docente, la fecha y el precio de la primera edición.</p>
+ </div>
+ <div class="bb-buy">
+ <div class="bb-price">
+ <span class="from">Inversión</span>
+ <span class="val">Por confirmar</span>
+ </div>
+ <a class="btn btn-wait" href="mailto:contacto@celebios.com?subject=Lista%20de%20espera%3A%20Nutrici%C3%B3n%20de%20Fauna%20en%20Cautiverio&body=Hola%20CELEBIOS%2C%20quiero%20unirme%20a%20la%20lista%20de%20espera%20del%20curso%20de%20Nutrici%C3%B3n%20de%20Fauna%20en%20Cautiverio.">Unirme a la lista de espera</a>
+ <span class="bb-note">100% online · México y LATAM · Sin compromiso de compra</span>
+ <span class="bb-trust">
+ Te avisamos primero <span class="sep" aria-hidden="true">·</span>
+ Sin spam <span class="sep" aria-hidden="true">·</span>
+ Datos comerciales por confirmar
+ </span>
+ </div>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="surface-light sec" aria-labelledby="faqh">
+ <div class="wrap">
+ <div class="sec-head">
+ <div>
+ <span class="sec-kicker mono">Preguntas frecuentes</span>
+ <h2 class="display" id="faqh">Resuelve tus dudas sobre el curso</h2>
+ <p class="sub">Lo que más nos preguntan sobre el curso de nutrición de fauna en cautiverio mientras está en desarrollo.</p>
+ </div>
+ </div>
+
+ <div class="faq-list">
+ <details class="faq">
+ <summary>
+ <h3>¿El curso de nutrición de fauna en cautiverio ya está disponible?</h3>
+ <span class="q-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+ </summary>
+ <div class="faq-a"><p>Todavía no. El curso está en desarrollo y la inscripción aún no abre. Por ahora puedes unirte a la lista de espera dejando tu correo: te avisaremos en cuanto se publique la primera edición, con el temario final, el precio y la fecha de apertura confirmados.</p></div>
+ </details>
+
+ <details class="faq">
+ <summary>
+ <h3>¿Qué cubrirá el curso de nutrición de fauna en cautiverio?</h3>
+ <span class="q-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+ </summary>
+ <div class="faq-a"><p>Aborda tres ejes: los requerimientos nutricionales por grupo taxonómico, la formulación y el balanceo de dietas para fauna cautiva, y los errores de alimentación más frecuentes en cautiverio, esos desbalances, deficiencias y excesos que derivan en enfermedad metabólica, ósea o reproductiva.</p></div>
+ </details>
+
+ <details class="faq">
+ <summary>
+ <h3>¿Para quién es este curso de nutrición de fauna silvestre?</h3>
+ <span class="q-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+ </summary>
+ <div class="faq-a"><p>Está pensado para médicos veterinarios, biólogos y personal técnico que alimentan o supervisan dietas de fauna en zoológicos, UMA, aviarios, santuarios y centros de rescate. También para estudiantes de últimos semestres que quieren especializarse en el manejo nutricional de especies silvestres en cautiverio.</p></div>
+ </details>
+
+ <details class="faq">
+ <summary>
+ <h3>¿Cuánto costará y cuándo abre la inscripción?</h3>
+ <span class="q-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+ </summary>
+ <div class="faq-a"><p>El precio y la fecha de apertura aún no están confirmados porque el curso sigue en producción. No publicamos cifras que no podamos sostener. Las personas en lista de espera son las primeras en recibir el dato exacto y, cuando aplique, condiciones de preventa.</p></div>
+ </details>
+
+ <details class="faq">
+ <summary>
+ <h3>¿El curso tendrá constancia con valor curricular?</h3>
+ <span class="q-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+ </summary>
+ <div class="faq-a"><p>Esa es la intención: como el resto de la oferta de CELEBIOS, el curso busca emitir constancia con valor curricular avalada por CONCERVET al completarlo. Confirmaremos los términos exactos de la constancia al cerrar el programa, antes de abrir la inscripción.</p></div>
+ </details>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== CURSOS RELACIONADOS ===================== -->
+<section class="surface-light sec" aria-labelledby="relh">
+ <div class="wrap">
+ <div class="sec-head">
+ <div>
+ <span class="sec-kicker mono">Sigue explorando</span>
+ <h2 class="display" id="relh">Cursos relacionados</h2>
+ <p class="sub">De la dieta al manejo integral de fauna: continúa tu ruta en el atlas CELEBIOS.</p>
+ </div>
+ <a class="ccta ccta-disp" href="catalogo.html">Ver el catálogo de cursos</a>
+ </div>
+
+ <div class="grid-rel">
+
+ <!-- Reptiles · DISPONIBLE (curso hermano) -->
+ <article class="lamina is-disp">
+ <div class="lamina-top">
+ <span class="lam-no">Lam. 12</span>
+ <span class="pill pill-disp">Disponible</span>
+ </div>
+ <div class="visor">
+ <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: tortuga">
+ <path class="fill" d="M40 88 C40 64 62 52 88 52 C114 52 132 64 132 86 C132 98 122 104 108 104 L56 104 C46 104 40 98 40 88 Z"/>
+ <path d="M62 70 q26 -12 50 0"/>
+ <path d="M54 86 q34 -10 64 0"/>
+ <path d="M80 54 L80 102"/><path d="M100 55 L102 102"/>
+ <path d="M132 84 C142 80 150 84 150 92 C146 96 140 94 136 92"/>
+ <circle cx="144" cy="88" r="1.8" fill="currentColor" stroke="none"/>
+ <path d="M48 102 l-4 14"/><path d="M108 104 l4 14"/>
+ </svg>
+ </div>
+ <span class="kicker-sci mono">Testudines · manejo</span>
+ <h3>Manejo y Bienestar de Reptiles</h3>
+ <p class="lam-meta">14 h · 100% online a tu ritmo</p>
+ <div class="lam-foot">
+ <span class="lam-price">$1,600 MXN</span>
+ <a class="ccta ccta-disp" href="curso-reptiles.html" aria-label="Ver el curso de Manejo y Bienestar de Reptiles">Ver curso</a>
+ </div>
+ </article>
+
+ <!-- Manejo Conductual · PROXIMA (curso hermano) -->
+ <article class="lamina is-prox">
+ <div class="lamina-top">
+ <span class="lam-no">Lam. 03</span>
+ <span class="pill pill-prox">Abre Sep 2026 <span class="tbd-mark">por confirmar</span></span>
+ </div>
+ <div class="visor tone-cobalto">
+ <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: puma">
+ <path class="fill" d="M30 96 C30 80 46 72 66 72 L108 72 C126 72 138 80 142 92 C140 102 128 106 108 106 L48 106 C36 106 30 102 30 96 Z"/>
+ <path d="M142 92 C148 86 156 88 156 96"/>
+ <path d="M142 92 C144 78 140 70 130 66"/>
+ <path d="M130 66 C138 60 140 52 136 46 C130 52 128 52 124 52"/>
+ <circle cx="126" cy="76" r="2.2" fill="currentColor" stroke="none"/>
+ <path d="M66 72 L60 116"/><path d="M86 74 L82 116"/>
+ <path d="M108 74 L114 116"/><path d="M126 78 L132 116"/>
+ <path d="M30 96 C16 100 8 110 10 124 C22 120 26 112 34 110"/>
+ </svg>
+ </div>
+ <span class="kicker-sci mono">Felidae · conducta</span>
+ <h3>Manejo Conductual de Fauna</h3>
+ <p class="lam-meta">Comportamiento · próxima edición</p>
+ <div class="lam-foot">
+ <span class="lam-price"><span class="from">Inicia</span>Sep 2026</span>
+ <a class="ccta ccta-prox" href="mailto:contacto@celebios.com?subject=Lista%20de%20espera%3A%20Manejo%20Conductual%20de%20Fauna" aria-label="Avisarme cuando abra el curso de Manejo Conductual de Fauna">Avisarme</a>
+ </div>
+ </article>
+
+ <!-- Curso de Gatos · DISPONIBLE (imán de tráfico) -->
+ <article class="lamina is-disp">
+ <div class="lamina-top">
+ <span class="lam-no">Lam. 01</span>
+ <span class="pill pill-disp">Disponible</span>
+ </div>
+ <div class="visor">
+ <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: gato doméstico">
+ <path class="fill" d="M40 70 C40 50 56 42 80 42 C104 42 120 50 120 70 C120 96 104 110 80 110 C56 110 40 96 40 70 Z"/>
+ <path d="M48 50 L42 30 L60 44"/><path d="M112 50 L118 30 L100 44"/>
+ <circle cx="68" cy="68" r="2.6" fill="currentColor" stroke="none"/>
+ <circle cx="92" cy="68" r="2.6" fill="currentColor" stroke="none"/>
+ <path d="M80 76 l-4 6 h8 z" fill="currentColor" stroke="none"/>
+ <path d="M80 82 C76 90 70 90 66 86"/><path d="M80 82 C84 90 90 90 94 86"/>
+ <path d="M60 80 L30 76"/><path d="M60 84 L32 88"/>
+ <path d="M100 80 L130 76"/><path d="M100 84 L128 88"/>
+ </svg>
+ </div>
+ <span class="kicker-sci mono">Felis catus · etología</span>
+ <h3>Lenguaje y Comunicación de los Gatos</h3>
+ <p class="lam-meta">12 h · 100% online a tu ritmo</p>
+ <div class="lam-foot">
+ <span class="lam-price">$1,400 MXN</span>
+ <a class="ccta ccta-disp" href="curso-gatos.html">Ver curso</a>
+ </div>
+ </article>
+
+ </div>
+ </div>
+</section>
+
+<!-- ===================== PUENTE AL DIPLOMADO (funnel) ===================== -->
+<section class="surface-light funnel" aria-labelledby="fnh">
+ <div class="wrap">
+ <div class="funnel-card">
+ <div class="fn-copy">
+ <span class="fn-kicker mono">El siguiente paso</span>
+ <h2 id="fnh">¿Vas en serio con la fauna silvestre?</h2>
+ <p>La nutrición es una pieza del cuidado integral. Si quieres dominar todo el flujo, del rescate al regreso al medio, <a href="diplomado-rehab.html" style="color:var(--cobalto); text-decoration:underline; text-underline-offset:3px;">profundiza con el Diplomado de Rescate y Rehabilitación de Fauna Silvestre</a>: 170 horas, 13 módulos y aval CONCERVET.</p>
+ </div>
+ <a class="fn-cta" href="diplomado-rehab.html">Conoce el Diplomado →</a>
+ </div>
+ </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="surface-dark site on-dark">
+ <div class="wrap">
+ <div class="foot-grid">
+ <div class="foot-brand">
+ <img class="brandlogo" src="brand/logo-white.png" alt="CELEBIOS" width="120" height="46">
+
+ <p>Centro Latinoamericano de Estudios en Ciencias Biológicas y de la Salud Animal.</p>
+ <span class="foot-tag mono-soft">Eliminando fronteras, acercando al mundo.</span>
+ </div>
+
+ <div class="foot-contact">
+ <div>
+ <div class="ck mono">Correo</div>
+ <a href="mailto:contacto@celebios.com">contacto@celebios.com</a>
+ </div>
+ <div>
+ <div class="ck mono">WhatsApp</div>
+ <a href="https://wa.me/529581033574">+52 958 103 3574</a>
+ </div>
+ <div>
+ <div class="ck mono">Instagram</div>
+ <a href="https://instagram.com/celebios_edu">@celebios_edu</a>
+ </div>
+ </div>
+ </div>
+
+ <div class="foot-rule">
+ <small>© 2026 CELEBIOS · Avalada por CONCERVET · 16 años en LATAM</small>
+ <span class="foot-meta">Atlas Lat. · Ed. Lámina Viva</span>
+ </div>
+ </div>
+</footer>
+
+<!-- ===================== STICKY WAIT-BAR ===================== -->
+<div class="buybar" id="buybar" aria-hidden="true">
+ <div class="wrap buybar-in">
+ <div class="bbar-info">
+ <span class="nm">Nutrición de Fauna en Cautiverio</span>
+ <span class="pr">En desarrollo · lista de espera abierta</span>
+ </div>
+ <a class="nav-cta" href="mailto:contacto@celebios.com?subject=Lista%20de%20espera%3A%20Nutrici%C3%B3n%20de%20Fauna%20en%20Cautiverio&body=Hola%20CELEBIOS%2C%20quiero%20unirme%20a%20la%20lista%20de%20espera%20del%20curso%20de%20Nutrici%C3%B3n%20de%20Fauna%20en%20Cautiverio.">Avisarme</a>
+ </div>
+</div>
+
+<script>
+ (function{
+ // menu movil
+ var btn = document.getElementById("menuBtn");
+ var links = document.getElementById("navLinks");
+ if(btn && links){
+ btn.addEventListener("click", function{
+ var open = links.classList.toggle("open");
+ btn.setAttribute("aria-expanded", open ? "true" : "false");
+ });
+ links.addEventListener("click", function(e){
+ if(e.target.tagName === "A"){
+ links.classList.remove("open");
+ btn.setAttribute("aria-expanded", "false");
+ }
+ });
+ }
+
+ // sticky wait-bar: aparece despues de pasar el hero, se oculta sobre el wait-box
+ var bar = document.getElementById("buybar");
+ var hero = document.querySelector(".hero");
+ var buybox = document.getElementById("lista-espera");
+ if(bar && hero){
+ var onScroll = function{
+ var heroBottom = hero.getBoundingClientRect.bottom;
+ var pastHero = heroBottom < 0;
+ var overBox = false;
+ if(buybox){
+ var r = buybox.getBoundingClientRect;
+ overBox = r.top < window.innerHeight && r.bottom > 0;
+ }
+ if(pastHero && !overBox){
+ bar.classList.add("show");
+ bar.setAttribute("aria-hidden", "false");
+ } else {
+ bar.classList.remove("show");
+ bar.setAttribute("aria-hidden", "true");
+ }
+ };
+ var ticking = false;
+ var requestTick = function{
+ if(!ticking){
+ ticking = true;
+ window.requestAnimationFrame(function{ onScroll; ticking = false; });
+ }
+ };
+ window.addEventListener("scroll", requestTick, { passive:true });
+ window.addEventListener("resize", requestTick);
+ onScroll;
+ }
+ });
+</script>
+
+</body>
+</html>

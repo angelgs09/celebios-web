@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CELEBIOS — La academia latinoamericana de fauna silvestre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1410;          /* cinema floor */
+    --panel:#11201A;       /* elevated panel */
+    --line:#27392F;        /* hairline / visor edge */
+    --ink:#EAF2EC;         /* primary text */
+    --ink-soft:#8FA89A;    /* secondary / metadata */
+    --quetzal:#1FD4A8;     /* the one spark of life */
+    --quetzal-deep:#13A082;/* hover / pressed */
+    --soon:#7FB2E8;        /* proxima edicion */
+    --prod:#5C6E64;        /* en produccion */
+    --serif:"Libre Caslon Display", Georgia, serif;
+    --sans:"Inter", system-ui, sans-serif;
+    --mono:"IBM Plex Mono", ui-monospace, monospace;
+    --sp-1:0.5rem; --sp-2:1rem; --sp-3:1.5rem; --sp-4:2rem;
+    --sp-5:3rem; --sp-6:4.5rem; --sp-7:7rem; --sp-8:10rem;
+    --maxw:1240px;
+    --radius:3px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:0.001ms !important;transition-duration:0.001ms !important}
+  }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  /* subtle film-grain vignette so the "cinema floor" isn't flat */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(120% 80% at 50% -10%, rgba(31,212,168,0.05), transparent 55%),
+               radial-gradient(100% 120% at 50% 120%, rgba(0,0,0,0.55), transparent 60%);
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem)}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- micro-label (mono) ---------- */
+  .label{
+    font-family:var(--mono);
+    font-size:0.7rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:0.6em;
+    padding:0.85em 1.6em;
+    border:1px solid transparent;
+    border-radius:var(--radius);
+    cursor:pointer;
+    transition:background .25s ease, color .25s ease, border-color .25s ease, transform .15s ease;
+    background:transparent;
+  }
+  .btn:focus-visible{outline:2px solid var(--quetzal);outline-offset:3px}
+  .btn--primary{background:var(--quetzal);color:#06120D;font-weight:500}
+  .btn--primary:hover{background:var(--quetzal-deep);color:var(--ink);transform:translateY(-1px)}
+  .btn--ghost{border-color:var(--line);color:var(--ink)}
+  .btn--ghost:hover{border-color:var(--quetzal);color:var(--quetzal)}
+  .btn--soon{border-color:var(--soon);color:var(--soon)}
+  .btn--soon:hover{background:rgba(127,178,232,0.12)}
+  .btn--wait{border-color:var(--line);color:var(--ink-soft)}
+  .btn--wait:hover{border-color:var(--ink-soft);color:var(--ink)}
+  .btn .arrow{transition:transform .25s ease}
+  .btn:hover .arrow{transform:translateX(3px)}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,20,16,0.82);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    height:68px;
+  }
+  .wordmark{
+    font-family:var(--serif);
+    font-size:1.35rem;
+    letter-spacing:0.02em;
+    display:flex;align-items:center;gap:0.6rem;
+    color:var(--ink);
+  }
+  .wordmark .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--quetzal);
+    box-shadow:0 0 10px rgba(31,212,168,0.7);
+    flex:none;
+  }
+  .nav-links{display:flex;align-items:center;gap:clamp(1rem,2.4vw,2.2rem)}
+  .nav-links a{
+    font-family:var(--sans);
+    font-size:0.82rem;font-weight:500;
+    color:var(--ink-soft);
+    position:relative;padding:0.2rem 0;
+    transition:color .2s ease;
+  }
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:-2px;height:1px;width:0;
+    background:var(--quetzal);transition:width .25s ease;
+  }
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links a:hover::after{width:100%}
+  .nav-links a:focus-visible{outline:2px solid var(--quetzal);outline-offset:4px;border-radius:2px}
+  .nav-cta{display:flex;align-items:center;gap:1.2rem}
+  .menu-btn{display:none;background:none;border:1px solid var(--line);border-radius:var(--radius);
+    padding:0.5rem 0.7rem;cursor:pointer;color:var(--ink)}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;z-index:1;padding:clamp(4rem,11vh,8.5rem) 0 clamp(3.5rem,8vh,6rem)}
+  .hero-eyebrow{display:flex;align-items:center;gap:0.9rem;margin-bottom:clamp(1.4rem,3vh,2.2rem)}
+  .hero-eyebrow .rule{height:1px;width:46px;background:var(--quetzal);flex:none}
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(2.6rem,7vw,5.5rem);
+    line-height:1.02;
+    letter-spacing:-0.01em;
+    max-width:16ch;
+    margin-bottom:clamp(1.4rem,3vh,2rem);
+  }
+  .hero h1 .glow{color:var(--quetzal)}
+  .hero-sub{
+    font-size:clamp(1rem,1.4vw,1.18rem);
+    color:var(--ink-soft);
+    max-width:54ch;
+    line-height:1.7;
+    margin-bottom:clamp(2rem,4vh,2.8rem);
+  }
+  .hero-sub strong{color:var(--ink);font-weight:500}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+  .hero-tagline{
+    margin-top:clamp(2.6rem,5vh,3.6rem);
+    padding-top:clamp(1.6rem,3vh,2rem);
+    border-top:1px solid var(--line);
+    display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;
+  }
+  .hero-tagline em{
+    font-family:var(--serif);font-style:italic;
+    font-size:clamp(1.1rem,1.8vw,1.5rem);
+    color:var(--ink);
+  }
+
+  /* ---------- credibility strip ---------- */
+  .strip{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    background:var(--panel);
+    position:relative;z-index:1;
+  }
+  .strip-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+  }
+  .strip-cell{
+    padding:clamp(1.4rem,3vw,2.2rem) clamp(1rem,2vw,1.6rem);
+    border-left:1px solid var(--line);
+    display:flex;flex-direction:column;gap:0.45rem;
+  }
+  .strip-cell:first-child{border-left:none}
+  .strip-num{
+    font-family:var(--serif);
+    font-size:clamp(1.5rem,2.4vw,2.1rem);
+    line-height:1;color:var(--ink);
+  }
+  /* acronyms / multi-word labels don't belong in a display serif */
+  .strip-num.is-word{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:clamp(1.05rem,1.7vw,1.35rem);
+    letter-spacing:0.02em;
+  }
+  .strip-num .accent{color:var(--quetzal)}
+  .strip-cell .label{font-size:0.64rem}
+  .strip-allies{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.2rem}
+  .ally-chip{
+    font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;
+    border:1px solid var(--line);border-radius:2px;
+    padding:0.25rem 0.5rem;color:var(--ink);
+  }
+
+  /* ---------- section heading ---------- */
+  .section{position:relative;z-index:1;padding:clamp(4.5rem,9vh,7rem) 0}
+  .section-head{margin-bottom:clamp(2.4rem,5vh,3.6rem);max-width:62ch}
+  .section-head .label{display:block;margin-bottom:1rem}
+  .section-head h2{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(2rem,4vw,3.1rem);
+    line-height:1.05;letter-spacing:-0.01em;
+    margin-bottom:0.7rem;
+  }
+  .section-head p{color:var(--ink-soft);font-size:1.02rem;max-width:48ch}
+
+  /* ---------- catalog grid ---------- */
+  .catalog{
+    display:grid;
+    grid-template-columns:repeat(12,1fr);
+    gap:clamp(1.2rem,2vw,1.6rem);
+  }
+  .card{grid-column:span 4;display:flex;flex-direction:column}
+  .card--anchor{grid-column:span 12}
+
+  /* the visor itself */
+  .visor{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    height:100%;
+    display:flex;flex-direction:column;
+    transition:border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+  }
+  .card > a.visor{text-decoration:none;color:inherit}
+  .visor:hover{
+    border-color:rgba(31,212,168,0.45);
+    transform:translateY(-3px);
+    box-shadow:0 18px 40px -24px rgba(0,0,0,0.9);
+  }
+  .visor:focus-within{border-color:var(--quetzal)}
+
+  /* 16:9 documental photo block */
+  .frame{
+    position:relative;
+    aspect-ratio:16/9;
+    overflow:hidden;
+    background:
+      radial-gradient(130% 120% at 70% 10%, rgba(31,212,168,0.10), transparent 55%),
+      linear-gradient(165deg,#16261E 0%, #0C1712 70%, #0B1410 100%);
+    border-bottom:1px solid var(--line);
+  }
+  .frame svg{
+    position:absolute;inset:0;width:100%;height:100%;
+    display:block;
+    color:var(--ink);
+    opacity:0.92;
+  }
+  /* inferior scrim toward cinema floor */
+  .frame::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(to top, rgba(11,20,16,0.92) 0%, rgba(11,20,16,0.18) 38%, transparent 60%);
+  }
+  .frame .badge{
+    position:absolute;top:0.85rem;left:0.85rem;z-index:3;
+    font-family:var(--mono);font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;
+    padding:0.35em 0.7em;border-radius:2px;
+    background:rgba(11,20,16,0.7);backdrop-filter:blur(4px);
+  }
+  .badge--live{color:#06120D;background:var(--quetzal);font-weight:500}
+  .badge--soon{color:var(--soon);border:1px solid var(--soon)}
+  .badge--prod{color:var(--prod);border:1px solid var(--prod)}
+  .frame .caption{
+    position:absolute;bottom:0.7rem;right:0.85rem;z-index:3;
+    font-family:var(--mono);font-size:0.55rem;letter-spacing:0.14em;
+    color:var(--ink-soft);text-transform:uppercase;
+  }
+  .frame .species-tag{
+    position:absolute;bottom:0.7rem;left:0.85rem;z-index:3;
+    font-family:var(--mono);font-size:0.58rem;letter-spacing:0.12em;
+    color:var(--quetzal);text-transform:uppercase;
+  }
+
+  .card-body{
+    padding:clamp(1.2rem,1.6vw,1.6rem);
+    display:flex;flex-direction:column;gap:0.9rem;
+    flex:1;
+  }
+  .card-area{font-size:0.62rem}
+  .card-name{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(1.25rem,1.7vw,1.55rem);
+    line-height:1.12;letter-spacing:-0.01em;
+    color:var(--ink);
+  }
+  .micro-ficha{
+    font-family:var(--mono);font-size:0.64rem;letter-spacing:0.1em;
+    color:var(--ink-soft);text-transform:uppercase;line-height:1.7;
+  }
+  .price{
+    font-family:var(--mono);font-size:0.95rem;letter-spacing:0.06em;
+    color:var(--ink);margin-top:auto;
+    /* reserve a 2-line price block so the button baseline stays aligned
+       across cards regardless of price + author height */
+    min-height:2.9em;
+    display:flex;flex-direction:column;justify-content:flex-end;
+  }
+  .price .from{color:var(--ink-soft);font-size:0.62rem;display:block;letter-spacing:0.12em}
+  .price .author{display:block;font-family:var(--sans);font-size:0.78rem;letter-spacing:0;color:var(--ink-soft);margin-top:0.35rem;text-transform:none}
+  .card-foot{margin-top:0.6rem}
+  .card-foot .btn{width:100%;justify-content:space-between}
+
+  /* CTA card that balances the last grid row (fills the orphan slot) */
+  .card--cta .visor{
+    background:
+      radial-gradient(120% 120% at 80% 10%, rgba(31,212,168,0.08), transparent 55%),
+      var(--panel);
+    border-style:dashed;
+    align-items:flex-start;justify-content:center;
+    padding:clamp(1.6rem,2.4vw,2.4rem);
+    gap:1.1rem;min-height:100%;
+  }
+  .card--cta .visor:hover{border-style:solid}
+  .card--cta .cta-eyebrow{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--quetzal)}
+  .card--cta .cta-title{font-family:var(--serif);font-weight:400;font-size:clamp(1.35rem,1.9vw,1.7rem);line-height:1.1;color:var(--ink)}
+  .card--cta .cta-copy{color:var(--ink-soft);font-size:0.9rem;line-height:1.6;max-width:30ch}
+  .card--cta .cta-link{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink);display:inline-flex;align-items:center;gap:0.5em;margin-top:auto}
+  .card--cta .cta-link .arrow{transition:transform .25s ease}
+  .card--cta .visor:hover .cta-link{color:var(--quetzal)}
+  .card--cta .visor:hover .cta-link .arrow{transform:translateX(3px)}
+
+  /* en produccion = dimmed SPECIMEN ART, never the readable text.
+     atenuamos el line-art y el chrome, pero el nombre del curso se
+     mantiene legible: ink-soft sigue sobre umbral AA. */
+  .visor--prod{opacity:1}
+  .visor--prod .frame svg{opacity:0.45;filter:saturate(0.4)}
+  .visor--prod .frame::after{background:linear-gradient(to top, rgba(11,20,16,0.96) 0%, rgba(11,20,16,0.4) 42%, rgba(11,20,16,0.15) 62%)}
+  .visor--prod .card-area,
+  .visor--prod .micro-ficha,
+  .visor--prod .price{opacity:0.78}
+  .visor--prod .card-name{color:var(--ink-soft)}
+  .visor--prod:hover{transform:translateY(-2px)}
+  .visor--prod:hover .card-name{color:var(--ink)}
+
+  /* anchor diplomado = cinematic large piece */
+  .anchor{
+    display:grid;
+    grid-template-columns:1.15fr 1fr;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    transition:border-color .3s ease, box-shadow .3s ease;
+  }
+  .anchor:hover{border-color:rgba(31,212,168,0.45);box-shadow:0 22px 60px -30px rgba(0,0,0,0.9)}
+  .anchor .frame{aspect-ratio:auto;height:100%;min-height:360px;border-bottom:none;border-right:1px solid var(--line)}
+  .anchor-body{padding:clamp(2rem,3.5vw,3.4rem);display:flex;flex-direction:column;gap:1.2rem;justify-content:center}
+  .anchor-kicker{display:flex;align-items:center;gap:0.8rem}
+  .anchor-kicker .badge--live{position:static;background:var(--quetzal)}
+  .anchor h3{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(1.9rem,3.2vw,2.8rem);
+    line-height:1.06;letter-spacing:-0.01em;
+  }
+  .anchor-meta{display:flex;flex-wrap:wrap;gap:0.6rem 1.4rem}
+  .anchor-meta span{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.12em;color:var(--ink-soft);text-transform:uppercase}
+  /* price in ink, never quetzal: el verde queda reservado para vida/CTA/badges */
+  .anchor-price{font-family:var(--mono);font-size:1.4rem;letter-spacing:0.04em;color:var(--ink)}
+  .anchor-price small{display:block;font-size:0.62rem;color:var(--ink-soft);letter-spacing:0.14em;margin-bottom:0.2rem}
+  .anchor-actions{display:flex;gap:0.9rem;flex-wrap:wrap;margin-top:0.4rem}
+
+  /* ---------- rutas teaser ---------- */
+  .rutas{
+    border-top:1px solid var(--line);
+    background:
+      radial-gradient(80% 140% at 85% 0%, rgba(31,212,168,0.07), transparent 60%),
+      var(--bg);
+  }
+  .rutas-inner{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+  .rutas h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,3.4vw,2.7rem);line-height:1.08;letter-spacing:-0.01em;margin-bottom:1rem}
+  .rutas h2 em{font-style:italic;color:var(--quetzal)}
+  .rutas p{color:var(--ink-soft);max-width:46ch;line-height:1.7}
+  .ruta-chips{display:flex;flex-direction:column;gap:0.9rem}
+  .ruta-chip{
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:1.1rem 1.4rem;background:var(--panel);
+    transition:border-color .25s ease, transform .2s ease;
+  }
+  .ruta-chip:hover{border-color:rgba(31,212,168,0.4);transform:translateX(4px)}
+  .ruta-chip .rc-name{font-family:var(--serif);font-size:1.15rem}
+  .ruta-chip .rc-tag{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--soon);border:1px solid var(--line);padding:0.3em 0.6em;border-radius:2px}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);background:var(--panel);position:relative;z-index:1}
+  .foot{padding:clamp(3rem,6vh,4.5rem) 0 clamp(2rem,4vh,3rem);display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.5rem}
+  .foot-brand .wordmark{margin-bottom:1rem}
+  .foot-brand p{color:var(--ink-soft);max-width:34ch;font-size:0.92rem;line-height:1.7}
+  .foot-brand em{font-family:var(--serif);font-style:italic;color:var(--ink);display:block;margin-top:1rem}
+  .foot-col h4{font-family:var(--mono);font-size:0.64rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1.1rem}
+  .foot-col a, .foot-col span{display:block;font-size:0.9rem;color:var(--ink);margin-bottom:0.6rem;transition:color .2s ease}
+  .foot-col a:hover{color:var(--quetzal)}
+  .foot-bottom{border-top:1px solid var(--line);padding:1.5rem 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+  .foot-bottom .label{font-size:0.62rem}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:1024px){
+    .strip-grid{grid-template-columns:repeat(2,1fr)}
+    .strip-cell:nth-child(odd){border-left:none}
+    .strip-cell{border-top:1px solid var(--line)}
+    .strip-cell:nth-child(-n+2){border-top:none}
+    .card{grid-column:span 6}
+    .anchor{grid-template-columns:1fr}
+    .anchor .frame{border-right:none;border-bottom:1px solid var(--line);min-height:280px}
+  }
+  @media (max-width:768px){
+    .nav-links{display:none}
+    .nav-links.open{
+      display:flex;flex-direction:column;position:absolute;top:68px;left:0;right:0;
+      background:var(--bg);border-bottom:1px solid var(--line);padding:1.2rem clamp(1.25rem,4vw,2.5rem);gap:1.2rem;
+    }
+    .menu-btn{display:inline-flex}
+    .nav-cta .btn{display:none}
+    .rutas-inner{grid-template-columns:1fr}
+    .foot{grid-template-columns:1fr 1fr}
+    .foot-brand{grid-column:1 / -1}
+  }
+  @media (max-width:560px){
+    .strip-grid{grid-template-columns:1fr}
+    .strip-cell{border-left:none;border-top:1px solid var(--line)}
+    .strip-cell:first-child{border-top:none}
+    .card{grid-column:span 12}
+    .anchor-actions{flex-direction:column;align-items:stretch}
+    .anchor-actions .btn{justify-content:center}
+    .foot{grid-template-columns:1fr}
+    .hero-actions{flex-direction:column;align-items:stretch}
+    .hero-actions .btn{justify-content:center}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap nav">
+    <a href="#" class="wordmark" aria-label="CELEBIOS inicio"><span class="dot" aria-hidden="true"></span>CELEBIOS</a>
+    <nav class="nav-links" id="navLinks" aria-label="Principal">
+      <a href="#catalogo">Cursos</a>
+      <a href="#catalogo">Diplomado</a>
+      <a href="#rutas">Rutas</a>
+      <a href="#nosotros">Nosotros</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn--primary" href="#catalogo">Explorar cursos</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 1h18M0 7h18M0 13h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow">
+      <span class="rule" aria-hidden="true"></span>
+      <span class="label">Centro Latinoamericano de Estudios en Ciencias Biol&oacute;gicas y de la Salud Animal</span>
+    </div>
+    <h1>La academia latinoamericana de <span class="glow">fauna silvestre.</span></h1>
+    <p class="hero-sub">Educaci&oacute;n continua para quienes cuidan la vida silvestre. <strong>Avalada por CONCERVET</strong>, 16 a&ntilde;os formando profesionales en toda LATAM.</p>
+    <div class="hero-actions">
+      <a class="btn btn--primary" href="#catalogo">Explorar cursos <span class="arrow" aria-hidden="true">&rarr;</span></a>
+      <a class="btn btn--ghost" href="#nosotros">Conoce CELEBIOS</a>
+    </div>
+    <div class="hero-tagline">
+      <span class="label">Tagline</span>
+      <em>&laquo;Eliminando fronteras, acercando al mundo.&raquo;</em>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CREDIBILITY STRIP ============ -->
+<section class="strip" aria-label="Credibilidad">
+  <div class="wrap">
+    <div class="strip-grid">
+      <div class="strip-cell">
+        <span class="strip-num"><span class="accent">16</span> a&ntilde;os</span>
+        <span class="label">Desde 2010</span>
+      </div>
+      <div class="strip-cell">
+        <span class="strip-num"><span class="accent">+500</span></span>
+        <span class="label">Egresados en LATAM</span>
+      </div>
+      <div class="strip-cell">
+        <span class="strip-num is-word">CONCERVET</span>
+        <span class="label">Aval acad&eacute;mico</span>
+      </div>
+      <div class="strip-cell">
+        <span class="strip-num">14</span>
+        <span class="label">&Aacute;reas de especialidad</span>
+      </div>
+      <div class="strip-cell">
+        <span class="label">Aliados</span>
+        <div class="strip-allies">
+          <span class="ally-chip">UAEH</span>
+          <span class="ally-chip">UNAM</span>
+          <span class="ally-chip">IFAW</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATALOGO ============ -->
+<section class="section" id="catalogo">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label">01 / Programas</span>
+      <h2>14 &aacute;reas, de la cl&iacute;nica al campo</h2>
+      <p>Un cat&aacute;logo vivo: diplomado ancla, cursos disponibles y nuevas ediciones en producci&oacute;n.</p>
+    </div>
+
+    <div class="catalog">
+
+      <!-- ============ ANCHOR: DIPLOMADO (premium, full width) ============ -->
+      <article class="card card--anchor">
+        <div class="anchor">
+          <div class="frame">
+            <span class="badge badge--live">Disponible</span>
+            <!-- JAGUAR line-art -->
+            <svg viewBox="0 0 400 225" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <path d="M60 150 C70 120 88 110 110 112 C120 95 138 88 160 92 C175 70 205 66 224 80 C236 72 252 74 258 86 C268 84 278 90 280 100 C300 102 318 116 322 138 C330 142 336 150 334 160 C338 168 336 178 328 182"/>
+              <path d="M258 86 C266 78 278 72 290 74 C284 80 280 88 282 96"/>
+              <path d="M268 88 l6 -10 M280 92 l9 -7"/>
+              <circle cx="276" cy="100" r="2.2" fill="currentColor" stroke="none"/>
+              <path d="M286 104 q6 2 10 0"/>
+              <path d="M289 108 l4 4 M295 108 l-2 5"/>
+              <path d="M110 112 C108 132 112 150 120 168 M120 168 l-4 18 M120 168 l8 16"/>
+              <path d="M322 138 C326 156 326 176 322 190 M322 190 l-5 14 M322 190 l7 12"/>
+              <path d="M180 130 C188 150 190 168 186 184 M186 184 l-5 12 M186 184 l7 11"/>
+              <path d="M240 128 C248 148 250 166 246 182 M246 182 l-5 12 M246 182 l7 11"/>
+              <path d="M334 160 C346 154 356 158 360 168"/>
+              <!-- rosettes -->
+              <path d="M150 116 q5 -4 9 0 q-2 5 -7 5 q-4 -2 -2 -5" opacity="0.7"/>
+              <path d="M200 110 q5 -4 9 0 q-2 5 -7 5 q-4 -2 -2 -5" opacity="0.7"/>
+              <path d="M252 116 q5 -4 9 0 q-2 5 -7 5 q-4 -2 -2 -5" opacity="0.7"/>
+              <path d="M175 150 q4 -3 7 0 q-2 4 -5 4 q-3 -1 -2 -4" opacity="0.55"/>
+              <path d="M225 152 q4 -3 7 0 q-2 4 -5 4 q-3 -1 -2 -4" opacity="0.55"/>
+              <path d="M290 130 q5 -4 9 0 q-2 5 -7 5 q-4 -2 -2 -5" opacity="0.6"/>
+            </svg>
+            <span class="species-tag">Panthera onca</span>
+            <span class="caption">Chiapas, MX &middot; 2024 &middot; 200mm</span>
+          </div>
+          <div class="anchor-body">
+            <div class="anchor-kicker">
+              <span class="badge badge--live">Ancla / Premium</span>
+              <span class="label">Rehabilitaci&oacute;n</span>
+            </div>
+            <h3>Diplomado: Rescate y Rehabilitaci&oacute;n de Fauna Silvestre</h3>
+            <div class="anchor-meta">
+              <span>170 horas</span>
+              <span>13 m&oacute;dulos</span>
+              <span>Semipresencial</span>
+            </div>
+            <div class="anchor-price">
+              <small>Desde</small>
+              $19,500 MXN
+            </div>
+            <div class="anchor-actions">
+              <a class="btn btn--primary" href="#">Inscribirme <span class="arrow" aria-hidden="true">&rarr;</span></a>
+              <a class="btn btn--ghost" href="#">Ver temario</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ============ 1. GATOS — DISPONIBLE ============ -->
+      <article class="card">
+        <a class="visor" href="#">
+          <div class="frame">
+            <span class="badge badge--live">Disponible</span>
+            <!-- CAT line-art -->
+            <svg viewBox="0 0 400 225" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <path d="M150 70 l-8 -26 l24 16 M250 70 l8 -26 l-24 16"/>
+              <path d="M150 70 C138 86 134 104 140 122 C128 132 122 150 124 168 C126 188 142 200 168 202 L232 202 C258 200 274 188 276 168 C278 150 272 132 260 122 C266 104 262 86 250 70 C232 56 168 56 150 70 Z"/>
+              <circle cx="172" cy="118" r="3" fill="currentColor" stroke="none"/>
+              <circle cx="228" cy="118" r="3" fill="currentColor" stroke="none"/>
+              <path d="M200 132 l0 8 M200 140 q-7 6 -14 2 M200 140 q7 6 14 2"/>
+              <path d="M200 134 v-2"/>
+              <path d="M186 130 l-26 -6 M186 136 l-26 4 M214 130 l26 -6 M214 136 l26 4"/>
+              <path d="M168 202 C166 188 170 176 180 170 M232 202 C234 188 230 176 220 170"/>
+            </svg>
+            <span class="species-tag">F&eacute;lidos &middot; puerta de entrada</span>
+            <span class="caption">CDMX, MX &middot; 2024 &middot; 50mm</span>
+          </div>
+          <div class="card-body">
+            <span class="label card-area">Comportamiento</span>
+            <h3 class="card-name">Lenguaje y Comunicaci&oacute;n de los Gatos</h3>
+            <p class="micro-ficha">12 H &middot; 100% online &middot; A tu ritmo</p>
+            <div class="price">
+              $1,400 MXN
+              <span class="author">Dra. Camila Hern&aacute;ndez</span>
+            </div>
+            <div class="card-foot">
+              <span class="btn btn--primary">Inscribirme <span class="arrow" aria-hidden="true">&rarr;</span></span>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <!-- ============ 3. MANEJO CONDUCTUAL — PROXIMA ============ -->
+      <article class="card">
+        <a class="visor" href="#">
+          <div class="frame">
+            <span class="badge badge--soon">Proxima edicion</span>
+            <!-- FELINO SILVESTRE (prowling cat) line-art -->
+            <svg viewBox="0 0 400 225" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <path d="M70 160 C82 138 100 132 120 136 C130 120 150 116 168 122 C182 104 210 104 224 118 C236 112 250 114 256 124 C268 122 278 130 280 142 C300 146 314 158 316 176"/>
+              <path d="M256 124 C262 116 272 110 282 112 C278 118 276 124 278 130"/>
+              <path d="M266 116 l4 -8 M278 120 l7 -6"/>
+              <circle cx="274" cy="128" r="2" fill="currentColor" stroke="none"/>
+              <path d="M284 132 q5 1 8 -1"/>
+              <path d="M120 136 C118 152 122 166 130 178 M130 178 l-4 14 M130 178 l7 13"/>
+              <path d="M316 176 C320 158 318 184 314 196 M314 196 l-5 10 M314 196 l6 9"/>
+              <path d="M195 138 C202 156 202 172 198 186 M198 186 l-4 10 M198 186 l6 9"/>
+              <path d="M250 140 C257 158 257 174 253 188 M253 188 l-4 10 M253 188 l6 9"/>
+            </svg>
+            <span class="species-tag">Felino silvestre</span>
+            <span class="caption">Calakmul, MX &middot; 2023 &middot; 300mm</span>
+          </div>
+          <div class="card-body">
+            <span class="label card-area">Comportamiento</span>
+            <h3 class="card-name">Manejo Conductual de Fauna</h3>
+            <p class="micro-ficha">Abre Sep 2026</p>
+            <div class="price"><span class="from">Inscripciones por abrir</span></div>
+            <div class="card-foot">
+              <button type="button" class="btn btn--soon" data-aviso="Manejo Conductual de Fauna">Avisarme</button>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <!-- ============ 4. ORTOPEDIA DE AVES — PROXIMA ============ -->
+      <article class="card">
+        <a class="visor" href="#">
+          <div class="frame">
+            <span class="badge badge--soon">Proxima edicion</span>
+            <!-- AVE RAPAZ (raptor) line-art -->
+            <svg viewBox="0 0 400 225" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <path d="M196 70 C176 72 162 86 160 106 C140 110 124 124 120 144 C150 134 164 138 168 150 C158 168 152 188 154 204 C168 190 182 182 196 182 C210 182 224 190 238 204 C240 188 234 168 224 150 C228 138 242 134 272 144 C268 124 252 110 232 106 C230 86 216 72 196 70 Z"/>
+              <path d="M186 96 C188 90 204 90 206 96"/>
+              <circle cx="184" cy="100" r="2.4" fill="currentColor" stroke="none"/>
+              <circle cx="208" cy="100" r="2.4" fill="currentColor" stroke="none"/>
+              <path d="M196 104 l-7 8 q7 5 14 0 Z"/>
+              <path d="M189 112 q-3 6 -1 12 M203 112 q3 6 1 12"/>
+              <path d="M168 150 q14 6 28 6 q14 0 28 -6" opacity="0.6"/>
+              <path d="M176 168 q20 6 40 0" opacity="0.5"/>
+            </svg>
+            <span class="species-tag">Ave rapaz</span>
+            <span class="caption">Oaxaca, MX &middot; 2024 &middot; 400mm</span>
+          </div>
+          <div class="card-body">
+            <span class="label card-area">Cl&iacute;nica</span>
+            <h3 class="card-name">Ortopedia de Aves</h3>
+            <p class="micro-ficha">Abre Oct 2026</p>
+            <div class="price"><span class="from">Inscripciones por abrir</span></div>
+            <div class="card-foot">
+              <button type="button" class="btn btn--soon" data-aviso="Ortopedia de Aves">Avisarme</button>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <!-- ============ 5. NUTRICION — EN PRODUCCION ============ -->
+      <article class="card">
+        <a class="visor visor--prod" href="#">
+          <div class="frame">
+            <span class="badge badge--prod">En produccion</span>
+            <!-- GUACAMAYA (macaw) line-art -->
+            <svg viewBox="0 0 400 225" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <path d="M214 60 C196 60 184 72 182 90 C176 88 168 90 166 98 C160 96 152 100 154 108 C146 112 146 122 154 126 C150 140 152 158 160 174 C168 192 182 200 196 198 C194 184 190 168 190 152 C198 158 206 158 214 154"/>
+              <path d="M214 60 C232 60 244 72 244 90 C244 112 232 130 214 154"/>
+              <path d="M182 90 C178 96 178 104 182 110 C188 104 196 102 204 104"/>
+              <circle cx="208" cy="86" r="2.6" fill="currentColor" stroke="none"/>
+              <path d="M182 90 C172 88 164 92 162 100 q10 2 18 -2"/>
+              <path d="M190 152 C188 168 192 184 200 196 M200 196 l-5 8 M204 194 l3 9" opacity="0.7"/>
+              <path d="M214 154 C226 168 234 186 236 204 M236 204 l3 -10 M232 200 l8 4" opacity="0.7"/>
+              <path d="M170 120 q-12 6 -14 18 q12 -4 18 -10" opacity="0.6"/>
+            </svg>
+            <span class="species-tag">Ara macao</span>
+            <span class="caption">Palenque, MX &middot; 2023 &middot; 135mm</span>
+          </div>
+          <div class="card-body">
+            <span class="label card-area">Nutrici&oacute;n</span>
+            <h3 class="card-name">Nutrici&oacute;n de Fauna en Cautiverio</h3>
+            <p class="micro-ficha">En producci&oacute;n</p>
+            <div class="price"><span class="from">Pr&oacute;ximamente</span></div>
+            <div class="card-foot">
+              <button type="button" class="btn btn--wait" data-aviso="Nutricion de Fauna en Cautiverio">Lista de espera</button>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <!-- ============ 6. ANESTESIA — EN PRODUCCION ============ -->
+      <article class="card">
+        <a class="visor visor--prod" href="#">
+          <div class="frame">
+            <span class="badge badge--prod">En produccion</span>
+            <!-- TAPIR line-art -->
+            <svg viewBox="0 0 400 225" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <path d="M96 130 C92 112 102 98 120 96 C124 84 138 78 154 82 C170 72 200 70 224 78 C260 88 286 104 300 124 C310 122 320 126 322 134 C314 140 304 140 296 136 C292 150 288 162 286 172"/>
+              <path d="M96 130 C84 134 78 144 80 156 C90 158 100 154 106 146"/>
+              <path d="M296 136 C300 150 300 164 296 176"/>
+              <circle cx="300" cy="118" r="2.4" fill="currentColor" stroke="none"/>
+              <path d="M300 124 q8 -2 14 0" opacity="0.6"/>
+              <path d="M106 146 C104 160 108 174 116 184 M116 184 l-4 14 M116 184 l7 13"/>
+              <path d="M160 150 C158 168 158 184 162 198 M162 198 l-4 8 M162 198 l6 7"/>
+              <path d="M236 150 C234 168 234 184 238 198 M238 198 l-4 8 M238 198 l6 7"/>
+              <path d="M286 172 C286 184 288 194 292 200 M292 200 l-4 6 M292 200 l5 5"/>
+              <path d="M120 110 q26 -8 60 -6" opacity="0.45"/>
+            </svg>
+            <span class="species-tag">Tapirus bairdii</span>
+            <span class="caption">Chiapas, MX &middot; 2023 &middot; 70mm</span>
+          </div>
+          <div class="card-body">
+            <span class="label card-area">Cl&iacute;nica</span>
+            <h3 class="card-name">Anestesia y Contenci&oacute;n de Fauna</h3>
+            <p class="micro-ficha">En producci&oacute;n</p>
+            <div class="price"><span class="from">Pr&oacute;ximamente</span></div>
+            <div class="card-foot">
+              <button type="button" class="btn btn--wait" data-aviso="Anestesia y Contencion de Fauna">Lista de espera</button>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <!-- ============ 7. MEDICINA INTERNA — EN PRODUCCION ============ -->
+      <article class="card">
+        <a class="visor visor--prod" href="#">
+          <div class="frame">
+            <span class="badge badge--prod">En produccion</span>
+            <!-- TORTUGA line-art -->
+            <svg viewBox="0 0 400 225" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <path d="M120 150 C120 116 156 96 200 96 C244 96 280 116 280 150 C280 162 268 168 252 168 L148 168 C132 168 120 162 120 150 Z"/>
+              <path d="M200 96 L200 168 M150 104 L162 168 M250 104 L238 168 M126 138 L150 130 M274 138 L250 130"/>
+              <path d="M176 120 q24 -8 48 0 M168 144 q32 -6 64 0" opacity="0.5"/>
+              <path d="M280 150 C296 144 308 148 312 158 q-8 6 -18 4"/>
+              <circle cx="306" cy="151" r="2" fill="currentColor" stroke="none"/>
+              <path d="M132 166 C126 178 128 190 138 196 M260 166 C266 178 264 190 254 196"/>
+              <path d="M150 168 l-6 16 M250 168 l6 16" opacity="0.6"/>
+            </svg>
+            <span class="species-tag">Chelonia sp.</span>
+            <span class="caption">Q. Roo, MX &middot; 2024 &middot; 24mm</span>
+          </div>
+          <div class="card-body">
+            <span class="label card-area">Cl&iacute;nica</span>
+            <h3 class="card-name">Medicina Interna de Fauna</h3>
+            <p class="micro-ficha">En producci&oacute;n</p>
+            <div class="price"><span class="from">Pr&oacute;ximamente</span></div>
+            <div class="card-foot">
+              <button type="button" class="btn btn--wait" data-aviso="Medicina Interna de Fauna">Lista de espera</button>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <!-- ============ 8. FELIDOS — EN PRODUCCION ============ -->
+      <article class="card">
+        <a class="visor visor--prod" href="#">
+          <div class="frame">
+            <span class="badge badge--prod">En produccion</span>
+            <!-- OCELOTE line-art -->
+            <svg viewBox="0 0 400 225" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <path d="M250 86 l-6 -22 l-14 16 M250 86 C262 80 274 80 282 88 C276 94 274 102 276 110"/>
+              <path d="M250 86 C232 80 200 80 178 90 C160 84 144 88 138 100 C150 102 158 108 158 118 C148 130 144 146 148 162 C152 182 170 194 196 196 L246 196 C272 194 286 180 286 160 C288 142 282 124 276 110"/>
+              <path d="M256 88 l4 -10 M270 90 l8 -8"/>
+              <circle cx="268" cy="100" r="2.4" fill="currentColor" stroke="none"/>
+              <path d="M278 104 q5 2 9 0"/>
+              <path d="M281 108 l4 4 M287 108 l-2 5"/>
+              <path d="M158 118 C156 138 160 158 168 174 M168 174 l-4 16 M168 174 l8 15"/>
+              <path d="M286 160 C290 142 290 178 286 192 M286 192 l-5 12 M286 192 l6 11"/>
+              <path d="M205 130 C212 148 212 168 208 184 M208 184 l-4 12 M208 184 l6 11"/>
+              <path d="M250 132 C257 150 257 168 253 184 M253 184 l-4 12 M253 184 l6 11"/>
+              <!-- ocelot streaks -->
+              <path d="M190 110 q14 -4 28 0" opacity="0.55"/>
+              <path d="M186 128 q18 -4 36 0" opacity="0.5"/>
+              <path d="M188 148 q18 -3 36 0" opacity="0.45"/>
+            </svg>
+            <span class="species-tag">Leopardus pardalis</span>
+            <span class="caption">Campeche, MX &middot; 2023 &middot; 500mm</span>
+          </div>
+          <div class="card-body">
+            <span class="label card-area">Especies</span>
+            <h3 class="card-name">F&eacute;lidos silvestres: del gato dom&eacute;stico al ocelote</h3>
+            <p class="micro-ficha">En producci&oacute;n</p>
+            <div class="price"><span class="from">Pr&oacute;ximamente</span></div>
+            <div class="card-foot">
+              <button type="button" class="btn btn--wait" data-aviso="Felidos silvestres">Lista de espera</button>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <!-- ============ CTA CARD: balancea la fila huerfana ============ -->
+      <article class="card card--cta">
+        <a class="visor" href="#nosotros">
+          <span class="cta-eyebrow">14 &aacute;reas</span>
+          <span class="cta-title">M&aacute;s especialidades en camino</span>
+          <span class="cta-copy">Este cat&aacute;logo crece cada trimestre. Conoce el mapa completo de la academia y por d&oacute;nde empezar.</span>
+          <span class="cta-link">Ver todas las &aacute;reas <span class="arrow" aria-hidden="true">&rarr;</span></span>
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ RUTAS TEASER ============ -->
+<section class="rutas section" id="rutas">
+  <div class="wrap rutas-inner">
+    <div>
+      <span class="label">Fase 2 &middot; Pr&oacute;ximamente</span>
+      <h2 style="margin-top:1rem">Rutas de aprendizaje <em>&mdash; pr&oacute;ximamente.</em></h2>
+      <p>Encadena cursos hacia una especialidad con certificado. Un camino curado, de la introducci&oacute;n al dominio de campo.</p>
+    </div>
+    <div class="ruta-chips">
+      <div class="ruta-chip">
+        <span class="rc-name">Ruta Rehabilitaci&oacute;n</span>
+        <span class="rc-tag">Pr&oacute;ximamente</span>
+      </div>
+      <div class="ruta-chip">
+        <span class="rc-name">Ruta Comportamiento Animal</span>
+        <span class="rc-tag">Pr&oacute;ximamente</span>
+      </div>
+      <div class="ruta-chip">
+        <span class="rc-name">Ruta Cl&iacute;nica de Fauna</span>
+        <span class="rc-tag">Pr&oacute;ximamente</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="nosotros">
+  <div class="wrap foot">
+    <div class="foot-brand">
+      <a href="#" class="wordmark"><span class="dot" aria-hidden="true"></span>CELEBIOS</a>
+      <p>Centro Latinoamericano de Estudios en Ciencias Biol&oacute;gicas y de la Salud Animal.</p>
+      <em>&laquo;Eliminando fronteras, acercando al mundo.&raquo;</em>
+    </div>
+    <div class="foot-col">
+      <h4>Contacto</h4>
+      <a href="mailto:contacto@celebios.com">contacto@celebios.com</a>
+      <a href="https://wa.me/529581033574">WhatsApp +52 958 103 3574</a>
+      <a href="#">IG @celebios_edu</a>
+    </div>
+    <div class="foot-col">
+      <h4>Programas</h4>
+      <a href="#catalogo">Cursos</a>
+      <a href="#catalogo">Diplomado</a>
+      <a href="#rutas">Rutas</a>
+      <a href="#nosotros">Nosotros</a>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <span class="label">&copy; 2010&ndash;2026 CELEBIOS &middot; Avalado por CONCERVET</span>
+    <span class="label">Aliados &middot; UAEH &middot; UNAM &middot; IFAW</span>
+  </div>
+</footer>
+
+<script>
+  // Minimal: mobile nav toggle only. Straight ASCII quotes throughout.
+  (function(){
+    var btn = document.getElementById("menuBtn");
+    var links = document.getElementById("navLinks");
+    if(!btn || !links) return;
+    btn.addEventListener("click", function(){
+      var open = links.classList.toggle("open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    links.addEventListener("click", function(e){
+      if(e.target.tagName === "A"){
+        links.classList.remove("open");
+        btn.setAttribute("aria-expanded", "false");
+      }
+    });
+  })();
+
+  // Aviso / lista de espera: real buttons nested inside card links.
+  // Stop the parent visor link, capture intent (email flow placeholder).
+  (function(){
+    var avisos = document.querySelectorAll("[data-aviso]");
+    for(var i = 0; i < avisos.length; i++){
+      avisos[i].addEventListener("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var curso = this.getAttribute("data-aviso") || "";
+        var mensaje = "Hola CELEBIOS, quiero que me avisen cuando abra: " + curso;
+        var url = "https://wa.me/529581033574?text=" + encodeURIComponent(mensaje);
+        window.open(url, "_blank", "noopener");
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

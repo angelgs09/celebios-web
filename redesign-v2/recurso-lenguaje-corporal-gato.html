@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lenguaje corporal de los gatos: orejas, cola y ojos</title>
+<meta name="description" content="Aprende a leer el lenguaje corporal de los gatos: que comunican sus orejas, cola, ojos, pupilas y postura. Guia con ejemplos y tabla de senales.">
+<link rel="canonical" href="https://www.celebios.com/recursos/lenguaje-corporal-del-gato">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="CELEBIOS">
+<meta property="og:title" content="Lenguaje corporal de los gatos: orejas, cola y ojos">
+<meta property="og:description" content="Que comunican las orejas, la cola, los ojos y la postura de tu gato. Una guia clara, con ejemplos concretos y tabla de senales para tutores.">
+<meta property="og:url" content="https://www.celebios.com/recursos/lenguaje-corporal-del-gato">
+<meta property="og:image" content="https://www.celebios.com/brand/logo-white.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lenguaje corporal de los gatos: orejas, cola y ojos">
+<meta name="twitter:description" content="Que comunican las orejas, la cola, los ojos y la postura de tu gato. Guia clara con ejemplos y tabla de senales.">
+<meta name="twitter:image" content="https://www.celebios.com/brand/logo-white.png">
+<meta name="theme-color" content="#14294F">
+<link rel="icon" href="brand/logo-white.png" type="image/png">
+<link rel="apple-touch-icon" href="brand/logo-white.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+ /* ============================================================
+ CELEBIOS - Direccion "LAMINA VIVA"
+ Atlas naturalista latinoamericano. Alternancia editorial
+ placa-oscura (Charca) <-> pliego-claro (Hueso).
+ ============================================================ */
+
+ :root{
+ /* Paleta */
+ /* === PALETA DE MARCA (colores del logo CELEBIOS) === */
+ --charca: #14294F; /* marino canvas (marca) */
+ --charca-2: #1E3768; /* panel marino */
+ --ceibo: #2FA8C9; /* CIAN del logo = disponible + accion */
+ --ceibo-deep: #1B6076;
+ --coral: #2FA8C9; /* signal/accion (cian): frames, CTAs, focus */
+ --cobalto: #7A5797; /* MORADO del logo = proxima edicion */
+ --sage: #6FB07A; /* VERDE-SALVIA del logo = acento de vida */
+ --hueso: #EEF2EC; /* texto sobre marino / fondo claro */
+ --hueso-2: #E1E8E1;
+ --lodo: #4D5F7C; /* texto secundario sobre claro (navy-gray, AA) */
+ --lodo-line: #93A6AC; /* bordes/filetes atenuados (no texto) */
+ --lodo-soft: #9DB2C2; /* texto secundario sobre marino (AA) */
+
+ /* Tokens semanticos */
+ --paper: var(--hueso);
+ --ink: #16294C; /* marino ink */
+ --ink-soft: #45587A;
+
+ /* Espaciado (escala 4) */
+ --s1: .25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem;
+ --s6:2rem; --s7:3rem; --s8:4rem; --s9:6rem; --s10:8rem;
+
+ /* Radios y filetes */
+ --r-plate: 6px;
+ --r-pill: 999px;
+ --frame: 2px;
+
+ --shadow-plate: 0 1px 0 rgba(11,43,46,.04), 0 18px 40px -28px rgba(11,43,46,.55);
+ --shadow-lift: 0 2px 0 rgba(11,43,46,.06), 0 34px 64px -30px rgba(11,43,46,.6);
+
+ --maxw: 1240px;
+ --ease: cubic-bezier(.2,.7,.2,1);
+ }
+
+ *,*::before,*::after{ box-sizing:border-box; }
+
+ html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+ @media (prefers-reduced-motion: reduce){
+ html{ scroll-behavior:auto; }
+ *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+ }
+
+ body{
+ margin:0;
+ font-family:"Instrument Sans", system-ui, sans-serif;
+ color:var(--ink);
+ background:var(--paper);
+ line-height:1.5;
+ font-weight:400;
+ -webkit-font-smoothing:antialiased;
+ text-rendering:optimizeLegibility;
+ }
+
+ /* Tipos utilitarios */
+ .display{
+ font-family:"Bricolage Grotesque", sans-serif;
+ font-weight:800;
+ letter-spacing:-.02em;
+ line-height:.95;
+ }
+ .mono{
+ font-family:"Space Grotesk", monospace;
+ text-transform:uppercase;
+ letter-spacing:.18em;
+ font-weight:500;
+ }
+ .mono-soft{ font-family:"Space Grotesk", monospace; letter-spacing:.06em; }
+
+ a{ color:inherit; text-decoration:none; }
+ img,svg{ display:block; max-width:100%; }
+
+ :focus-visible{
+ outline:3px solid var(--coral);
+ outline-offset:3px;
+ border-radius:3px;
+ }
+ .on-dark :focus-visible{ outline-color:var(--ceibo); }
+
+ .wrap{ width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:clamp(1.1rem, 4vw, 3rem); }
+
+ /* ====== Superficies ====== */
+ .surface-dark{
+ background:
+ radial-gradient(120% 120% at 85% -10%, rgba(47,168,201,.14), transparent 55%),
+ radial-gradient(90% 90% at 0% 110%, rgba(122,87,151,.12), transparent 50%),
+ var(--charca);
+ color:var(--hueso);
+ }
+ .surface-light{ background:var(--paper); color:var(--ink); }
+
+ /* ============================================================
+ HEADER
+ ============================================================ */
+ header.site{
+ position:sticky; top:0; z-index:50;
+ background:rgba(20,41,79,.92);
+ backdrop-filter:saturate(140%) blur(10px);
+ border-bottom:1px solid rgba(238,242,236,.12);
+ color:var(--hueso);
+ }
+ .nav{
+ display:flex; align-items:center; gap:var(--s5);
+ height:68px;
+ }
+ .wordmark{
+ display:flex; align-items:center; gap:.6rem;
+ font-family:"Bricolage Grotesque", sans-serif;
+ font-weight:800; letter-spacing:-.01em; font-size:1.18rem;
+ color:var(--hueso);
+ }
+ .wordmark .glyph{
+ width:30px; height:30px; flex:0 0 auto;
+ }
+ .wordmark .glyph svg{ width:100%; height:100%; }
+ .brandlogo{ height:38px; width:auto; display:block; }
+ .foot-brand .brandlogo{ height:46px; margin-bottom:var(--s4); }
+ .nav-links{
+ display:flex; align-items:center; gap:.2rem;
+ margin-left:auto;
+ }
+ .nav-links a{
+ font-size:.86rem; font-weight:500;
+ padding:.5rem .8rem; border-radius:var(--r-pill);
+ color:rgba(238,242,236,.82);
+ transition:color .2s var(--ease), background .2s var(--ease);
+ }
+ .nav-links a:hover{ color:var(--hueso); background:rgba(238,242,236,.08); }
+ .nav-links a.is-active{ color:var(--hueso); background:rgba(238,242,236,.12); }
+ /* link activo de la nav */
+ .nav-links a[aria-current="page"]{ color:var(--hueso); background:rgba(47,168,201,.16); }
+ .nav-cta{
+ display:inline-flex; align-items:center; gap:.45rem;
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.72rem; font-weight:600;
+ padding:.62rem 1.05rem; border-radius:var(--r-pill);
+ background:var(--coral); color:#0C2447;
+ border:1px solid transparent;
+ transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+ box-shadow:0 8px 22px -12px rgba(47,168,201,.9);
+ }
+ .nav-cta:hover{ transform:translateY(-1px); background:#3FB8D8; box-shadow:0 12px 26px -12px rgba(47,168,201,1); }
+
+ .menu-btn{
+ display:none; margin-left:auto;
+ background:transparent; border:1px solid rgba(238,242,236,.25);
+ color:var(--hueso); width:42px; height:42px; border-radius:10px;
+ cursor:pointer;
+ }
+ .menu-btn svg{ width:20px; height:20px; margin:auto; }
+
+ @media (max-width: 880px){
+ .nav-links{
+ position:absolute; top:68px; left:0; right:0;
+ flex-direction:column; align-items:stretch; gap:.1rem;
+ background:var(--charca); padding:var(--s4) clamp(1.1rem,4vw,3rem) var(--s5);
+ border-bottom:1px solid rgba(238,242,236,.12);
+ margin-left:0;
+ display:none;
+ }
+ .nav-links.open{ display:flex; }
+ .nav-links a{ padding:.8rem .6rem; font-size:1rem; }
+ .nav-cta{ justify-content:center; padding:.8rem 1rem; font-size:.78rem; }
+ .menu-btn{ display:flex; }
+ }
+
+ /* ============================================================
+ FOOTER
+ ============================================================ */
+ footer.site{ padding-block:clamp(3rem,6vw,4.5rem) var(--s7); border-top:1px solid rgba(238,242,236,.1); }
+ .foot-grid{ display:flex; flex-wrap:wrap; gap:var(--s7); justify-content:space-between; align-items:flex-start; }
+ .foot-brand .wordmark{ font-size:1.4rem; margin-bottom:var(--s4); }
+ .foot-brand p{ color:var(--lodo-soft); max-width:40ch; font-size:.9rem; margin:0 0 var(--s5); }
+ .foot-tag{ display:inline-block; color:var(--ceibo); font-size:.72rem; border-left:2px solid var(--coral); padding-left:.8rem; }
+ .foot-contact{ display:flex; flex-direction:column; gap:var(--s3); }
+ .foot-contact .ck{ font-size:.64rem; color:var(--lodo); margin-bottom:.2rem; }
+ .foot-contact a, .foot-contact span{ color:var(--hueso); font-size:.92rem; }
+ .foot-contact a:hover{ color:var(--ceibo); }
+ .foot-rule{ margin-top:var(--s7); padding-top:var(--s5); border-top:1px solid rgba(238,242,236,.1);
+ display:flex; flex-wrap:wrap; gap:var(--s4); justify-content:space-between; align-items:center; }
+ .foot-rule small{ color:var(--lodo); font-size:.7rem; }
+ .foot-meta{ font-family:"Space Grotesk", monospace; letter-spacing:.14em; text-transform:uppercase; font-size:.62rem; color:var(--lodo); }
+
+ /* ============================================================
+ EXTENSIONES PROPIAS DEL ARTICULO (/recursos)
+ (solo lo que esta pagina necesita; no se redefinen tokens)
+ ============================================================ */
+
+ /* --- HERO de articulo (placa oscura) --- */
+ .art-hero{ position:relative; overflow:hidden; padding-block:clamp(2.8rem, 7vw, 5rem); }
+ .art-kicker{
+ display:inline-flex; align-items:center; gap:.65rem;
+ color:var(--ceibo); font-size:.72rem; margin-bottom:var(--s4);
+ }
+ .art-kicker .rule{ width:46px; height:1px; background:linear-gradient(90deg,var(--ceibo),transparent); }
+ .art-crumbs{
+ font-family:"Space Grotesk", monospace; letter-spacing:.04em;
+ font-size:.7rem; color:var(--lodo-soft); margin-bottom:var(--s5);
+ }
+ .art-crumbs a{ color:var(--lodo-soft); }
+ .art-crumbs a:hover{ color:var(--ceibo); }
+ .art-crumbs span[aria-current]{ color:var(--hueso); }
+ .art-hero h1{
+ font-size:clamp(2.2rem, 5.2vw, 3.7rem);
+ margin:0 0 var(--s5); max-width:20ch;
+ }
+ .art-hero h1 .accent{ color:var(--sage); }
+ .art-meta{
+ display:flex; flex-wrap:wrap; align-items:center; gap:.7rem;
+ font-family:"Space Grotesk", monospace; letter-spacing:.03em;
+ font-size:.8rem; color:rgba(238,242,236,.82);
+ }
+ .art-meta .dot{ width:6px; height:6px; border-radius:50%; background:var(--sage); flex:0 0 auto; }
+ .art-meta .sep{ color:rgba(238,242,236,.4); }
+
+ /* --- Columna de lectura --- */
+ .read{ padding-block:clamp(2.6rem, 6vw, 4.5rem); }
+ .read-col{ max-width:72ch; margin-inline:auto; }
+ .read-col > .lede{
+ font-size:clamp(1.08rem, 1.7vw, 1.28rem);
+ line-height:1.6; color:var(--ink); font-weight:500;
+ margin:0 0 var(--s6);
+ padding-left:var(--s5); border-left:3px solid var(--ceibo);
+ }
+ .read-col h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em;
+ font-size:clamp(1.45rem, 3vw, 2rem); line-height:1.1;
+ margin:var(--s8) 0 var(--s4); color:var(--ink);
+ }
+ .read-col h2:first-of-type{ margin-top:var(--s4); }
+ .read-col h3{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.015em;
+ font-size:1.18rem; line-height:1.2;
+ margin:var(--s6) 0 var(--s3); color:var(--ink);
+ }
+ .read-col p{ margin:0 0 var(--s4); font-size:1.04rem; line-height:1.7; color:var(--ink); }
+ .read-col p.first-answer{ font-size:1.08rem; }
+ .read-col a.inline{ color:var(--ceibo-deep); text-decoration:underline; text-underline-offset:3px; }
+ .read-col a.inline:hover{ color:var(--coral); }
+ .read-col strong{ font-weight:600; color:var(--ink); }
+ .read-col ul, .read-col ol{ margin:0 0 var(--s5); padding-left:1.3rem; }
+ .read-col li{ margin-bottom:.55rem; font-size:1.04rem; line-height:1.6; color:var(--ink); }
+ .read-col li strong{ color:var(--ink); }
+
+ /* callout */
+ .callout{
+ background:#fff; border:1px solid var(--hueso-2); border-left:3px solid var(--sage);
+ border-radius:var(--r-plate); box-shadow:var(--shadow-plate);
+ padding:var(--s5); margin:var(--s6) 0;
+ }
+ .callout .ck{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.64rem; font-weight:600; color:var(--sage); display:block; margin-bottom:var(--s2);
+ }
+ .callout p{ margin:0; font-size:.98rem; color:var(--ink-soft); }
+
+ /* tabla de senales */
+ .table-scroll{ overflow-x:auto; margin:var(--s5) 0 var(--s6); border-radius:var(--r-plate); }
+ table.signals{
+ width:100%; border-collapse:collapse; min-width:520px;
+ background:#fff; border:1px solid var(--hueso-2); border-radius:var(--r-plate);
+ box-shadow:var(--shadow-plate); overflow:hidden;
+ }
+ table.signals caption{
+ text-align:left; font-family:"Space Grotesk", monospace; text-transform:uppercase;
+ letter-spacing:.12em; font-size:.62rem; color:var(--lodo); padding:0 0 var(--s3);
+ }
+ table.signals th, table.signals td{
+ text-align:left; padding:.8rem .9rem; font-size:.94rem; line-height:1.45;
+ border-bottom:1px solid var(--hueso-2); vertical-align:top;
+ }
+ table.signals thead th{
+ background:var(--charca); color:var(--hueso);
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.08em;
+ font-size:.68rem; font-weight:600;
+ }
+ table.signals tbody th{
+ font-weight:600; color:var(--ink); white-space:nowrap;
+ }
+ table.signals td{ color:var(--ink-soft); }
+ table.signals tbody tr:last-child th, table.signals tbody tr:last-child td{ border-bottom:none; }
+ table.signals tbody tr:nth-child(even){ background:rgba(20,41,79,.025); }
+
+ /* --- Bloque CTA al curso (placa oscura) --- */
+ .cta-wrap{ padding-block:clamp(2.6rem, 5vw, 4rem); }
+ .cta-card{
+ position:relative;
+ display:grid; grid-template-columns:1.3fr .7fr; gap:clamp(1.6rem,4vw,3rem);
+ align-items:center;
+ border-radius:var(--r-plate);
+ background:linear-gradient(155deg, rgba(47,168,201,.16), rgba(122,87,151,.12) 70%, rgba(11,43,46,.3));
+ border:1px solid rgba(238,242,236,.16);
+ box-shadow:var(--shadow-plate);
+ padding:clamp(1.6rem,4vw,3rem);
+ }
+ .cta-card::after{
+ content:""; position:absolute; inset:16px;
+ border:var(--frame) solid var(--coral); border-radius:5px; pointer-events:none;
+ }
+ .cta-card .cta-copy{ position:relative; z-index:2; }
+ .cta-card .cta-kicker{ color:var(--ceibo); font-size:.7rem; margin-bottom:var(--s3); display:block; }
+ .cta-card h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em;
+ font-size:clamp(1.5rem,3vw,2.1rem); line-height:1.04; margin:0 0 var(--s3);
+ color:var(--hueso); max-width:22ch;
+ }
+ .cta-card p{ color:rgba(238,242,236,.82); margin:0; max-width:46ch; line-height:1.6; }
+ .cta-card .cta-side{
+ position:relative; z-index:2;
+ display:flex; flex-direction:column; align-items:flex-start; gap:var(--s4);
+ }
+ .cta-card .cta-side .price .from{ font-family:"Space Grotesk", monospace; font-size:.64rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(238,242,236,.86); display:block; }
+ .cta-card .cta-side .price .val{ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em; font-size:clamp(1.9rem,4vw,2.6rem); color:var(--ceibo); line-height:1; }
+ .btn{
+ display:inline-flex; align-items:center; gap:.5rem;
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.13em;
+ font-size:.76rem; font-weight:600;
+ padding:.92rem 1.4rem; border-radius:var(--r-pill);
+ cursor:pointer; border:1px solid transparent;
+ transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
+ }
+ .btn-primary{ background:var(--coral); color:#0C2447; box-shadow:0 14px 30px -14px rgba(47,168,201,.95); }
+ .btn-primary:hover{ transform:translateY(-2px); background:#3FB8D8; box-shadow:0 20px 38px -16px rgba(47,168,201,1); }
+ @media (max-width:760px){ .cta-card{ grid-template-columns:1fr; } }
+
+ /* --- Articulos relacionados --- */
+ .sec{ padding-block:clamp(2.6rem, 5vw, 4rem); }
+ .sec-kicker{ color:var(--sage); font-size:.72rem; margin-bottom:var(--s3); display:block; }
+ .sec h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em;
+ font-size:clamp(1.5rem, 3vw, 2.1rem); margin:0 0 var(--s6); color:var(--ink);
+ }
+ .grid-rel{
+ display:grid; grid-template-columns: repeat(3, 1fr);
+ gap:clamp(1rem, 2vw, 1.6rem);
+ }
+ @media (max-width:820px){ .grid-rel{ grid-template-columns:repeat(2,1fr); } }
+ @media (max-width:520px){ .grid-rel{ grid-template-columns:1fr; } }
+ .relcard{
+ position:relative; display:flex; flex-direction:column;
+ background:#fff; border:1px solid var(--hueso-2); border-radius:var(--r-plate);
+ padding:var(--s5); box-shadow:var(--shadow-plate);
+ transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+ }
+ .relcard.is-live:hover{ transform:translateY(-6px); box-shadow:var(--shadow-lift); border-color:var(--ceibo); }
+ .relcard .rel-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s3); }
+ .rel-no{ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.18em; font-size:.64rem; color:var(--lodo); }
+ .pill{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.58rem; font-weight:600;
+ padding:.3rem .6rem; border-radius:var(--r-pill);
+ white-space:nowrap; line-height:1;
+ }
+ .pill-disp{ background:var(--ceibo); color:#0C2447; }
+ .pill-prox{ background:transparent; color:var(--cobalto); border:1px solid var(--cobalto); }
+ .relcard h3{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.015em;
+ font-size:1.08rem; line-height:1.12; margin:0 0 .5rem; color:var(--ink);
+ }
+ .relcard p{ margin:0 0 var(--s4); color:var(--ink-soft); font-size:.92rem; line-height:1.5; }
+ .relcard .rel-foot{
+ margin-top:auto; padding-top:var(--s3); border-top:1px solid var(--hueso-2);
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.1em;
+ font-size:.66rem; font-weight:600;
+ }
+ .relcard.is-live .rel-foot{ color:var(--coral); }
+ .relcard.is-soon .rel-foot{ color:var(--lodo); }
+</style>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+ {
+ "@type": "EducationalOrganization",
+ "@id": "https://www.celebios.com/#org",
+ "name": "CELEBIOS",
+ "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+ "url": "https://www.celebios.com",
+ "logo": "https://www.celebios.com/brand/logo-white.png",
+ "foundingDate": "2010",
+ "areaServed": ["MX", "LATAM"],
+ "sameAs": ["https://instagram.com/celebios_edu"]
+ },
+ {
+ "@type": "BlogPosting",
+ "headline": "Lenguaje corporal de los gatos: orejas, cola y ojos",
+ "description": "Guia para tutores sobre el lenguaje corporal de los gatos: que comunican las orejas, la cola, los ojos, las pupilas y la postura, con ejemplos concretos y una tabla de senales.",
+ "image": "https://www.celebios.com/brand/logo-white.png",
+ "inLanguage": "es",
+ "mainEntityOfPage": {
+ "@type": "WebPage",
+ "@id": "https://www.celebios.com/recursos/lenguaje-corporal-del-gato"
+ },
+ "author": { "@id": "https://www.celebios.com/#org" },
+ "publisher": { "@id": "https://www.celebios.com/#org" },
+ "about": "Lenguaje corporal y comunicacion del gato (Felis catus)"
+ },
+ {
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+ { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.celebios.com/" },
+ { "@type": "ListItem", "position": 2, "name": "Recursos", "item": "https://www.celebios.com/recursos" },
+ { "@type": "ListItem", "position": 3, "name": "Lenguaje corporal del gato", "item": "https://www.celebios.com/recursos/lenguaje-corporal-del-gato" }
+ ]
+ },
+ {
+ "@type": "FAQPage",
+ "mainEntity": [
+ {
+ "@type": "Question",
+ "name": "Como saber si un gato esta feliz o relajado?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Un gato relajado tiene el cuerpo blando y sin tension, las orejas neutras hacia adelante, los ojos en parpadeo lento o medio cerrados y la cola en reposo o levantada con la punta curvada. Puede recostarse de lado o exponer el vientre, ronronear y amasar. La ausencia de rigidez es la mejor pista."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "Que significa cuando un gato mueve la cola rapido?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "A diferencia del perro, en el gato un coleteo rapido o golpeteo lateral de la cola suele indicar irritacion, tension o sobreestimulacion, no alegria. Cuanto mas amplio y rapido es el movimiento, mayor es la activacion. Si aparece durante las caricias, conviene detenerse: avisa que el gato esta por incomodarse."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "Por que un gato pone las orejas hacia atras o aplanadas?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Las orejas giradas hacia atras o aplanadas contra la cabeza indican miedo, defensa o conflicto. Es una senal de que el gato se siente amenazado y quiere espacio. Si se combina con pupilas dilatadas, bigotes hacia atras y cuerpo encogido, conviene no acercarse y dejar que el gato se calme."
+ }
+ }
+ ]
+ }
+ ]
+}
+</script>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site on-dark">
+ <div class="wrap nav">
+ <a class="wordmark" href="lamina-viva.html" aria-label="CELEBIOS inicio">
+ <img class="brandlogo" src="brand/logo-white.png" alt="CELEBIOS" width="100" height="38">
+ </a>
+
+ <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+ </button>
+
+ <nav class="nav-links" id="navLinks" aria-label="Principal">
+ <a href="catalogo.html">Cursos</a>
+ <a href="diplomado-rehab.html">Diplomado</a>
+ <a href="recursos.html" class="is-active" aria-current="page">Recursos</a>
+ <a href="nosotros.html">Nosotros</a>
+ <a class="nav-cta" href="catalogo.html">Explorar cursos</a>
+ </nav>
+ </div>
+</header>
+
+<main id="top">
+
+<!-- ===================== HERO DEL ARTICULO ===================== -->
+<section class="surface-dark art-hero on-dark">
+ <div class="wrap">
+ <span class="art-kicker mono"><span class="rule"></span>Recursos · comportamiento felino</span>
+ <nav class="art-crumbs" aria-label="Ruta de navegación">
+ <a href="lamina-viva.html">Inicio</a> /
+ <a href="catalogo.html">Recursos</a> /
+ <span aria-current="page">Lenguaje corporal del gato</span>
+ </nav>
+ <h1 class="display">Lenguaje corporal de los gatos: <span class="accent">orejas, cola y ojos</span></h1>
+ <div class="art-meta">
+ <span>Por el equipo de CELEBIOS <!-- Equipo CELEBIOS --></span>
+ <span class="sep">·</span>
+ <span class="dot" aria-hidden="true"></span>
+ <span>Lectura 8 min</span>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== CUERPO DEL ARTICULO ===================== -->
+<article class="surface-light read">
+ <div class="wrap">
+ <div class="read-col">
+
+ <p class="lede first-answer">El lenguaje corporal de los gatos es el sistema de señales con el que comunican su estado de ánimo a través de las orejas, la cola, los ojos, las pupilas y la postura. Leerlo en conjunto, nunca una señal aislada, te permite saber si tu gato está relajado, alerta, asustado o molesto.</p>
+
+ <p>El gato es un animal a la vez depredador y presa, así que evolucionó para esconder el dolor y el miedo. Por eso sus mensajes son sutiles: un giro de oreja, un parpadeo, un cambio en la rigidez del lomo. Quien aprende a leerlos previene mordidas, reduce el estrés del animal y construye una relación de confianza. En esta guía verás, parte por parte, qué te está diciendo tu gato y cómo interpretarlo en contexto.</p>
+
+ <h2>¿Qué comunican las orejas del gato?</h2>
+
+ <p>Las orejas son una de las señales más rápidas y honestas: cada oreja tiene decenas de músculos que las mueven de forma independiente, así que reflejan la atención y la emoción casi en tiempo real. Funcionan como pequeñas antenas que apuntan hacia lo que le interesa o lo que le preocupa.</p>
+
+ <ul>
+ <li><strong>Hacia adelante y erguidas:</strong> gato tranquilo, curioso e interesado en algo. Es la posición neutra positiva.</li>
+ <li><strong>Giradas a los lados (orejas de avión):</strong> ambivalencia, irritación o nerviosismo creciente. Una alerta temprana de que algo le molesta.</li>
+ <li><strong>Aplanadas hacia atrás, pegadas a la cabeza:</strong> miedo intenso, defensa o agresión inminente. El gato se siente amenazado y se prepara para protegerse.</li>
+ <li><strong>Girando de forma independiente:</strong> está rastreando un sonido sin sentirse amenazado; pura atención, no emoción negativa.</li>
+ </ul>
+
+ <p>Ejemplo concreto: si acaricias a tu gato y ves que una oreja empieza a girar hacia atrás, esa es la primera señal de que está pasando de "esto me gusta" a "ya fue suficiente". Detenerte ahí evita el zarpazo que muchos tutores no ven venir.</p>
+
+ <h2>¿Qué significa la cola de un gato?</h2>
+
+ <p>La cola es el "termómetro" emocional más visible del gato y, ojo, su gramática es casi opuesta a la del perro. En el gato, una cola que se agita rápido casi nunca significa alegría: indica tensión o sobreestimulación. La clave está en la altura, la forma y la velocidad del movimiento.</p>
+
+ <h3>Posiciones de la cola y su significado</h3>
+ <ul>
+ <li><strong>Cola en alto con la punta curvada (como signo de interrogación):</strong> saludo amistoso y confianza. Es la forma felina de decir "hola, me alegra verte".</li>
+ <li><strong>Cola erguida y vibrando ligeramente:</strong> emoción positiva y, a veces, marcaje feliz al recibirte.</li>
+ <li><strong>Cola baja o entre las patas:</strong> miedo, inseguridad o sumisión.</li>
+ <li><strong>Cola erizada en forma de cepillo:</strong> susto o amenaza; el gato infla el pelo (piloerección) para verse más grande.</li>
+ <li><strong>Coleteo o golpeteo lateral rápido:</strong> irritación o conflicto interno. Cuanto más amplio y veloz, mayor la molestia.</li>
+ <li><strong>Punta de la cola moviéndose suavemente:</strong> concentración leve, como cuando observa a un pájaro por la ventana.</li>
+ </ul>
+
+ <div class="callout">
+ <span class="ck mono">Mito común</span>
+ <p>"Mi gato mueve la cola, está contento." Falso en la mayoría de los casos: el coleteo enérgico es una señal de advertencia. Si aparece mientras lo acaricias, lo más probable es que estés a punto de cruzar su límite de tolerancia al contacto.</p>
+ </div>
+
+ <h2>¿Qué dicen los ojos y las pupilas del gato?</h2>
+
+ <p>Los ojos del gato comunican en dos capas: la mirada (cómo te observa) y la pupila (cuánto se abre o se cierra). El gesto afiliativo más conocido es el <strong>parpadeo lento</strong>: cuando un gato te mira y cierra los ojos despacio, está mostrando que se siente seguro contigo. Muchos lo llaman "el beso del gato", y puedes devolvérselo cerrando tú los ojos con calma.</p>
+
+ <p>Las pupilas cambian de tamaño por dos motivos: la luz del ambiente y la emoción. Por eso siempre hay que interpretarlas junto al resto del cuerpo y a la iluminación de la habitación.</p>
+
+ <ul>
+ <li><strong>Pupilas en rendija (verticales y finas):</strong> en luz brillante es normal; con luz tenue puede indicar concentración intensa o, a veces, tensión.</li>
+ <li><strong>Pupilas dilatadas (muy redondas y grandes):</strong> excitación alta. Puede ser juego intenso, miedo o sorpresa. El contexto decide cuál.</li>
+ <li><strong>Mirada fija y sostenida sin parpadear:</strong> entre gatos, un desafío; hacia ti, puede ser una petición (comida, juego) o vigilancia.</li>
+ <li><strong>Ojos entrecerrados y suaves:</strong> relajación y bienestar.</li>
+ </ul>
+
+ <h2>¿Cómo leer la postura completa del gato?</h2>
+
+ <p>Ninguna señal vale por sí sola. La postura corporal integra todo lo anterior y te da el "titular" del estado del gato. Lo más útil es fijarte en una sola cosa: <strong>el nivel de tensión muscular</strong>. Un cuerpo blando y suelto casi siempre es buena noticia; un cuerpo rígido, encogido o agazapado pide espacio.</p>
+
+ <ul>
+ <li><strong>Relajado:</strong> tumbado de lado, patas estiradas, puede exponer el vientre. Confía en su entorno.</li>
+ <li><strong>Alerta:</strong> sentado o de pie, erguido, mirando con atención. Ni positivo ni negativo: está evaluando.</li>
+ <li><strong>Asustado/defensivo:</strong> encogido, agachado, intentando hacerse pequeño, o bien arqueado de lado con el pelo erizado para parecer más grande.</li>
+ <li><strong>Ofensivo/seguro:</strong> cuerpo tenso e inclinado hacia adelante, peso adelantado, fijando al "rival".</li>
+ </ul>
+
+ <p>Una señal que muchos tutores malinterpretan: cuando el gato se tumba boca arriba y muestra el vientre, no siempre pide caricias en la panza. A menudo es una muestra de confianza absoluta, no una invitación a tocar esa zona vulnerable. Tocarla puede activar una respuesta defensiva.</p>
+
+ <h2>Tabla rápida de señales del lenguaje corporal felino</h2>
+
+ <p>Usa esta tabla como referencia rápida. Recuerda combinar siempre varias señales antes de concluir: las orejas, la cola y los ojos juntos cuentan la historia completa.</p>
+
+ <div class="table-scroll">
+ <table class="signals">
+ <caption>Señales corporales del gato y su interpretación más probable</caption>
+ <thead>
+ <tr>
+ <th scope="col">Parte del cuerpo</th>
+ <th scope="col">Señal</th>
+ <th scope="col">Qué suele comunicar</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <th scope="row">Orejas</th>
+ <td>Hacia adelante, erguidas</td>
+ <td>Tranquilo, curioso, atento</td>
+ </tr>
+ <tr>
+ <th scope="row">Orejas</th>
+ <td>Aplanadas hacia atrás</td>
+ <td>Miedo, defensa, advertencia</td>
+ </tr>
+ <tr>
+ <th scope="row">Cola</th>
+ <td>En alto con la punta curvada</td>
+ <td>Saludo amistoso, confianza</td>
+ </tr>
+ <tr>
+ <th scope="row">Cola</th>
+ <td>Coleteo lateral rápido</td>
+ <td>Irritación, sobreestimulación</td>
+ </tr>
+ <tr>
+ <th scope="row">Cola</th>
+ <td>Erizada en cepillo</td>
+ <td>Susto o amenaza percibida</td>
+ </tr>
+ <tr>
+ <th scope="row">Ojos</th>
+ <td>Parpadeo lento</td>
+ <td>Confianza, afecto, calma</td>
+ </tr>
+ <tr>
+ <th scope="row">Pupilas</th>
+ <td>Muy dilatadas</td>
+ <td>Excitación: juego, miedo o sorpresa</td>
+ </tr>
+ <tr>
+ <th scope="row">Postura</th>
+ <td>Cuerpo blando, vientre expuesto</td>
+ <td>Relajación y confianza</td>
+ </tr>
+ <tr>
+ <th scope="row">Postura</th>
+ <td>Encogido y agazapado</td>
+ <td>Miedo; necesita espacio</td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+
+ <h2>Errores frecuentes al interpretar a tu gato</h2>
+
+ <p>La mayoría de los malentendidos entre tutores y gatos nacen de leer una sola señal o de aplicarles la lógica del perro. Estos son los tropiezos más comunes:</p>
+
+ <ol>
+ <li><strong>Confundir cola en movimiento con alegría.</strong> En el gato, el coleteo rápido es advertencia, no entusiasmo.</li>
+ <li><strong>Ignorar las señales tempranas.</strong> La oreja que gira, el lomo que se tensa o el parpadeo que se detiene avisan antes de que el gato llegue al zarpazo.</li>
+ <li><strong>Leer una parte sin el resto.</strong> Pupilas dilatadas pueden ser juego o miedo; solo el conjunto lo aclara.</li>
+ <li><strong>Asumir que el vientre expuesto pide caricias.</strong> Suele ser confianza, no permiso para tocar.</li>
+ <li><strong>Castigar señales de miedo.</strong> Regañar a un gato asustado aumenta el estrés y deteriora el vínculo.</li>
+ </ol>
+
+ <div class="callout">
+ <span class="ck mono">Cuándo consultar al profesional</span>
+ <p>Un cambio brusco en el comportamiento (esconderse, agresividad nueva, dejar de acicalarse, posturas encogidas constantes) puede tener una causa médica, no solo emocional. Ante señales persistentes de malestar, consulta con tu médico veterinario o con un especialista en etología felina.</p>
+ </div>
+
+ <h2>De entender a comunicarte: el siguiente paso</h2>
+
+ <p>Leer las orejas, la cola y los ojos es el cimiento. A partir de ahí puedes interpretar vocalizaciones, marcaje, señales de estrés y los gestos de afecto que tu gato ya te dedica todos los días. Cuanto mejor lo lees, más fácil es prevenir conflictos, enriquecer su entorno y ganarte su confianza, en casa, en un refugio o en la consulta. Si quieres llevar esto más lejos, el <a class="inline" href="curso-gatos.html">curso de lenguaje y comunicación de los gatos</a> retoma cada señal con ejemplos en video y la guía de una etóloga felina.</p>
+
+ </div>
+ </div>
+</article>
+
+<!-- ===================== CTA AL CURSO ===================== -->
+<section class="surface-dark cta-wrap on-dark" aria-labelledby="ctah">
+ <div class="wrap">
+ <div class="cta-card">
+ <div class="cta-copy">
+ <span class="cta-kicker mono">¿Quieres formarte en esto?</span>
+ <h2 id="ctah">Aprende a leer todo lo que tu gato te dice</h2>
+ <p>Este artículo es solo el comienzo. En el <a class="inline" href="curso-gatos.html" style="color:var(--ceibo); text-decoration:underline; text-underline-offset:3px;">Curso de Lenguaje y Comunicación de los Gatos</a> profundizas en posturas, vocalizaciones, marcaje y señales de estrés, con constancia con valor curricular avalada por CONCERVET. 100% online y a tu ritmo.</p>
+ </div>
+ <div class="cta-side">
+ <div class="price">
+ <span class="from">Pago único</span>
+ <span class="val">$1,400 MXN</span>
+ </div>
+ <a class="btn btn-primary" href="curso-gatos.html">Conocer el curso</a>
+ </div>
+ </div>
+ </div>
+</section>
+
+<!-- ===================== ARTICULOS RELACIONADOS ===================== -->
+<section class="surface-light sec" aria-labelledby="relh">
+ <div class="wrap">
+ <span class="sec-kicker mono">Sigue leyendo</span>
+ <h2 id="relh">Artículos relacionados</h2>
+
+ <div class="grid-rel">
+
+ <!-- Maullidos · proximamente -->
+ <article class="relcard is-soon">
+ <div class="rel-top">
+ <span class="rel-no">Rec. 02</span>
+ <span class="pill pill-prox">Próximamente</span>
+ </div>
+ <h3>Por qué mi gato maúlla tanto: tipos de maullido</h3>
+ <p>Qué significa cada vocalización, del maullido de saludo al de demanda, y cómo distinguirlas.</p>
+ <div class="rel-foot">Disponible pronto</div>
+ </article>
+
+ <!-- Estres · proximamente -->
+ <article class="relcard is-soon">
+ <div class="rel-top">
+ <span class="rel-no">Rec. 03</span>
+ <span class="pill pill-prox">Próximamente</span>
+ </div>
+ <h3>Cómo saber si mi gato está estresado: 10 señales</h3>
+ <p>Las pistas conductuales y físicas del estrés felino y qué hacer para reducirlo en casa.</p>
+ <div class="rel-foot">Disponible pronto</div>
+ </article>
+
+ <!-- Curso · disponible -->
+ <article class="relcard is-live">
+ <a href="curso-gatos.html" style="display:flex; flex-direction:column; flex:1;">
+ <div class="rel-top">
+ <span class="rel-no">Curso</span>
+ <span class="pill pill-disp">Disponible</span>
+ </div>
+ <h3>Curso de Lenguaje y Comunicación de los Gatos</h3>
+ <p>Formación completa en comportamiento felino: 12 h online, a tu ritmo, con constancia avalada por CONCERVET.</p>
+ <div class="rel-foot">Ver el curso →</div>
+ </a>
+ </article>
+
+ </div>
+ </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="surface-dark site on-dark">
+ <div class="wrap">
+ <div class="foot-grid">
+ <div class="foot-brand">
+ <img class="brandlogo" src="brand/logo-white.png" alt="CELEBIOS" width="120" height="46">
+
+ <p>Centro Latinoamericano de Estudios en Ciencias Biológicas y de la Salud Animal.</p>
+ <span class="foot-tag mono-soft">Eliminando fronteras, acercando al mundo.</span>
+ </div>
+
+ <div class="foot-contact">
+ <div>
+ <div class="ck mono">Correo</div>
+ <a href="mailto:contacto@celebios.com">contacto@celebios.com</a>
+ </div>
+ <div>
+ <div class="ck mono">WhatsApp</div>
+ <a href="https://wa.me/529581033574">+52 958 103 3574</a>
+ </div>
+ <div>
+ <div class="ck mono">Instagram</div>
+ <a href="https://instagram.com/celebios_edu">@celebios_edu</a>
+ </div>
+ </div>
+ </div>
+
+ <div class="foot-rule">
+ <small>© 2026 CELEBIOS · Avalada por CONCERVET · 16 años en LATAM</small>
+ <span class="foot-meta">Atlas Lat. · Ed. Lámina Viva</span>
+ </div>
+ </div>
+</footer>
+
+<script>
+ (function{
+ // menu movil
+ var btn = document.getElementById("menuBtn");
+ var links = document.getElementById("navLinks");
+ if(btn && links){
+ btn.addEventListener("click", function{
+ var open = links.classList.toggle("open");
+ btn.setAttribute("aria-expanded", open ? "true" : "false");
+ });
+ links.addEventListener("click", function(e){
+ if(e.target.tagName === "A"){
+ links.classList.remove("open");
+ btn.setAttribute("aria-expanded", "false");
+ }
+ });
+ }
+ });
+</script>
+
+</body>
+</html>

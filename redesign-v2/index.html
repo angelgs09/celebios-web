@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CELEBIOS · Sitio completo — mapa</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --charca:#14294F; --panel:#1E3768; --cyan:#2FA8C9; --purple:#7A5797; --sage:#6FB07A; --hueso:#EEF2EC; --muted:#9DB2C2; --line:rgba(238,242,236,.14); }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{ font-family:"Instrument Sans",system-ui,sans-serif; background:
+      radial-gradient(120% 120% at 85% -10%, rgba(47,168,201,.14), transparent 55%),
+      radial-gradient(90% 90% at 0% 110%, rgba(122,87,151,.12), transparent 50%), var(--charca);
+    color:var(--hueso); min-height:100vh; padding:clamp(24px,5vw,56px); -webkit-font-smoothing:antialiased; }
+  .wrap{max-width:1040px;margin:0 auto}
+  .kicker{font-family:"Space Grotesk",monospace;text-transform:uppercase;letter-spacing:.2em;font-size:12px;color:var(--sage)}
+  h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;letter-spacing:-.02em;font-size:clamp(28px,5vw,42px);line-height:1.02;margin:8px 0 10px}
+  .lede{color:var(--muted);max-width:64ch;font-size:15px}
+  h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:18px;margin:30px 0 12px;color:var(--hueso)}
+  h2 .n{font-family:"Space Grotesk",monospace;font-size:12px;color:var(--cyan);margin-left:8px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+  a.card{display:flex;flex-direction:column;gap:4px;background:rgba(30,55,104,.45);border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;transition:transform .15s,border-color .15s}
+  a.card:hover{transform:translateY(-2px);border-color:var(--cyan)}
+  a.card.home:hover{border-color:var(--sage)}
+  a.card.blog:hover{border-color:var(--purple)}
+  .cname{font-weight:600;font-size:14.5px}
+  .cdesc{color:var(--muted);font-size:12.5px}
+  .row{margin-top:30px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;border-top:1px solid var(--line);padding-top:20px}
+  .pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:13px;color:var(--muted);text-decoration:none}
+  .pill:hover{border-color:var(--purple);color:var(--hueso)}
+  footer{margin-top:26px;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">CELEBIOS · Sitio "Lámina Viva" · SEO + copy</div>
+  <h1>Sitio completo — 19 páginas</h1>
+  <p class="lede">Abre la Home y navega con el menú (Cursos · Diplomado · Recursos · Nosotros), o entra directo a cualquier página. Colores y logo reales; SEO + schema aplicados; ilustración placeholder.</p>
+
+  <h2>Núcleo <span class="n">5</span></h2>
+  <div class="grid">
+    <a class="card home" href="lamina-viva.html"><span class="cname">Home</span><span class="cdesc">Marca + paraguas + FAQ.</span></a>
+    <a class="card" href="catalogo.html"><span class="cname">Catálogo /cursos</span><span class="cdesc">Hub: estados + tabla de precios + FAQ.</span></a>
+    <a class="card" href="curso-gatos.html"><span class="cname">Curso: Lenguaje Felino</span><span class="cdesc">Plantilla de curso (vivo).</span></a>
+    <a class="card" href="diplomado-rehab.html"><span class="cname">Diplomado Rehab</span><span class="cdesc">Ancla: 1,982 palabras, 13 módulos.</span></a>
+    <a class="card" href="nosotros.html"><span class="cname">Nosotros</span><span class="cdesc">E-E-A-T, CONCERVET, claustro.</span></a>
+  </div>
+
+  <h2>Landings de área <span class="n">6 · lista de espera / [CONFIRMAR]</span></h2>
+  <div class="grid">
+    <a class="card" href="curso-primeros-auxilios.html"><span class="cname">Primeros Auxilios</span><span class="cdesc">en fauna silvestre.</span></a>
+    <a class="card" href="curso-reptiles.html"><span class="cname">Manejo de Reptiles</span><span class="cdesc">manejo y medicina.</span></a>
+    <a class="card" href="curso-ortopedia-aves.html"><span class="cname">Ortopedia de Aves</span><span class="cdesc">próxima edición.</span></a>
+    <a class="card" href="curso-anestesia.html"><span class="cname">Anestesia y Contención</span><span class="cdesc">en desarrollo.</span></a>
+    <a class="card" href="curso-nutricion.html"><span class="cname">Nutrición en Cautiverio</span><span class="cdesc">en desarrollo.</span></a>
+    <a class="card" href="curso-manejo-conductual.html"><span class="cname">Manejo Conductual</span><span class="cdesc">próxima edición.</span></a>
+  </div>
+
+  <h2>Recursos / blog <span class="n">índice + 7 artículos</span></h2>
+  <div class="grid">
+    <a class="card blog" href="recursos.html"><span class="cname">★ Índice /recursos</span><span class="cdesc">motor long-tail.</span></a>
+    <a class="card blog" href="recurso-como-ser-rehabilitador.html"><span class="cname">Cómo ser rehabilitador</span><span class="cdesc">→ Diplomado.</span></a>
+    <a class="card blog" href="recurso-requisitos-rehabilitar.html"><span class="cname">Requisitos (UMA/SEMARNAT)</span><span class="cdesc">→ Diplomado.</span></a>
+    <a class="card blog" href="recurso-animal-herido.html"><span class="cname">Animal silvestre herido</span><span class="cdesc">→ Primeros Auxilios.</span></a>
+    <a class="card blog" href="recurso-cuanto-gana-veterinario.html"><span class="cname">Cuánto gana un MVZ de fauna</span><span class="cdesc">→ Catálogo.</span></a>
+    <a class="card blog" href="recurso-lenguaje-corporal-gato.html"><span class="cname">Lenguaje corporal del gato</span><span class="cdesc">→ Gatos.</span></a>
+    <a class="card blog" href="recurso-por-que-maulla-gato.html"><span class="cname">Por qué maúlla tanto</span><span class="cdesc">→ Gatos.</span></a>
+    <a class="card blog" href="recurso-gato-estresado.html"><span class="cname">Gato estresado: 10 señales</span><span class="cdesc">→ Gatos.</span></a>
+  </div>
+
+  <div class="row">
+    <a class="pill" href="SEO-COPY-STRATEGY.md">📐 Estrategia SEO + copy</a>
+    <a class="pill" href="KAJABI-INSTALL.md">📦 Instalación Kajabi</a>
+    <a class="pill" href="lamina-viva-v1-coral.html">Versión coral (pre-marca)</a>
+  </div>
+
+  <footer>CELEBIOS · 19 páginas · paste-ready en <code>/kajabi</code> · referencias en <code>/references</code> · junio 2026. Dominio público: celebios.com · checkout: celebios.online.</footer>
+</div>
+</body>
+</html>

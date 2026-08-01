@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recursos de fauna silvestre | CELEBIOS</title>
+<meta name="description" content="Recursos gratis de fauna silvestre y comportamiento animal: como ser rehabilitador, requisitos legales, animal herido y lenguaje del gato. CELEBIOS.">
+<link rel="canonical" href="https://www.celebios.com/recursos">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CELEBIOS">
+<meta property="og:title" content="Recursos de fauna silvestre y comportamiento animal | CELEBIOS">
+<meta property="og:description" content="Articulos gratuitos sobre fauna silvestre y comportamiento felino: rehabilitacion, requisitos legales, primeros pasos y lenguaje del gato.">
+<meta property="og:url" content="https://www.celebios.com/recursos">
+<meta property="og:image" content="https://www.celebios.com/brand/logo-white.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Recursos de fauna silvestre y comportamiento animal | CELEBIOS">
+<meta name="twitter:description" content="Articulos gratuitos sobre fauna silvestre y comportamiento felino para profesionales y tutores.">
+<meta name="twitter:image" content="https://www.celebios.com/brand/logo-white.png">
+<meta name="theme-color" content="#14294F">
+<link rel="icon" href="brand/logo-white.png" type="image/png">
+<link rel="apple-touch-icon" href="brand/logo-white.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+ /* ============================================================
+ CELEBIOS - Direccion "LAMINA VIVA"
+ Atlas naturalista latinoamericano. Alternancia editorial
+ placa-oscura (Charca) <-> pliego-claro (Hueso).
+ ============================================================ */
+
+ :root{
+ /* Paleta */
+ /* === PALETA DE MARCA (colores del logo CELEBIOS) === */
+ --charca: #14294F; /* marino canvas (marca) */
+ --charca-2: #1E3768; /* panel marino */
+ --ceibo: #2FA8C9; /* CIAN del logo = disponible + accion */
+ --ceibo-deep: #1B6076;
+ --coral: #2FA8C9; /* signal/accion (cian): frames, CTAs, focus */
+ --cobalto: #7A5797; /* MORADO del logo = proxima edicion */
+ --sage: #6FB07A; /* VERDE-SALVIA del logo = acento de vida */
+ --hueso: #EEF2EC; /* texto sobre marino / fondo claro */
+ --hueso-2: #E1E8E1;
+ --lodo: #4D5F7C; /* texto secundario sobre claro (navy-gray, AA) */
+ --lodo-line: #93A6AC; /* bordes/filetes atenuados (no texto) */
+ --lodo-soft: #9DB2C2; /* texto secundario sobre marino (AA) */
+
+ /* Tokens semanticos */
+ --paper: var(--hueso);
+ --ink: #16294C; /* marino ink */
+ --ink-soft: #45587A;
+
+ /* Espaciado (escala 4) */
+ --s1: .25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem;
+ --s6:2rem; --s7:3rem; --s8:4rem; --s9:6rem; --s10:8rem;
+
+ /* Radios y filetes */
+ --r-plate: 6px;
+ --r-pill: 999px;
+ --frame: 2px;
+
+ --shadow-plate: 0 1px 0 rgba(11,43,46,.04), 0 18px 40px -28px rgba(11,43,46,.55);
+ --shadow-lift: 0 2px 0 rgba(11,43,46,.06), 0 34px 64px -30px rgba(11,43,46,.6);
+
+ --maxw: 1240px;
+ --ease: cubic-bezier(.2,.7,.2,1);
+ }
+
+ *,*::before,*::after{ box-sizing:border-box; }
+
+ html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+ @media (prefers-reduced-motion: reduce){
+ html{ scroll-behavior:auto; }
+ *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+ }
+
+ body{
+ margin:0;
+ font-family:"Instrument Sans", system-ui, sans-serif;
+ color:var(--ink);
+ background:var(--paper);
+ line-height:1.5;
+ font-weight:400;
+ -webkit-font-smoothing:antialiased;
+ text-rendering:optimizeLegibility;
+ }
+
+ /* Tipos utilitarios */
+ .display{
+ font-family:"Bricolage Grotesque", sans-serif;
+ font-weight:800;
+ letter-spacing:-.02em;
+ line-height:.95;
+ }
+ .mono{
+ font-family:"Space Grotesk", monospace;
+ text-transform:uppercase;
+ letter-spacing:.18em;
+ font-weight:500;
+ }
+ .mono-soft{ font-family:"Space Grotesk", monospace; letter-spacing:.06em; }
+
+ a{ color:inherit; text-decoration:none; }
+ img,svg{ display:block; max-width:100%; }
+
+ :focus-visible{
+ outline:3px solid var(--coral);
+ outline-offset:3px;
+ border-radius:3px;
+ }
+ .on-dark :focus-visible{ outline-color:var(--ceibo); }
+
+ .wrap{ width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:clamp(1.1rem, 4vw, 3rem); }
+
+ /* ====== Superficies ====== */
+ .surface-dark{
+ background:
+ radial-gradient(120% 120% at 85% -10%, rgba(47,168,201,.14), transparent 55%),
+ radial-gradient(90% 90% at 0% 110%, rgba(122,87,151,.12), transparent 50%),
+ var(--charca);
+ color:var(--hueso);
+ }
+ .surface-light{ background:var(--paper); color:var(--ink); }
+
+ /* ============================================================
+ HEADER
+ ============================================================ */
+ header.site{
+ position:sticky; top:0; z-index:50;
+ background:rgba(20,41,79,.92);
+ backdrop-filter:saturate(140%) blur(10px);
+ border-bottom:1px solid rgba(238,242,236,.12);
+ color:var(--hueso);
+ }
+ .nav{
+ display:flex; align-items:center; gap:var(--s5);
+ height:68px;
+ }
+ .wordmark{
+ display:flex; align-items:center; gap:.6rem;
+ font-family:"Bricolage Grotesque", sans-serif;
+ font-weight:800; letter-spacing:-.01em; font-size:1.18rem;
+ color:var(--hueso);
+ }
+ .wordmark .glyph{
+ width:30px; height:30px; flex:0 0 auto;
+ }
+ .wordmark .glyph svg{ width:100%; height:100%; }
+ .brandlogo{ height:38px; width:auto; display:block; }
+ .foot-brand .brandlogo{ height:46px; margin-bottom:var(--s4); }
+ .nav-links{
+ display:flex; align-items:center; gap:.2rem;
+ margin-left:auto;
+ }
+ .nav-links a{
+ font-size:.86rem; font-weight:500;
+ padding:.5rem .8rem; border-radius:var(--r-pill);
+ color:rgba(238,242,236,.82);
+ transition:color .2s var(--ease), background .2s var(--ease);
+ }
+ .nav-links a:hover{ color:var(--hueso); background:rgba(238,242,236,.08); }
+ .nav-links a.is-active{ color:var(--hueso); background:rgba(238,242,236,.12); }
+ /* link activo de la nav */
+ .nav-links a[aria-current="page"]{ color:var(--hueso); background:rgba(47,168,201,.16); }
+ .nav-cta{
+ display:inline-flex; align-items:center; gap:.45rem;
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.72rem; font-weight:600;
+ padding:.62rem 1.05rem; border-radius:var(--r-pill);
+ background:var(--coral); color:#0C2447;
+ border:1px solid transparent;
+ transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+ box-shadow:0 8px 22px -12px rgba(47,168,201,.9);
+ }
+ .nav-cta:hover{ transform:translateY(-1px); background:#3FB8D8; box-shadow:0 12px 26px -12px rgba(47,168,201,1); }
+
+ .menu-btn{
+ display:none; margin-left:auto;
+ background:transparent; border:1px solid rgba(238,242,236,.25);
+ color:var(--hueso); width:42px; height:42px; border-radius:10px;
+ cursor:pointer;
+ }
+ .menu-btn svg{ width:20px; height:20px; margin:auto; }
+
+ @media (max-width: 880px){
+ .nav-links{
+ position:absolute; top:68px; left:0; right:0;
+ flex-direction:column; align-items:stretch; gap:.1rem;
+ background:var(--charca); padding:var(--s4) clamp(1.1rem,4vw,3rem) var(--s5);
+ border-bottom:1px solid rgba(238,242,236,.12);
+ margin-left:0;
+ display:none;
+ }
+ .nav-links.open{ display:flex; }
+ .nav-links a{ padding:.8rem .6rem; font-size:1rem; }
+ .nav-cta{ justify-content:center; padding:.8rem 1rem; font-size:.78rem; }
+ .menu-btn{ display:flex; }
+ }
+
+ /* ============================================================
+ HERO (placa oscura)
+ ============================================================ */
+ .hero{ position:relative; overflow:hidden; padding-block:clamp(3.2rem, 8vw, 6.5rem); }
+ .hero-lam{
+ display:inline-flex; align-items:center; gap:.65rem;
+ color:var(--ceibo); font-size:.72rem;
+ margin-bottom:var(--s5);
+ }
+ .hero-lam .rule{ width:46px; height:1px; background:linear-gradient(90deg,var(--ceibo),transparent); }
+ .hero h1{
+ font-size:clamp(2.4rem, 5.6vw, 4.2rem);
+ margin:0 0 var(--s5);
+ max-width:18ch;
+ }
+ .hero h1 .accent{ color:var(--sage); }
+ .hero p.lede{
+ font-size:clamp(1.02rem, 1.5vw, 1.18rem);
+ color:rgba(238,242,236,.8);
+ max-width:52ch; margin:0 0 var(--s6);
+ line-height:1.62;
+ }
+ .btn{
+ display:inline-flex; align-items:center; gap:.5rem;
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.13em;
+ font-size:.76rem; font-weight:600;
+ padding:.92rem 1.4rem; border-radius:var(--r-pill);
+ cursor:pointer; border:1px solid transparent;
+ transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
+ }
+ .btn-primary{ background:var(--coral); color:#0C2447; box-shadow:0 14px 30px -14px rgba(47,168,201,.95); }
+ .btn-primary:hover{ transform:translateY(-2px); background:#3FB8D8; box-shadow:0 20px 38px -16px rgba(47,168,201,1); }
+ .btn-ghost{ background:transparent; color:var(--hueso); border-color:rgba(238,242,236,.32); }
+ .btn-ghost:hover{ border-color:var(--ceibo); color:var(--ceibo); transform:translateY(-2px); }
+
+ /* ============================================================
+ PILLS (reusados del catalogo)
+ ============================================================ */
+ .pill{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.14em;
+ font-size:.6rem; font-weight:600;
+ padding:.3rem .6rem; border-radius:var(--r-pill);
+ white-space:nowrap; line-height:1;
+ }
+ .pill-disp{ background:var(--ceibo); color:#0C2447; }
+ .pill-prox{ background:transparent; color:var(--cobalto); border:1px solid var(--cobalto); }
+
+ .kicker-sci{ color:var(--sage); font-size:.64rem; margin-bottom:.4rem; display:block; }
+
+ /* ============================================================
+ BLOQUES DE SECCION CLARA
+ ============================================================ */
+ .sec{ padding-block:clamp(3rem, 6vw, 5rem); }
+ .sec-head{
+ display:flex; align-items:flex-end; justify-content:space-between;
+ gap:var(--s5); flex-wrap:wrap; margin-bottom:var(--s7);
+ }
+ .sec-kicker{ color:var(--sage); font-size:.72rem; margin-bottom:var(--s3); display:block; }
+ .sec-head h2{ font-size:clamp(1.7rem, 4vw, 2.7rem); margin:0; }
+ .sec-head .sub{ color:var(--ink-soft); font-size:1.02rem; margin-top:.6rem; max-width:46ch; }
+ .on-dark .sec-kicker{ color:var(--ceibo); }
+
+ /* ============================================================
+ TARJETAS DE RECURSO (lamina reusada como card de articulo)
+ ============================================================ */
+ .grid-rec{
+ display:grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap:clamp(1rem, 2.4vw, 1.6rem);
+ }
+ @media (max-width:760px){ .grid-rec{ grid-template-columns:1fr; } }
+
+ .lamina{
+ position:relative; display:flex; flex-direction:column;
+ background:#fff;
+ border:1px solid var(--hueso-2);
+ border-radius:var(--r-plate);
+ padding:var(--s5);
+ box-shadow:var(--shadow-plate);
+ transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+ }
+ .lamina-top{
+ display:flex; align-items:center; justify-content:space-between;
+ margin-bottom:var(--s3);
+ }
+ .lam-no{ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.18em; font-size:.66rem; color:var(--lodo); }
+ .lamina h3{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.015em;
+ font-size:1.18rem; line-height:1.12; margin:0 0 .55rem;
+ color:var(--ink);
+ }
+ .lamina h3 a{ color:inherit; transition:color .2s var(--ease); }
+ .lamina h3 a::after{ content:""; position:absolute; inset:0; }
+ .rec-excerpt{ margin:0; color:var(--ink-soft); font-size:.95rem; line-height:1.5; }
+ .lam-foot{
+ margin-top:auto; padding-top:var(--s4);
+ display:flex; align-items:center; justify-content:space-between; gap:.6rem;
+ border-top:1px solid var(--hueso-2);
+ }
+ .rec-tag{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.1em;
+ font-size:.62rem; font-weight:600; color:var(--lodo);
+ border:1px solid var(--lodo-line); border-radius:var(--r-pill); padding:.3rem .65rem;
+ }
+ .rec-read{
+ font-family:"Space Grotesk", monospace; text-transform:uppercase; letter-spacing:.1em;
+ font-size:.66rem; font-weight:600; color:var(--coral);
+ display:inline-flex; align-items:center; gap:.35rem;
+ transition:gap .2s var(--ease);
+ }
+ .lamina:hover{
+ transform:translateY(-6px);
+ box-shadow:var(--shadow-lift);
+ border-color:var(--ceibo);
+ z-index:1;
+ }
+ .lamina:hover h3 a{ color:var(--ceibo-deep); }
+ .lamina:hover .rec-read{ gap:.6rem; }
+
+ /* ============================================================
+ FRANJA CTA AL CATALOGO (buy-box reusado)
+ ============================================================ */
+ .ctaband-wrap{ padding-block:clamp(3rem, 6vw, 5rem); }
+ .ctaband{
+ position:relative;
+ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+ gap:clamp(1.5rem,4vw,3rem);
+ border-radius:var(--r-plate);
+ background:linear-gradient(155deg, rgba(47,168,201,.16), rgba(122,87,151,.12) 70%, rgba(11,43,46,.3));
+ border:1px solid rgba(238,242,236,.16);
+ box-shadow:var(--shadow-plate);
+ padding:clamp(1.6rem,4vw,3rem);
+ }
+ .ctaband::after{
+ content:""; position:absolute; inset:16px;
+ border:var(--frame) solid var(--coral); border-radius:5px; pointer-events:none;
+ }
+ .ctaband .cb-copy{ position:relative; z-index:2; max-width:46ch; }
+ .ctaband .cb-copy .cb-kicker{ color:var(--ceibo); font-size:.66rem; margin-bottom:var(--s2); display:block; }
+ .ctaband .cb-copy h2{
+ font-family:"Bricolage Grotesque", sans-serif; font-weight:800; letter-spacing:-.02em;
+ font-size:clamp(1.5rem,3vw,2.1rem); line-height:1.04; margin:0 0 var(--s3); color:var(--hueso); max-width:22ch;
+ }
+ .ctaband .cb-copy p{ color:rgba(238,242,236,.8); margin:0; }
+ .ctaband .cb-cta{ position:relative; z-index:2; }
+
+ /* ============================================================
+ FOOTER
+ ============================================================ */
+ footer.site{ padding-block:clamp(3rem,6vw,4.5rem) var(--s7); border-top:1px solid rgba(238,242,236,.1); }
+ .foot-grid{ display:flex; flex-wrap:wrap; gap:var(--s7); justify-content:space-between; align-items:flex-start; }
+ .foot-brand .wordmark{ font-size:1.4rem; margin-bottom:var(--s4); }
+ .foot-brand p{ color:var(--lodo-soft); max-width:40ch; font-size:.9rem; margin:0 0 var(--s5); }
+ .foot-tag{ display:inline-block; color:var(--ceibo); font-size:.72rem; border-left:2px solid var(--coral); padding-left:.8rem; }
+ .foot-contact{ display:flex; flex-direction:column; gap:var(--s3); }
+ .foot-contact .ck{ font-size:.64rem; color:var(--lodo); margin-bottom:.2rem; }
+ .foot-contact a, .foot-contact span{ color:var(--hueso); font-size:.92rem; }
+ .foot-contact a:hover{ color:var(--ceibo); }
+ .foot-rule{ margin-top:var(--s7); padding-top:var(--s5); border-top:1px solid rgba(238,242,236,.1);
+ display:flex; flex-wrap:wrap; gap:var(--s4); justify-content:space-between; align-items:center; }
+ .foot-rule small{ color:var(--lodo); font-size:.7rem; }
+ .foot-meta{ font-family:"Space Grotesk", monospace; letter-spacing:.14em; text-transform:uppercase; font-size:.62rem; color:var(--lodo); }
+
+ .ph{ font-style:italic; color:inherit; opacity:.7; }
+</style>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+ {
+ "@type": "EducationalOrganization",
+ "@id": "https://www.celebios.com/#org",
+ "name": "CELEBIOS",
+ "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+ "url": "https://www.celebios.com",
+ "logo": "https://www.celebios.com/brand/logo-white.png",
+ "foundingDate": "2010",
+ "areaServed": ["MX", "LATAM"],
+ "sameAs": ["https://instagram.com/celebios_edu"]
+ },
+ {
+ "@type": "CollectionPage",
+ "@id": "https://www.celebios.com/recursos",
+ "name": "Recursos sobre fauna silvestre y comportamiento animal",
+ "description": "Articulos gratuitos sobre fauna silvestre y comportamiento felino para profesionales y tutores en Mexico y LATAM.",
+ "url": "https://www.celebios.com/recursos",
+ "inLanguage": "es",
+ "isPartOf": { "@id": "https://www.celebios.com/#org" },
+ "publisher": { "@id": "https://www.celebios.com/#org" },
+ "mainEntity": {
+ "@type": "ItemList",
+ "itemListOrder": "https://schema.org/ItemListOrderAscending",
+ "numberOfItems": 16,
+ "itemListElement": [
+ {
+ "@type": "ListItem",
+ "position": 1,
+ "name": "Como ser rehabilitador de fauna silvestre en Mexico",
+ "url": "https://www.celebios.com/recurso-como-ser-rehabilitador"
+ },
+ {
+ "@type": "ListItem",
+ "position": 2,
+ "name": "Requisitos para rehabilitar fauna silvestre en Mexico",
+ "url": "https://www.celebios.com/recurso-requisitos-rehabilitar"
+ },
+ {
+ "@type": "ListItem",
+ "position": 3,
+ "name": "Como liberar fauna silvestre correctamente (soft-release)",
+ "url": "https://www.celebios.com/recurso-liberar-fauna"
+ },
+ {
+ "@type": "ListItem",
+ "position": 4,
+ "name": "Que hacer si encuentras un animal silvestre herido",
+ "url": "https://www.celebios.com/recurso-animal-herido"
+ },
+ {
+ "@type": "ListItem",
+ "position": 5,
+ "name": "Triaje de fauna silvestre: como priorizar en una emergencia",
+ "url": "https://www.celebios.com/recurso-triaje-fauna"
+ },
+ {
+ "@type": "ListItem",
+ "position": 6,
+ "name": "Contencion fisica vs quimica en fauna silvestre",
+ "url": "https://www.celebios.com/recurso-contencion"
+ },
+ {
+ "@type": "ListItem",
+ "position": 7,
+ "name": "Anestesia en fauna silvestre: principios de seguridad",
+ "url": "https://www.celebios.com/recurso-dosis-anestesicas"
+ },
+ {
+ "@type": "ListItem",
+ "position": 8,
+ "name": "Fractura de ala en un ave: primeros pasos",
+ "url": "https://www.celebios.com/recurso-fractura-ala-ave"
+ },
+ {
+ "@type": "ListItem",
+ "position": 9,
+ "name": "Enfermedades mas comunes en reptiles de cautiverio",
+ "url": "https://www.celebios.com/recurso-enfermedades-reptiles"
+ },
+ {
+ "@type": "ListItem",
+ "position": 10,
+ "name": "Errores comunes al alimentar fauna silvestre en cautiverio",
+ "url": "https://www.celebios.com/recurso-alimentacion-errores"
+ },
+ {
+ "@type": "ListItem",
+ "position": 11,
+ "name": "Enriquecimiento ambiental para fauna en cautiverio",
+ "url": "https://www.celebios.com/recurso-enriquecimiento"
+ },
+ {
+ "@type": "ListItem",
+ "position": 12,
+ "name": "Que es CONCERVET y por que importa la certificacion",
+ "url": "https://www.celebios.com/recurso-que-es-concervet"
+ },
+ {
+ "@type": "ListItem",
+ "position": 13,
+ "name": "Cuanto gana un veterinario de fauna silvestre",
+ "url": "https://www.celebios.com/recurso-cuanto-gana-veterinario"
+ },
+ {
+ "@type": "ListItem",
+ "position": 14,
+ "name": "Lenguaje corporal del gato: orejas, cola y ojos",
+ "url": "https://www.celebios.com/recurso-lenguaje-corporal-gato"
+ },
+ {
+ "@type": "ListItem",
+ "position": 15,
+ "name": "Por que mi gato maulla tanto",
+ "url": "https://www.celebios.com/recurso-por-que-maulla-gato"
+ },
+ {
+ "@type": "ListItem",
+ "position": 16,
+ "name": "Como saber si mi gato esta estresado: 10 senales",
+ "url": "https://www.celebios.com/recurso-gato-estresado"
+ }
+ ]
+ }
+ },
+ {
+ "@type": "Blog",
+ "@id": "https://www.celebios.com/recursos#blog",
+ "name": "Recursos CELEBIOS",
+ "description": "Articulos sobre fauna silvestre, rehabilitacion y comportamiento felino.",
+ "url": "https://www.celebios.com/recursos",
+ "inLanguage": "es",
+ "publisher": { "@id": "https://www.celebios.com/#org" },
+ "blogPost": [
+ { "@type": "BlogPosting", "headline": "Como ser rehabilitador de fauna silvestre en Mexico", "url": "https://www.celebios.com/recurso-como-ser-rehabilitador", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Requisitos para rehabilitar fauna silvestre en Mexico", "url": "https://www.celebios.com/recurso-requisitos-rehabilitar", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Como liberar fauna silvestre correctamente (soft-release)", "url": "https://www.celebios.com/recurso-liberar-fauna", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Que hacer si encuentras un animal silvestre herido", "url": "https://www.celebios.com/recurso-animal-herido", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Triaje de fauna silvestre: como priorizar en una emergencia", "url": "https://www.celebios.com/recurso-triaje-fauna", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Contencion fisica vs quimica en fauna silvestre", "url": "https://www.celebios.com/recurso-contencion", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Anestesia en fauna silvestre: principios de seguridad", "url": "https://www.celebios.com/recurso-dosis-anestesicas", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Fractura de ala en un ave: primeros pasos", "url": "https://www.celebios.com/recurso-fractura-ala-ave", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Enfermedades mas comunes en reptiles de cautiverio", "url": "https://www.celebios.com/recurso-enfermedades-reptiles", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Errores comunes al alimentar fauna silvestre en cautiverio", "url": "https://www.celebios.com/recurso-alimentacion-errores", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Enriquecimiento ambiental para fauna en cautiverio", "url": "https://www.celebios.com/recurso-enriquecimiento", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Que es CONCERVET y por que importa la certificacion", "url": "https://www.celebios.com/recurso-que-es-concervet", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Cuanto gana un veterinario de fauna silvestre", "url": "https://www.celebios.com/recurso-cuanto-gana-veterinario", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Lenguaje corporal del gato: orejas, cola y ojos", "url": "https://www.celebios.com/recurso-lenguaje-corporal-gato", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Por que mi gato maulla tanto", "url": "https://www.celebios.com/recurso-por-que-maulla-gato", "publisher": { "@id": "https://www.celebios.com/#org" } },
+ { "@type": "BlogPosting", "headline": "Como saber si mi gato esta estresado: 10 senales", "url": "https://www.celebios.com/recurso-gato-estresado", "publisher": { "@id": "https://www.celebios.com/#org" } }
+ ]
+ },
+ {
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+ { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.celebios.com/" },
+ { "@type": "ListItem", "position": 2, "name": "Recursos", "item": "https://www.celebios.com/recursos" }
+ ]
+ }
+ ]
+}
+</script>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site on-dark">
+ <div class="wrap nav">
+ <a class="wordmark" href="lamina-viva.html" aria-label="CELEBIOS inicio">
+ <img class="brandlogo" src="brand/logo-white.png" alt="CELEBIOS" width="100" height="38">
+ </a>
+
+ <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+ </button>
+
+ <nav class="nav-links" id="navLinks" aria-label="Principal">
+ <a href="catalogo.html">Cursos</a>
+ <a href="diplomado-rehab.html">Diplomado</a>
+ <a href="recursos.html" class="is-active" aria-current="page">Recursos</a>
+ <a href="nosotros.html">Nosotros</a>
+ <a class="nav-cta" href="catalogo.html">Explorar cursos</a>
+ </nav>
+ </div>
+</header>
+
+<main id="top">
+
+<!-- ===================== HERO ===================== -->
+<section class="surface-dark hero on-dark">
+ <div class="wrap">
+ <span class="hero-lam mono"><span class="rule"></span>Recursos</span>
+ <h1 class="display">Recursos sobre fauna silvestre y comportamiento <span class="accent">animal.</span></h1>
+ <p class="lede">Artículos para aprender y resolver dudas sobre fauna silvestre y comportamiento felino. Gratis, claros y escritos para profesionales y tutores.</p>
+ <a class="btn btn-primary" href="catalogo.html">Explorar cursos</a>
+ </div>
+</section>
+
+<!-- ===================== RESCATE, REHABILITACION Y CAMPO ===================== -->
+<section class="surface-light sec" aria-labelledby="sec-rescate">
+ <div class="wrap">
+ <div class="sec-head">
+ <div>
+ <span class="sec-kicker mono">Fauna silvestre</span>
+ <h2 class="display" id="sec-rescate">Rescate, rehabilitación y campo</h2>
+ <p class="sub">Formación, marco legal y respuesta ante fauna silvestre en México.</p>
+ </div>
+ </div>
+
+ <div class="grid-rec">
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 01</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-como-ser-rehabilitador.html">Cómo ser rehabilitador de fauna silvestre en México</a></h3>
+ <p class="rec-excerpt">Formación, competencias y por dónde empezar.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Carrera</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 02</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-requisitos-rehabilitar.html">Requisitos para rehabilitar fauna silvestre en México</a></h3>
+ <p class="rec-excerpt">Marco legal (UMA/SEMARNAT) y de formación.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Legal</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 03</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-liberar-fauna.html">Cómo liberar fauna silvestre correctamente (soft-release)</a></h3>
+ <p class="rec-excerpt">Liberación gradual y por qué importa.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Campo</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 04</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-animal-herido.html">Qué hacer si encuentras un animal silvestre herido</a></h3>
+ <p class="rec-excerpt">Qué hacer y qué NO hacer, con seguridad.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Urgencias</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 05</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-triaje-fauna.html">Triaje de fauna silvestre: cómo priorizar en una emergencia</a></h3>
+ <p class="rec-excerpt">Cómo priorizar cuando llegan varios casos.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Urgencias</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ </div>
+ </div>
+</section>
+
+<!-- ===================== CLINICA Y MANEJO DE FAUNA ===================== -->
+<section class="surface-light sec" aria-labelledby="sec-clinica" style="padding-top:0;">
+ <div class="wrap">
+ <div class="sec-head">
+ <div>
+ <span class="sec-kicker mono">Clínica veterinaria</span>
+ <h2 class="display" id="sec-clinica">Clínica y manejo de fauna</h2>
+ <p class="sub">Manejo, anestesia y cuidados de fauna silvestre en cautiverio.</p>
+ </div>
+ </div>
+
+ <div class="grid-rec">
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 06</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-contencion.html">Contención física vs química en fauna silvestre</a></h3>
+ <p class="rec-excerpt">Cuándo usar cada tipo de contención.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Manejo</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 07</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-dosis-anestesicas.html">Anestesia en fauna silvestre: principios de seguridad</a></h3>
+ <p class="rec-excerpt">Principios para anestesiar con seguridad.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Anestesia</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 08</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-fractura-ala-ave.html">Fractura de ala en un ave: primeros pasos</a></h3>
+ <p class="rec-excerpt">Primeros pasos ante un ala fracturada.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Urgencias</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 09</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-enfermedades-reptiles.html">Enfermedades más comunes en reptiles de cautiverio</a></h3>
+ <p class="rec-excerpt">Las patologías que más se repiten.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Reptiles</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 10</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-alimentacion-errores.html">Errores comunes al alimentar fauna silvestre en cautiverio</a></h3>
+ <p class="rec-excerpt">Fallos de dieta que conviene evitar.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Nutrición</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 11</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-enriquecimiento.html">Enriquecimiento ambiental para fauna en cautiverio</a></h3>
+ <p class="rec-excerpt">Ideas para mejorar el bienestar en cautiverio.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Bienestar</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 12</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-que-es-concervet.html">Qué es CONCERVET y por qué importa la certificación</a></h3>
+ <p class="rec-excerpt">Qué es y por qué importa certificarse.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Certificación</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 13</span>
+ <span class="pill pill-disp">Guía</span>
+ </div>
+ <h3><a href="recurso-cuanto-gana-veterinario.html">Cuánto gana un veterinario de fauna silvestre</a></h3>
+ <p class="rec-excerpt">Salidas laborales y cómo subir tu valor.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Carrera</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ </div>
+ </div>
+</section>
+
+<!-- ===================== COMPORTAMIENTO FELINO ===================== -->
+<section class="surface-light sec" aria-labelledby="sec-felino" style="padding-top:0;">
+ <div class="wrap">
+ <div class="sec-head">
+ <div>
+ <span class="sec-kicker mono">Comportamiento felino</span>
+ <h2 class="display" id="sec-felino">Comportamiento felino (para tutores)</h2>
+ <p class="sub">Entiende qué te comunica tu gato y cuándo conviene actuar.</p>
+ </div>
+ </div>
+
+ <div class="grid-rec">
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 14</span>
+ <span class="pill pill-prox">Felino</span>
+ </div>
+ <h3><a href="recurso-lenguaje-corporal-gato.html">Lenguaje corporal del gato: orejas, cola y ojos</a></h3>
+ <p class="rec-excerpt">Qué comunica el cuerpo de tu gato.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Comunicación</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 15</span>
+ <span class="pill pill-prox">Felino</span>
+ </div>
+ <h3><a href="recurso-por-que-maulla-gato.html">Por qué mi gato maúlla tanto</a></h3>
+ <p class="rec-excerpt">Tipos de maullido y cuándo preocuparse.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Vocalización</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ <article class="lamina">
+ <div class="lamina-top">
+ <span class="lam-no">Art. 16</span>
+ <span class="pill pill-prox">Felino</span>
+ </div>
+ <h3><a href="recurso-gato-estresado.html">Cómo saber si mi gato está estresado: 10 señales</a></h3>
+ <p class="rec-excerpt">10 señales y qué hacer.</p>
+ <div class="lam-foot">
+ <span class="rec-tag">Bienestar</span>
+ <span class="rec-read mono">Leer →</span>
+ </div>
+ </article>
+
+ </div>
+ </div>
+</section>
+
+<!-- ===================== FRANJA CTA AL CATALOGO ===================== -->
+<section class="surface-light ctaband-wrap" aria-labelledby="cbh">
+ <div class="wrap">
+ <div class="ctaband">
+ <div class="cb-copy">
+ <span class="cb-kicker mono">El siguiente paso</span>
+ <h2 id="cbh">Lleva tu interés al siguiente nivel</h2>
+ <p>Cuando quieras pasar del artículo a la formación, nuestros cursos online te esperan.</p>
+ </div>
+ <a class="btn btn-primary cb-cta" href="catalogo.html">Ver el catálogo de cursos</a>
+ </div>
+ </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="surface-dark site on-dark">
+ <div class="wrap">
+ <div class="foot-grid">
+ <div class="foot-brand">
+ <img class="brandlogo" src="brand/logo-white.png" alt="CELEBIOS" width="120" height="46">
+
+ <p>Centro Latinoamericano de Estudios en Ciencias Biológicas y de la Salud Animal.</p>
+ <span class="foot-tag mono-soft">Eliminando fronteras, acercando al mundo.</span>
+ </div>
+
+ <div class="foot-contact">
+ <div>
+ <div class="ck mono">Correo</div>
+ <a href="mailto:contacto@celebios.com">contacto@celebios.com</a>
+ </div>
+ <div>
+ <div class="ck mono">WhatsApp</div>
+ <a href="https://wa.me/529581033574">+52 958 103 3574</a>
+ </div>
+ <div>
+ <div class="ck mono">Instagram</div>
+ <a href="https://instagram.com/celebios_edu">@celebios_edu</a>
+ </div>
+ </div>
+ </div>
+
+ <div class="foot-rule">
+ <small>© 2026 CELEBIOS · Avalada por CONCERVET · 16 años en LATAM</small>
+ <span class="foot-meta">Atlas Lat. · Ed. Lámina Viva</span>
+ </div>
+ </div>
+</footer>
+
+<script>
+ (function{
+ // menu movil
+ var btn = document.getElementById("menuBtn");
+ var links = document.getElementById("navLinks");
+ if(btn && links){
+ btn.addEventListener("click", function{
+ var open = links.classList.toggle("open");
+ btn.setAttribute("aria-expanded", open ? "true" : "false");
+ });
+ links.addEventListener("click", function(e){
+ if(e.target.tagName === "A"){
+ links.classList.remove("open");
+ btn.setAttribute("aria-expanded", "false");
+ }
+ });
+ }
+ });
+</script>
+
+</body>
+</html>

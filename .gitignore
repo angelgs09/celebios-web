@@ -15,3 +15,8 @@ dist/
 
 # Firecrawl scrapes (datos extraídos, no versionar)
 .firecrawl/
+
+# Build de Fase 0 (regenerable con build.py)
+site/
+.vercel/
+COMMIT_MSG.tmp

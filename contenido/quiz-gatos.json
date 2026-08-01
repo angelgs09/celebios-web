@@ -1,0 +1,787 @@
+{
+  "curso": "Lenguaje y Comunicacion de los Gatos",
+  "fuente": "Quiz 1-11.docx (Drive, carpeta Modulos)",
+  "modulos": [
+    {
+      "modulo": 1,
+      "preguntas": [
+        {
+          "n": 1,
+          "enunciado": "¿Cuál de las siguientes afirmaciones describe mejor la evolución histórica de la relación entre humanos y gatos?",
+          "opciones": {
+            "A": "Los gatos fueron domesticados directamente para la caza de aves",
+            "B": "Su rol ha sido siempre exclusivamente funcional y sin vínculo emocional",
+            "C": "Fueron domesticados en paralelo con los perros en la Edad Media",
+            "D": "Pasaron de tener una relación simbiótica a ser considerados miembros de la familia"
+          },
+          "correcta": "D"
+        },
+        {
+          "n": 2,
+          "enunciado": "¿Qué característica ha contribuido a la popularidad de los gatos en la cultura actual?",
+          "opciones": {
+            "A": "Su capacidad de obedecer comandos complejos",
+            "B": "Su comportamiento predecible y muy fácil de entrenar",
+            "C": "Su capacidad de adaptación a la rutina del humano y auge en las redes sociales",
+            "D": "Su utilidad en trabajos agrícolas modernos"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 3,
+          "enunciado": "¿Cuál de los siguientes ejemplos representa mejor la importancia de comprender el lenguaje felino?",
+          "opciones": {
+            "A": "Interpretar el maullido siempre como hambre",
+            "B": "Asumir que el gato evita el contacto por desobediencia",
+            "C": "Reconocer que una cola erizada puede indicar estrés o miedo",
+            "D": "Considerar que el gato no necesita interacción social"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 4,
+          "enunciado": "¿Cuál es una consecuencia positiva de una buena comprensión del lenguaje del gato?",
+          "opciones": {
+            "A": "Fortalecimiento del vínculo y reducción del estrés",
+            "B": "Eliminación total de comportamientos instintivos",
+            "C": "Mayor dependencia del gato hacia el humano",
+            "D": "Disminución de la necesidad de enriquecimiento ambiental"
+          },
+          "correcta": "A"
+        },
+        {
+          "n": 5,
+          "enunciado": "¿Cuál de los siguientes mitos sobre los gatos es incorrecto?",
+          "opciones": {
+            "A": "Los gatos pueden adaptarse a rutinas del hogar",
+            "B": "Los gatos no se encariñan con las personas",
+            "C": "Los gatos pueden ser educados",
+            "D": "Los gatos pueden mostrar estrés mediante cambios de conducta"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 6,
+          "enunciado": "¿Qué práctica refleja una adecuada convivencia con gatos?",
+          "opciones": {
+            "A": "Forzar contacto cuando el gato evita la interacción",
+            "B": "Ignorar señales sutiles como cambios en la postura o mirada",
+            "C": "Respetar sus tiempos, espacios y señales de comunicación",
+            "D": "Interpretar todos los comportamientos como desobediencia"
+          },
+          "correcta": "C"
+        }
+      ]
+    },
+    {
+      "modulo": 2,
+      "preguntas": [
+        {
+          "n": 1,
+          "enunciado": "¿Qué define principalmente la territorialidad en el gato?",
+          "opciones": {
+            "A": "Un comportamiento relacionado solo con la alimentación",
+            "B": "La necesidad de establecer jerarquías sociales con otros gatos",
+            "C": "La construcción, organización y protección de un espacio que el gato considera propio",
+            "D": "Un comportamiento exclusivo de gatos ferales"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 2,
+          "enunciado": "¿Cuál es una diferencia clave entre gatos y perros en relación con su organización conductual?",
+          "opciones": {
+            "A": "Los perros son territoriales y los gatos sociales obligatorios",
+            "B": "Los gatos estructuran su mundo en torno al territorio y los perros en torno a la sociabilidad grupal",
+            "C": "Ambos se organizan principalmente por jerarquías rígidas",
+            "D": "Los gatos no presentan territorialidad significativa"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 3,
+          "enunciado": "¿Qué característica describe mejor la organización de los gatos en exteriores?",
+          "opciones": {
+            "A": "Vagan sin estructura ni patrones definidos",
+            "B": "Mantienen territorios fijos sin superposición con otros individuos",
+            "C": "Organizan su espacio en campos de actividad con territorios superpuestos",
+            "D": "Dependen exclusivamente de grupos sociales estables"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 4,
+          "enunciado": "¿Cuál de las siguientes afirmaciones describe mejor a los gatos ferales?",
+          "opciones": {
+            "A": "Son individuos que viven sin contacto humano positivo y no buscan interacción con personas",
+            "B": "Son gatos domésticos en proceso de socialización con humanos",
+            "C": "Son animales que necesitan obligatoriamente intervención humana para sobrevivir",
+            "D": "Son gatos domésticos que viven temporalmente en exteriores"
+          },
+          "correcta": "A"
+        },
+        {
+          "n": 5,
+          "enunciado": "¿Cuál es una ventaja importante de la vida indoor en gatos?",
+          "opciones": {
+            "A": "Reduce completamente la necesidad de enriquecimiento ambiental",
+            "B": "Elimina la necesidad de comunicación con otros gatos",
+            "C": "Disminuye el estrés al evitar conflictos territoriales y riesgos externos",
+            "D": "Hace que el gato dependa totalmente del humano para su conducta social"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 6,
+          "enunciado": "¿Cuál de las siguientes medidas corresponde a una estrategia de seguridad para gatos con acceso a exteriores?",
+          "opciones": {
+            "A": "Permitir salidas libres sin supervisión",
+            "B": "Evitar cualquier tipo de estructura cerrada",
+            "C": "Instalación de mallas de seguridad o uso de catios",
+            "D": "Aumentar el acceso sin control a zonas externas"
+          },
+          "correcta": "C"
+        }
+      ]
+    },
+    {
+      "modulo": 3,
+      "preguntas": [
+        {
+          "n": 1,
+          "enunciado": "¿Cuál es el objetivo principal de la etología?",
+          "opciones": {
+            "A": "Tratar enfermedades físicas en animales domésticos",
+            "B": "Estudiar el comportamiento de los animales en su ambiente natural para describirlo, explicarlo y predecirlo",
+            "C": "Entrenar animales para convivir con humanos",
+            "D": "Modificar conductas problemáticas en gatos indoor"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 2,
+          "enunciado": "¿Cuál de los siguientes factores NO corresponde a uno de los que influyen directamente en el comportamiento del gato?",
+          "opciones": {
+            "A": "Genética",
+            "B": "Experiencias tempranas",
+            "C": "Largo del pelaje",
+            "D": "Factores ambientales"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 3,
+          "enunciado": "¿Cuál de los siguientes enunciados refleja mejor la diferencia entre comportamiento y conducta?",
+          "opciones": {
+            "A": "El comportamiento es siempre aprendido y la conducta siempre instintiva",
+            "B": "La conducta es un conjunto amplio de acciones y el comportamiento es una acción específica observable",
+            "C": "No existe diferencia real entre comportamiento y conducta en gatos",
+            "D": "El comportamiento es el conjunto general de respuestas del gato, mientras que la conducta es una manifestación específica y observable de ese comportamiento"
+          },
+          "correcta": "D"
+        },
+        {
+          "n": 4,
+          "enunciado": "¿Cuál de las siguientes afirmaciones describe mejor la comunicación en gatos?",
+          "opciones": {
+            "A": "Es un comportamiento sin intención social",
+            "B": "Siempre ocurre solo entre animales de la misma especie",
+            "C": "Es una conducta destinada a transmitir información a otro individuo",
+            "D": "Es un reflejo automático sin función social"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 5,
+          "enunciado": "¿Cuál de los siguientes es un ejemplo de factor ambiental que influye en el comportamiento felino?",
+          "opciones": {
+            "A": "Disponibilidad de refugios, juguetes y espacio en el hogar",
+            "B": "Nivel de actividad de la madre",
+            "C": "Presencia de enfermedades neurológicas",
+            "D": "Tipo de aprendizaje escolar del tutor"
+          },
+          "correcta": "A"
+        },
+        {
+          "n": 6,
+          "enunciado": "¿Cuál de las siguientes afirmaciones es correcta respecto a la comunicación animal?",
+          "opciones": {
+            "A": "Solo ocurre entre animales de la misma especie",
+            "B": "Siempre es intencional y consciente",
+            "C": "Puede ser visual, auditiva, química o táctil",
+            "D": "No incluye señales químicas como feromonas"
+          },
+          "correcta": "C"
+        }
+      ]
+    },
+    {
+      "modulo": 4,
+      "preguntas": [
+        {
+          "n": 1,
+          "enunciado": "Sobre la visión felina, ¿cuál de las siguientes afirmaciones es correcta?",
+          "opciones": {
+            "A": "Los gatos ven en completa oscuridad gracias a su retina especializada",
+            "B": "Perciben todos los colores con la misma intensidad que los humanos",
+            "C": "Detectan mejor el movimiento que los detalles estáticos",
+            "D": "Tienen un campo visual más reducido que el humano"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 2,
+          "enunciado": "¿Cuál es la función principal del órgano vomeronasal en los gatos?",
+          "opciones": {
+            "A": "Regular la temperatura corporal mediante respiración",
+            "B": "Detectar feromonas y señales químicas sociales",
+            "C": "Mejorar la percepción de sonidos de alta frecuencia",
+            "D": "Coordinar el equilibrio durante el salto"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 3,
+          "enunciado": "¿Qué combinación de señales faciales se asocia más probablemente a miedo o estrés en un gato?",
+          "opciones": {
+            "A": "Pupilas dilatadas + orejas hacia adelante + bigotes extendidos",
+            "B": "Pupilas contraídas + orejas erguidas + boca relajada",
+            "C": "Pupilas dilatadas + orejas hacia atrás + bigotes pegados al rostro",
+            "D": "Pupilas normales + parpadeo lento + orejas neutras"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 4,
+          "enunciado": "¿Cuál de las siguientes afirmaciones describe mejor el ronroneo en gatos?",
+          "opciones": {
+            "A": "Siempre indica bienestar y relajación",
+            "B": "Solo aparece durante el sueño profundo",
+            "C": "Es exclusivos de la interacción entre gatos adultos",
+            "D": "Puede ocurrir tanto en contextos positivos como de estrés o dolor"
+          },
+          "correcta": "D"
+        },
+        {
+          "n": 5,
+          "enunciado": "¿Qué función cumple principalmente el marcaje con uñas en los gatos?",
+          "opciones": {
+            "A": "Solo afilar las uñas sin función comunicativa",
+            "B": "Comunicación visual y química del territorio",
+            "C": "Expresar hambre o solicitud de comida",
+            "D": "Reducir exclusivamente el estrés sin función social"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 6,
+          "enunciado": "¿Cuál de las siguientes opciones describe mejor el rol del olfato en los gatos indoor?",
+          "opciones": {
+            "A": "Es secundario frente a la visión en la toma de decisiones",
+            "B": "Solo se utiliza para detectar alimentos en mal estado",
+            "C": "Es clave para reconocimiento social, seguridad y percepción del entorno",
+            "D": "Se usa únicamente en situaciones de caza"
+          },
+          "correcta": "C"
+        }
+      ]
+    },
+    {
+      "modulo": 5,
+      "preguntas": [
+        {
+          "n": 1,
+          "enunciado": "¿Por qué es importante interpretar las expresiones faciales y corporales en conjunto?",
+          "opciones": {
+            "A": "Porque las orejas son el único indicador confiable",
+            "B": "Porque cada señal por separado siempre significa lo mismo",
+            "C": "Porque un solo indicador puede ser engañoso sin el contexto",
+            "D": "Porque el gato no usa múltiples señales a la vez"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 2,
+          "enunciado": "¿Qué puede indicar un parpadeo lento en gatos?",
+          "opciones": {
+            "A": "Agresión inminente",
+            "B": "Miedo extremo",
+            "C": "Confianza y relajación",
+            "D": "Dolor físico"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 3,
+          "enunciado": "¿Cuál de las siguientes combinaciones indica generalmente juego o curiosidad?",
+          "opciones": {
+            "A": "Orejas hacia atrás + cuerpo arqueado + pelo erizado",
+            "B": "Pupilas dilatadas + orejas erguidas + bigotes hacia adelante",
+            "C": "Bigotes pegados al rostro + cola rígida + cuerpo tenso",
+            "D": "Respiración rápida + postura encogida + orejas planas"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 4,
+          "enunciado": "¿Qué caracteriza una postura defensiva o agresiva en gatos?",
+          "opciones": {
+            "A": "Cuerpo relajado y cola baja",
+            "B": "Cuerpo arqueado, pelo erizado y orejas hacia atrás",
+            "C": "Postura acostada y parpadeo lento",
+            "D": "Bigotes relajados y movimientos suaves"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 5,
+          "enunciado": "¿Qué puede significar una postura de alerta o curiosidad?",
+          "opciones": {
+            "A": "Desinterés total en el entorno",
+            "B": "Estado de relajación profunda",
+            "C": "Evaluación del entorno con disposición a explorar",
+            "D": "Dolor o enfermedad"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 6,
+          "enunciado": "¿Por qué es importante evitar interpretar una sola señal aislada (como orejas hacia atrás)?",
+          "opciones": {
+            "A": "Porque las orejas nunca cambian de significado",
+            "B": "Porque siempre indica agresión",
+            "C": "Porque puede tener distintos significados según el contexto y otras señales",
+            "D": "Porque no tiene relevancia en la comunicación felina"
+          },
+          "correcta": "C"
+        }
+      ]
+    },
+    {
+      "modulo": 6,
+      "preguntas": [
+        {
+          "n": 1,
+          "enunciado": "¿Cuál es la función principal de las feromonas faciales en los gatos?",
+          "opciones": {
+            "A": "Marcar agresivamente a otros gatos",
+            "B": "Comunicar territorio seguro y familiaridad",
+            "C": "Señalar hambre o necesidad de alimento",
+            "D": "Advertir dolor físico"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 2,
+          "enunciado": "¿Qué caracteriza al marcaje con uñas en los gatos?",
+          "opciones": {
+            "A": "Solo tiene función agresiva",
+            "B": "No tiene ninguna función comunicativa",
+            "C": "Deja feromonas y cumple función territorial",
+            "D": "Solo ocurre en situaciones de miedo extremo"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 3,
+          "enunciado": "¿Qué puede indicar el marcaje con orina en el hogar?",
+          "opciones": {
+            "A": "Siempre juego y exploración",
+            "B": "Exclusivamente hambre",
+            "C": "Comunicación territorial o estrés",
+            "D": "Conducta aprendida sin significado"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 4,
+          "enunciado": "¿Por qué es importante observar los tipos de marcaje en conjunto?",
+          "opciones": {
+            "A": "Porque el contexto y combinación de señales entrega información más completa",
+            "B": "Porque cada uno tiene el mismo significado siempre",
+            "C": "Porque el marcaje facial es el único importante",
+            "D": "Porque solo importa el marcaje con orina"
+          },
+          "correcta": "A"
+        },
+        {
+          "n": 5,
+          "enunciado": "¿Qué función cumplen las feromonas de estrés?",
+          "opciones": {
+            "A": "Indicar juego y socialización",
+            "B": "Alertar sobre situaciones de miedo o incomodidad",
+            "C": "Marcar territorio seguro",
+            "D": "Atraer a otros gatos para apareamiento"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 6,
+          "enunciado": "¿Qué puede significar el marcaje cerca de ventanas o entradas?",
+          "opciones": {
+            "A": "Hambre o aburrimiento",
+            "B": "Ocupación del territorio y vigilancia del entorno",
+            "C": "Problemas de visión del gato",
+            "D": "Falta de vínculo con el tutor"
+          },
+          "correcta": "B"
+        }
+      ]
+    },
+    {
+      "modulo": 7,
+      "preguntas": [
+        {
+          "n": 1,
+          "enunciado": "¿Cuál es la principal función de las vocalizaciones en la comunicación felina?",
+          "opciones": {
+            "A": "Sustituir completamente el lenguaje corporal",
+            "B": "Expresar estados emocionales e intenciones del gato",
+            "C": "Solo pedir alimento",
+            "D": "Evitar el contacto con otros gatos"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 2,
+          "enunciado": "¿Qué puede indicar un ronroneo en ciertos contextos?",
+          "opciones": {
+            "A": "Siempre felicidad absoluta",
+            "B": "Solo juego entre gatos",
+            "C": "Bienestar, pero también estrés o dolor según el contexto",
+            "D": "Agresión inminente"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 3,
+          "enunciado": "¿Qué caracteriza al \"chatter\" o cacareo en gatos?",
+          "opciones": {
+            "A": "Un sonido suave de saludo",
+            "B": "Un maullido prolongado de petición",
+            "C": "Un sonido asociado a excitación o frustración ante presas",
+            "D": "Un tipo de ronroneo intenso"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 4,
+          "enunciado": "¿Cuál es la función principal del frotamiento en gatos?",
+          "opciones": {
+            "A": "Mostrar agresión territorial fuerte",
+            "B": "Marcar con feromonas y reforzar vínculos sociales",
+            "C": "Pedir comida de forma insistente",
+            "D": "Evitar contacto con otros gatos"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 5,
+          "enunciado": "¿Qué indica un gato que presenta bigotes hacia adelante?",
+          "opciones": {
+            "A": "Miedo intenso",
+            "B": "Relajación total sin interés",
+            "C": "Exploración activa e interés en el entorno",
+            "D": "Dolor físico severo"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 6,
+          "enunciado": "¿Por qué es importante interpretar múltiples señales en conjunto?",
+          "opciones": {
+            "A": "Porque los gatos combinan varios canales para comunicar su estado emocional",
+            "B": "Porque las vocalizaciones no son relevantes",
+            "C": "Porque cada señal aislada siempre tiene el mismo significado",
+            "D": "Porque el tacto es el único canal confiable"
+          },
+          "correcta": "A"
+        }
+      ]
+    },
+    {
+      "modulo": 8,
+      "preguntas": [
+        {
+          "n": 1,
+          "enunciado": "¿Qué indican las conductas afiliativas en los gatos?",
+          "opciones": {
+            "A": "Conductas de defensa ante amenazas",
+            "B": "Expresiones de afecto y fortalecimiento de vínculos",
+            "C": "Problemas de salud emocional",
+            "D": "Conductas de caza"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 2,
+          "enunciado": "¿Qué función cumple el acicalamiento mutuo entre gatos?",
+          "opciones": {
+            "A": "Establecer competencia por comida",
+            "B": "Reforzar vínculos sociales y confianza entre individuos",
+            "C": "Marcar agresivamente el territorio",
+            "D": "Reducir la necesidad de contacto social"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 3,
+          "enunciado": "¿Qué caracteriza a la comunicación intraespecífica en gatos?",
+          "opciones": {
+            "A": "Comunicación exclusiva con humanos",
+            "B": "Interacción solo mediante vocalizaciones",
+            "C": "Interacción entre gatos mediante señales visuales, táctiles y olfativas",
+            "D": "Uso exclusivo de maullidos"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 4,
+          "enunciado": "¿Cuál de las siguientes conductas es un ejemplo de apego seguro?",
+          "opciones": {
+            "A": "Evitar siempre al tutor",
+            "B": "Mostrar miedo constante al entorno",
+            "C": "Esconderse todo el día",
+            "D": "Acercarse voluntariamente y explorar el entorno con confianza"
+          },
+          "correcta": "D"
+        },
+        {
+          "n": 5,
+          "enunciado": "¿Qué indica el frotamiento de cabeza y mejillas en un gato?",
+          "opciones": {
+            "A": "Dolor físico",
+            "B": "Marca amistosa y comunicación de afecto",
+            "C": "Agresión territorial intensa",
+            "D": "Falta de confianza en el tutor"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 6,
+          "enunciado": "¿Cuál es una clave importante para fortalecer el apego seguro?",
+          "opciones": {
+            "A": "Forzar el contacto físico diario",
+            "B": "Cambiar constantemente las rutinas",
+            "C": "Respetar la individualidad del gato y permitir su iniciativa de interacción",
+            "D": "Ignorar sus señales para que se acostumbre"
+          },
+          "correcta": "C"
+        }
+      ]
+    },
+    {
+      "modulo": 9,
+      "preguntas": [
+        {
+          "n": 1,
+          "enunciado": "¿Cuál es el objetivo principal de las estrategias de afrontamiento en gatos?",
+          "opciones": {
+            "A": "Eliminar completamente las conductas del gato",
+            "B": "Reprimir el comportamiento agresivo",
+            "C": "Ayudar al gato a manejar sus emociones de forma saludable",
+            "D": "Hacer que el gato obedezca al tutor"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 2,
+          "enunciado": "¿Qué puede indicar una cola que se mueve rápidamente de lado a lado?",
+          "opciones": {
+            "A": "Irritación o estrés",
+            "B": "Juego tranquilo",
+            "C": "Relajación",
+            "D": "Sueño profundo"
+          },
+          "correcta": "A"
+        },
+        {
+          "n": 3,
+          "enunciado": "¿Por qué el castigo no es recomendable en gatos con conducta agresiva?",
+          "opciones": {
+            "A": "Porque el gato no entiende el castigo",
+            "B": "Porque aumenta el miedo y puede empeorar la agresión",
+            "C": "Porque hace al gato más sociable",
+            "D": "Porque solo funciona en gatos adultos"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 4,
+          "enunciado": "¿Qué estrategia ayuda a reducir la ansiedad anticipatoria en gatos?",
+          "opciones": {
+            "A": "Cambiar constantemente los horarios",
+            "B": "Evitar la alimentación regular",
+            "C": "Mantener rutinas predecibles",
+            "D": "Aumentar los estímulos inesperados"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 5,
+          "enunciado": "¿Qué puede significar el ronroneo acompañado de tensión corporal?",
+          "opciones": {
+            "A": "Felicidad absoluta",
+            "B": "Sueño profundo",
+            "C": "Estrés o dolor",
+            "D": "Juego activo"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 6,
+          "enunciado": "¿Cuál es una razón importante para llevar un registro de conductas del gato?",
+          "opciones": {
+            "A": "Controlar cuánto juega el gato",
+            "B": "Identificar patrones de estrés y ajustar estrategias",
+            "C": "Demostrar obediencia del gato",
+            "D": "Compararlo con otros gatos"
+          },
+          "correcta": "B"
+        }
+      ]
+    },
+    {
+      "modulo": 10,
+      "preguntas": [
+        {
+          "n": 1,
+          "enunciado": "¿Cuál es uno de los principales problemas de humanizar al gato?",
+          "opciones": {
+            "A": "Que el gato aprende más lento",
+            "B": "Que se interpretan mal sus conductas",
+            "C": "Que el gato deja de jugar",
+            "D": "Que el gato se vuelve más dependiente"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 2,
+          "enunciado": "¿Qué puede significar que un gato se esconda?",
+          "opciones": {
+            "A": "Que busca seguridad o evita estrés",
+            "B": "Que quiere llamar la atención",
+            "C": "Que está enojado con su tutor",
+            "D": "Que está jugando"
+          },
+          "correcta": "A"
+        },
+        {
+          "n": 3,
+          "enunciado": "¿Cuál de las siguientes es una señal de juego en un gato?",
+          "opciones": {
+            "A": "Orejas hacia atrás",
+            "B": "Gruñidos constantes",
+            "C": "Movimientos suaves y pausas",
+            "D": "Pelo erizado"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 4,
+          "enunciado": "¿Qué indica un gato con orejas hacia atrás, gruñidos y cuerpo rígido?",
+          "opciones": {
+            "A": "Que está relajado",
+            "B": "Que quiere dormir",
+            "C": "Que está jugando",
+            "D": "Que muestra agresión o incomodidad"
+          },
+          "correcta": "D"
+        },
+        {
+          "n": 5,
+          "enunciado": "¿Por qué es un error interpretar el estrés como \"mal carácter\"?",
+          "opciones": {
+            "A": "Porque el gato no tiene carácter",
+            "B": "Porque son señales de incomodidad o malestar",
+            "C": "Porque el gato siempre está tranquilo",
+            "D": "Porque es una conducta poco común"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 6,
+          "enunciado": "¿Cuál es la clave para interpretar correctamente la comunicación felina?",
+          "opciones": {
+            "A": "Castigar cuando se equivoca",
+            "B": "Ignorar las conductas",
+            "C": "Observar el contexto y respetar su lenguaje",
+            "D": "Tratarlo como a una persona"
+          },
+          "correcta": "C"
+        }
+      ]
+    },
+    {
+      "modulo": 11,
+      "preguntas": [
+        {
+          "n": 1,
+          "enunciado": "¿Cuál es el propósito de aplicar el refuerzo positivo en la comunicación con el gato?",
+          "opciones": {
+            "A": "Evitar que el gato juegue demasiado",
+            "B": "Generar un lenguaje común basado en asociaciones positivas",
+            "C": "Enseñar obediencia inmediata",
+            "D": "Reducir el tiempo de interacción"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 2,
+          "enunciado": "¿Qué efecto tiene el castigo en la comunicación con el gato?",
+          "opciones": {
+            "A": "Mejora la obediencia rápidamente",
+            "B": "Refuerza conductas positivas",
+            "C": "Genera miedo y dificulta la confianza",
+            "D": "No tiene ningún efecto"
+          },
+          "correcta": "C"
+        },
+        {
+          "n": 3,
+          "enunciado": "¿Por qué las rutinas ayudan a mejorar la comunicación con los gatos?",
+          "opciones": {
+            "A": "Porque permiten anticipar situaciones y reducen el estrés",
+            "B": "Porque eliminan la necesidad de interactuar",
+            "C": "Porque aumentan su energía",
+            "D": "Porque hacen al gato más dependiente"
+          },
+          "correcta": "A"
+        },
+        {
+          "n": 4,
+          "enunciado": "En los ejercicios prácticos, ¿qué se debe considerar al trabajar con gatos tímidos?",
+          "opciones": {
+            "A": "Permitir un acercamiento gradual y respetar su ritmo",
+            "B": "Aumentar la intensidad de inmediato",
+            "C": "Forzar el contacto físico",
+            "D": "Evitar cualquier interacción"
+          },
+          "correcta": "A"
+        },
+        {
+          "n": 5,
+          "enunciado": "¿Cuál es una señal de incomodidad en un gato durante un ejercicio?",
+          "opciones": {
+            "A": "Ronroneo constante",
+            "B": "Orejas hacia atrás y cola moviéndose rápido",
+            "C": "Dormir profundamente",
+            "D": "Acercarse al tutor"
+          },
+          "correcta": "B"
+        },
+        {
+          "n": 6,
+          "enunciado": "¿Cuál es la idea principal al finalizar el curso sobre comunicación felina?",
+          "opciones": {
+            "A": "Convertirse en experto en comportamiento felino",
+            "B": "Enseñar trucos avanzados al gato",
+            "C": "Ser un observador consciente y mejorar la interacción diaria en casa",
+            "D": "Disminuir la dependencia de mi gato"
+          },
+          "correcta": "C"
+        }
+      ]
+    }
+  ]
+}
