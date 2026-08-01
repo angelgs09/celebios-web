@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Aula — CELEBIOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --charca:#14294F; --charca-2:#1E3768; --ceibo:#2FA8C9; --ceibo-deep:#1B6076;
+  --cobalto:#7A5797; --sage:#6FB07A; --hueso:#EEF2EC; --lodo-soft:#9DB2C2;
+  --lodo-line:#93A6AC; --rojo:#E4796B;
+  --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem; --s6:2rem; --s7:3rem;
+  --r:6px; --pill:999px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--charca); color:var(--hueso);
+  font-family:"Instrument Sans",system-ui,sans-serif; line-height:1.55;
+}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif; font-weight:800; line-height:1.1; margin:0 0 var(--s4)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem)} h2{font-size:clamp(1.3rem,3vw,1.8rem)} h3{font-size:1.05rem}
+.kicker{font-family:"Space Grotesk",monospace; font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ceibo); margin:0 0 var(--s2)}
+header{
+  display:flex; justify-content:space-between; align-items:center; gap:var(--s4);
+  padding:var(--s4) var(--s5); border-bottom:1px solid rgba(147,166,172,.25);
+}
+.marca{font-family:"Bricolage Grotesque",sans-serif; font-weight:800; letter-spacing:.02em}
+main{max-width:56rem; margin:0 auto; padding:var(--s6) var(--s5) var(--s7)}
+[hidden]{display:none !important}
+
+button,.btn{
+  font:inherit; font-weight:600; cursor:pointer; border-radius:var(--pill);
+  padding:.7rem 1.4rem; border:2px solid var(--ceibo); background:var(--ceibo);
+  color:#08243B; transition:filter .15s;
+}
+button:hover:not(:disabled){filter:brightness(1.1)}
+button:disabled{opacity:.5; cursor:not-allowed}
+.btn-lin{background:transparent; color:var(--hueso); border-color:var(--lodo-line)}
+.btn-min{background:none; border:none; color:var(--lodo-soft); text-decoration:underline; padding:var(--s2)}
+:focus-visible{outline:3px solid var(--sage); outline-offset:2px}
+
+label{display:block; font-size:.85rem; color:var(--lodo-soft); margin-bottom:var(--s2)}
+input[type=email],input[type=password]{
+  width:100%; font:inherit; padding:.7rem .9rem; border-radius:var(--r);
+  border:1px solid var(--lodo-line); background:var(--charca-2); color:var(--hueso);
+}
+form.caja{max-width:24rem; display:grid; gap:var(--s4)}
+
+.aviso{border-radius:var(--r); padding:var(--s3) var(--s4); font-size:.9rem; margin:var(--s4) 0}
+.aviso.err{background:rgba(228,121,107,.14); border:1px solid var(--rojo); color:#FFD9D3}
+.aviso.ok{background:rgba(111,176,122,.14); border:1px solid var(--sage); color:#DDF0DF}
+.vacio{color:var(--lodo-soft); border:1px dashed var(--lodo-line); border-radius:var(--r); padding:var(--s6); text-align:center}
+
+.placa{
+  border:2px solid rgba(47,168,201,.4); border-radius:var(--r); background:var(--charca-2);
+  padding:var(--s5); margin-bottom:var(--s4);
+}
+ul.lista{list-style:none; margin:0; padding:0; display:grid; gap:var(--s3)}
+.leccion{
+  display:flex; align-items:center; gap:var(--s4); width:100%; text-align:left;
+  border-radius:var(--r); border:1px solid var(--lodo-line); background:transparent;
+  color:var(--hueso); padding:var(--s4); font-weight:400;
+}
+.leccion:hover{border-color:var(--ceibo); background:rgba(47,168,201,.08)}
+.num{font-family:"Space Grotesk",monospace; color:var(--ceibo); font-size:.8rem; min-width:3.5rem}
+.marca-estado{margin-left:auto; font-size:.75rem; font-family:"Space Grotesk",monospace;
+  border-radius:var(--pill); padding:.2rem .7rem; border:1px solid currentColor; white-space:nowrap}
+.ok-color{color:var(--sage)} .pend{color:var(--lodo-soft)}
+.barra{height:6px; border-radius:var(--pill); background:rgba(147,166,172,.25); overflow:hidden; margin-top:var(--s3)}
+.barra>i{display:block; height:100%; background:var(--sage)}
+
+fieldset{border:1px solid var(--lodo-line); border-radius:var(--r); padding:var(--s4); margin:0 0 var(--s4)}
+legend{font-weight:600; padding:0 var(--s2)}
+fieldset label{display:flex; gap:var(--s3); align-items:flex-start; color:var(--hueso);
+  padding:var(--s2); border-radius:var(--r); cursor:pointer; margin:0}
+fieldset label:hover{background:rgba(47,168,201,.08)}
+.sinvideo{border:1px dashed var(--lodo-line); border-radius:var(--r); padding:var(--s6);
+  text-align:center; color:var(--lodo-soft); font-size:.9rem}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="marca">CELEBIOS</span>
+  <button id="salir" class="btn-min" hidden>Cerrar sesión</button>
+</header>
+
+<main>
+  <!-- ============ acceso ============ -->
+  <section id="v-login" hidden>
+    <p class="kicker">Aula virtual</p>
+    <h1>Entra a tus cursos</h1>
+    <form id="f-login" class="caja">
+      <div>
+        <label for="correo">Correo</label>
+        <input id="correo" type="email" autocomplete="email" required>
+      </div>
+      <div>
+        <label for="clave">Contraseña</label>
+        <input id="clave" type="password" autocomplete="current-password">
+      </div>
+      <button type="submit">Entrar</button>
+      <button type="button" id="liga" class="btn-min">
+        No tengo contraseña, mándame una liga de acceso
+      </button>
+    </form>
+    <div id="msg-login" role="alert" aria-live="polite"></div>
+  </section>
+
+  <!-- ============ mis cursos ============ -->
+  <section id="v-cursos" hidden>
+    <p class="kicker">Mis cursos</p>
+    <h1 id="saludo">Bienvenida</h1>
+    <div id="lista-cursos"></div>
+  </section>
+
+  <!-- ============ leccion ============ -->
+  <section id="v-leccion" hidden>
+    <button id="volver" class="btn-min">← Volver a mis cursos</button>
+    <p class="kicker" id="lec-kicker"></p>
+    <h1 id="lec-titulo"></h1>
+    <div id="lec-video"></div>
+    <div id="lec-examen"></div>
+    <div id="msg-examen" role="status" aria-live="polite"></div>
+  </section>
+</main>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+// La clave publishable esta hecha para vivir en el navegador: quien protege los
+// datos es el RLS de Postgres, no esconder esta cadena. La service_role NUNCA
+// debe aparecer en un archivo del cliente.
+const sb = createClient(
+  'https://lwawpdjsfjvlyvqwqiqp.supabase.co',
+  'sb_publishable_ERuFbuD18eSA27_ggnnIVQ_49iNxV89'
+)
+
+const $ = s => document.querySelector(s)
+const APROBATORIA = 70   // debe coincidir con calificar() en 0001_aula.sql
+
+let usuario = null
+let leccionAbierta = null
+
+function mostrar (vista) {
+  for (const s of document.querySelectorAll('main > section')) s.hidden = true
+  $(vista).hidden = false
+  $('#salir').hidden = vista === '#v-login'
+  window.scrollTo(0, 0)
+}
+
+function aviso (donde, texto, tipo = 'err') {
+  $(donde).innerHTML = texto ? `<p class="aviso ${tipo}"></p>` : ''
+  if (texto) $(donde + ' p').textContent = texto
+}
+
+// ---------------------------------------------------------------- acceso
+
+$('#f-login').addEventListener('submit', async e => {
+  e.preventDefault()
+  const boton = e.target.querySelector('button[type=submit]')
+  boton.disabled = true
+  aviso('#msg-login', '')
+  const { error } = await sb.auth.signInWithPassword({
+    email: $('#correo').value.trim(), password: $('#clave').value
+  })
+  boton.disabled = false
+  if (error) return aviso('#msg-login', 'No pudimos entrar. Revisa tu correo y contraseña, o pide una liga de acceso.')
+  arrancar()
+})
+
+$('#liga').addEventListener('click', async () => {
+  const email = $('#correo').value.trim()
+  if (!email) return aviso('#msg-login', 'Escribe tu correo primero.')
+  const { error } = await sb.auth.signInWithOtp({ email })
+  aviso('#msg-login',
+    error ? 'No se pudo enviar la liga. Intenta de nuevo en un minuto.'
+          : 'Listo, te mandamos una liga a tu correo. Revisa también la carpeta de spam.',
+    error ? 'err' : 'ok')
+})
+
+$('#salir').addEventListener('click', async () => {
+  await sb.auth.signOut()
+  usuario = null
+  mostrar('#v-login')
+})
+
+// ---------------------------------------------------------------- cursos
+
+async function cargarCursos () {
+  const [insc, lecs, prog] = await Promise.all([
+    sb.from('inscripciones').select('curso_id, cursos(titulo, descripcion)').eq('estado', 'activa'),
+    sb.from('lecciones').select('id, curso_id, numero, titulo').order('numero'),
+    sb.from('progreso').select('leccion_id, video_visto_en, calificacion, aprobado')
+  ])
+
+  if (insc.error || lecs.error || prog.error) {
+    return aviso('#lista-cursos', 'No pudimos cargar tus cursos. Revisa tu conexión y vuelve a entrar.')
+  }
+  if (!insc.data.length) {
+    $('#lista-cursos').innerHTML =
+      '<p class="vacio">Todavía no tienes cursos activos.<br>Si ya pagaste y no lo ves, escríbenos a contacto@celebios.com</p>'
+    return
+  }
+
+  const porLeccion = new Map(prog.data.map(p => [p.leccion_id, p]))
+  $('#lista-cursos').replaceChildren(...insc.data.map(i => {
+    const mias = lecs.data.filter(l => l.curso_id === i.curso_id)
+    const hechas = mias.filter(l => porLeccion.get(l.id)?.aprobado).length
+    const pct = mias.length ? Math.round(hechas * 100 / mias.length) : 0
+
+    const caja = document.createElement('article')
+    caja.className = 'placa'
+    caja.innerHTML =
+      `<h2></h2>
+       <p class="kicker">${hechas} de ${mias.length} lecciones aprobadas · ${pct}%</p>
+       <div class="barra"><i style="width:${pct}%"></i></div>
+       <ul class="lista" style="margin-top:1.5rem"></ul>`
+    caja.querySelector('h2').textContent = i.cursos?.titulo ?? 'Curso'
+
+    caja.querySelector('ul').append(...mias.map(l => {
+      const p = porLeccion.get(l.id)
+      const estado = p?.aprobado ? ['ok-color', `Aprobado ${p.calificacion}%`]
+                   : p?.calificacion != null ? ['pend', `Intentado ${p.calificacion}%`]
+                   : ['pend', 'Pendiente']
+      const li = document.createElement('li')
+      const b = document.createElement('button')
+      b.className = 'leccion'
+      b.innerHTML = `<span class="num"></span><span class="tit"></span><span class="marca-estado ${estado[0]}"></span>`
+      b.querySelector('.num').textContent = String(l.numero).padStart(2, '0')
+      b.querySelector('.tit').textContent = l.titulo
+      b.querySelector('.marca-estado').textContent = estado[1]
+      b.addEventListener('click', () => abrirLeccion(l))
+      li.append(b)
+      return li
+    }))
+    return caja
+  }))
+}
+
+// ---------------------------------------------------------------- leccion
+
+async function abrirLeccion (l) {
+  leccionAbierta = l
+  $('#lec-kicker').textContent = `Lección ${String(l.numero).padStart(2, '0')}`
+  $('#lec-titulo').textContent = l.titulo
+  aviso('#msg-examen', '')
+  mostrar('#v-leccion')
+
+  const { data: lec } = await sb.from('lecciones').select('video_url').eq('id', l.id).single()
+  $('#lec-video').innerHTML = lec?.video_url
+    ? `<video controls playsinline style="width:100%;border-radius:6px" src="${lec.video_url}"></video>`
+    : '<p class="sinvideo">El video de esta lección todavía no se ha subido.</p>'
+
+  const { data: preguntas, error } = await sb
+    .from('preguntas').select('numero, enunciado, opciones').eq('leccion_id', l.id).order('numero')
+
+  if (error) return aviso('#lec-examen', 'No pudimos cargar el examen.')
+  if (!preguntas.length) return ($('#lec-examen').innerHTML = '<p class="vacio">Esta lección no tiene examen.</p>')
+
+  const form = document.createElement('form')
+  form.innerHTML = `<h2 style="margin-top:2rem">Examen</h2>
+    <p class="kicker">${preguntas.length} preguntas · se aprueba con ${APROBATORIA}%</p>`
+
+  for (const p of preguntas) {
+    const fs = document.createElement('fieldset')
+    const lg = document.createElement('legend')
+    lg.textContent = `${p.numero}. ${p.enunciado}`
+    fs.append(lg)
+    for (const [letra, texto] of Object.entries(p.opciones)) {
+      const lab = document.createElement('label')
+      const rad = document.createElement('input')
+      rad.type = 'radio'; rad.name = `p${p.numero}`; rad.value = letra; rad.required = true
+      const span = document.createElement('span')
+      span.textContent = `${letra}) ${texto}`
+      lab.append(rad, span)
+      fs.append(lab)
+    }
+    form.append(fs)
+  }
+
+  const enviar = document.createElement('button')
+  enviar.type = 'submit'; enviar.textContent = 'Enviar examen'
+  form.append(enviar)
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault()
+    enviar.disabled = true
+    const respuestas = Object.fromEntries(
+      preguntas.map(p => [p.numero, form.querySelector(`input[name=p${p.numero}]:checked`)?.value])
+    )
+    const { data, error } = await sb.rpc('calificar', { p_leccion: l.id, p_respuestas: respuestas })
+    enviar.disabled = false
+    if (error) return aviso('#msg-examen', 'No se pudo calificar. Vuelve a intentarlo.')
+    const r = data[0]
+    aviso('#msg-examen',
+      r.aprobado
+        ? `Sacaste ${r.calificacion}%. Aprobado — guardamos tu mejor calificación.`
+        : `Sacaste ${r.calificacion}%. Necesitas ${APROBATORIA}% para aprobar; puedes volver a intentarlo, tu mejor nota no se pierde.`,
+      r.aprobado ? 'ok' : 'err')
+    cargarCursos()
+  })
+
+  $('#lec-examen').replaceChildren(form)
+}
+
+$('#volver').addEventListener('click', () => mostrar('#v-cursos'))
+
+// ---------------------------------------------------------------- arranque
+
+async function arrancar () {
+  const { data: { session } } = await sb.auth.getSession()
+  if (!session) return mostrar('#v-login')
+  usuario = session.user
+
+  const { data: perfil } = await sb.from('perfiles').select('nombre').eq('id', usuario.id).single()
+  $('#saludo').textContent = perfil?.nombre ? `Hola, ${perfil.nombre}` : 'Mis cursos'
+
+  mostrar('#v-cursos')
+  cargarCursos()
+}
+
+// La liga de acceso regresa con la sesion en el fragmento de la URL, asi que
+// hay que reaccionar al evento y no solo leer la sesion una vez al cargar.
+sb.auth.onAuthStateChange((evento) => {
+  if (evento === 'SIGNED_IN' && (leccionAbierta === null)) arrancar()
+})
+
+arrancar()
+</script>
+</body>
+</html>

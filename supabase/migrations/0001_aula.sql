@@ -174,8 +174,11 @@ create policy "editar perfil propio" on perfiles for update
 revoke update on perfiles from authenticated;
 grant update (nombre, pais) on perfiles to authenticated;
 
-create policy "cursos publicados" on cursos for select
-  using (publicado or es_admin());
+-- publicado controla si el curso sale en el CATALOGO, no si quien ya pago puede
+-- entrar: sin el inscrito_en, un alumno de un curso no publicado no alcanza a
+-- leer ni el titulo de lo que compro.
+create policy "curso visible si publicado o inscrito" on cursos for select
+  using (publicado or inscrito_en(id) or es_admin());
 
 create policy "lecciones si inscrito" on lecciones for select
   using (inscrito_en(curso_id) or es_admin());

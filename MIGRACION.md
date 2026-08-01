@@ -124,6 +124,40 @@ Se corrigió con permisos por columna (`grant update (nombre, pais)`), que es lo
 que Postgres ya trae para esto. `es_admin()` se salva de esa recursión solo
 porque es `security definer`.
 
+**Fase 1 — el aula existe: `aula/index.html`, publicada en `/aula`.**
+
+Sin framework y sin paso de compilación: un archivo estático que habla con
+Supabase desde el navegador. No hace falta Next.js porque quien protege los
+datos es el RLS de Postgres, no un servidor intermedio — y eso ya está probado.
+La clave `sb_publishable_…` está hecha para vivir en el cliente; la
+`service_role` no aparece en ningún archivo y no debe hacerlo nunca.
+
+Recorrido completo verificado en el navegador, con un alumno real y borrado
+después: entrar → ver su curso con avance → abrir la lección → contestar el
+examen de 6 preguntas → sacar 100% → volver y ver el avance ya en "1 de 11
+lecciones aprobadas · 9%". Las lecciones sin video muestran un aviso honesto,
+no un reproductor vacío.
+
+### ⚠️ Para la Fase 4: importar alumnos a `auth.users` por SQL casi no funciona
+
+Crear usuarios con `INSERT` directo falla de formas que no dicen la verdad. Lo
+que costó descubrirlo, para no repetirlo al migrar a los alumnos de Kajabi:
+
+| Síntoma | Causa real |
+|---|---|
+| `invalid_credentials` con la contraseña correcta | Falta la fila en `auth.identities`; GoTrue busca al usuario por su identidad de proveedor |
+| `500 Database error querying schema` | `confirmation_token` y los demás campos de token en **NULL**: GoTrue los lee como texto y no tolera nulos. Deben ir en `''` |
+| Lo mismo tras arreglar lo anterior | `created_at` / `updated_at` nulos en `auth.identities` |
+
+También hay que poner `instance_id` en ceros y
+`raw_app_meta_data = {"provider":"email","providers":["email"]}`.
+`auth.identities.email` es columna generada y no se puede escribir.
+
+**Conclusión práctica:** para importar a los alumnos reales, usar la Admin API
+de Supabase (`auth.admin.createUser`) desde un script de servidor, no `INSERT`.
+Deja las tablas consistentes solo. Y de Kajabi no salen las contraseñas, así
+que cada alumno definirá la suya con una liga de acceso.
+
 **Fase 2 — hecho y cargado.** `Quiz 1-11.docx` extraído de Drive a
 `contenido/quiz-gatos.txt`, y `parse_quiz.py` lo convierte a JSON verificando
 11 módulos × 6 preguntas = 66, cada una con 4 opciones y respuesta válida. Si

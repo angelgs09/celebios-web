@@ -88,14 +88,25 @@ def construir():
 
     mapa = {f.name: ruta for f, ruta in paginas.items()}
 
-    if OUT.exists():
-        shutil.rmtree(OUT)
+    # Se vacia el contenido en vez de borrar site/ entero, por dos razones:
+    # .vercel guarda a que proyecto publica el CLI (si se pierde, el deploy se
+    # va a un proyecto nuevo), y en Windows rmtree revienta si algun proceso
+    # tiene la carpeta como directorio actual.
+    OUT.mkdir(parents=True, exist_ok=True)
+    for hijo in OUT.iterdir():
+        if hijo.name == ".vercel":
+            continue
+        shutil.rmtree(hijo) if hijo.is_dir() else hijo.unlink()
     for f, ruta in paginas.items():
         destino = OUT / archivo_destino(ruta)
         destino.parent.mkdir(parents=True, exist_ok=True)
         destino.write_text(reescribir(f.read_text(encoding="utf-8"), mapa), encoding="utf-8")
 
     shutil.copytree(SRC / "brand", OUT / "brand")
+
+    # El aula es estatica y va tal cual: no tiene canonical porque no debe
+    # indexarse, asi que no pasa por el mapeo de rutas de arriba.
+    shutil.copytree(RAIZ / "aula", OUT / "aula")
 
     # cleanUrls sirve /cursos/x desde cursos/x.html. El redirect es la palanca
     # de SEO: esa URL de Wix rankea #3 nacional y hoy dice "inscripciones
@@ -129,6 +140,9 @@ def verificar():
     for pagina in sorted(OUT.rglob("*.html")):
         html = pagina.read_text(encoding="utf-8")
         nombre = pagina.relative_to(OUT).as_posix()
+        # Dentro de <script> hay plantillas JS como src="${url}" que no son
+        # marcado; escanearlas da falsos positivos.
+        html = re.sub(r"<script\b.*?</script>", "", html, flags=re.S | re.I)
         canon = CANONICAL.search(html)
         canon = canon.group(0) if canon else ""
         for attr, valor in re.findall(r'(href|src)=["\']([^"\']+)["\']', html):
