@@ -75,7 +75,7 @@ usar los M4A (358 MB) y no los MP4 (1.23 GB) — Whisper solo lee el audio.
 
 | | Qué | Estado |
 |---|---|---|
-| 0 | Sitio de marketing fuera de Kajabi | **construido, renderizado y subido**; deploy sin verificar en vivo |
+| 0 | Sitio de marketing fuera de Kajabi | **cerrada** — desplegada y verificada en vivo |
 | 1 | Aula: login, cursos, video, progreso | **aplicado y probado** en Supabase |
 | 2 | Exámenes | **cargados y cotejados** contra el docx |
 | 3 | Stripe: checkout y panel de pagos | pendiente |
@@ -228,6 +228,14 @@ maquetas de diseño sin canonical (`estacion-de-campo`, `visor-de-especie`,
 El `vercel.json` lleva el redirect que más vale del proyecto: 301 de
 `/rehabilitacion-fauna-2024` (la página de Wix que rankea #3 nacional y dice
 "inscripciones cerradas") al diplomado vivo.
+
+**Verificado en el deploy, no supuesto:** las 9 rutas probadas dan 200
+—incluidas las anidadas sin `.html`, el logo y las dos páginas del aula— y
+`/rehabilitacion-fauna-2024` aterriza en `/diplomado-rescate-rehabilitacion-fauna`
+con el título correcto. `cleanUrls` y el 301 funcionan.
+
+Falta un paso que **no** es técnico y sí es irreversible: apuntar `celebios.com`
+a este proyecto y retirar el Wix. Eso lo decide Angel.
 
 ---
 
