@@ -37,11 +37,13 @@ el CSV a mano.
   `/`, `/aula`, `/cursos`, `/curso-lenguaje-felino`, `/historia`,
   `/egresados`, `/practicas-de-campo`, `/docentes`, `/admisiones`,
   `/contacto`, `/aviso-de-privacidad`. Nunca es `/` salvo la propia home.
-- **clicks, impressions, position, backlinks**: **vacíos a propósito.** No
-  hay una sesión autenticada de Google Search Console (ni una propiedad de
-  CELEBIOS en la cuenta autenticada disponible) — importar ese export sigue
-  siendo un paso externo pendiente, y no se inventan métricas para llenar la
-  tabla. El export autenticado de Wix Analytics (Page Visits) ya se importó
+- **clicks, impressions, position, backlinks**: **vacíos a propósito.** Desde
+  el 2026-08-01 sí existe la propiedad `sc-domain:celebios.com` en Google
+  Search Console (verificada con un TXT en el DNS de Wix), pero al 2026-08-02
+  sigue procesando datos y no hay export descargable — propiedad verificada no
+  es dato disponible, así que estas columnas siguen vacías. Importar ese export
+  sigue siendo un paso externo pendiente y no se inventan métricas para llenar
+  la tabla. El export autenticado de Wix Analytics (Page Visits) ya se importó
   por separado — ver "Pendiente externo" más abajo — pero esa métrica no
   llena estas columnas: mide tráfico de página, no señal de búsqueda
   orgánica de Google.
@@ -83,12 +85,62 @@ que cualquier otra cohorte del mismo programa: cae en `curso_historico` con
 está disponible para inscripción. Ningún otro curso o diplomado se redirige
 a `/` — cada uno cae en su ancla de archivo histórico en `/cursos`.
 
+## Del contrato al build (ya conectado)
+
+Este CSV dejó de ser solo un contrato de datos en el commit `af7b766`
+("establish verified content and build contracts"): `build.py` lo consume.
+
+- El `vercel.json` generado declara `bulkRedirectsPath:
+  "migracion/redirects.csv"` (`build.generar_vercel_json`).
+- El build escribe en `site/migracion/redirects.csv` **solo el subconjunto
+  ACTIVO**, en el formato bulk de Vercel — encabezado exacto
+  `source,destination,statusCode` (final de `build.construir`).
+- `build.convertir_redirects_bulk` decide qué entra.
+
+Cifras del 2026-08-02, contra el CSV comiteado y las 28 rutas canónicas que hoy
+publica `redesign-v2/`. Son un snapshot que se mueve conforme Task 3 publica
+páginas; para recalcularlas sin escribir en `site/`:
+
+```python
+import csv, build
+publicadas = set(build.rutas_canonicas_fuente())
+with open("migracion/redirects.csv", encoding="utf-8") as f:
+    activas, diferidas = build.convertir_redirects_bulk(list(csv.DictReader(f)), publicadas)
+print(len(activas), len(diferidas))
+```
+
+| | Filas |
+|---|---|
+| Filas en `migracion/redirects.csv` | 386 |
+| — con `status_code=404` (no generan regla) | 6 |
+| — con `status_code=301` | 380 |
+| Descartadas: origen igual al destino | 8 |
+| Descartadas: mismo origen repetido con destino idéntico | 3 |
+| Orígenes únicos evaluados | 369 |
+| **Reglas activas emitidas** | **118** |
+| **Reglas diferidas (no se emiten)** | **251** |
+
+Una regla se DIFIERE si su origen ya es una página publicada (la sombrearía) o
+si la base de su destino todavía no se publica (sería un 301 a un 404); `/aula`
+es la única excepción explícita. Hoy son 249 por `destination_not_published`, 1
+por `source_shadows_published_page` y 1 por ambas. Los destinos que todavía no
+existen — ninguna página de `redesign-v2/` los declara como canonical, los crea
+Task 3 — son `/egresados` (233 reglas), `/admisiones` (14), `/historia` (2) y
+`/contacto` (1). El caso restante es distinto: `/diplomado-rescate-rehabilitacion-fauna`
+→ `/cursos#historico-rehabilitacion` se difiere porque el ORIGEN ya es una
+página viva del sitio nuevo, no porque falte el destino.
+
+`python build.py --cutover` revienta si queda alguna diferida, así que ese 251
+tiene que llegar a 0 antes del corte real. Un mismo origen con dos destinos
+distintos también revienta el build, en cualquier modo.
+
 ## Lo que este inventario NO hace
 
 - No modifica `aula/`, Supabase, exámenes, videos, importadores, exports de
   Kajabi, DNS ni el estado de ninguna cuenta.
-- No escribe redirects en `vercel.json` — `redirects.csv` es el contrato de
-  datos; conectarlo al build es un paso posterior.
+- No escribe reglas `redirects[]` a mano en `vercel.json`, ni se edita el CSV a
+  mano: el contrato de datos vive aquí y el build lo traduce (ver "Del contrato
+  al build" arriba).
 - No recolecta contenido de las páginas de egresados (nombres, textos): solo
   su URL, que es lo único necesario para decidir el código de redirect.
 
@@ -96,8 +148,9 @@ a `/` — cada uno cae en su ancla de archivo histórico en `/cursos`.
 
 Antes del corte real (apuntar `celebios.com` al sitio nuevo) hace falta
 importar clicks/impressions/position desde un export autenticado de Search
-Console, y backlinks desde alguna herramienta de SEO. Ese paso no se puede
-automatizar sin esa sesión — se deja documentado, no fabricado.
+Console, y backlinks desde alguna herramienta de SEO. Ese paso depende de que
+Google entregue datos y de una descarga manual — se deja documentado, no
+fabricado.
 
 **Wix Analytics (Page Visits) ya se importó, parcialmente.** El 2026-08-01 se
 importó el primer export autenticado: `Page Visits` del sitio Wix `celebios`,
@@ -113,10 +166,16 @@ la UI y el expresado en el nombre del archivo — vive en
 
 Esto **no** es evidencia de Google Search Console: page views de Wix miden
 tráfico de página, no clicks/impressions/position de búsqueda orgánica. Este
-sitio Wix no está conectado a GSC (`Top Search Queries on Google` no
-disponible ahí), y la cuenta de Google autenticada usada no expone ninguna
-propiedad de CELEBIOS. Las columnas `clicks`, `impressions`, `position` y
-`backlinks` de este inventario siguen vacías a propósito, y
-`cutover_allowed` en el manifiesto queda en `false`: el gate SEO y el corte
-real siguen bloqueados hasta que exista y se apruebe un export de la
-propiedad CELEBIOS en GSC.
+sitio Wix sigue sin estar conectado a GSC (`Top Search Queries on Google` no
+disponible ahí).
+
+**Estado de Search Console al 2026-08-02.** La propiedad `sc-domain:celebios.com`
+existe y está verificada desde el 2026-08-01 (TXT en el DNS de Wix), **y aun así
+el gate sigue BLOQUEADO**: Rendimiento, Indexación, Enlaces y Mejoras muestran
+"Se están procesando los datos", sus tablas dicen "Sin datos" y EXPORTAR está
+deshabilitado en Rendimiento y en Enlaces. Lo único con cifras es el informe
+HTTPS (28 URLs), que es estado de certificado, no una métrica de búsqueda. Sin
+export, las columnas `clicks`, `impressions`, `position` y `backlinks` de este
+inventario siguen vacías a propósito y `cutover_allowed` en el manifiesto queda
+en `false`: el corte real sigue bloqueado hasta que la propiedad entregue datos,
+se importen y se aprueben.

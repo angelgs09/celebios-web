@@ -12,6 +12,7 @@ conteo de filas, totales resumen) viene del brief de evidencia observado.
 import csv
 import io
 import json
+import shutil
 import subprocess
 import unittest
 from pathlib import Path
@@ -30,6 +31,12 @@ from scripts.import_wix_traffic import (
 
 RAIZ = Path(__file__).resolve().parent.parent
 MIGRACION = RAIZ / "migracion"
+
+# Solo los tests de .gitattributes necesitan git: la propiedad que defienden ES
+# una propiedad de Git. Fuera de un checkout se saltan en vez de reventar con
+# CalledProcessError. En un worktree '.git' es un archivo, no un directorio;
+# .exists() cubre ambos casos.
+SIN_GIT = not (shutil.which("git") and (RAIZ / ".git").exists())
 
 RAW_SHA256_ESPERADO = "9f2395146a666be9792fc63da03e0cdcc894d23f26e2e8f31ab644b2595a0952"
 RAW_ROW_COUNT_ESPERADO = 152
@@ -178,6 +185,20 @@ class TestBuildManifest(unittest.TestCase):
             raw_row_count=RAW_ROW_COUNT_ESPERADO,
             raw_sha256=RAW_SHA256_ESPERADO,
             raw_size_bytes=RAW_SIZE_BYTES_ESPERADO,
+            # Asimetrico a proposito (2 true / 1 false): con 1 y 1, unos
+            # conteos escritos a mano o con los predicados intercambiados
+            # serian indistinguibles de los derivados y el test pasaria igual.
+            filas_normalizadas=[
+                {"source_url": f"{CANONICAL_ORIGIN}", "inventory_match": "true"},
+                {"source_url": f"{CANONICAL_ORIGIN}/cursos", "inventory_match": "true"},
+                {"source_url": f"{CANONICAL_ORIGIN}/huerfana", "inventory_match": "false"},
+            ],
+        )
+
+    def test_resultado_del_join_se_deriva_de_las_filas(self):
+        self.assertEqual(self.manifest["inventory_match_counts"], {"true": 2, "false": 1})
+        self.assertEqual(
+            self.manifest["unmatched_source_urls"], [f"{CANONICAL_ORIGIN}/huerfana"]
         )
 
     def test_cutover_permanece_bloqueado(self):
@@ -253,6 +274,26 @@ class TestCommittedArtifacts(unittest.TestCase):
         self.assertEqual(manifest["raw_sha256"], RAW_SHA256_ESPERADO)
         self.assertEqual(manifest["raw_row_count"], RAW_ROW_COUNT_ESPERADO)
 
+    def test_manifiesto_comiteado_registra_el_join_contra_el_inventario(self):
+        # El resultado del join es el dato que necesita triage humano: debe
+        # vivir en el manifiesto, no solo en las filas del CSV. Los conteos y
+        # la lista se cotejan contra la columna inventory_match del CSV ya
+        # comiteado, no contra numeros escritos a mano.
+        manifest = json.loads(
+            (MIGRACION / "wix-analytics-manifest.json").read_text(encoding="utf-8")
+        )
+        with (MIGRACION / "wix-page-visits-normalized.csv").open(
+            encoding="utf-8", newline=""
+        ) as f:
+            filas = list(csv.DictReader(f))
+        self.assertEqual(manifest["inventory_match_counts"], {
+            "true": sum(1 for x in filas if x["inventory_match"] == "true"),
+            "false": sum(1 for x in filas if x["inventory_match"] == "false"),
+        })
+        self.assertEqual(manifest["unmatched_source_urls"], [
+            x["source_url"] for x in filas if x["inventory_match"] == "false"
+        ])
+
     def test_urls_wix_csv_no_cambio_de_esquema(self):
         with (MIGRACION / "urls-wix.csv").open(encoding="utf-8") as f:
             encabezado = next(csv.reader(f))
@@ -262,6 +303,7 @@ class TestCommittedArtifacts(unittest.TestCase):
             "priority", "confidence", "manual_review",
         ])
 
+    @unittest.skipIf(SIN_GIT, "requiere binario de git y un checkout")
     def test_evidencia_cruda_marcada_gitattributes_text_unset(self):
         # Sin -text, el filtro de checkout de Git (core.autocrlf=true en este
         # repo) reescribe el LF crudo a CRLF y el hash deja de coincidir en
@@ -273,6 +315,7 @@ class TestCommittedArtifacts(unittest.TestCase):
         )
         self.assertIn("text: unset", resultado.stdout)
 
+    @unittest.skipIf(SIN_GIT, "requiere binario de git y un checkout")
     def test_gitattributes_no_afecta_al_inventario_protegido(self):
         # -text debe estar scopeado a migracion/evidencia/**, nunca a *.csv
         # ni al inventario protegido de Task 1.
@@ -282,11 +325,15 @@ class TestCommittedArtifacts(unittest.TestCase):
         )
         self.assertNotIn("text: unset", resultado.stdout)
 
-    def test_normalizado_comiteado_es_byte_identico_a_la_regeneracion(self):
+    def test_normalizado_comiteado_es_identico_a_la_regeneracion(self):
         # Idempotencia/determinismo entre plataformas: regenerar desde la
-        # evidencia cruda debe producir exactamente los bytes del blob ya
-        # comiteado (git cat-file, no el archivo de working tree, que en
-        # este repo con core.autocrlf=true puede estar suavizado a CRLF).
+        # evidencia cruda debe reproducir el archivo en disco. Se compara
+        # contra el working tree (no contra el blob de HEAD via git cat-file):
+        # comparar contra HEAD dejaba el test en rojo desde que cambia el
+        # generador hasta que se comitea, y exigia git con un checkout. La
+        # comparacion es en MODO TEXTO: este archivo no lleva -text, asi que
+        # con core.autocrlf=true un clon fresco lo materializa en CRLF
+        # mientras el generador escribe LF; read_text traduce \r\n a \n.
         ruta_cruda = MIGRACION / "evidencia" / "wix-page-visits-2025-08-02_2026-08-02.csv"
         filas_crudas = parse_wix_traffic_csv(ruta_cruda.read_text(encoding="utf-8-sig"))
         inventory_keys = load_inventory_keys(MIGRACION / "urls-wix.csv")
@@ -294,14 +341,11 @@ class TestCommittedArtifacts(unittest.TestCase):
 
         buffer = io.StringIO()
         write_normalized_csv(buffer, filas_normalizadas)
-        regenerado = buffer.getvalue().encode("utf-8")
 
-        comiteado = subprocess.run(
-            ["git", "cat-file", "-p", "HEAD:migracion/wix-page-visits-normalized.csv"],
-            cwd=RAIZ, capture_output=True, check=True,
-        ).stdout
-
-        self.assertEqual(regenerado, comiteado)
+        self.assertEqual(
+            buffer.getvalue(),
+            (MIGRACION / "wix-page-visits-normalized.csv").read_text(encoding="utf-8"),
+        )
 
 
 if __name__ == "__main__":

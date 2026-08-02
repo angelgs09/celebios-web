@@ -15,6 +15,7 @@ que se corre el script (revienta si el conteo no cuadra).
 """
 import csv
 import io
+import time
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -115,6 +116,7 @@ class TestClassifySourceSemantics(unittest.TestCase):
         # distinto del curso vivo "Lenguaje y Comunicacion de los Gatos".
         categoria, tema, destino = classify_source("/felidos-torres-barraza", "celebios.com")
         self.assertEqual(categoria, "curso_historico")
+        self.assertEqual(tema, "felidos")
         self.assertNotEqual(destino, "/curso-lenguaje-felino")
         self.assertEqual(destino, "/cursos#historico-felidos")
 
@@ -127,6 +129,15 @@ class TestClassifySourceSemantics(unittest.TestCase):
         self.assertEqual(categoria, "curso_historico")
         self.assertEqual(tema, "ortopedia-aves")
         self.assertEqual(destino, "/cursos#historico-ortopedia-aves")
+
+    def test_primeros_auxilios_es_programa_historico_con_ancla(self):
+        # La regla "auxilio" no la ejercitaba ningun test: sin ella la ruta
+        # cae en el residual de egresado (destino /egresados, base valida)
+        # y ninguna otra prueba se entera.
+        categoria, tema, destino = classify_source("/primeros-auxilios-fauna", "celebios.com")
+        self.assertEqual(categoria, "curso_historico")
+        self.assertEqual(tema, "primeros-auxilios")
+        self.assertEqual(destino, "/cursos#historico-primeros-auxilios")
 
     def test_aula_virtual_preserva_el_aula(self):
         _, _, destino = classify_source("/aula-virtual", "celebios.com")
@@ -150,10 +161,12 @@ class TestClassifySourceSemantics(unittest.TestCase):
 
     def test_formato_ingreso_es_alias_de_admision(self):
         categoria, _, destino = classify_source("/formato-ingreso", "celebios.com")
+        self.assertEqual(categoria, "institucional")
         self.assertEqual(destino, "/admisiones")
 
     def test_inscripcion_generica_es_alias_de_admision(self):
         categoria, _, destino = classify_source("/inscripcion", "celebios.com")
+        self.assertEqual(categoria, "institucional")
         self.assertEqual(destino, "/admisiones")
 
     def test_convocatoria_es_alias_de_admision(self):
@@ -217,6 +230,7 @@ class TestClassifySourceEgresados(unittest.TestCase):
         # "ortega-castelazo-12016": el "1" es un artefacto de slug, el anio
         # real (2016) sigue siendo detectable como subcadena.
         categoria, tema, destino = classify_source("/ortega-castelazo-12016", "celebios.com")
+        self.assertEqual(categoria, "egresado")
         self.assertEqual(tema, "cohorte-2016")
         self.assertEqual(destino, "/egresados#cohorte-2016")
 
@@ -271,6 +285,7 @@ class TestOneHopDestinations(unittest.TestCase):
         "/ortopedia-tirado-perez", "/anestesia-fauna-2020", "/nutricionfauna",
         "/nutricion2019", "/manejo-conductual-fauna", "/manejo-conductual-2022",
         "/reptiles", "/felidos-domesticos-silvestres-2020",
+        "/primeros-auxilios-fauna",
         "/medicina-interna", "/medicina-preventiva", "/bioetica", "/sig2018",
         "/cartografia-web", "/manejo-datos", "/impacto-ambiental",
         "/egresados", "/egresadosfauna2020", "/inscripcion",
@@ -454,6 +469,54 @@ class TestFetchSitemapUrls(unittest.TestCase):
             urls = fetch_sitemap_urls("https://example.com/sitemap.xml")
         self.assertEqual(urls, ["https://example.com/x"])
         duerme.assert_called_once()
+
+    def test_retry_after_enorme_queda_acotado_al_tope(self):
+        # Un servidor puede mandar "Retry-After: 86400" (24 h): obedecerlo al
+        # pie de la letra cuelga el script un dia entero.
+        plano = (
+            '<?xml version="1.0"?>'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+            "<url><loc>https://example.com/x</loc></url>"
+            "</urlset>"
+        )
+        respuestas = [
+            _RespuestaFalsa("", status_code=429, headers={"Retry-After": "86400"}),
+            _RespuestaFalsa(plano),
+        ]
+
+        def get_falso(url, headers=None, timeout=None):
+            return respuestas.pop(0)
+
+        with mock.patch("scripts.sync_migration_inventory.requests.get", side_effect=get_falso), \
+             mock.patch("scripts.sync_migration_inventory.time.sleep") as duerme:
+            urls = fetch_sitemap_urls("https://example.com/sitemap.xml")
+        self.assertEqual(urls, ["https://example.com/x"])
+        # 60 = _TOPE_ESPERA_SEGUNDOS: si el tope se mueve a proposito, este
+        # numero se mueve con el.
+        duerme.assert_called_once_with(60)
+
+    def test_retry_after_negativo_no_revienta(self):
+        # time.sleep(-5) lanza ValueError: un Retry-After negativo (reloj
+        # desfasado o servidor roto) no debe tumbar la descarga.
+        plano = (
+            '<?xml version="1.0"?>'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+            "<url><loc>https://example.com/x</loc></url>"
+            "</urlset>"
+        )
+        respuestas = [
+            _RespuestaFalsa("", status_code=429, headers={"Retry-After": "-5"}),
+            _RespuestaFalsa(plano),
+        ]
+
+        def get_falso(url, headers=None, timeout=None):
+            return respuestas.pop(0)
+
+        with mock.patch("scripts.sync_migration_inventory.requests.get", side_effect=get_falso), \
+             mock.patch("scripts.sync_migration_inventory.time.sleep", side_effect=time.sleep) as duerme:
+            urls = fetch_sitemap_urls("https://example.com/sitemap.xml")
+        self.assertEqual(urls, ["https://example.com/x"])
+        duerme.assert_called_once_with(0)
 
     def test_429_persistente_revienta_sin_reintentar_para_siempre(self):
         with mock.patch(

@@ -66,6 +66,40 @@ class TestCamposRequeridos(unittest.TestCase):
         build.validar_programas(programas, rutas_validas=rutas)
 
 
+class TestCargarProgramas(unittest.TestCase):
+    def test_json_sin_clave_programas_revienta_con_valueerror(self):
+        # ValueError, no KeyError: construir() solo atrapa ValueError, y con
+        # KeyError el build escupe traceback crudo en vez de 'ERROR: ...'.
+        with tempfile.TemporaryDirectory() as tmp:
+            for contenido in ('{"otra_cosa": []}', '[]', '{}'):
+                with self.subTest(contenido=contenido):
+                    ruta = Path(tmp) / "programas.json"
+                    ruta.write_text(contenido, encoding="utf-8")
+                    with self.assertRaises(ValueError):
+                        build.cargar_programas(ruta)
+
+    def test_json_real_carga(self):
+        self.assertTrue(build.cargar_programas(CONTENIDO))
+
+
+class TestValidarFlags(unittest.TestCase):
+    def test_flags_soportadas_no_revientan(self):
+        for argv in ([], ["--check"], ["--cutover"]):
+            with self.subTest(argv=argv):
+                self.assertEqual(build.validar_flags(argv), set(argv))
+
+    def test_check_y_cutover_juntos_revientan(self):
+        # --check no construye, asi que el gate de cutover nunca correria.
+        with self.assertRaises(SystemExit):
+            build.validar_flags(["--check", "--cutover"])
+
+    def test_flag_desconocida_revienta(self):
+        for argv in (["--cutver"], ["--cutover", "--x"], ["build"], ["-check"]):
+            with self.subTest(argv=argv):
+                with self.assertRaises(SystemExit):
+                    build.validar_flags(argv)
+
+
 class TestEstadoCerrado(unittest.TestCase):
     def test_estado_desconocido_revienta(self):
         programas = [_programa_base(status="en-desarrollo")]
@@ -179,6 +213,27 @@ class TestOfertaGatos(unittest.TestCase):
         with self.assertRaises(ValueError):
             build.validar_programas([p], rutas_validas={"/cursos/prueba"})
 
+    def test_offer_con_tipo_invalido_revienta(self):
+        base = {
+            "price_mxn": 1, "payment_type": "pago_unico",
+            "hours": 1, "topics_count": 1, "access_months": 1,
+        }
+        # isinstance(True, int) es True: el booleano tiene que rebotar aparte.
+        casos = [
+            ("price_mxn", "1400"), ("price_mxn", True), ("price_mxn", 0),
+            ("price_mxn", -1), ("price_mxn", 1400.0),
+            ("hours", "12"), ("hours", None),
+            ("topics_count", "11"), ("topics_count", 11.5),
+            ("access_months", "5"), ("access_months", 0),
+            ("payment_type", 1), ("payment_type", ""), ("payment_type", "  "),
+        ]
+        for campo, valor in casos:
+            with self.subTest(campo=campo, valor=valor):
+                oferta = dict(base, **{campo: valor})
+                p = _programa_base(status="available", offer=oferta)
+                with self.assertRaises(ValueError):
+                    build.validar_programas([p], rutas_validas={"/cursos/prueba"})
+
     def test_offer_con_campo_faltante_revienta(self):
         oferta = {
             "price_mxn": 1, "payment_type": "pago_unico",
@@ -215,6 +270,14 @@ class TestEvidenceRequerida(unittest.TestCase):
         programas = [_programa_base(evidence=["redesign-v1/CONTENIDO-REAL.md#L2"])]
         with self.assertRaises(ValueError):
             build.validar_programas(programas, rutas_validas={"/cursos/prueba"})
+
+    def test_evidence_con_salto_de_linea_final_revienta(self):
+        # '$' casa antes de un '\n' final: sin fullmatch, esto se colaba.
+        for fuente in ("https://www.celebios.com/algo\n",
+                       "redesign-v1/CONTENIDO-REAL.md#L94-L96\n"):
+            with self.subTest(fuente=fuente):
+                with self.assertRaises(ValueError):
+                    build._validar_evidencia("/cursos/prueba", fuente)
 
     def test_evidence_con_ancla_valida_no_revienta(self):
         build._validar_evidencia("/cursos/prueba", "redesign-v1/CONTENIDO-REAL.md#L94-L96")
@@ -415,6 +478,33 @@ class TestConvertirRedirectsBulk(unittest.TestCase):
             base = re.split(r"[#?]", regla["destination"], maxsplit=1)[0] or "/"
             with self.subTest(destination=regla["destination"]):
                 self.assertTrue(base in rutas_publicadas or base == "/aula")
+
+    def test_origen_con_mayusculas_o_slash_final_no_esquiva_el_check_de_sombra(self):
+        for origen in ("https://www.celebios.com/Nosotros",
+                       "https://www.celebios.com/nosotros/",
+                       "https://www.celebios.com/NOSOTROS/"):
+            with self.subTest(origen=origen):
+                filas = [{"source_url": origen, "destination_path": "/cursos", "status_code": "301"}]
+                activas, diferidas = build.convertir_redirects_bulk(
+                    filas, rutas_publicadas={"/nosotros", "/cursos"}
+                )
+                self.assertEqual(activas, [])
+                self.assertIn("source_shadows_published_page", diferidas[0]["reasons"])
+
+    def test_mismo_origen_con_distinta_caja_es_el_mismo_origen(self):
+        filas = [
+            {"source_url": "https://www.celebios.com/x", "destination_path": "/a", "status_code": "301"},
+            {"source_url": "https://www.celebios.online/X/", "destination_path": "/b", "status_code": "301"},
+        ]
+        with self.assertRaises(ValueError):
+            build.convertir_redirects_bulk(filas, rutas_publicadas={"/a", "/b"})
+
+    def test_csv_sin_columnas_requeridas_revienta_con_valueerror(self):
+        # Encabezado incompleto: ValueError (mensaje limpio), no KeyError crudo.
+        with self.assertRaises(ValueError):
+            build.convertir_redirects_bulk(
+                [{"source_url": "https://www.celebios.com/x"}], rutas_publicadas=set()
+            )
 
     def test_hay_reglas_diferidas_conocidas_pre_task3(self):
         with (RAIZ / "migracion" / "redirects.csv").open(encoding="utf-8") as f:

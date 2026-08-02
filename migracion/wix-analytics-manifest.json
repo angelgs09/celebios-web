@@ -16,8 +16,15 @@
     "unique_visitors": 1592
   },
   "summary_totals_note": "Totales del panel resumen de Wix (deduplicados a nivel de sitio). No son la suma de las filas del CSV normalizado para site_sessions/unique_visitors: una misma sesion o visitante puede aparecer en varias paginas. page_views si coincide con esa suma porque cada vista pertenece a una sola pagina.",
+  "inventory_match_counts": {
+    "true": 151,
+    "false": 1
+  },
+  "unmatched_source_urls": [
+    "https://www.celebios.com/copia-de-aula-promoción-aves-2022"
+  ],
   "gsc_connection_status": "no_conectado",
-  "gsc_findings": "El reporte 'Top Search Queries on Google' de Wix no esta disponible porque este sitio Wix no esta conectado a Google Search Console. La cuenta de Google autenticada usada en esta revision no expone ninguna propiedad de CELEBIOS: clicks, impressions, position y backlinks siguen sin evidencia.",
+  "gsc_findings": "El reporte 'Top Search Queries on Google' de Wix no esta disponible porque este sitio Wix no esta conectado a Google Search Console. La propiedad sc-domain:celebios.com si se verifico el 2026-08-01, pero al 2026-08-02 Search Console sigue procesando los datos: EXPORTAR sigue deshabilitado en Rendimiento y en Enlaces, y no hay export disponible. clicks, impressions, position y backlinks siguen sin evidencia.",
   "confidence": "alta_para_wix_page_visits",
   "gate_status": "blocked",
   "cutover_allowed": false,

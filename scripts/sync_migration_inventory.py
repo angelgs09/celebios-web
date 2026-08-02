@@ -46,6 +46,11 @@ KAJABI_URLS_ESPERADAS = 15
 
 _REINTENTOS_429 = 4
 _ESPERA_BASE_SEGUNDOS = 5
+# Tope duro para el Retry-After del servidor: sin el, un "Retry-After: 86400"
+# duerme 24 h y un valor negativo revienta en time.sleep(). El backoff propio
+# llega a 40 s (5*2^3) en el ultimo intento, asi que 60 s no estorba el camino
+# normal y acota el peor caso a ~4 min.
+_TOPE_ESPERA_SEGUNDOS = 60
 
 CSV_FIELDS = [
     "source_url", "destination_path", "status_code", "category",
@@ -79,9 +84,9 @@ def _descargar(url: str) -> str:
         if respuesta.status_code == 429:
             if intento == _REINTENTOS_429 - 1:
                 respuesta.raise_for_status()
-            espera = _segundos_de_retry_after(respuesta.headers.get("Retry-After")) or (
-                _ESPERA_BASE_SEGUNDOS * (2 ** intento)
-            )
+            espera = max(0, min(_TOPE_ESPERA_SEGUNDOS, _segundos_de_retry_after(
+                respuesta.headers.get("Retry-After")
+            ) or (_ESPERA_BASE_SEGUNDOS * (2 ** intento))))
             time.sleep(espera)
             continue
         respuesta.raise_for_status()

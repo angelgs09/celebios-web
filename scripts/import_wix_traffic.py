@@ -2,11 +2,12 @@
 """Importa la evidencia autenticada de Wix Analytics (reporte Page Visits del
 sitio Wix `celebios`) sin declarar completo el gate SEO.
 
-No hay conexion de este sitio Wix a Google Search Console ni una propiedad de
-CELEBIOS en la cuenta de Google autenticada: clicks, impressions, position y
-backlinks siguen sin evidencia y el cutover sigue bloqueado (ver
-migracion/wix-analytics-manifest.json). Este importador solo agrega
-page_views, site_sessions y unique_visitors por ruta, y marca si esa ruta ya
+No hay conexion de este sitio Wix a Google Search Console; la propiedad
+sc-domain:celebios.com si se verifico el 2026-08-01, pero al 2026-08-02
+Search Console sigue procesando y no hay export disponible: clicks,
+impressions, position y backlinks siguen sin evidencia y el cutover sigue
+bloqueado (ver migracion/wix-analytics-manifest.json). Este importador solo
+agrega page_views, site_sessions y unique_visitors por ruta, y marca si esa ruta ya
 existe en el inventario de migracion (migracion/urls-wix.csv, de solo
 lectura: este script nunca lo modifica).
 
@@ -52,8 +53,6 @@ FILENAME_PERIOD_START = "2025-08-02"
 FILENAME_PERIOD_END = "2026-08-02"
 
 RAW_SHA256 = "9f2395146a666be9792fc63da03e0cdcc894d23f26e2e8f31ab644b2595a0952"
-RAW_ROW_COUNT = 152
-RAW_SIZE_BYTES = 4402
 
 # Totales del panel resumen de Wix tal como se observaron en la UI (no son la
 # suma de las filas por pagina de site_sessions/unique_visitors: una misma
@@ -157,9 +156,18 @@ def _escribir_normalizado(f, filas):
     escritor.writerows(filas)
 
 
-def build_manifest(raw_row_count: int, raw_sha256: str, raw_size_bytes: int) -> dict:
+def build_manifest(
+    raw_row_count: int,
+    raw_sha256: str,
+    raw_size_bytes: int,
+    filas_normalizadas: list[dict],
+) -> dict:
     """Manifiesto de evidencia: sin datos personales, cutover_allowed en
-    False mientras no exista un export de GSC de CELEBIOS aprobado."""
+    False mientras no exista un export de GSC de CELEBIOS aprobado.
+
+    inventory_match_counts y unmatched_source_urls se DERIVAN de
+    filas_normalizadas (nunca se escriben a mano): son el resultado del join
+    contra el inventario, el dato que necesita triage humano."""
     return {
         "source_report": "Wix Analytics — Page Visits",
         "site_label": "celebios",
@@ -189,12 +197,21 @@ def build_manifest(raw_row_count: int, raw_sha256: str, raw_size_bytes: int) -> 
             "puede aparecer en varias paginas. page_views si coincide con "
             "esa suma porque cada vista pertenece a una sola pagina."
         ),
+        "inventory_match_counts": {
+            "true": sum(1 for f in filas_normalizadas if f["inventory_match"] == "true"),
+            "false": sum(1 for f in filas_normalizadas if f["inventory_match"] == "false"),
+        },
+        "unmatched_source_urls": [
+            f["source_url"] for f in filas_normalizadas if f["inventory_match"] == "false"
+        ],
         "gsc_connection_status": "no_conectado",
         "gsc_findings": (
             "El reporte 'Top Search Queries on Google' de Wix no esta "
             "disponible porque este sitio Wix no esta conectado a Google "
-            "Search Console. La cuenta de Google autenticada usada en esta "
-            "revision no expone ninguna propiedad de CELEBIOS: clicks, "
+            "Search Console. La propiedad sc-domain:celebios.com si se "
+            "verifico el 2026-08-01, pero al 2026-08-02 Search Console sigue "
+            "procesando los datos: EXPORTAR sigue deshabilitado en "
+            "Rendimiento y en Enlaces, y no hay export disponible. clicks, "
             "impressions, position y backlinks siguen sin evidencia."
         ),
         "confidence": "alta_para_wix_page_visits",
@@ -223,6 +240,7 @@ def main() -> None:
         raw_row_count=len(filas_crudas),
         raw_sha256=sha256,
         raw_size_bytes=len(datos_crudos),
+        filas_normalizadas=filas_normalizadas,
     )
     MANIFEST_PATH.write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

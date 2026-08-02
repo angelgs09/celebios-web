@@ -6,8 +6,10 @@ Cuatro estados: **confirmada** (fuente verificable, se puede publicar), **histó
 suficiente; no se publica hasta confirmar), **rechazada** (afirmación en uso hoy en
 `redesign-v2/*.html` que NO tiene respaldo y debe quitarse o reescribirse en Task 3).
 
-Fecha de acceso de esta revisión: **2026-08-01**. Todas las fuentes citadas son archivos
-del repo, ya comiteados, salvo donde se indique URL externa.
+Fecha de acceso de esta revisión: **2026-08-01**, con correcciones verificadas el
+**2026-08-02** (esquema de bulk redirects y estado de Search Console; cada una está fechada
+en su bloque). Todas las fuentes citadas son archivos del repo, ya comiteados, salvo donde se
+indique URL externa.
 
 ---
 
@@ -16,7 +18,7 @@ del repo, ya comiteados, salvo donde se indique URL externa.
 | Claim | Fuente | Fecha de acceso |
 |---|---|---|
 | Curso de Gatos: $1,400 MXN, pago único, 12 h, 11 temas, acceso 5 meses | `redesign-v1/CONTENIDO-REAL.md`, `redesign-v2/DATOS-REALES-harvest.md` | 2026-08-01 |
-| Curso de Gatos es la única convocatoria abierta hoy | `redesign-v1/CONTENIDO-REAL.md` ("única convocatoria abierta"), `migracion/redirects.csv` (única fila con `category=curso_disponible`) | 2026-08-01 |
+| Curso de Gatos es la única convocatoria abierta hoy | `redesign-v1/CONTENIDO-REAL.md` ("única convocatoria abierta"), `migracion/redirects.csv` (único curso con `category=curso_disponible`: son 2 filas, `/lenguaje-y-comunicacion-de-los-gatos` y `/curso-lenguaje-felino`, ambas → `/curso-lenguaje-felino`) | 2026-08-01 |
 | Docente del curso de gatos: Dra. Camila Hernández, MV chilena, Máster en Etología Clínica (UAB), autora de "Miaulogía" | `redesign-v1/CONTENIDO-REAL.md`, `redesign-v2/DATOS-REALES-harvest.md` | 2026-08-01 |
 | Aval CONCERVET (Consejo Nacional de Certificación en Medicina Veterinaria y Zootecnia) | `redesign-v1/CONTENIDO-REAL.md` | 2026-08-01 |
 | Fundación 2010; modalidad a distancia desde 2014 | `redesign-v1/CONTENIDO-REAL.md` | 2026-08-01 |
@@ -65,17 +67,26 @@ Un programa histórico solo lleva slug/título/categoría/tema/resumen/evidencia
 | Claim | Fuente | Fecha de acceso |
 |---|---|---|
 | `bulkRedirectsPath` es una propiedad válida de `vercel.json` para importar redirects en bloque desde un archivo CSV/JSON/JSONL, procesados en el momento del deploy | https://vercel.com/docs/routing/redirects/bulk-redirects/getting-started | 2026-08-01 |
+| El esquema `source,destination,statusCode` que emite `build.py` es válido. La tabla normativa "Bulk redirect field definition" define: `source` (string, **requerido**), `destination` (string, **requerido**), `permanent` (boolean, opcional, default `false`; alterna 308/307), `statusCode` (integer, opcional; 301, 302, 303, 307 o 308; *"Overrides permanent when set"*), `caseSensitive` y `preserveQueryParams` (boolean, opcionales, default `false`). Nota textual, transcrita tal cual, erratas de la fuente incluidas: *"CSV headers must match the field names below, can be specific \[sic\] in any order, and optional fields can be ommitted \[sic\]"* | https://vercel.com/docs/project-configuration/vercel-json#bulkredirectspath | 2026-08-02 |
+| Los errores de bulk redirects solo se ven al desplegar: *"Any errors processing the bulk redirects will appear in the build logs for the deployment"*, y *"Bulk redirects do not work locally while using `vercel dev`"* | https://vercel.com/docs/routing/redirects/bulk-redirects/getting-started, https://vercel.com/docs/routing/redirects/bulk-redirects | 2026-08-02 |
 
-**Riesgo detectado, no resuelto en esta ronda:** la documentación oficial muestra el CSV de
-bulk redirects con encabezado `source,destination,permanent` (`permanent` booleano
-`true`/`false`), no `source,destination,statusCode` (entero) como emite hoy `build.py`. La
-decisión vinculante de esta ronda mantiene `statusCode` porque cambiar el esquema del CSV no
-fue autorizado aquí. El esquema real solo se puede confirmar con un despliegue de preview
-—que sigue siendo la puerta de verificación externa y esta tarea no ejecuta (no se hizo ningún
-`vercel deploy`)—. Si Vercel rechaza o ignora la columna `statusCode`, las reglas activas del
-CSV no tendrían efecto en producción pese a pasar todos los tests locales. Antes de Task 5 o de
-cualquier cutover real conviene correr un preview deploy y confirmar en los logs de build que
-el CSV se procesó sin errores, o migrar el CSV al esquema `permanent` documentado.
+**Corregido el 2026-08-02 — el esquema NO es un riesgo.** Una versión anterior de este bloque
+daba por riesgoso el encabezado `source,destination,statusCode` que emite `build.py`, tomando
+el `source,destination,permanent` de la página de *getting started* como si fuera el esquema.
+No lo es: ahí es un EJEMPLO. La tabla normativa de campos (`vercel.json#bulkredirectspath`,
+verificada el 2026-08-02) documenta `statusCode` como campo opcional que acepta `301` y que
+**prevalece sobre `permanent`** cuando se define, y solo exige que los encabezados del CSV
+coincidan con los nombres de los campos, en cualquier orden, pudiendo omitir los opcionales.
+`source,destination,statusCode` con `301` es válido por contrato documentado —y es lo que
+queremos, porque `permanent` solo alterna 308/307 y nunca produce un 301.
+
+**Lo que sí sigue abierto: la verificación de ejecución.** Ningún preview deploy ha confirmado
+que Vercel procese realmente este CSV. No se puede comprobar en local (`vercel dev` no ejecuta
+bulk redirects) y los errores de procesamiento aparecen únicamente en los logs de build del
+deployment. Es decir: la puerta de verificación es externa y esta tarea no la ejecutó (no se
+hizo ningún `vercel deploy`). Antes de Task 5 o de cualquier cutover real hay que correr un
+preview deploy y leer esos logs. Que los tests locales pasen no es evidencia de que las reglas
+estén vivas en producción.
 
 **Nota sobre `/aula`:** una fila del inventario de migración redirige `/aula-virtual` (host
 `celebios.com`) a `/aula`. `/aula` no tiene `<link rel="canonical">` y `robots.txt` lo excluye
@@ -93,8 +104,18 @@ todavía no ha creado.
 Fuentes cubiertas: `redesign-v2/DATOS-REALES-harvest.md`, `redesign-v1/CONTENIDO-REAL.md`,
 `PENDIENTES-CONTENIDO.md`, `redesign-v2/SEO-COPY-STRATEGY.md`, `migracion/redirects.csv`,
 y grep directo sobre `redesign-v2/*.html` para verificar el estado actual de las frases
-rechazadas. No se consultaron fuentes externas en vivo (Instagram, WhatsApp) — donde el
+rechazadas. No se consultaron redes sociales en vivo (Instagram, WhatsApp) — donde el
 harvest ya citaba una fuente externa, se preserva esa cita tal cual.
+
+**Google Search Console SÍ se consultó, y no aportó ningún dato.** La propiedad
+`sc-domain:celebios.com` se verificó el 2026-08-01 con un registro TXT en el DNS de Wix. Al
+2026-08-02, revisada en vivo, la propiedad existe pero sigue en llenado: Rendimiento,
+Indexación, Enlaces y Mejoras muestran "Se están procesando los datos", sus tablas dicen "Sin
+datos", y EXPORTAR aparece deshabilitado en Rendimiento y en Enlaces (última actualización del
+panel de Rendimiento: hace ~4,5 h). Lo único que ya trae cifras es el informe HTTPS, con 28
+URLs — estado de certificado, no señal de búsqueda, y ni siquiera cubre el inventario (371
+URLs en el sitemap de Wix). Por eso ninguna afirmación de este archivo se apoya todavía en
+GSC, y la fila rechazada "rankea #3 nacional" sigue rechazada.
 
 ## Actualización 2026-08-01 — evidencia autenticada de Wix Analytics (parcial)
 
@@ -107,12 +128,21 @@ Se importó el primer export autenticado de analítica externa:
 
 Esto **no** cierra el pendiente externo de la sección anterior. Sigue sin
 existir: (1) una conexión de este sitio Wix a Google Search Console (el
-reporte `Top Search Queries on Google` de Wix no está disponible), y (2) una
-propiedad de CELEBIOS en la cuenta de Google Search Console autenticada
-usada en esta revisión. Por lo tanto `clicks`, `impressions`, `position` y
-`backlinks` en `migracion/urls-wix.csv`/`redirects.csv` **siguen vacíos** —
-no se rellenan con page views de Wix, que es una métrica distinta (tráfico
-de página, no señal de búsqueda orgánica de Google). El gate SEO permanece
-bloqueado (`cutover_allowed: false` en el manifiesto); el corte real y el
-diseño final siguen esperando el export de la propiedad CELEBIOS en GSC y su
-aprobación.
+reporte `Top Search Queries on Google` de Wix no está disponible), y (2) un
+export de datos de búsqueda de Google que se pueda importar.
+
+**Corrección del 2026-08-02 sobre el punto (2).** La propiedad de CELEBIOS en
+Search Console SÍ existe: `sc-domain:celebios.com`, verificada el 2026-08-01
+con un TXT en el DNS de Wix. Cambia la razón, no el veredicto — Search Console
+sigue procesando (Rendimiento, Indexación, Enlaces y Mejoras muestran "Se están
+procesando los datos", las tablas dicen "Sin datos" y EXPORTAR está
+deshabilitado en Rendimiento y en Enlaces), así que **no hay export disponible
+y el gate SEO sigue BLOQUEADO, con `cutover_allowed: false`**. Propiedad
+verificada no es gate desbloqueado.
+
+Por lo tanto `clicks`, `impressions`, `position` y `backlinks` en
+`migracion/urls-wix.csv`/`redirects.csv` **siguen vacíos** — no se rellenan con
+page views de Wix, que es una métrica distinta (tráfico de página, no señal de
+búsqueda orgánica de Google), ni con el informe HTTPS de GSC (28 URLs), que es
+estado de certificado. El corte real y el diseño final siguen esperando el
+primer export CON DATOS de `sc-domain:celebios.com` y su aprobación.

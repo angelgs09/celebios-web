@@ -35,6 +35,11 @@ CAMPOS_REQUERIDOS = {
     "summary", "evidence", "interest_topic",
 }
 CAMPOS_OFFER = {"price_mxn", "payment_type", "hours", "topics_count", "access_months"}
+TIPOS_OFFER = {
+    "price_mxn": int, "hours": int, "topics_count": int, "access_months": int,
+    "payment_type": str,
+}
+CAMPOS_REDIRECT = {"source_url", "destination_path", "status_code"}
 EVIDENCIA_ANCLA_RE = re.compile(r'^(?P<path>[^#]+)#L(?P<inicio>\d+)(?:-L(?P<fin>\d+))?$')
 GA4_RE = re.compile(r'G-[A-Z0-9]+')
 
@@ -69,6 +74,10 @@ def rutas_canonicas_fuente():
 
 def cargar_programas(path=CONTENIDO_PROGRAMAS):
     datos = json.loads(Path(path).read_text(encoding="utf-8"))
+    # ValueError, no KeyError: construir() solo atrapa ValueError, y un KeyError
+    # sale como traceback crudo en vez del 'ERROR: ...' legible.
+    if not isinstance(datos, dict) or "programas" not in datos:
+        raise ValueError(f"{path}: falta la clave 'programas'")
     return datos["programas"]
 
 
@@ -77,12 +86,13 @@ def _validar_evidencia(slug, fuente):
     una URL publica http(s) ya formateada con claridad. Revienta si el
     archivo base no existe, si el rango de lineas es invalido, o si el rango
     citado esta vacio (sin texto)."""
+    # fullmatch, no match: con '$' un '\n' final se cuela (igual que en validar_ga4).
     if fuente.startswith(("http://", "https://")):
-        if not re.match(r'^https?://\S+$', fuente):
+        if not re.fullmatch(r'https?://\S+', fuente):
             raise ValueError(f"{slug}: evidencia URL mal formateada: {fuente}")
         return
 
-    m = EVIDENCIA_ANCLA_RE.match(fuente)
+    m = EVIDENCIA_ANCLA_RE.fullmatch(fuente)
     if not m:
         raise ValueError(
             f"{slug}: evidencia sin ancla de linea (formato esperado 'path#Lx' o 'path#Lx-Ly'): {fuente}"
@@ -140,6 +150,17 @@ def validar_programas(programas, rutas_validas=None):
                 raise ValueError(
                     f"{slug}: 'offer' debe traer exactamente {sorted(CAMPOS_OFFER)}, trae {sorted((offer or {}).keys())}"
                 )
+            for campo, tipo in TIPOS_OFFER.items():
+                valor = offer[campo]
+                # isinstance(True, int) es True: un booleano no es un precio ni unas horas.
+                if not isinstance(valor, tipo) or isinstance(valor, bool):
+                    raise ValueError(
+                        f"{slug}: offer.{campo} debe ser {tipo.__name__}, trae {valor!r}"
+                    )
+                if tipo is int and valor <= 0:
+                    raise ValueError(f"{slug}: offer.{campo} debe ser > 0, trae {valor!r}")
+                if tipo is str and not valor.strip():
+                    raise ValueError(f"{slug}: offer.{campo} no puede ir vacio")
 
         evidencia = p.get("evidence") or []
         if not evidencia:
@@ -239,6 +260,12 @@ def _ruta_base(destino):
     return re.split(r"[#?]", destino, maxsplit=1)[0] or "/"
 
 
+def _normalizar_ruta(ruta):
+    """Clave de comparacion (no de emision): /Nosotros/ -> /nosotros. Misma
+    forma canonica que normalize_source_url en scripts/sync_migration_inventory.py."""
+    return ruta.rstrip("/").lower() or "/"
+
+
 def convertir_redirects_bulk(filas, rutas_publicadas):
     """migracion/redirects.csv (source_url,destination_path,status_code,...)
     -> formato bulk de Vercel [{source,destination,statusCode}]. Solo 301 con
@@ -255,31 +282,41 @@ def convertir_redirects_bulk(filas, rutas_publicadas):
     Devuelve (reglas_activas, reglas_diferidas); reglas_diferidas trae
     {source, destination, reasons} para que quien llame decida si eso es
     aceptable (preview) o debe reventar el build (--cutover)."""
+    # Se compara contra las rutas publicadas ya normalizadas para que la
+    # comparacion sea simetrica con la clave del origen. El DESTINO se compara
+    # sin normalizar a proposito: es la URL que se emitiria tal cual, asi que si
+    # viene con otra caja o slash final se difiere en vez de publicar un 301 que
+    # puede caer en 404.
+    publicadas = {_normalizar_ruta(r) for r in rutas_publicadas}
     vistos = {}
     activas = []
     diferidas = []
     for fila in filas:
+        faltantes = CAMPOS_REDIRECT - fila.keys()
+        if faltantes:
+            raise ValueError(f"fila sin columnas requeridas: {sorted(faltantes)}")
         if str(fila["status_code"]) != "301":
             continue
         destino = fila["destination_path"]
         if not destino:
             continue
         origen = url_a_ruta(fila["source_url"])
-        if origen == destino:
+        clave = _normalizar_ruta(origen)
+        if clave == destino:
             continue
-        if origen in vistos:
-            if vistos[origen] != destino:
+        if clave in vistos:
+            if vistos[clave] != destino:
                 raise ValueError(
-                    f"conflicto: {origen} -> {vistos[origen]!r} y -> {destino!r}"
+                    f"conflicto: {origen} -> {vistos[clave]!r} y -> {destino!r}"
                 )
             continue
-        vistos[origen] = destino
+        vistos[clave] = destino
 
         razones = []
-        if origen in rutas_publicadas:
+        if clave in publicadas:
             razones.append("source_shadows_published_page")
         base = _ruta_base(destino)
-        if base not in rutas_publicadas and base != "/aula":
+        if base not in publicadas and base != "/aula":
             razones.append("destination_not_published")
 
         if razones:
@@ -494,9 +531,23 @@ def verificar(salida=None):
     print(f"  ok: {len(list(salida.rglob('*.html')))} paginas, 0 enlaces rotos")
 
 
+def validar_flags(argv):
+    """Whitelist de flags. Un '--cutver' mal escrito desactivaba el gate en
+    silencio, y '--check --cutover' ignoraba --cutover (--check no construye,
+    asi que el gate de cutover nunca corria)."""
+    flags = set(argv)
+    if flags - {"--check", "--cutover"} or flags == {"--check", "--cutover"}:
+        raise SystemExit(
+            "Uso: build.py [--check | --cutover]  "
+            "(--check y --cutover son incompatibles: --check no construye)"
+        )
+    return flags
+
+
 if __name__ == "__main__":
-    if "--check" not in sys.argv:
+    flags = validar_flags(sys.argv[1:])
+    if "--check" not in flags:
         print("Construyendo:")
-        construir(cutover="--cutover" in sys.argv)
+        construir(cutover="--cutover" in flags)
     print("Verificando:")
     verificar()
