@@ -152,7 +152,7 @@ def write_normalized_csv(destino, filas: list[dict]) -> None:
 
 
 def _escribir_normalizado(f, filas):
-    escritor = csv.DictWriter(f, fieldnames=NORMALIZED_FIELDS)
+    escritor = csv.DictWriter(f, fieldnames=NORMALIZED_FIELDS, lineterminator="\n")
     escritor.writeheader()
     escritor.writerows(filas)
 

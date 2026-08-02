@@ -12,6 +12,7 @@ conteo de filas, totales resumen) viene del brief de evidencia observado.
 import csv
 import io
 import json
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -260,6 +261,47 @@ class TestCommittedArtifacts(unittest.TestCase):
             "topic_or_cohort", "clicks", "impressions", "position", "backlinks",
             "priority", "confidence", "manual_review",
         ])
+
+    def test_evidencia_cruda_marcada_gitattributes_text_unset(self):
+        # Sin -text, el filtro de checkout de Git (core.autocrlf=true en este
+        # repo) reescribe el LF crudo a CRLF y el hash deja de coincidir en
+        # un clon fresco. Debe estar scopeado solo a migracion/evidencia/**.
+        ruta_evidencia = "migracion/evidencia/wix-page-visits-2025-08-02_2026-08-02.csv"
+        resultado = subprocess.run(
+            ["git", "check-attr", "-a", "--", ruta_evidencia],
+            cwd=RAIZ, capture_output=True, text=True, check=True,
+        )
+        self.assertIn("text: unset", resultado.stdout)
+
+    def test_gitattributes_no_afecta_al_inventario_protegido(self):
+        # -text debe estar scopeado a migracion/evidencia/**, nunca a *.csv
+        # ni al inventario protegido de Task 1.
+        resultado = subprocess.run(
+            ["git", "check-attr", "-a", "--", "migracion/urls-wix.csv"],
+            cwd=RAIZ, capture_output=True, text=True, check=True,
+        )
+        self.assertNotIn("text: unset", resultado.stdout)
+
+    def test_normalizado_comiteado_es_byte_identico_a_la_regeneracion(self):
+        # Idempotencia/determinismo entre plataformas: regenerar desde la
+        # evidencia cruda debe producir exactamente los bytes del blob ya
+        # comiteado (git cat-file, no el archivo de working tree, que en
+        # este repo con core.autocrlf=true puede estar suavizado a CRLF).
+        ruta_cruda = MIGRACION / "evidencia" / "wix-page-visits-2025-08-02_2026-08-02.csv"
+        filas_crudas = parse_wix_traffic_csv(ruta_cruda.read_text(encoding="utf-8-sig"))
+        inventory_keys = load_inventory_keys(MIGRACION / "urls-wix.csv")
+        filas_normalizadas = build_normalized_rows(filas_crudas, inventory_keys)
+
+        buffer = io.StringIO()
+        write_normalized_csv(buffer, filas_normalizadas)
+        regenerado = buffer.getvalue().encode("utf-8")
+
+        comiteado = subprocess.run(
+            ["git", "cat-file", "-p", "HEAD:migracion/wix-page-visits-normalized.csv"],
+            cwd=RAIZ, capture_output=True, check=True,
+        ).stdout
+
+        self.assertEqual(regenerado, comiteado)
 
 
 if __name__ == "__main__":
