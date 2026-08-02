@@ -38,9 +38,13 @@ el CSV a mano.
   `/egresados`, `/practicas-de-campo`, `/docentes`, `/admisiones`,
   `/contacto`, `/aviso-de-privacidad`. Nunca es `/` salvo la propia home.
 - **clicks, impressions, position, backlinks**: **vacíos a propósito.** No
-  hay una sesión autenticada de Google Search Console ni de Wix Analytics
-  todavía — importar ese export es un paso externo pendiente, y no se
-  inventan métricas para llenar la tabla.
+  hay una sesión autenticada de Google Search Console (ni una propiedad de
+  CELEBIOS en la cuenta autenticada disponible) — importar ese export sigue
+  siendo un paso externo pendiente, y no se inventan métricas para llenar la
+  tabla. El export autenticado de Wix Analytics (Page Visits) ya se importó
+  por separado — ver "Pendiente externo" más abajo — pero esa métrica no
+  llena estas columnas: mide tráfico de página, no señal de búsqueda
+  orgánica de Google.
 - **confidence**: `alta` para mapeos explícitos o basura de editor curada a
   mano; `media` para páginas de egresado con año de cohorte o tema inferido
   con evidencia en la URL; `baja` para páginas de egresado sin ninguna
@@ -92,6 +96,27 @@ a `/` — cada uno cae en su ancla de archivo histórico en `/cursos`.
 
 Antes del corte real (apuntar `celebios.com` al sitio nuevo) hace falta
 importar clicks/impressions/position desde un export autenticado de Search
-Console y Wix Analytics, y backlinks desde alguna herramienta de SEO. Ese
-paso no se puede automatizar sin esa sesión — se deja documentado, no
-fabricado.
+Console, y backlinks desde alguna herramienta de SEO. Ese paso no se puede
+automatizar sin esa sesión — se deja documentado, no fabricado.
+
+**Wix Analytics (Page Visits) ya se importó, parcialmente.** El 2026-08-01 se
+importó el primer export autenticado: `Page Visits` del sitio Wix `celebios`,
+copiado byte a byte en
+`migracion/evidencia/wix-page-visits-2025-08-02_2026-08-02.csv` y normalizado
+por `scripts/import_wix_traffic.py` en
+`migracion/wix-page-visits-normalized.csv` (152 filas,
+`source_url,page_views,site_sessions,unique_visitors,period_start,period_end,inventory_match`,
+join de solo lectura contra `urls-wix.csv` sin cambiar su esquema). El detalle
+completo — hash, totales de resumen, discrepancia entre el período mostrado en
+la UI y el expresado en el nombre del archivo — vive en
+`migracion/wix-analytics-manifest.json`.
+
+Esto **no** es evidencia de Google Search Console: page views de Wix miden
+tráfico de página, no clicks/impressions/position de búsqueda orgánica. Este
+sitio Wix no está conectado a GSC (`Top Search Queries on Google` no
+disponible ahí), y la cuenta de Google autenticada usada no expone ninguna
+propiedad de CELEBIOS. Las columnas `clicks`, `impressions`, `position` y
+`backlinks` de este inventario siguen vacías a propósito, y
+`cutover_allowed` en el manifiesto queda en `false`: el gate SEO y el corte
+real siguen bloqueados hasta que exista y se apruebe un export de la
+propiedad CELEBIOS en GSC.

@@ -93,5 +93,26 @@ todavía no ha creado.
 Fuentes cubiertas: `redesign-v2/DATOS-REALES-harvest.md`, `redesign-v1/CONTENIDO-REAL.md`,
 `PENDIENTES-CONTENIDO.md`, `redesign-v2/SEO-COPY-STRATEGY.md`, `migracion/redirects.csv`,
 y grep directo sobre `redesign-v2/*.html` para verificar el estado actual de las frases
-rechazadas. No se consultaron fuentes externas (GSC, Instagram en vivo, WhatsApp) — donde el
+rechazadas. No se consultaron fuentes externas en vivo (Instagram, WhatsApp) — donde el
 harvest ya citaba una fuente externa, se preserva esa cita tal cual.
+
+## Actualización 2026-08-01 — evidencia autenticada de Wix Analytics (parcial)
+
+Se importó el primer export autenticado de analítica externa:
+`migracion/evidencia/wix-page-visits-2025-08-02_2026-08-02.csv` (reporte
+`Page Visits` del sitio Wix `celebios`, 152 filas, SHA-256 documentado en
+`migracion/wix-analytics-manifest.json`), normalizado en
+`migracion/wix-page-visits-normalized.csv` con columnas
+`source_url,page_views,site_sessions,unique_visitors,period_start,period_end,inventory_match`.
+
+Esto **no** cierra el pendiente externo de la sección anterior. Sigue sin
+existir: (1) una conexión de este sitio Wix a Google Search Console (el
+reporte `Top Search Queries on Google` de Wix no está disponible), y (2) una
+propiedad de CELEBIOS en la cuenta de Google Search Console autenticada
+usada en esta revisión. Por lo tanto `clicks`, `impressions`, `position` y
+`backlinks` en `migracion/urls-wix.csv`/`redirects.csv` **siguen vacíos** —
+no se rellenan con page views de Wix, que es una métrica distinta (tráfico
+de página, no señal de búsqueda orgánica de Google). El gate SEO permanece
+bloqueado (`cutover_allowed: false` en el manifiesto); el corte real y el
+diseño final siguen esperando el export de la propiedad CELEBIOS en GSC y su
+aprobación.

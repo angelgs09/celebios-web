@@ -1,0 +1,25 @@
+{
+  "source_report": "Wix Analytics — Page Visits",
+  "site_label": "celebios",
+  "raw_evidence_path": "migracion/evidencia/wix-page-visits-2025-08-02_2026-08-02.csv",
+  "observation_date": "2026-08-01",
+  "ui_period_observed": "Last 365 days (Aug 2, 2025 - Today)",
+  "filename_period_start": "2025-08-02",
+  "filename_period_end": "2026-08-02",
+  "period_discrepancy_note": "El nombre del archivo descargado expresa 2025-08-02 a 2026-08-02; la UI de Wix mostraba 'Last 365 days (Aug 2, 2025 - Today)' observado el 2026-08-01 local. Se preservan ambos valores tal cual, sin elegir una fecha de cierre arbitraria.",
+  "raw_row_count": 152,
+  "raw_sha256": "9f2395146a666be9792fc63da03e0cdcc894d23f26e2e8f31ab644b2595a0952",
+  "raw_size_bytes": 4402,
+  "summary_totals_observed_in_report": {
+    "page_views": 3543,
+    "site_sessions": 2174,
+    "unique_visitors": 1592
+  },
+  "summary_totals_note": "Totales del panel resumen de Wix (deduplicados a nivel de sitio). No son la suma de las filas del CSV normalizado para site_sessions/unique_visitors: una misma sesion o visitante puede aparecer en varias paginas. page_views si coincide con esa suma porque cada vista pertenece a una sola pagina.",
+  "gsc_connection_status": "no_conectado",
+  "gsc_findings": "El reporte 'Top Search Queries on Google' de Wix no esta disponible porque este sitio Wix no esta conectado a Google Search Console. La cuenta de Google autenticada usada en esta revision no expone ninguna propiedad de CELEBIOS: clicks, impressions, position y backlinks siguen sin evidencia.",
+  "confidence": "alta_para_wix_page_visits",
+  "gate_status": "blocked",
+  "cutover_allowed": false,
+  "contains_personal_data": false
+}
