@@ -106,6 +106,26 @@ hizo ningún `vercel deploy`). Antes de Task 5 o de cualquier cutover real hay q
 preview deploy y leer esos logs. Que los tests locales pasen no es evidencia de que las reglas
 estén vivas en producción.
 
+> **CERRADO el 2026-08-03, y el veredicto invalida el enfoque completo.** Se corrió el preview
+> deploy. Todo lo de arriba sobre el esquema del CSV es correcto y sigue siendo cierto, pero
+> resultó irrelevante: los logs de build respondieron
+> **«Bulk redirects are not available for teams on the Hobby plan. Please upgrade to Pro or
+> Enterprise to use this feature.»** El equipo `konecta-estudio` está en Hobby, así que
+> `bulkRedirectsPath` no publicaba **ni una sola** de las 367 reglas. El contrato de redirects
+> entero se apoyaba en una función de pago cuya disponibilidad nadie había verificado — que es
+> exactamente lo que esta puerta existía para atrapar, y por qué "los tests locales pasan" no
+> era evidencia.
+>
+> **Sustituido por `redirects` inline en `vercel.json`**, que sí funciona en Hobby. Contra el
+> esquema normativo (`openapi.vercel.sh/vercel.json`): `redirects` admite `maxItems: 2048`
+> (emitimos 367) y acepta `statusCode` entero, así que se sigue emitiendo **301** exacto y no
+> el 308 de `permanent: true`. `build.py` revienta si las reglas superan ese tope.
+>
+> **Verificado en ejecución, no por contrato:** deploy `dpl_9qxuGHfSa2T9aFLJV4mToFuG5uiY`
+> (READY). Se probaron **las 367 reglas** contra la URL de preview: **367/367 devuelven el
+> código y el destino exactos, fragmento incluido, 0 fallas**. Las páginas publicadas responden
+> 200 y una ruta inexistente responde 404.
+
 **Nota sobre `/aula`:** una fila del inventario de migración redirige `/aula-virtual` (host
 `celebios.com`) a `/aula`. `/aula` no tiene `<link rel="canonical">` y `robots.txt` lo excluye
 (`Disallow: /aula`) porque es una zona autenticada, no una página pública indexable — así lo
