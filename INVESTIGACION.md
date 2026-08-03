@@ -135,6 +135,11 @@ URLs — estado de certificado, no señal de búsqueda, y ni siquiera cubre el i
 URLs en el sitemap de Wix). Por eso ninguna afirmación de este archivo se apoya todavía en
 GSC, y la fila rechazada "rankea #3 nacional" sigue rechazada.
 
+> **Superado en parte el 2026-08-02 21:30** — ver "Rendimiento liberado, y NO hay histórico"
+> más abajo. Rendimiento ya trae datos (de un solo día); Indexación y Enlaces siguen
+> procesando. La fila "rankea #3 nacional" **sigue rechazada**: 2 clics y 23 impresiones en
+> un día no sostienen ninguna afirmación de ranking.
+
 ## Actualización 2026-08-01 — evidencia autenticada de Wix Analytics (parcial)
 
 Se importó el primer export autenticado de analítica externa:
@@ -164,6 +169,47 @@ page views de Wix, que es una métrica distinta (tráfico de página, no señal 
 búsqueda orgánica de Google), ni con el informe HTTPS de GSC (28 URLs), que es
 estado de certificado. El corte real y el diseño final siguen esperando el
 primer export CON DATOS de `sc-domain:celebios.com` y su aprobación.
+
+## Actualización 2026-08-02 21:30 — Rendimiento liberado, y NO hay histórico
+
+Search Console soltó el informe de **Rendimiento**: el banner de procesamiento
+desapareció, EXPORTAR quedó habilitado (`aria-disabled="false"`) y las tablas
+traen cifras. Se capturaron en
+`migracion/evidencia/gsc-rendimiento-2026-08-01.csv`.
+
+**El hallazgo que corrige la premisa del plan: no hubo backfill.** Con el rango
+de **16 meses** seleccionado en la UI, el gráfico se rotula "del 1 de agosto de
+2026 al 1 de agosto de 2026" — un solo día. Los 16 meses de Search Console son
+el máximo de **retención hacia adelante**, no una recuperación de historia
+hacia atrás: una propiedad empieza a acumular el día que se verifica. Como
+`sc-domain:celebios.com` se verificó el 2026-08-01, el histórico de 2025 y
+antes **no existe y no va a llegar**. Seguir esperando no cambia eso.
+
+Lo que hay, del 1-ago-2026: 2 clics, 23 impresiones, CTR 8,7 %, posición media
+9,8; 3 consultas (`celebios` 1/1, `paulina alejandra` 0/3, `rubén saavedra`
+0/1) y 17 páginas con impresiones.
+
+**Las 17 páginas están cubiertas 17/17 por `migracion/redirects.csv`**, sin una
+sola ausente. Sus columnas `clicks`/`impressions` ya se rellenaron con estas
+cifras — son señal de búsqueda de Google, que es justo lo que esas columnas
+pedían. `position` y `backlinks` siguen vacías: la tabla de páginas no
+desglosa posición y el informe de Enlaces sigue procesando.
+
+Dos señales que tocan el diseño:
+
+1. `imagenologia-caballos-2020` recibió impresiones y su regla apunta a
+   `/cursos#historico-imagenologia-caballos`, **una de las 7 anclas huérfanas**
+   (tema sin tarjeta en el catálogo). Deja de ser un hueco hipotético: hay
+   tráfico real cayendo ahí.
+2. Las consultas con más impresiones son **nombres de personas** (`paulina
+   alejandra`, `rubén saavedra`), y sus páginas
+   (`/paulinaachavezcontreras`, `/rubensaavedraperez`, `confidence=baja`)
+   redirigen al genérico `/egresados`. Si la página de egresados no ofrece un
+   ancla por persona o al menos por cohorte, ese tráfico aterriza sin match.
+
+Siguen **procesando**, ambos con el mismo mensaje "vuelve a comprobar esta
+sección mañana": **Indexación de páginas** y **Enlaces**. Ese segundo es el que
+alimentaría la columna `backlinks`.
 
 ---
 

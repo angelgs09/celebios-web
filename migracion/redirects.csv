@@ -13,12 +13,12 @@ https://www.celebios.com/inscripcion-rehabilitacion,/admisiones,301,instituciona
 https://www.celebios.com/chavez-gutierrez,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/itzaelatirjesselsolis,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/cortes-romero-fauna,/egresados,301,egresado,,,,,,media,baja,true
-https://www.celebios.com,/,301,home,home,,,,,alta,alta,false
+https://www.celebios.com,/,301,home,home,1,1,,,alta,alta,false
 https://www.celebios.com/felidos-torres-barraza,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
 https://www.celebios.com/paolamcanarromero,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/ortopedia-paulin-moran,/cursos#historico-ortopedia-aves,301,curso_historico,ortopedia-aves,,,,,media,alta,false
 https://www.celebios.com/salazar-gutierrez-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
-https://www.celebios.com/alexandraelizabethlaraperez,/egresados,301,egresado,,,,,,media,baja,true
+https://www.celebios.com/alexandraelizabethlaraperez,/egresados,301,egresado,,0,1,,,media,baja,true
 https://www.celebios.com/melissacarrilloescalante,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/gonzalez-padilla-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
 https://www.celebios.com/ortopedia-monroy-olvera,/cursos#historico-ortopedia-aves,301,curso_historico,ortopedia-aves,,,,,media,alta,false
@@ -62,13 +62,13 @@ https://www.celebios.com/ortopedia-machuca-esquivel,/cursos#historico-ortopedia-
 https://www.celebios.com/lorenaandresserradilla,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/espinola-alcantara-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
 https://www.celebios.com/joycemaradelpracachulo,/egresados,301,egresado,,,,,,media,baja,true
-https://www.celebios.com/campos-manzanares-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
+https://www.celebios.com/campos-manzanares-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,1,1,,,media,media,false
 https://www.celebios.com/anestesia-fauna-2020,/cursos#historico-anestesia,301,curso_historico,anestesia,,,,,media,alta,false
 https://www.celebios.com/moyano-devia-fauna,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/chavez-curiel-2017,/egresados#cohorte-2017,301,egresado,cohorte-2017,,,,,media,media,false
 https://www.celebios.com/torres-herrera,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/possani-espinosa,/egresados,301,egresado,,,,,,media,baja,true
-https://www.celebios.com/rehabilitacion-fauna-2024,/cursos#historico-rehabilitacion,301,curso_historico,rehabilitacion,,,,,media,alta,false
+https://www.celebios.com/rehabilitacion-fauna-2024,/cursos#historico-rehabilitacion,301,curso_historico,rehabilitacion,0,1,,,media,alta,false
 https://www.celebios.com/carmencallejogarcia,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/egresados-felidos-2023,/egresados#cohorte-2023,301,egresado,cohorte-2023,,,,,media,media,false
 https://www.celebios.com/karinaamesamesa,/egresados,301,egresado,,,,,,media,baja,true
@@ -85,7 +85,7 @@ https://www.celebios.com/juanjosediorio,/egresados,301,egresado,,,,,,media,baja,
 https://www.celebios.com/felidos-stefan-maisterow,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
 https://www.celebios.com/ortopedia-espinola-alcantara,/cursos#historico-ortopedia-aves,301,curso_historico,ortopedia-aves,,,,,media,alta,false
 https://www.celebios.com/bioetica,/cursos#historico-bioetica,301,curso_historico,bioetica,,,,,media,alta,false
-https://www.celebios.com/euniceguzmanescalante,/egresados,301,egresado,,,,,,media,baja,true
+https://www.celebios.com/euniceguzmanescalante,/egresados,301,egresado,,0,1,,,media,baja,true
 https://www.celebios.com/joselynmmorarodriguez,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/egresadosfelidos2021,/egresados#cohorte-2021,301,egresado,cohorte-2021,,,,,media,media,false
 https://www.celebios.com/nadiaj-garza-ramos,/egresados,301,egresado,,,,,,media,baja,true
@@ -100,7 +100,7 @@ https://www.celebios.com/felidos-garcia-perez,/cursos#historico-felidos,301,curs
 https://www.celebios.com/felidos-zuniga-zuniga,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
 https://www.celebios.com/carlosalfredopaulinmoran,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/copia-de-sig2020,/cursos#historico-sig-cartografia,301,curso_historico,sig-cartografia,,,,,media,alta,false
-https://www.celebios.com/manejo-conductual-fauna,/cursos#historico-conductual,301,curso_historico,conductual,,,,,media,alta,false
+https://www.celebios.com/manejo-conductual-fauna,/cursos#historico-conductual,301,curso_historico,conductual,0,4,,,media,alta,false
 https://www.celebios.com/vega-navarro,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/virginio-vazquez-rodriguez,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/inscripcion-felidos-2020,/admisiones,301,institucional,admision,,,,,media,alta,false
@@ -114,7 +114,7 @@ https://www.celebios.com/inscripcion-ortopedia-aves-2020,/admisiones,301,institu
 https://www.celebios.com/larissaalexandrariverapliego,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/felidos-rincon-olivares,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
 https://www.celebios.com/sanchez-carrillo-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
-https://www.celebios.com/paulinaachavezcontreras,/egresados,301,egresado,,,,,,media,baja,true
+https://www.celebios.com/paulinaachavezcontreras,/egresados,301,egresado,,0,3,,,media,baja,true
 https://www.celebios.com/felidos-domesticos-silvestres-2022,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
 https://www.celebios.com/ortopedia-alanis-lopez,/cursos#historico-ortopedia-aves,301,curso_historico,ortopedia-aves,,,,,media,alta,false
 https://www.celebios.com/sciabarrasi-2017,/egresados#cohorte-2017,301,egresado,cohorte-2017,,,,,media,media,false
@@ -175,7 +175,7 @@ https://www.celebios.com/ortopedia-reinoso-echavarria,/cursos#historico-ortopedi
 https://www.celebios.com/salgado-julian-fauna,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/sanchez-carrillo,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/cesarfernandoechaidesortiz,/egresados,301,egresado,,,,,,media,baja,true
-https://www.celebios.com/brisa-perez-castelazo,/egresados,301,egresado,,,,,,media,baja,true
+https://www.celebios.com/brisa-perez-castelazo,/egresados,301,egresado,,0,1,,,media,baja,true
 https://www.celebios.com/felidos-lopez-hernandez,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
 https://www.celebios.com/rominarodriguezdiaz,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/suarez-gutierrez-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
@@ -184,7 +184,7 @@ https://www.celebios.com/rehabilitacion2021,/cursos#historico-rehabilitacion,301
 https://www.celebios.com/ortopedia-ponce-jara,/cursos#historico-ortopedia-aves,301,curso_historico,ortopedia-aves,,,,,media,alta,false
 https://www.celebios.com/marisols-marquez-sanchez,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/ortopedia-solano-aravena,/cursos#historico-ortopedia-aves,301,curso_historico,ortopedia-aves,,,,,media,alta,false
-https://www.celebios.com/nosotros,/historia,301,institucional,historia,,,,,media,alta,false
+https://www.celebios.com/nosotros,/historia,301,institucional,historia,0,1,,,media,alta,false
 https://www.celebios.com/galindo-castillo-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
 https://www.celebios.com/salas-garcia,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/sordo-doporto-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
@@ -193,7 +193,7 @@ https://www.celebios.com/arguello-vargas-2017,/egresados#cohorte-2017,301,egresa
 https://www.celebios.com/copia-de-gen2018ortopediaaves,/cursos#historico-ortopedia-aves,301,curso_historico,ortopedia-aves,,,,,media,alta,false
 https://www.celebios.com/meneses-lavalley-2017,/egresados#cohorte-2017,301,egresado,cohorte-2017,,,,,media,media,false
 https://www.celebios.com/nutricion2024,/cursos#historico-nutricion,301,curso_historico,nutricion,,,,,media,alta,false
-https://www.celebios.com/jesusan-mauricio-pisco,/egresados,301,egresado,,,,,,media,baja,true
+https://www.celebios.com/jesusan-mauricio-pisco,/egresados,301,egresado,,0,1,,,media,baja,true
 https://www.celebios.com/brenda-lozano-chavez,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/cartografia-web-2021,/cursos#historico-sig-cartografia,301,curso_historico,sig-cartografia,,,,,media,alta,false
 https://www.celebios.com/felidos-escobar-cardenas,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
@@ -217,7 +217,7 @@ https://www.celebios.com/navarro-chavoya,/egresados,301,egresado,,,,,,media,baja
 https://www.celebios.com/egresadosfauna2021,/egresados#cohorte-2021,301,egresado,cohorte-2021,,,,,media,media,false
 https://www.celebios.com/ortega-castelazo,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/erikbaezjoe,/egresados,301,egresado,,,,,,media,baja,true
-https://www.celebios.com/melesio-navarro-2017,/egresados#cohorte-2017,301,egresado,cohorte-2017,,,,,media,media,false
+https://www.celebios.com/melesio-navarro-2017,/egresados#cohorte-2017,301,egresado,cohorte-2017,0,1,,,media,media,false
 https://www.celebios.com/shadycherediasantos,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/egresados-nutri-2021,/egresados#cohorte-2021,301,egresado,cohorte-2021,,,,,media,media,false
 https://www.celebios.com/gustavoagonzalezpadilla,/egresados,301,egresado,,,,,,media,baja,true
@@ -229,7 +229,7 @@ https://www.celebios.com/vicenteerivascervantes,/egresados,301,egresado,,,,,,med
 https://www.celebios.com/sarahzerbibpradere,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/enriquecastellanoslizcano,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/coyotl-otero-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
-https://www.celebios.com/imagenologia-caballos-2020,/cursos#historico-imagenologia-caballos,301,curso_historico,imagenologia-caballos,,,,,media,alta,false
+https://www.celebios.com/imagenologia-caballos-2020,/cursos#historico-imagenologia-caballos,301,curso_historico,imagenologia-caballos,0,2,,,media,alta,false
 https://www.celebios.com/arias-garcia,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/felidos-esparza-lupercio,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
 https://www.celebios.com/galeria-1,,404,sin_equivalente,,,,,,baja,alta,false
@@ -263,7 +263,7 @@ https://www.celebios.com/keeper,,404,sin_equivalente,,,,,,baja,alta,false
 https://www.celebios.com/felidos-domesticos-silvestres-2020,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
 https://www.celebios.com/itzelfuentesconde,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/marquez-jacome-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
-https://www.celebios.com/rubensaavedraperez,/egresados,301,egresado,,,,,,media,baja,true
+https://www.celebios.com/rubensaavedraperez,/egresados,301,egresado,,0,1,,,media,baja,true
 https://www.celebios.com/boletasaves,/cursos#historico-ortopedia-aves,301,curso_historico,ortopedia-aves,,,,,media,alta,false
 https://www.celebios.com/egresadoscaballos,/egresados#tema-imagenologia-caballos,301,egresado,imagenologia-caballos,,,,,media,media,false
 https://www.celebios.com/anayansicardonabazan,/egresados,301,egresado,,,,,,media,baja,true
@@ -306,8 +306,8 @@ https://www.celebios.com/baez-joe-fauna,/egresados,301,egresado,,,,,,media,baja,
 https://www.celebios.com/rebecasotoperez,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/cartografia-web,/cursos#historico-sig-cartografia,301,curso_historico,sig-cartografia,,,,,media,alta,false
 https://www.celebios.com/garcia-zendejas-2017,/egresados#cohorte-2017,301,egresado,cohorte-2017,,,,,media,media,false
-https://www.celebios.com/gen2018felidos,/egresados#cohorte-2018,301,egresado,cohorte-2018,,,,,media,media,false
-https://www.celebios.com/rehabilitacion,/cursos#historico-rehabilitacion,301,curso_historico,rehabilitacion,,,,,media,alta,false
+https://www.celebios.com/gen2018felidos,/egresados#cohorte-2018,301,egresado,cohorte-2018,0,1,,,media,media,false
+https://www.celebios.com/rehabilitacion,/cursos#historico-rehabilitacion,301,curso_historico,rehabilitacion,0,2,,,media,alta,false
 https://www.celebios.com/felidos-marquez-sanchez,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
 https://www.celebios.com/montserratmonterrosales,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/felidos-hernandez-osorno,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
@@ -317,7 +317,7 @@ https://www.celebios.com/marquez-sanchez,/egresados,301,egresado,,,,,,media,baja
 https://www.celebios.com/alejandrajosefinacrespogarza,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/monroy-olvera-2017,/egresados#cohorte-2017,301,egresado,cohorte-2017,,,,,media,media,false
 https://www.celebios.com/imagenfauna2023,/cursos#historico-imagenologia,301,curso_historico,imagenologia,,,,,media,alta,false
-https://www.celebios.com/carlososcarparraguirrediaz,/egresados,301,egresado,,,,,,media,baja,true
+https://www.celebios.com/carlososcarparraguirrediaz,/egresados,301,egresado,,0,1,,,media,baja,true
 https://www.celebios.com/tapia-colin-fauna,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/martinez-castanon-2017,/egresados#cohorte-2017,301,egresado,cohorte-2017,,,,,media,media,false
 https://www.celebios.com/christiana-cordoba-herrera,/egresados,301,egresado,,,,,,media,baja,true
@@ -345,7 +345,7 @@ https://www.celebios.com/felidos-ordonez-godoy,/cursos#historico-felidos,301,cur
 https://www.celebios.com/miguelahernandezrodriguez,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/ortopedia-alvarez-castro,/cursos#historico-ortopedia-aves,301,curso_historico,ortopedia-aves,,,,,media,alta,false
 https://www.celebios.com/valeriabgonzalezvelazquez,/egresados,301,egresado,,,,,,media,baja,true
-https://www.celebios.com/rehabilitacion-fauna-2025,/cursos#historico-rehabilitacion,301,curso_historico,rehabilitacion,,,,,media,alta,false
+https://www.celebios.com/rehabilitacion-fauna-2025,/cursos#historico-rehabilitacion,301,curso_historico,rehabilitacion,0,3,,,media,alta,false
 https://www.celebios.com/felidos-perez-castelazo,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
 https://www.celebios.com/cervantes-gomez-2017,/egresados#cohorte-2017,301,egresado,cohorte-2017,,,,,media,media,false
 https://www.celebios.com/felidos-baldenegro-marquez,/cursos#historico-felidos,301,curso_historico,felidos,,,,,media,alta,false
