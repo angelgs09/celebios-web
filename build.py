@@ -57,6 +57,20 @@ FRASES_RECHAZADAS = [
      "conteo de docentes sin fuente"),
 ]
 
+# Una tarjeta de catalogo que se anuncia disponible. El contrato de datos vive
+# en contenido/programas.json, pero lo que se publica es el HTML: sin esta
+# guarda los dos pueden divergir, y de hecho divergieron (el catalogo anunciaba
+# como disponibles, con precio, tres programas que el contrato marca historicos).
+TARJETA_DISPONIBLE_RE = re.compile(
+    r'<article\b[^>]*\bdata-estado="disp"[^>]*>.*?</article>', re.S | re.I
+)
+TARJETA_RE = re.compile(r'<article\b[^>]*>.*?</article>', re.S | re.I)
+HREF_RE = re.compile(r'href="([^"#?]+\.html)', re.I)
+# La otra mitad de la restriccion: un programa historico no lleva precio. Los
+# de Primeros Auxilios ($1,200) y Reptiles ($1,600) eran placeholders de una
+# ronda de diseno y se publicaron un mes como si fueran oferta real.
+PRECIO_RE = re.compile(r'\$\s?[\d,]+\s*(?:MXN|USD)\b', re.I)
+
 
 def ruta_canonica(html):
     """La ruta que la pagina declara para si misma, o None si no declara."""
@@ -408,6 +422,67 @@ def buscar_frases_rechazadas(paginas):
     return hallados
 
 
+def buscar_disponibilidad_falsa(paginas, programas):
+    """[(archivo, linea, destinos)] por cada tarjeta de catalogo que se anuncia
+    disponible sin enlazar a ningun programa que el contrato marque disponible.
+
+    El contrato de datos (contenido/programas.json) y el HTML publicado son dos
+    fuentes de verdad distintas y pueden divergir. Divergieron: el catalogo
+    anunciaba como disponibles, con precio, el diplomado de $19,500 y dos cursos
+    marcados historicos. Falla cerrado: una tarjeta 'disp' cuyo enlace no se
+    puede resolver cuenta como violacion."""
+    disponibles = {p["slug"] for p in programas if p["status"] == "available"}
+    mapa = {f.name: ruta for f, ruta in paginas.items()}
+    hallados = []
+    for f in sorted(paginas, key=lambda p: p.name):
+        texto = f.read_text(encoding="utf-8")
+        for m in TARJETA_DISPONIBLE_RE.finditer(texto):
+            destinos = {mapa.get(h) for h in HREF_RE.findall(m.group(0))}
+            destinos.discard(None)
+            if not (destinos & disponibles):
+                linea = texto.count("\n", 0, m.start()) + 1
+                hallados.append((f.name, linea, sorted(destinos)))
+        # Un precio en una tarjeta que solo apunta a programas historicos es la
+        # misma afirmacion de disponibilidad, dicha con dinero en vez de con un
+        # pill: lo cazamos aunque la tarjeta no se marque 'disp'.
+        for m in TARJETA_RE.finditer(texto):
+            if not PRECIO_RE.search(m.group(0)):
+                continue
+            destinos = {mapa.get(h) for h in HREF_RE.findall(m.group(0))}
+            destinos.discard(None)
+            if destinos and not (destinos & disponibles):
+                linea = texto.count("\n", 0, m.start()) + 1
+                if not any(h[:2] == (f.name, linea) for h in hallados):
+                    hallados.append((f.name, linea, sorted(destinos)))
+    return hallados
+
+
+def buscar_anclas_sin_destino(reglas, paginas):
+    """[(source, destination)] de las reglas activas cuyo fragmento no existe
+    como id en la pagina destino.
+
+    Un 301 a /cursos#historico-x cuando ese id no existe no rompe nada: el
+    navegador aterriza arriba de /cursos. Por eso en preview solo se reporta.
+    En --cutover si revienta: a esas alturas la promesa del contrato de
+    redirects tiene que estar cumplida, no aproximada."""
+    por_ruta = {ruta: f for f, ruta in paginas.items()}
+    ids_por_ruta = {}
+    sin_destino = []
+    for regla in reglas:
+        if "#" not in regla["destination"]:
+            continue
+        base, ancla = regla["destination"].split("#", 1)
+        base = base or "/"
+        if base not in por_ruta:
+            continue          # ya lo cubre el diferimiento por destino ausente
+        if base not in ids_por_ruta:
+            texto = por_ruta[base].read_text(encoding="utf-8")
+            ids_por_ruta[base] = set(re.findall(r'\bid="([^"]+)"', texto))
+        if ancla not in ids_por_ruta[base]:
+            sin_destino.append((regla["source"], regla["destination"]))
+    return sin_destino
+
+
 def construir(salida=None, cutover=False):
     salida = Path(salida) if salida is not None else OUT
 
@@ -450,6 +525,20 @@ def construir(salida=None, cutover=False):
             f"seguirian publicandose: {detalle}{mas}"
         )
 
+    # Misma restriccion, otra cara: solo el curso de gatos puede anunciarse
+    # disponible. El contrato lo dice en programas.json; esto lo hace valer en
+    # lo que de verdad se publica, que es el HTML.
+    falsas = buscar_disponibilidad_falsa(paginas, cargar_programas())
+    if falsas:
+        detalle = "; ".join(
+            f"{arch}:{ln} -> {dest or 'sin destino resoluble'}" for arch, ln, dest in falsas[:5]
+        )
+        mas = f" (+{len(falsas) - 5} mas)" if len(falsas) > 5 else ""
+        raise SystemExit(
+            f"ERROR: {len(falsas)} tarjeta(s) se anuncian disponibles sin enlazar a un "
+            f"programa disponible en contenido/programas.json: {detalle}{mas}"
+        )
+
     rutas_publicadas = set(paginas.values())
     with REDIRECTS_CSV.open(encoding="utf-8") as f:
         try:
@@ -469,8 +558,19 @@ def construir(salida=None, cutover=False):
             f"ERROR --cutover: {len(diferidas)} regla(s) de redirect diferida(s) "
             f"por conflicto con el build actual: {detalle}{mas}"
         )
+    anclas_huerfanas = buscar_anclas_sin_destino(reglas_bulk, paginas)
+    if cutover and anclas_huerfanas:
+        detalle = "; ".join(f"{s} -> {d}" for s, d in anclas_huerfanas[:5])
+        mas = f" (+{len(anclas_huerfanas) - 5} mas)" if len(anclas_huerfanas) > 5 else ""
+        raise SystemExit(
+            f"ERROR --cutover: {len(anclas_huerfanas)} regla(s) 301 apuntan a un ancla "
+            f"que no existe en la pagina destino: {detalle}{mas}"
+        )
+
     if diferidas:
         print(f"  {len(diferidas)} regla(s) de redirect diferida(s) (preview, no publicadas)")
+    if anclas_huerfanas:
+        print(f"  {len(anclas_huerfanas)} regla(s) 301 con ancla inexistente (preview; --cutover revienta)")
 
     mapa = {f.name: ruta for f, ruta in paginas.items()}
 

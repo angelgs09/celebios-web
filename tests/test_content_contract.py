@@ -740,5 +740,161 @@ class TestFrasesRechazadas(unittest.TestCase):
         self.assertEqual(hallados, [], f"afirmaciones rechazadas aun publicadas: {hallados}")
 
 
+class TestDisponibilidadFalsa(unittest.TestCase):
+    """contenido/programas.json y el HTML son dos fuentes de verdad y ya
+    divergieron una vez: el catalogo anunciaba disponibles, con precio, el
+    diplomado de $19,500 y dos cursos que el contrato marca historicos."""
+
+    PROGRAMAS = [
+        {"slug": "/curso-lenguaje-felino", "status": "available"},
+        {"slug": "/cursos/manejo-reptiles", "status": "historical"},
+    ]
+
+    def _paginas(self, tmp, **archivos):
+        paginas = {}
+        for nombre, (ruta, cuerpo) in archivos.items():
+            f = Path(tmp) / nombre
+            f.write_text(cuerpo, encoding="utf-8")
+            paginas[f] = ruta
+        return paginas
+
+    def test_tarjeta_disponible_que_apunta_a_un_historico_es_violacion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(
+                tmp,
+                **{
+                    "catalogo.html": ("/cursos", '<article data-estado="disp">'
+                                                 '<a href="curso-reptiles.html">Ver curso</a></article>'),
+                    "curso-reptiles.html": ("/cursos/manejo-reptiles", "<p>x</p>"),
+                },
+            )
+            hallados = build.buscar_disponibilidad_falsa(paginas, self.PROGRAMAS)
+            self.assertEqual(len(hallados), 1)
+            self.assertEqual(hallados[0][0], "catalogo.html")
+            self.assertEqual(hallados[0][2], ["/cursos/manejo-reptiles"])
+
+    def test_tarjeta_disponible_que_apunta_al_disponible_pasa(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(
+                tmp,
+                **{
+                    "catalogo.html": ("/cursos", '<article data-estado="disp">'
+                                                 '<a href="diplomado-rehab.html">Luego el diplomado</a>'
+                                                 '<a href="curso-gatos.html">Inscribirme</a></article>'),
+                    "curso-gatos.html": ("/curso-lenguaje-felino", "<p>x</p>"),
+                    "diplomado-rehab.html": ("/cursos/manejo-reptiles", "<p>x</p>"),
+                },
+            )
+            self.assertEqual(build.buscar_disponibilidad_falsa(paginas, self.PROGRAMAS), [])
+
+    def test_falla_cerrado_si_el_enlace_no_se_puede_resolver(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(
+                tmp,
+                **{"catalogo.html": ("/cursos", '<article data-estado="disp">sin enlace</article>')},
+            )
+            self.assertEqual(len(build.buscar_disponibilidad_falsa(paginas, self.PROGRAMAS)), 1)
+
+    def test_precio_en_una_tarjeta_historica_es_violacion_aunque_no_diga_disponible(self):
+        """El precio es una afirmacion de oferta vigente, se marque 'disp' o no."""
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(
+                tmp,
+                **{
+                    "catalogo.html": ("/cursos", '<article data-estado="hist">'
+                                                 '<a href="curso-reptiles.html">Ver curso</a>'
+                                                 '<span class="lam-price">$1,600 MXN</span></article>'),
+                    "curso-reptiles.html": ("/cursos/manejo-reptiles", "<p>x</p>"),
+                },
+            )
+            hallados = build.buscar_disponibilidad_falsa(paginas, self.PROGRAMAS)
+            self.assertEqual(len(hallados), 1)
+            self.assertEqual(hallados[0][2], ["/cursos/manejo-reptiles"])
+
+    def test_precio_en_la_tarjeta_del_curso_disponible_pasa(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(
+                tmp,
+                **{
+                    "catalogo.html": ("/cursos", '<article data-estado="disp">'
+                                                 '<a href="curso-gatos.html">Inscribirme</a>'
+                                                 '<span class="lam-price">$1,400 MXN</span></article>'),
+                    "curso-gatos.html": ("/curso-lenguaje-felino", "<p>x</p>"),
+                },
+            )
+            self.assertEqual(build.buscar_disponibilidad_falsa(paginas, self.PROGRAMAS), [])
+
+    def test_construir_revienta_antes_de_escribir(self):
+        falso = [("catalogo.html", 42, ["/cursos/manejo-reptiles"])]
+        with tempfile.TemporaryDirectory() as tmp:
+            salida = Path(tmp) / "site"
+            with mock.patch.object(build, "buscar_disponibilidad_falsa", return_value=falso):
+                with mock.patch.dict(os.environ, {}, clear=False):
+                    os.environ.pop("GA4_MEASUREMENT_ID", None)
+                    with self.assertRaises(SystemExit) as ctx:
+                        build.construir(salida=salida)
+            self.assertIn("catalogo.html:42", str(ctx.exception))
+            self.assertFalse(salida.exists())
+
+    def test_el_catalogo_real_solo_anuncia_disponible_el_curso_de_gatos(self):
+        paginas = {f: build.ruta_canonica(f.read_text(encoding="utf-8"))
+                   for f in sorted(build.SRC.glob("*.html"))}
+        paginas = {f: r for f, r in paginas.items() if r}
+        hallados = build.buscar_disponibilidad_falsa(paginas, build.cargar_programas())
+        self.assertEqual(hallados, [], f"tarjetas con disponibilidad falsa: {hallados}")
+
+
+class TestAnclasSinDestino(unittest.TestCase):
+    """113 de las 118 reglas activas apuntan a /cursos#historico-*. Si el id no
+    existe, el 301 aterriza arriba de la pagina en vez de en su seccion."""
+
+    # Temas historicos que aun no tienen tarjeta en el catalogo: los construye
+    # Task 3 con el archivo historico completo. El test admite que el conjunto
+    # de anclas huerfanas se encoja, nunca que crezca.
+    SIN_TARJETA_TODAVIA = {
+        "historico-medicina-preventiva", "historico-manejo-datos",
+        "historico-imagenologia-caballos", "historico-diagnostico-terapeutica",
+    }
+
+    def _paginas(self, tmp, cuerpo_cursos):
+        f = Path(tmp) / "catalogo.html"
+        f.write_text(cuerpo_cursos, encoding="utf-8")
+        return {f: "/cursos"}
+
+    def test_detecta_el_ancla_que_no_existe(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(tmp, '<article id="historico-felidos"></article>')
+            reglas = [{"source": "/x", "destination": "/cursos#historico-inventado", "statusCode": 301}]
+            self.assertEqual(build.buscar_anclas_sin_destino(reglas, paginas),
+                             [("/x", "/cursos#historico-inventado")])
+
+    def test_no_marca_el_ancla_que_si_existe(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(tmp, '<article id="historico-felidos"></article>')
+            reglas = [{"source": "/x", "destination": "/cursos#historico-felidos", "statusCode": 301}]
+            self.assertEqual(build.buscar_anclas_sin_destino(reglas, paginas), [])
+
+    def test_ignora_reglas_sin_fragmento_y_destinos_no_publicados(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(tmp, "<p>sin ids</p>")
+            reglas = [
+                {"source": "/a", "destination": "/cursos", "statusCode": 301},
+                {"source": "/b", "destination": "/egresados#cohorte-2019", "statusCode": 301},
+            ]
+            self.assertEqual(build.buscar_anclas_sin_destino(reglas, paginas), [])
+
+    def test_las_anclas_huerfanas_reales_son_solo_las_de_temas_sin_tarjeta(self):
+        paginas = {f: build.ruta_canonica(f.read_text(encoding="utf-8"))
+                   for f in sorted(build.SRC.glob("*.html"))}
+        paginas = {f: r for f, r in paginas.items() if r}
+        with build.REDIRECTS_CSV.open(encoding="utf-8") as f:
+            activas, _ = build.convertir_redirects_bulk(list(csv.DictReader(f)), set(paginas.values()))
+        huerfanas = {d.split("#", 1)[1] for _, d in build.buscar_anclas_sin_destino(activas, paginas)}
+        self.assertTrue(
+            huerfanas <= self.SIN_TARJETA_TODAVIA,
+            f"anclas huerfanas nuevas (alguien rompio un id existente): {huerfanas - self.SIN_TARJETA_TODAVIA}",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

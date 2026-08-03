@@ -666,6 +666,7 @@
  .chip.is-on[data-estado="prox"]{ background:var(--cobalto); border-color:var(--cobalto); color:#fff; }
  .chip.is-on[data-estado="prox"] .dotc.d-prox{ border-color:#fff; }
  .chip.is-on[data-estado="prod"]{ background:rgba(238,242,236,.12); border-color:var(--hueso); color:var(--hueso); }
+ .chip.is-on[data-estado="hist"]{ background:rgba(238,242,236,.12); border-color:var(--hueso); color:var(--hueso); }
 
  /* --- Conteo de resultados / estado vacio --- */
  .cat-meta-row{
@@ -900,6 +901,7 @@
  <button type="button" class="chip" data-estado="disp" aria-pressed="false"><span class="dotc d-disp"></span>Disponible</button>
  <button type="button" class="chip" data-estado="prox" aria-pressed="false"><span class="dotc d-prox"></span>Próxima</button>
  <button type="button" class="chip" data-estado="prod" aria-pressed="false"><span class="dotc d-prod"></span>En producción</button>
+ <button type="button" class="chip" data-estado="hist" aria-pressed="false"><span class="dotc d-prod"></span>Sin convocatoria</button>
  </div>
  </div>
  </div>
@@ -978,10 +980,10 @@
  <div class="grid" id="catGrid">
 
  <!-- ====== LAM 02 — DIPLOMADO REHAB · DESTACADA (DISPONIBLE / Rehabilitacion) ====== -->
- <article class="lamina is-disp is-feature" data-area="rehabilitacion" data-estado="disp">
+ <article class="lamina is-prod is-feature" id="historico-rehabilitacion" data-area="rehabilitacion" data-estado="hist">
  <div class="lamina-top">
  <span class="lam-no">Lam. 02 · Premium</span>
- <span class="pill pill-disp">Disponible</span>
+ <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
  <svg class="specimen" viewBox="0 0 220 130" aria-label="Ilustración: jaguar">
@@ -1009,8 +1011,7 @@
  <span class="mc">Selva Teenek · SLP</span>
  </div>
  <div class="lam-foot">
- <span class="lam-price"><span class="from">Desde</span>$19,500 MXN</span>
- <a class="ccta ccta-disp" href="diplomado-rehab.html" aria-label="Ver el Diplomado de Rescate y Rehabilitación de Fauna Silvestre">Ver diplomado</a>
+ <a class="ccta ccta-prod" href="diplomado-rehab.html" aria-label="Ver el Diplomado de Rescate y Rehabilitación de Fauna Silvestre">Ver diplomado</a>
  </div>
  </article>
 
@@ -1044,10 +1045,10 @@
  </article>
 
  <!-- ====== LAM 09 — PRIMEROS AUXILIOS · DISPONIBLE / Campo ====== -->
- <article class="lamina is-disp" data-area="campo" data-estado="disp">
+ <article class="lamina is-prod" data-area="campo" data-estado="hist">
  <div class="lamina-top">
  <span class="lam-no">Lam. 09</span>
- <span class="pill pill-disp">Disponible</span>
+ <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
  <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: zarigüeya">
@@ -1065,16 +1066,15 @@
  <h3><a href="curso-primeros-auxilios.html">Primeros Auxilios en Fauna Silvestre</a></h3>
  <p class="lam-meta">10 h · 100% online a tu ritmo</p>
  <div class="lam-foot">
- <span class="lam-price">$1,200 MXN</span>
- <a class="ccta ccta-disp" href="curso-primeros-auxilios.html" aria-label="Inscribirme al curso de Primeros Auxilios en Fauna Silvestre">Ver curso</a>
+ <a class="ccta ccta-prod" href="curso-primeros-auxilios.html" aria-label="Ver la ficha del curso de Primeros Auxilios en Fauna Silvestre">Ver curso</a>
  </div>
  </article>
 
  <!-- ====== LAM 12 — REPTILES · DISPONIBLE / Especies ====== -->
- <article class="lamina is-disp" data-area="especies" data-estado="disp">
+ <article class="lamina is-prod" data-area="especies" data-estado="hist">
  <div class="lamina-top">
  <span class="lam-no">Lam. 12</span>
- <span class="pill pill-disp">Disponible</span>
+ <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
  <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: tortuga">
@@ -1092,13 +1092,12 @@
  <h3><a href="curso-reptiles.html">Manejo y Bienestar de Reptiles</a></h3>
  <p class="lam-meta">14 h · 100% online a tu ritmo</p>
  <div class="lam-foot">
- <span class="lam-price">$1,600 MXN</span>
- <a class="ccta ccta-disp" href="curso-reptiles.html" aria-label="Inscribirme al curso de Manejo y Bienestar de Reptiles">Ver curso</a>
+ <a class="ccta ccta-prod" href="curso-reptiles.html" aria-label="Ver la ficha del curso de Manejo y Bienestar de Reptiles">Ver curso</a>
  </div>
  </article>
 
  <!-- ====== LAM 03 — MANEJO CONDUCTUAL · PROXIMA / Comportamiento ====== -->
- <article class="lamina is-prox" data-area="comportamiento" data-estado="prox">
+ <article id="historico-conductual" class="lamina is-prox" data-area="comportamiento" data-estado="prox">
  <div class="lamina-top">
  <span class="lam-no">Lam. 03</span>
  <span class="pill pill-prox">Abre Sep 2026 por confirmar</span>
@@ -1126,7 +1125,7 @@
  </article>
 
  <!-- ====== LAM 04 — ORTOPEDIA DE AVES · PROXIMA / Clinica ====== -->
- <article class="lamina is-prox" data-area="clinica" data-estado="prox">
+ <article id="historico-ortopedia-aves" class="lamina is-prox" data-area="clinica" data-estado="prox">
  <div class="lamina-top">
  <span class="lam-no">Lam. 04</span>
  <span class="pill pill-prox">Abre Oct 2026 por confirmar</span>
@@ -1155,7 +1154,7 @@
  </article>
 
  <!-- ====== LAM 05 — NUTRICION DE FAUNA · EN PRODUCCION / Nutricion ====== -->
- <article class="lamina is-prod" data-area="nutricion" data-estado="prod">
+ <article id="historico-nutricion" class="lamina is-prod" data-area="nutricion" data-estado="prod">
  <div class="lamina-top">
  <span class="lam-no">Lam. 05</span>
  <span class="pill pill-prod">En producción</span>
@@ -1182,7 +1181,7 @@
  </article>
 
  <!-- ====== LAM 06 — ANESTESIA Y CONTENCION · EN PRODUCCION / Clinica ====== -->
- <article class="lamina is-prod" data-area="clinica" data-estado="prod">
+ <article id="historico-anestesia" class="lamina is-prod" data-area="clinica" data-estado="prod">
  <div class="lamina-top">
  <span class="lam-no">Lam. 06</span>
  <span class="pill pill-prod">En producción</span>
@@ -1209,7 +1208,7 @@
  </article>
 
  <!-- ====== LAM 07 — MEDICINA INTERNA · EN PRODUCCION / Clinica ====== -->
- <article class="lamina is-prod" data-area="clinica" data-estado="prod">
+ <article id="historico-medicina-interna" class="lamina is-prod" data-area="clinica" data-estado="prod">
  <div class="lamina-top">
  <span class="lam-no">Lam. 07</span>
  <span class="pill pill-prod">En producción</span>
@@ -1238,7 +1237,7 @@
  </article>
 
  <!-- ====== LAM 08 — FELIDOS DOMESTICOS Y SILVESTRES · EN PRODUCCION / Especies ====== -->
- <article class="lamina is-prod" data-area="especies" data-estado="prod">
+ <article id="historico-felidos" class="lamina is-prod" data-area="especies" data-estado="prod">
  <div class="lamina-top">
  <span class="lam-no">Lam. 08</span>
  <span class="pill pill-prod">En producción</span>
@@ -1267,7 +1266,7 @@
  </article>
 
  <!-- ====== LAM 10 — BIOETICA · EN PRODUCCION / Bioetica ====== -->
- <article class="lamina is-prod" data-area="bioetica" data-estado="prod">
+ <article id="historico-bioetica" class="lamina is-prod" data-area="bioetica" data-estado="prod">
  <div class="lamina-top">
  <span class="lam-no">Lam. 10</span>
  <span class="pill pill-prod">En producción</span>
@@ -1296,7 +1295,7 @@
  </article>
 
  <!-- ====== LAM 11 — IMAGENOLOGIA · EN PRODUCCION / Clinica ====== -->
- <article class="lamina is-prod" data-area="clinica" data-estado="prod">
+ <article id="historico-imagenologia" class="lamina is-prod" data-area="clinica" data-estado="prod">
  <div class="lamina-top">
  <span class="lam-no">Lam. 11</span>
  <span class="pill pill-prod">En producción</span>
@@ -1324,7 +1323,7 @@
  </article>
 
  <!-- ====== LAM 13 — SIG · EN PRODUCCION / Campo ====== -->
- <article class="lamina is-prod" data-area="campo" data-estado="prod">
+ <article id="historico-sig-cartografia" class="lamina is-prod" data-area="campo" data-estado="prod">
  <div class="lamina-top">
  <span class="lam-no">Lam. 13</span>
  <span class="pill pill-prod">En producción</span>
@@ -1349,7 +1348,7 @@
  </article>
 
  <!-- ====== LAM 14 — IMPACTO AMBIENTAL · EN PRODUCCION / Campo ====== -->
- <article class="lamina is-prod" data-area="campo" data-estado="prod">
+ <article id="historico-impacto-ambiental" class="lamina is-prod" data-area="campo" data-estado="prod">
  <div class="lamina-top">
  <span class="lam-no">Lam. 14</span>
  <span class="pill pill-prod">En producción</span>
