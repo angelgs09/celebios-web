@@ -184,7 +184,7 @@ https://www.celebios.com/rehabilitacion2021,/cursos#historico-rehabilitacion,301
 https://www.celebios.com/ortopedia-ponce-jara,/cursos#historico-ortopedia-aves,301,curso_historico,ortopedia-aves,,,,,media,alta,false
 https://www.celebios.com/marisols-marquez-sanchez,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/ortopedia-solano-aravena,/cursos#historico-ortopedia-aves,301,curso_historico,ortopedia-aves,,,,,media,alta,false
-https://www.celebios.com/nosotros,/historia,301,institucional,historia,0,1,,,media,alta,false
+https://www.celebios.com/nosotros,/nosotros,301,institucional,historia,0,1,,,media,alta,false
 https://www.celebios.com/galindo-castillo-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
 https://www.celebios.com/salas-garcia,/egresados,301,egresado,,,,,,media,baja,true
 https://www.celebios.com/sordo-doporto-2016,/egresados#cohorte-2016,301,egresado,cohorte-2016,,,,,media,media,false
@@ -374,14 +374,14 @@ https://www.celebios.online/nutricionfauna,/cursos#historico-nutricion,301,curso
 https://www.celebios.online/lenguaje-y-comunicacion-de-los-gatos,/curso-lenguaje-felino,301,curso_disponible,gatos,,,,,alta,alta,false
 https://www.celebios.online/nutricion2025,/cursos#historico-nutricion,301,curso_historico,nutricion,,,,,media,alta,false
 https://www.celebios.online/nutricion2024,/cursos#historico-nutricion,301,curso_historico,nutricion,,,,,media,alta,false
-https://www.celebios.online/diplomado-rescate-rehabilitacion-fauna,/cursos#historico-rehabilitacion,301,curso_historico,rehabilitacion,,,,,media,alta,false
+https://www.celebios.online/diplomado-rescate-rehabilitacion-fauna,/diplomado-rescate-rehabilitacion-fauna,301,curso_historico,rehabilitacion,,,,,media,alta,false
 https://www.celebios.online/cursos,/cursos,301,curso_historico,catalogo,,,,,media,alta,false
 https://www.celebios.online/home,/,301,home,home,,,,,alta,alta,false
-https://www.celebios.online/nosotros,/historia,301,institucional,historia,,,,,media,alta,false
+https://www.celebios.online/nosotros,/nosotros,301,institucional,historia,,,,,media,alta,false
 https://www.celebios.online/curso-lenguaje-felino,/curso-lenguaje-felino,301,curso_disponible,gatos,,,,,alta,alta,false
 https://www.celebios.online/curso-anestesia,/cursos#historico-anestesia,301,curso_historico,anestesia,,,,,media,alta,false
 https://www.celebios.online/,/,301,home,home,,,,,alta,alta,false
-https://www.celebios.online/about,/historia,301,institucional,historia,,,,,media,alta,false
+https://www.celebios.online/about,/nosotros,301,institucional,historia,,,,,media,alta,false
 https://www.celebios.online/contact,/contacto,301,institucional,contacto,,,,,media,alta,false
 https://www.celebios.online/test,,404,sin_equivalente,,,,,,baja,alta,false
 https://www.celebios.online/store,/cursos,301,curso_historico,catalogo,,,,,media,alta,false

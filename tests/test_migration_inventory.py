@@ -181,9 +181,23 @@ class TestClassifySourceSemantics(unittest.TestCase):
         self.assertEqual(categoria, "curso_historico")
         self.assertEqual(destino, "/cursos")
 
-    def test_nosotros_es_alias_de_historia(self):
+    def test_nosotros_se_queda_en_su_propia_ruta(self):
+        # Antes apuntaba a /historia. Se revirtio a proposito: /nosotros es la
+        # URL con historial real (85 visitas en Wix, impresiones en GSC) y la
+        # pagina institucional se publica ahi, asi que mandarla a /historia
+        # anadia un salto 301 a cambio de un nombre mas bonito.
         _, _, destino = classify_source("/nosotros", "celebios.com")
-        self.assertEqual(destino, "/historia")
+        self.assertEqual(destino, "/nosotros")
+
+    def test_about_de_kajabi_llega_a_nosotros(self):
+        _, _, destino = classify_source("/about", "celebios.online")
+        self.assertEqual(destino, "/nosotros")
+
+    def test_el_diplomado_de_kajabi_llega_a_su_ficha_no_al_catalogo(self):
+        # Tenia destino /cursos#historico-rehabilitacion, que sombreaba la
+        # ficha publicada en esa misma ruta.
+        _, _, destino = classify_source("/diplomado-rescate-rehabilitacion-fauna", "celebios.online")
+        self.assertEqual(destino, "/diplomado-rescate-rehabilitacion-fauna")
 
     def test_contacto_es_alias_de_contacto(self):
         _, _, destino = classify_source("/contacto", "celebios.com")

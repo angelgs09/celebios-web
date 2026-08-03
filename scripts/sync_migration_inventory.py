@@ -62,7 +62,8 @@ CSV_FIELDS = [
 # sitio (ver plan de rediseno). Cualquier fragmento (#...) es adicional a
 # esto, nunca reemplaza la base.
 DESTINOS_BASE_VALIDOS = {
-    "/", "/aula", "/cursos", "/curso-lenguaje-felino", "/historia",
+    "/", "/aula", "/cursos", "/curso-lenguaje-felino", "/nosotros",
+    "/diplomado-rescate-rehabilitacion-fauna",
     "/egresados", "/practicas-de-campo", "/docentes", "/admisiones",
     "/contacto", "/aviso-de-privacidad",
 }
@@ -159,8 +160,8 @@ _KAJABI_MAP = {
     "/home": ("home", "home", "/"),
     "/cursos": ("curso_historico", "catalogo", "/cursos"),
     "/store": ("curso_historico", "catalogo", "/cursos"),
-    "/nosotros": ("institucional", "historia", "/historia"),
-    "/about": ("institucional", "historia", "/historia"),
+    "/nosotros": ("institucional", "historia", "/nosotros"),
+    "/about": ("institucional", "historia", "/nosotros"),
     "/contact": ("institucional", "contacto", "/contacto"),
     "/test": ("sin_equivalente", "", ""),
     "/nutricionfauna": ("curso_historico", "nutricion", "/cursos#historico-nutricion"),
@@ -168,12 +169,12 @@ _KAJABI_MAP = {
     "/nutricion2025": ("curso_historico", "nutricion", "/cursos#historico-nutricion"),
     "/lenguaje-y-comunicacion-de-los-gatos": ("curso_disponible", "gatos", "/curso-lenguaje-felino"),
     "/curso-lenguaje-felino": ("curso_disponible", "gatos", "/curso-lenguaje-felino"),
-    "/diplomado-rescate-rehabilitacion-fauna": ("curso_historico", "rehabilitacion", "/cursos#historico-rehabilitacion"),
+    "/diplomado-rescate-rehabilitacion-fauna": ("curso_historico", "rehabilitacion", "/diplomado-rescate-rehabilitacion-fauna"),
     "/curso-anestesia": ("curso_historico", "anestesia", "/cursos#historico-anestesia"),
 }
 
 _WIX_EXPLICITAS = {
-    "/nosotros": ("institucional", "historia", "/historia"),
+    "/nosotros": ("institucional", "historia", "/nosotros"),
     "/contacto": ("institucional", "contacto", "/contacto"),
     "/aviso-de-privacidad": ("institucional", "aviso-privacidad", "/aviso-de-privacidad"),
     "/aula-virtual": ("institucional", "aula", "/aula"),

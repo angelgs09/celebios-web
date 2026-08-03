@@ -506,14 +506,18 @@ class TestConvertirRedirectsBulk(unittest.TestCase):
                 [{"source_url": "https://www.celebios.com/x"}], rutas_publicadas=set()
             )
 
-    def test_hay_reglas_diferidas_conocidas_pre_task3(self):
+    def test_ya_no_queda_ninguna_regla_diferida(self):
+        """Sustituye a `test_hay_reglas_diferidas_conocidas_pre_task3`, que
+        afirmaba lo contrario porque los destinos aun no existian. Al publicar
+        /egresados, /contacto, /admisiones y /aviso-de-privacidad, y al resolver
+        /nosotros y la ficha del diplomado, el diferimiento bajo de 251 a 0.
+        Volver a diferir una regla es ahora una regresion, no un pendiente."""
         with (RAIZ / "migracion" / "redirects.csv").open(encoding="utf-8") as f:
             filas = list(csv.DictReader(f))
-        rutas_publicadas = build.rutas_canonicas_fuente()
-        _, diferidas = build.convertir_redirects_bulk(filas, rutas_publicadas)
-        origenes_diferidos = {d["source"] for d in diferidas}
-        self.assertIn("/nosotros", origenes_diferidos)
-        self.assertIn("/diplomado-rescate-rehabilitacion-fauna", origenes_diferidos)
+        _, diferidas = build.convertir_redirects_bulk(filas, build.rutas_canonicas_fuente())
+        self.assertEqual(
+            [(d["source"], d["destination"], "+".join(d["reasons"])) for d in diferidas], []
+        )
 
 
 class TestGA4(unittest.TestCase):
@@ -652,17 +656,37 @@ class TestConstruirPreservaVercelDir(unittest.TestCase):
 
 
 class TestCutover(unittest.TestCase):
-    def test_cutover_revienta_antes_de_escribir_por_reglas_diferidas_pre_task3(self):
+    def test_cutover_revienta_antes_de_escribir_si_queda_una_diferida(self):
+        """Antes este test se apoyaba en que el repo real tenia diferidas. Ya
+        no las tiene, asi que la regla que dispara el fallo se inyecta aqui:
+        el mecanismo hay que seguir probandolo, y ahora aislado del estado."""
+        with tempfile.TemporaryDirectory() as tmp:
+            csv_falso = Path(tmp) / "redirects.csv"
+            csv_falso.write_text(
+                "source_url,destination_path,status_code\n"
+                "https://www.celebios.com/lo-que-sea,/ruta-que-no-existe,301\n",
+                encoding="utf-8",
+            )
+            salida = Path(tmp) / "site"
+            with mock.patch.object(build, "REDIRECTS_CSV", csv_falso):
+                with mock.patch.dict(os.environ, {}, clear=False):
+                    os.environ.pop("GA4_MEASUREMENT_ID", None)
+                    with self.assertRaises(SystemExit) as ctx:
+                        build.construir(salida=salida, cutover=True)
+            self.assertIn("cutover", str(ctx.exception).lower())
+            self.assertFalse(salida.exists())
+
+    def test_cutover_pasa_con_el_estado_real(self):
+        """El invariante nuevo: el sitio esta en condiciones de corte. Si algo
+        vuelve a diferir una regla o a dejar un ancla sin destino, esto avisa."""
         with tempfile.TemporaryDirectory() as tmp:
             salida = Path(tmp) / "site"
             with mock.patch.dict(os.environ, {}, clear=False):
                 os.environ.pop("GA4_MEASUREMENT_ID", None)
-                with self.assertRaises(SystemExit) as ctx:
-                    build.construir(salida=salida, cutover=True)
-            self.assertIn("cutover", str(ctx.exception).lower())
-            self.assertFalse(salida.exists())
+                build.construir(salida=salida, cutover=True)
+            self.assertTrue((salida / "migracion" / "redirects.csv").exists())
 
-    def test_preview_sin_cutover_no_revienta_pese_a_diferidas(self):
+    def test_preview_sin_cutover_tampoco_revienta(self):
         with tempfile.TemporaryDirectory() as tmp:
             salida = Path(tmp) / "site"
             with mock.patch.dict(os.environ, {}, clear=False):
