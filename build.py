@@ -43,6 +43,20 @@ CAMPOS_REDIRECT = {"source_url", "destination_path", "status_code"}
 EVIDENCIA_ANCLA_RE = re.compile(r'^(?P<path>[^#]+)#L(?P<inicio>\d+)(?:-L(?P<fin>\d+))?$')
 GA4_RE = re.compile(r'G-[A-Z0-9]+')
 
+# Afirmaciones que INVESTIGACION.md (tabla "Rechazadas") descarto por falta de
+# evidencia, y que el plan prohibe publicar. Limpiarlas del HTML no basta: sin
+# esta guarda, la siguiente persona que reescriba una plantilla las reintroduce
+# y nadie se entera hasta que ya estan en produccion. Los patrones aceptan la
+# forma con y sin tilde porque el JSON-LD de las maquetas va sin tildes.
+FRASES_RECHAZADAS = [
+    (re.compile(r'[úu]nica\s+academia', re.I),
+     "superlativo de exclusividad sin fuente"),
+    (re.compile(r'validez\s+oficial', re.I),
+     "'validez oficial' es un termino legal (RVOE/SEP) que ninguna fuente confirma"),
+    (re.compile(r'\d+\s+especialistas', re.I),
+     "conteo de docentes sin fuente"),
+]
+
 
 def ruta_canonica(html):
     """La ruta que la pagina declara para si misma, o None si no declara."""
@@ -379,6 +393,21 @@ def reescribir(html, mapa):
     return html
 
 
+def buscar_frases_rechazadas(paginas):
+    """[(archivo, linea, texto, motivo)] por cada afirmacion rechazada que
+    seguiria publicandose. Se busca en la fuente de redesign-v2 y no en la
+    salida porque `reescribir` solo toca enlaces: la prosa publicada es la
+    misma, y asi se puede reventar antes de escribir nada en disco."""
+    hallados = []
+    for f in sorted(paginas, key=lambda p: p.name):
+        for i, linea in enumerate(f.read_text(encoding="utf-8").splitlines(), 1):
+            for patron, motivo in FRASES_RECHAZADAS:
+                m = patron.search(linea)
+                if m:
+                    hallados.append((f.name, i, m.group(0), motivo))
+    return hallados
+
+
 def construir(salida=None, cutover=False):
     salida = Path(salida) if salida is not None else OUT
 
@@ -407,6 +436,19 @@ def construir(salida=None, cutover=False):
         if ruta in vistas:
             raise SystemExit(f"ERROR: {f.name} y {vistas[ruta].name} declaran {ruta}")
         vistas[ruta] = f
+
+    # Restriccion global del plan: no se publican afirmaciones sin respaldo.
+    # Va antes de tocar disco, igual que el gate de --cutover.
+    rechazadas = buscar_frases_rechazadas(paginas)
+    if rechazadas:
+        detalle = "; ".join(
+            f"{arch}:{ln} {txt!r} ({motivo})" for arch, ln, txt, motivo in rechazadas[:5]
+        )
+        mas = f" (+{len(rechazadas) - 5} mas)" if len(rechazadas) > 5 else ""
+        raise SystemExit(
+            f"ERROR: {len(rechazadas)} afirmacion(es) que INVESTIGACION.md rechazo "
+            f"seguirian publicandose: {detalle}{mas}"
+        )
 
     rutas_publicadas = set(paginas.values())
     with REDIRECTS_CSV.open(encoding="utf-8") as f:

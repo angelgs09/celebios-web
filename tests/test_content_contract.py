@@ -671,5 +671,74 @@ class TestCutover(unittest.TestCase):
             self.assertTrue((salida / "migracion" / "redirects.csv").exists())
 
 
+class TestFrasesRechazadas(unittest.TestCase):
+    """La tabla "Rechazadas" de INVESTIGACION.md no puede quedarse en prosa:
+    si nada la hace cumplir, la siguiente reescritura de plantilla reintroduce
+    las afirmaciones y llegan a produccion."""
+
+    def _pagina(self, tmp, texto):
+        f = Path(tmp) / "pagina.html"
+        f.write_text(texto, encoding="utf-8")
+        return f
+
+    def test_detecta_las_afirmaciones_rechazadas(self):
+        casos = [
+            "<p>La única academia latinoamericana de fauna silvestre</p>",
+            '"description": "La unica academia latinoamericana"',   # JSON-LD sin tildes
+            "<strong>Diploma con validez oficial</strong>",
+            "un diploma con Validez Oficial, emitido por",
+            "<p>Claustro internacional · 12 especialistas de México</p>",
+        ]
+        for texto in casos:
+            with self.subTest(texto=texto), tempfile.TemporaryDirectory() as tmp:
+                hallados = build.buscar_frases_rechazadas([self._pagina(tmp, texto)])
+                self.assertEqual(len(hallados), 1, f"no detecto: {texto!r}")
+                arch, linea, encontrado, motivo = hallados[0]
+                self.assertEqual(arch, "pagina.html")
+                self.assertEqual(linea, 1)
+                self.assertTrue(motivo)
+
+    def test_no_marca_la_redaccion_corregida(self):
+        """El reemplazo que prescribe INVESTIGACION.md no puede disparar la
+        guarda, o el arreglo seria imposible de aplicar."""
+        legitimos = [
+            "<p>Academia latinoamericana de fauna silvestre avalada por CONCERVET</p>",
+            "<strong>Diploma con valor curricular</strong>, avalado por CONCERVET",
+            "<p>Claustro internacional de especialistas</p>",
+            "<p>Con validez de constancia interna</p>",
+        ]
+        for texto in legitimos:
+            with self.subTest(texto=texto), tempfile.TemporaryDirectory() as tmp:
+                self.assertEqual(build.buscar_frases_rechazadas([self._pagina(tmp, texto)]), [])
+
+    def test_reporta_archivo_y_linea_de_cada_ocurrencia(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            f = self._pagina(tmp, "ok\n<p>validez oficial</p>\nok\n<p>única academia</p>\n")
+            hallados = build.buscar_frases_rechazadas([f])
+            self.assertEqual([(h[1], h[2]) for h in hallados],
+                             [(2, "validez oficial"), (4, "única academia")])
+
+    def test_construir_revienta_antes_de_escribir(self):
+        """La guarda va cableada al build, no solo disponible como funcion."""
+        falso = [("maqueta.html", 7, "validez oficial", "motivo de prueba")]
+        with tempfile.TemporaryDirectory() as tmp:
+            salida = Path(tmp) / "site"
+            with mock.patch.object(build, "buscar_frases_rechazadas", return_value=falso):
+                with mock.patch.dict(os.environ, {}, clear=False):
+                    os.environ.pop("GA4_MEASUREMENT_ID", None)
+                    with self.assertRaises(SystemExit) as ctx:
+                        build.construir(salida=salida)
+            self.assertIn("maqueta.html:7", str(ctx.exception))
+            self.assertFalse(salida.exists(), "no debe dejar un build a medias")
+
+    def test_las_plantillas_publicables_estan_limpias(self):
+        """Regresion sobre el contenido real: ninguna pagina con canonical
+        (las que el build publica) trae una afirmacion rechazada."""
+        publicables = [f for f in sorted(build.SRC.glob("*.html"))
+                       if build.ruta_canonica(f.read_text(encoding="utf-8"))]
+        hallados = build.buscar_frases_rechazadas(publicables)
+        self.assertEqual(hallados, [], f"afirmaciones rechazadas aun publicadas: {hallados}")
+
+
 if __name__ == "__main__":
     unittest.main()

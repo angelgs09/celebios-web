@@ -3,8 +3,9 @@
 Registro de qué afirmaciones sobre CELEBIOS están respaldadas por evidencia y cuáles no.
 Cuatro estados: **confirmada** (fuente verificable, se puede publicar), **histórica**
 (cierta en el pasado, no implica oferta vigente), **pendiente** (no hay evidencia
-suficiente; no se publica hasta confirmar), **rechazada** (afirmación en uso hoy en
-`redesign-v2/*.html` que NO tiene respaldo y debe quitarse o reescribirse en Task 3).
+suficiente; no se publica hasta confirmar), **rechazada** (afirmación sin respaldo que estaba
+en uso en `redesign-v2/*.html`; las cuatro se retiraron el 2026-08-02 y `build.py` impide que
+vuelvan).
 
 Fecha de acceso de esta revisión: **2026-08-01**, con correcciones verificadas el
 **2026-08-02** (esquema de bulk redirects y estado de Search Console; cada una está fechada
@@ -45,14 +46,31 @@ Un programa histórico solo lleva slug/título/categoría/tema/resumen/evidencia
 
 | Claim | Por qué está pendiente | Fuente | Fecha de acceso |
 |---|---|---|---|
-| Diplomado de Nutrición y Alimentación de Fauna Silvestre estaría en 4ª generación ACTIVA (docente MVZ Maribel Anaya, práctica en Zoológico de Cali) | Un solo hallazgo de Instagram, marcado por la propia fuente como `[CONFIRMAR si quieres página propia]`; no aparece en el scrape de sitio ni en `redirects.csv` como convocatoria abierta. Contradice la instrucción vigente de que solo el curso de gatos está `disponible`. Se trata como histórico en `programas.json` hasta que Angel lo confirme. | `redesign-v2/DATOS-REALES-harvest.md` | 2026-08-01 |
+| ~~Diplomado de Nutrición y Alimentación de Fauna Silvestre estaría en 4ª generación ACTIVA~~ **RESUELTO el 2026-08-02: confirmado con fuente pública.** Ver "Actualización 2026-08-02 — barrido de evidencia" al final de este documento. Lo que queda abierto ya no es la existencia del programa (probada), sino la decisión de negocio de si se publica, y las credenciales exactas de Maribel Anaya. | — | 2026-08-02 |
 | Próxima edición (fecha/precio) del Diplomado de Rescate y Rehabilitación | La 3ª edición cerró 30-jun-2025; no hay fecha ni precio de una 4ª edición en ninguna fuente. | `PENDIENTES-CONTENIDO.md` | 2026-08-01 |
 | Verbo exacto de las alianzas UNAM/UAEH/IFAW (¿convenio formal? ¿"docentes provienen de"?) | Ninguna fuente especifica el tipo de relación institucional; framing seguro actual es "docentes con trayectoria en". | `redesign-v2/DATOS-REALES-harvest.md`, `PENDIENTES-CONTENIDO.md` | 2026-08-01 |
 | Contenido, duración, docentes y fechas de "Primeros Auxilios para Fauna Silvestre" y "Manejo de Reptiles" | Ninguna de las fuentes de evidencia (`CONTENIDO-REAL.md`, `DATOS-REALES-harvest.md`, `PENDIENTES-CONTENIDO.md`) menciona estos dos programas más allá de que existen como página en `redesign-v2`. | `redesign-v2/curso-primeros-auxilios.html`, `redesign-v2/curso-reptiles.html` | 2026-08-01 |
 | RFC y domicilio fiscal exacto; número exacto de egresados; teléfono fijo; autores del blog | Flags explícitos sin dato público. | `redesign-v2/DATOS-REALES-harvest.md` | 2026-08-01 |
 | Precio base vigente del diplomado (¿sigue en $19,500 o subió?) | La convocatoria histórica mostraba $20,384 (=$19,500 + 4% PayPal); no hay confirmación de precio actual. | `redesign-v2/DATOS-REALES-harvest.md` | 2026-08-01 |
 
-## Rechazadas (en uso hoy en `redesign-v2/*.html`, sin respaldo — corregir en Task 3)
+## Rechazadas (RETIRADAS del HTML el 2026-08-02; la columna "Dónde aparecía" es histórica)
+
+**Estado: cerradas.** Las cuatro afirmaciones de esta tabla se retiraron de `redesign-v2/*.html`
+el 2026-08-02 y ya no se publican. No se dejaron a la buena voluntad de la siguiente
+reescritura: `build.py` (`FRASES_RECHAZADAS` + `buscar_frases_rechazadas`) revienta el build
+antes de escribir en disco si alguna reaparece, y `tests/test_content_contract.py`
+(`TestFrasesRechazadas`) lo defiende. Los reemplazos aplicados son los que esta misma tabla
+prescribía: "única academia…" → "Academia latinoamericana…"; "diploma con validez oficial,
+emitido por una institución universitaria y respaldado por CONCERVET" → "diploma con valor
+curricular, avalado por CONCERVET"; "Claustro internacional · 12 especialistas de México,
+España, Costa Rica y Estados Unidos" → "Claustro internacional de especialistas" con la lista
+nominal marcada por confirmar.
+
+**Nota de alcance honesta:** el registro asignaba esta corrección a Task 3, pero la restricción
+global del plan ("no publicar afirmaciones no verificadas") está vigente hoy y el build las
+estaba publicando hoy. Se prioriza la restricción sobre la nota de calendario. Task 3 reescribe
+estas plantillas, así que el texto puede cambiar; la guarda de `build.py` no.
+
 
 | Claim en uso | Dónde aparece hoy | Por qué se rechaza |
 |---|---|---|
@@ -146,3 +164,63 @@ page views de Wix, que es una métrica distinta (tráfico de página, no señal 
 búsqueda orgánica de Google), ni con el informe HTTPS de GSC (28 URLs), que es
 estado de certificado. El corte real y el diseño final siguen esperando el
 primer export CON DATOS de `sc-domain:celebios.com` y su aprobación.
+
+---
+
+## Actualización 2026-08-02 — barrido de evidencia sobre tres programas
+
+Barrido multi-modal (redes vía Apify, sitemaps vivos de ambos dominios, Wayback, buscadores y
+el propio repo) con verificación independiente de cada hallazgo abriendo la fuente.
+**Limitación honesta: 11 de 62 agentes murieron por errores de conexión de API, así que el
+barrido NO es exhaustivo.** Lo que sigue es lo que sí quedó verificado con cita literal.
+
+### Diplomado en Nutrición y Alimentación de Fauna Silvestre — CONFIRMADO, real y vigente
+
+Deja de ser un "hallazgo de Instagram sin confirmar". Hay evidencia pública y de dominio propio:
+
+| Hecho | Fuente | Cita literal |
+|---|---|---|
+| La 4ª generación ya corrió su semana práctica | https://www.celebios.online/nutricion2025 | "(4a generación)" y "Colombia, Zoológico de Cali: 11 al 15 de agosto, 2025 (cupo lleno)" |
+| La semana práctica se impartió, no solo se anunció | Facebook `/celebi0s`, post del 2025-08-12 | "¡Inició la semana práctica del Diplomado en Nutrición y Alimentación de Fauna Silvestre Bajo Cuidado Humano! … Nuestros alumnos llegaron al Zoológico de Cali para iniciar sus 40 horas del módulo práctico … Contamos con participantes de Perú, Colombia, Venezuela y México" |
+| Concluyó, con constancias entregadas | Facebook `/celebi0s`, post del 2025-08-16 | "Hoy concluimos una semana llena de aprendizaje y experiencias en el Zoológico de Cali. Nuestros alumnos recibieron sus constancias de participación" |
+| Existe desde 2019 | https://www.celebios.com/nutricion-2021 (HTTP 200) | "DIPLOMADO EN NUTRICIÓN Y ALIMENTACIÓN DE FAUNA SILVESTRE EN CAUTIVERIO"; 1ª generación jun–nov 2019, 80 h teóricas en línea + 40 h prácticas |
+| Tiene tráfico registrado | `migracion/wix-page-visits-normalized.csv` | `/nutricion2024` con 135 vistas, 117 sesiones, 93 visitantes únicos |
+
+**Precisiones que NO se deben perder al publicar:**
+
+- La práctica **en México** solo está **anunciada** ("se viene una extraordinaria práctica ahora
+  en México"), no hay evidencia de que se haya impartido. Anuncio ≠ hecho.
+- **Maribel Anaya**: el sitio propio de CELEBIOS la registra como "M. en C. Maribel Anaya Lira,
+  COORDINADORA DEL DIPLOMADO"; los posts de Facebook la llaman "Dra." y "MVZ". Las tres
+  credenciales no son intercambiables. **No publicar "MVZ" ni "Dra." hasta resolver cuál es.**
+- El post dice que "dirigió esta semana práctica"; el sitio dice que "coordina el diplomado".
+  Tampoco es lo mismo.
+
+**Consecuencia abierta, de negocio y no de código:** hay un diplomado real, con cuatro
+generaciones e inscripciones abiertas, que **no existe en el sitio nuevo**. Ya estaba anotado en
+`LANZAMIENTO_25JUL.md:42-44` ("hay un diplomado vendiendo sin página"). Publicarlo como
+disponible rompería la invariante de un solo programa disponible (`build.py`) y la regla de
+negocio de `migracion/README.md`. Decisión de Angel, no del build.
+
+### Primeros Auxilios para Fauna Silvestre y Manejo de Reptiles — CERO evidencia pública
+
+El barrido no encontró **ninguna** traza de que estos dos programas existan fuera de las
+maquetas del propio rediseño:
+
+- Sitemaps vivos de `celebios.com` (371 URLs) y `celebios.online` (15 URLs): 0 coincidencias con
+  "reptil" ni "auxilio". Los demás cursos históricos sí tienen URL.
+- `migracion/redirects.csv` (386 filas): 0 coincidencias.
+- Scrape del sitio viejo (`redesign-v1/CONTENIDO-REAL.md`) y harvest de Facebook/Instagram
+  (`redesign-v2/DATOS-REALES-harvest.md`): no aparecen en la lista de ~14 temas históricos.
+- Único rastro real de reptiles: es el **módulo 7 dentro del Diplomado de Rescate y
+  Rehabilitación**, no un curso independiente.
+- Las propias maquetas se contradicen con el `status: "historical"` del contrato:
+  `redesign-v2/curso-primeros-auxilios.html` dice "**Próxima edición — en desarrollo.** Este
+  curso aún no tiene fecha de apertura".
+
+**Conflicto abierto, sin resolver:** el 2026-08-02 Angel atestiguó que ambos **sí se
+impartieron**. Esa atestación es una fuente, pero es la única, contradice el texto de las
+propias páginas del rediseño y no la respalda ningún documento. Mientras no exista una fuente
+documental (convocatoria, constancia, publicación), estos dos programas no deben presentarse
+como impartidos. Su evidencia actual en `contenido/programas.json` sigue siendo la maqueta
+citándose a sí misma, que no es evidencia de nada.
