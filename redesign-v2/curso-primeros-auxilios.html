@@ -721,92 +721,108 @@
 
 <script type="application/ld+json">
 {
- "@context": "https://schema.org",
- "@graph": [
- {
- "@type": "EducationalOrganization",
- "@id": "https://www.celebios.com/#org",
- "name": "CELEBIOS",
- "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
- "url": "https://www.celebios.com",
- "logo": "https://www.celebios.com/brand/logo-white.png",
- "foundingDate": "2010",
- "areaServed": ["MX", "LATAM"],
- "sameAs": ["https://instagram.com/celebios_edu"]
- },
- {
- "@type": "Course",
- "name": "Curso de Primeros Auxilios en Fauna Silvestre",
- "description": "Curso online de primeros auxilios en fauna silvestre: estabilizacion inicial del animal herido, triaje, manejo seguro y bioseguridad, transporte y traslado, y errores que agravan al paciente. Para MVZ, biologos, brigadistas y rescatistas en Mexico y LATAM. Edicion en desarrollo: lista de espera abierta.",
- "url": "https://www.celebios.com/cursos/primeros-auxilios-fauna",
- "inLanguage": "es",
- "educationalCredentialAwarded": "Constancia con valor curricular",
- "provider": { "@id": "https://www.celebios.com/#org" },
- "hasCourseInstance": {
- "@type": "CourseInstance",
- "courseMode": "online"
- },
- "offers": {
- "@type": "Offer",
- "priceCurrency": "MXN",
- "availability": "https://schema.org/PreOrder",
- "url": "https://www.celebios.com/cursos/primeros-auxilios-fauna"
- }
- },
- {
- "@type": "BreadcrumbList",
- "itemListElement": [
- { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.celebios.com/" },
- { "@type": "ListItem", "position": 2, "name": "Cursos de fauna silvestre", "item": "https://www.celebios.com/cursos" },
- { "@type": "ListItem", "position": 3, "name": "Curso de Primeros Auxilios en Fauna Silvestre", "item": "https://www.celebios.com/cursos/primeros-auxilios-fauna" }
- ]
- },
- {
- "@type": "FAQPage",
- "mainEntity": [
- {
- "@type": "Question",
- "name": "Que son los primeros auxilios en fauna silvestre?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Son las acciones inmediatas para estabilizar a un animal silvestre herido o en shock antes de su atencion veterinaria definitiva: control de hemorragias, manejo del estres, soporte termico, triaje y traslado seguro. El objetivo no es curar, sino mantener al paciente vivo y estable sin agravar su lesion."
- }
- },
- {
- "@type": "Question",
- "name": "Necesito ser veterinario para tomar el curso de primeros auxilios en fauna silvestre?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "El curso esta pensado para MVZ, biologos, brigadistas, personal de UMA y rescatistas, pero los modulos de manejo seguro, bioseguridad y traslado son utiles para cualquier persona que pueda toparse con fauna herida. Los requisitos exactos de ingreso se confirman al abrir la proxima edicion."
- }
- },
- {
- "@type": "Question",
- "name": "Cuando abre el curso de primeros auxilios en fauna silvestre y cuanto cuesta?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Esta area esta en desarrollo dentro del catalogo de CELEBIOS. La fecha de la proxima edicion y el precio aun no estan confirmados. Si te unes a la lista de espera, te avisamos en cuanto se abra la inscripcion, con las horas, el costo y el docente ya definidos."
- }
- },
- {
- "@type": "Question",
- "name": "Que voy a aprender en un curso de primeros auxilios para fauna silvestre?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Aprendes a estabilizar al animal herido, a hacer triaje, a sujetarlo y contenerlo de forma segura aplicando bioseguridad, a prepararlo y trasladarlo a un centro de atencion, y a reconocer los errores de manejo que agravan al paciente. Es una base practica de respuesta ante una urgencia de fauna."
- }
- },
- {
- "@type": "Question",
- "name": "El curso entrega constancia con valor curricular?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Los cursos de CELEBIOS se entregan con constancia avalada por CELEBIOS y CONCERVET. Para este curso, los detalles de la constancia, las horas acreditadas y el aval especifico de la edicion se confirman al abrir la inscripcion. Te los enviamos junto con el aviso de apertura."
- }
- }
- ]
- }
- ]
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "EducationalOrganization",
+      "@id": "https://www.celebios.com/#org",
+      "name": "CELEBIOS",
+      "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+      "url": "https://www.celebios.com",
+      "logo": "https://www.celebios.com/brand/logo-white.png",
+      "foundingDate": "2010",
+      "areaServed": [
+        "MX",
+        "LATAM"
+      ],
+      "sameAs": [
+        "https://instagram.com/celebios_edu"
+      ]
+    },
+    {
+      "@type": "Course",
+      "name": "Curso de Primeros Auxilios en Fauna Silvestre",
+      "description": "Curso online de primeros auxilios en fauna silvestre: estabilizacion inicial del animal herido, triaje, manejo seguro y bioseguridad, transporte y traslado, y errores que agravan al paciente. Para MVZ, biologos, brigadistas y rescatistas en Mexico y LATAM. Edicion en desarrollo: lista de espera abierta.",
+      "url": "https://www.celebios.com/cursos/primeros-auxilios-fauna",
+      "inLanguage": "es",
+      "educationalCredentialAwarded": "Constancia con valor curricular",
+      "provider": {
+        "@id": "https://www.celebios.com/#org"
+      },
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "online"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://www.celebios.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Cursos de fauna silvestre",
+          "item": "https://www.celebios.com/cursos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Curso de Primeros Auxilios en Fauna Silvestre",
+          "item": "https://www.celebios.com/cursos/primeros-auxilios-fauna"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Que son los primeros auxilios en fauna silvestre?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Son las acciones inmediatas para estabilizar a un animal silvestre herido o en shock antes de su atencion veterinaria definitiva: control de hemorragias, manejo del estres, soporte termico, triaje y traslado seguro. El objetivo no es curar, sino mantener al paciente vivo y estable sin agravar su lesion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Necesito ser veterinario para tomar el curso de primeros auxilios en fauna silvestre?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El curso esta pensado para MVZ, biologos, brigadistas, personal de UMA y rescatistas, pero los modulos de manejo seguro, bioseguridad y traslado son utiles para cualquier persona que pueda toparse con fauna herida. Los requisitos exactos de ingreso se confirman al abrir la proxima edicion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cuando abre el curso de primeros auxilios en fauna silvestre y cuanto cuesta?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Esta area esta en desarrollo dentro del catalogo de CELEBIOS. La fecha de la proxima edicion y el precio aun no estan confirmados. Si te unes a la lista de espera, te avisamos en cuanto se abra la inscripcion, con las horas, el costo y el docente ya definidos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Que voy a aprender en un curso de primeros auxilios para fauna silvestre?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aprendes a estabilizar al animal herido, a hacer triaje, a sujetarlo y contenerlo de forma segura aplicando bioseguridad, a prepararlo y trasladarlo a un centro de atencion, y a reconocer los errores de manejo que agravan al paciente. Es una base practica de respuesta ante una urgencia de fauna."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "El curso entrega constancia con valor curricular?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Los cursos de CELEBIOS se entregan con constancia avalada por CELEBIOS y CONCERVET. Para este curso, los detalles de la constancia, las horas acreditadas y el aval especifico de la edicion se confirman al abrir la inscripcion. Te los enviamos junto con el aviso de apertura."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>

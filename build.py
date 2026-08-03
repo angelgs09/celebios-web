@@ -457,6 +457,38 @@ def buscar_disponibilidad_falsa(paginas, programas):
     return hallados
 
 
+def buscar_oferta_en_historicos(paginas, programas):
+    """[(archivo, motivo)] por cada pagina de un programa historico que publica
+    una oferta: `offers` en JSON-LD, o un precio que no sea el del unico
+    programa disponible (esas paginas si pueden cruzar-vender el curso de
+    gatos, y por eso su precio se permite).
+
+    El caso que motivo la guarda: la pagina del diplomado declaraba un Offer
+    con `availability: InStock` y precios 19500/26000 para un programa cuya
+    edicion cerro el 30-jun-2025. Structured data es lo que Google lee como
+    producto comprable, asi que el dano no depende de lo que diga el texto."""
+    disponibles = [p for p in programas if p["status"] == "available"]
+    precios_ok = {
+        f"${p['offer']['price_mxn']:,} MXN".lower()
+        for p in disponibles if isinstance(p.get("offer"), dict)
+    }
+    historicos = {p["slug"] for p in programas if p["status"] == "historical"}
+    hallados = []
+    for f in sorted(paginas, key=lambda p: p.name):
+        if paginas[f] not in historicos:
+            continue
+        texto = f.read_text(encoding="utf-8")
+        if re.search(r'"offers"\s*:', texto):
+            hallados.append((f.name, "JSON-LD con 'offers' en un programa historico"))
+        ajenos = {
+            p for p in PRECIO_RE.findall(texto)
+            if re.sub(r"\s+", " ", p).strip().lower() not in precios_ok
+        }
+        if ajenos:
+            hallados.append((f.name, f"precio propio en un programa historico: {sorted(ajenos)}"))
+    return hallados
+
+
 def buscar_anclas_sin_destino(reglas, paginas):
     """[(source, destination)] de las reglas activas cuyo fragmento no existe
     como id en la pagina destino.
@@ -537,6 +569,15 @@ def construir(salida=None, cutover=False):
         raise SystemExit(
             f"ERROR: {len(falsas)} tarjeta(s) se anuncian disponibles sin enlazar a un "
             f"programa disponible en contenido/programas.json: {detalle}{mas}"
+        )
+
+    ofertas = buscar_oferta_en_historicos(paginas, cargar_programas())
+    if ofertas:
+        detalle = "; ".join(f"{arch}: {motivo}" for arch, motivo in ofertas[:5])
+        mas = f" (+{len(ofertas) - 5} mas)" if len(ofertas) > 5 else ""
+        raise SystemExit(
+            f"ERROR: {len(ofertas)} pagina(s) de programa historico publican una oferta: "
+            f"{detalle}{mas}"
         )
 
     rutas_publicadas = set(paginas.values())

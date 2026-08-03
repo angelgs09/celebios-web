@@ -725,92 +725,107 @@
 
 <script type="application/ld+json">
 {
- "@context": "https://schema.org",
- "@graph": [
- {
- "@type": "EducationalOrganization",
- "@id": "https://www.celebios.com/#org",
- "name": "CELEBIOS",
- "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
- "url": "https://www.celebios.com",
- "logo": "https://www.celebios.com/brand/logo-white.png",
- "foundingDate": "2010",
- "areaServed": ["MX", "LATAM"],
- "sameAs": ["https://instagram.com/celebios_edu"]
- },
- {
- "@type": "Course",
- "name": "Curso de Manejo y Medicina de Reptiles",
- "description": "Curso online de manejo y medicina de reptiles: biologia y fisiologia, contencion y manejo seguros, bienestar y alojamiento, y enfermedades y signos de alarma mas comunes en cautiverio. Para profesionales y personas que trabajan con reptiles en Mexico y LATAM. Proxima edicion: programa, fechas, docente y precio por confirmar.",
- "url": "https://www.celebios.com/cursos/manejo-reptiles",
- "inLanguage": "es",
- "provider": { "@id": "https://www.celebios.com/#org" },
- "offers": {
- "@type": "Offer",
- "priceCurrency": "MXN",
- "availability": "https://schema.org/PreOrder",
- "category": "Paid",
- "url": "https://www.celebios.com/cursos/manejo-reptiles"
- },
- "hasCourseInstance": {
- "@type": "CourseInstance",
- "courseMode": "online"
- }
- },
- {
- "@type": "BreadcrumbList",
- "itemListElement": [
- { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.celebios.com/" },
- { "@type": "ListItem", "position": 2, "name": "Cursos de fauna silvestre", "item": "https://www.celebios.com/cursos" },
- { "@type": "ListItem", "position": 3, "name": "Curso de Manejo y Medicina de Reptiles", "item": "https://www.celebios.com/cursos/manejo-reptiles" }
- ]
- },
- {
- "@type": "FAQPage",
- "mainEntity": [
- {
- "@type": "Question",
- "name": "Que cubre el curso de manejo y medicina de reptiles?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "El curso cubre cuatro ejes: biologia y fisiologia del reptil, manejo y contencion seguros para el animal y el manejador, bienestar y alojamiento (terrario, temperatura, humedad e iluminacion UVB) y las enfermedades y signos de alarma mas comunes en cautiverio, para detectarlos a tiempo."
- }
- },
- {
- "@type": "Question",
- "name": "Necesito ser veterinario para tomar el curso de reptiles?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "El perfil de ingreso se confirmara al abrir la proxima edicion. El enfoque clinico va dirigido a MVZ, estudiantes de veterinaria, cuidadores de zoologico y personal de UMA. Tutores de reptiles con base previa tambien se benefician del modulo de bienestar y alojamiento."
- }
- },
- {
- "@type": "Question",
- "name": "Por que la fisiologia del reptil cambia su manejo medico?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "El reptil es ectotermo: su metabolismo, inmunidad y respuesta a farmacos dependen de la temperatura. Por eso un reptil enfermo necesita su rango optimo para sanar, las dosis se ajustan distinto que en mamiferos y muchos signos de enfermedad se confunden con conducta normal."
- }
- },
- {
- "@type": "Question",
- "name": "Cuando abre el curso y cuanto cuesta?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Esta area esta en preparacion: fecha de la proxima edicion, duracion, docente y precio aun no estan confirmados y no los publicamos hasta tenerlos cerrados. Si te unes a la lista de espera, te avisamos en cuanto abra la inscripcion, antes que al publico general."
- }
- },
- {
- "@type": "Question",
- "name": "El curso entrega constancia con valor curricular?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Si: los cursos de CELEBIOS se emiten con constancia con valor curricular avalada por CELEBIOS y CONCERVET, el mismo respaldo de nuestro diplomado. Las condiciones especificas de acreditacion de este curso (numero de horas y requisitos) se confirmaran junto con el programa final de la proxima edicion."
- }
- }
- ]
- }
- ]
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "EducationalOrganization",
+      "@id": "https://www.celebios.com/#org",
+      "name": "CELEBIOS",
+      "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+      "url": "https://www.celebios.com",
+      "logo": "https://www.celebios.com/brand/logo-white.png",
+      "foundingDate": "2010",
+      "areaServed": [
+        "MX",
+        "LATAM"
+      ],
+      "sameAs": [
+        "https://instagram.com/celebios_edu"
+      ]
+    },
+    {
+      "@type": "Course",
+      "name": "Curso de Manejo y Medicina de Reptiles",
+      "description": "Curso online de manejo y medicina de reptiles: biologia y fisiologia, contencion y manejo seguros, bienestar y alojamiento, y enfermedades y signos de alarma mas comunes en cautiverio. Para profesionales y personas que trabajan con reptiles en Mexico y LATAM. Proxima edicion: programa, fechas, docente y precio por confirmar.",
+      "url": "https://www.celebios.com/cursos/manejo-reptiles",
+      "inLanguage": "es",
+      "provider": {
+        "@id": "https://www.celebios.com/#org"
+      },
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "online"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://www.celebios.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Cursos de fauna silvestre",
+          "item": "https://www.celebios.com/cursos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Curso de Manejo y Medicina de Reptiles",
+          "item": "https://www.celebios.com/cursos/manejo-reptiles"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Que cubre el curso de manejo y medicina de reptiles?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El curso cubre cuatro ejes: biologia y fisiologia del reptil, manejo y contencion seguros para el animal y el manejador, bienestar y alojamiento (terrario, temperatura, humedad e iluminacion UVB) y las enfermedades y signos de alarma mas comunes en cautiverio, para detectarlos a tiempo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Necesito ser veterinario para tomar el curso de reptiles?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El perfil de ingreso se confirmara al abrir la proxima edicion. El enfoque clinico va dirigido a MVZ, estudiantes de veterinaria, cuidadores de zoologico y personal de UMA. Tutores de reptiles con base previa tambien se benefician del modulo de bienestar y alojamiento."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Por que la fisiologia del reptil cambia su manejo medico?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El reptil es ectotermo: su metabolismo, inmunidad y respuesta a farmacos dependen de la temperatura. Por eso un reptil enfermo necesita su rango optimo para sanar, las dosis se ajustan distinto que en mamiferos y muchos signos de enfermedad se confunden con conducta normal."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cuando abre el curso y cuanto cuesta?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Esta area esta en preparacion: fecha de la proxima edicion, duracion, docente y precio aun no estan confirmados y no los publicamos hasta tenerlos cerrados. Si te unes a la lista de espera, te avisamos en cuanto abra la inscripcion, antes que al publico general."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "El curso entrega constancia con valor curricular?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Si: los cursos de CELEBIOS se emiten con constancia con valor curricular avalada por CELEBIOS y CONCERVET, el mismo respaldo de nuestro diplomado. Las condiciones especificas de acreditacion de este curso (numero de horas y requisitos) se confirmaran junto con el programa final de la proxima edicion."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>

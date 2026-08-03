@@ -844,6 +844,49 @@ class TestDisponibilidadFalsa(unittest.TestCase):
         self.assertEqual(hallados, [], f"tarjetas con disponibilidad falsa: {hallados}")
 
 
+class TestOfertaEnHistoricos(unittest.TestCase):
+    """La pagina del diplomado declaraba un Offer con availability InStock y
+    precios 19500/26000 para un programa cuya edicion cerro. Structured data es
+    lo que Google lee como producto comprable."""
+
+    PROGRAMAS = [
+        {"slug": "/curso-lenguaje-felino", "status": "available",
+         "offer": {"price_mxn": 1400, "payment_type": "unico", "hours": 12,
+                   "topics_count": 11, "access_months": 5}},
+        {"slug": "/diplomado-x", "status": "historical"},
+    ]
+
+    def _pagina(self, tmp, cuerpo):
+        f = Path(tmp) / "diplomado.html"
+        f.write_text(cuerpo, encoding="utf-8")
+        return {f: "/diplomado-x"}
+
+    def test_offers_en_json_ld_de_un_historico_es_violacion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, '<script type="application/ld+json">'
+                                        '{"@type":"Course","offers":{"@type":"Offer","price":"19500"}}</script>')
+            hallados = build.buscar_oferta_en_historicos(paginas, self.PROGRAMAS)
+            self.assertTrue(any("offers" in m for _, m in hallados), hallados)
+
+    def test_precio_propio_en_un_historico_es_violacion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, "<p>Desde $19,500 MXN</p>")
+            hallados = build.buscar_oferta_en_historicos(paginas, self.PROGRAMAS)
+            self.assertTrue(any("precio propio" in m for _, m in hallados), hallados)
+
+    def test_el_precio_del_curso_disponible_si_puede_cruzar_venderse(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, "<p>Empieza con el curso de gatos: $1,400 MXN</p>")
+            self.assertEqual(build.buscar_oferta_en_historicos(paginas, self.PROGRAMAS), [])
+
+    def test_las_paginas_historicas_reales_no_publican_oferta(self):
+        paginas = {f: build.ruta_canonica(f.read_text(encoding="utf-8"))
+                   for f in sorted(build.SRC.glob("*.html"))}
+        paginas = {f: r for f, r in paginas.items() if r}
+        hallados = build.buscar_oferta_en_historicos(paginas, build.cargar_programas())
+        self.assertEqual(hallados, [], f"ofertas en programas historicos: {hallados}")
+
+
 class TestAnclasSinDestino(unittest.TestCase):
     """113 de las 118 reglas activas apuntan a /cursos#historico-*. Si el id no
     existe, el 301 aterriza arriba de la pagina en vez de en su seccion."""

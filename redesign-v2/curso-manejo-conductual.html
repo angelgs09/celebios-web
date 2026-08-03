@@ -745,96 +745,111 @@
 
 <script type="application/ld+json">
 {
- "@context": "https://schema.org",
- "@graph": [
- {
- "@type": "EducationalOrganization",
- "@id": "https://www.celebios.com/#org",
- "name": "CELEBIOS",
- "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
- "url": "https://www.celebios.com",
- "logo": "https://www.celebios.com/brand/logo-white.png",
- "foundingDate": "2010",
- "areaServed": ["MX", "LATAM"],
- "sameAs": ["https://instagram.com/celebios_edu"]
- },
- {
- "@type": "Course",
- "name": "Curso de Manejo Conductual de Fauna Silvestre",
- "description": "Curso de manejo conductual de fauna silvestre: fundamentos de etologia aplicada, enriquecimiento ambiental y condicionamiento para reducir el estres y facilitar el manejo clinico y la rehabilitacion. Programa 100% en linea para profesionales de fauna silvestre en Mexico y LATAM. Proxima edicion: lista de espera abierta.",
- "url": "https://www.celebios.com/cursos/manejo-conductual-fauna",
- "inLanguage": "es",
- "provider": { "@id": "https://www.celebios.com/#org" },
- "hasCourseInstance": {
- "@type": "CourseInstance",
- "courseMode": "online",
- "courseSchedule": {
- "@type": "Schedule",
- "scheduleTimezone": "America/Mexico_City"
- }
- },
- "offers": {
- "@type": "Offer",
- "priceCurrency": "MXN",
- "availability": "https://schema.org/PreOrder",
- "url": "https://www.celebios.com/cursos/manejo-conductual-fauna",
- "category": "Lista de espera"
- }
- },
- {
- "@type": "BreadcrumbList",
- "itemListElement": [
- { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.celebios.com/" },
- { "@type": "ListItem", "position": 2, "name": "Cursos de fauna silvestre", "item": "https://www.celebios.com/cursos" },
- { "@type": "ListItem", "position": 3, "name": "Curso de Manejo Conductual de Fauna Silvestre", "item": "https://www.celebios.com/cursos/manejo-conductual-fauna" }
- ]
- },
- {
- "@type": "FAQPage",
- "mainEntity": [
- {
- "@type": "Question",
- "name": "Que es el manejo conductual de fauna silvestre?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Es el uso de la etologia aplicada para entender e influir en el comportamiento de un animal silvestre y manejarlo con menos estres. Incluye lectura de senales, enriquecimiento ambiental y condicionamiento, de modo que la atencion clinica y la rehabilitacion sean mas seguras para el animal y para el equipo."
- }
- },
- {
- "@type": "Question",
- "name": "Cuando abre la proxima edicion del curso de manejo conductual de fauna?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Estamos preparando la proxima edicion y la fecha se confirmara pronto. Si dejas tu correo en la lista de espera, seras de los primeros en saber cuando abran las inscripciones, junto con el temario definitivo, la duracion y el precio cuando se publiquen."
- }
- },
- {
- "@type": "Question",
- "name": "Necesito ser veterinario para tomar el curso de manejo conductual de fauna?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "El curso esta pensado para profesionales y tecnicos que trabajan con fauna silvestre: MVZ, biologos, cuidadores de centros de rescate, UMA y zoologicos. Los requisitos exactos de ingreso se confirmaran al publicar la edicion. Si tienes dudas sobre tu perfil, escribenos al unirte a la lista de espera."
- }
- },
- {
- "@type": "Question",
- "name": "Que voy a aprender en el curso de manejo conductual de fauna silvestre?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Aprenderas fundamentos de etologia aplicada para leer el comportamiento, a disenar programas de enriquecimiento ambiental segun la especie y a usar condicionamiento para reducir el estres y facilitar procedimientos clinicos. El objetivo es un manejo mas seguro durante la atencion, la rehabilitacion y la preparacion para la liberacion."
- }
- },
- {
- "@type": "Question",
- "name": "El curso entrega constancia con valor curricular?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "CELEBIOS emite constancias con valor curricular avaladas por CONCERVET en sus cursos. Los detalles de acreditacion de esta edicion (horas y tipo de constancia) se confirmaran al publicar el programa. Unete a la lista de espera para recibir esa informacion en cuanto este lista."
- }
- }
- ]
- }
- ]
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "EducationalOrganization",
+      "@id": "https://www.celebios.com/#org",
+      "name": "CELEBIOS",
+      "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+      "url": "https://www.celebios.com",
+      "logo": "https://www.celebios.com/brand/logo-white.png",
+      "foundingDate": "2010",
+      "areaServed": [
+        "MX",
+        "LATAM"
+      ],
+      "sameAs": [
+        "https://instagram.com/celebios_edu"
+      ]
+    },
+    {
+      "@type": "Course",
+      "name": "Curso de Manejo Conductual de Fauna Silvestre",
+      "description": "Curso de manejo conductual de fauna silvestre: fundamentos de etologia aplicada, enriquecimiento ambiental y condicionamiento para reducir el estres y facilitar el manejo clinico y la rehabilitacion. Programa 100% en linea para profesionales de fauna silvestre en Mexico y LATAM. Proxima edicion: lista de espera abierta.",
+      "url": "https://www.celebios.com/cursos/manejo-conductual-fauna",
+      "inLanguage": "es",
+      "provider": {
+        "@id": "https://www.celebios.com/#org"
+      },
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "online",
+        "courseSchedule": {
+          "@type": "Schedule",
+          "scheduleTimezone": "America/Mexico_City"
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://www.celebios.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Cursos de fauna silvestre",
+          "item": "https://www.celebios.com/cursos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Curso de Manejo Conductual de Fauna Silvestre",
+          "item": "https://www.celebios.com/cursos/manejo-conductual-fauna"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Que es el manejo conductual de fauna silvestre?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Es el uso de la etologia aplicada para entender e influir en el comportamiento de un animal silvestre y manejarlo con menos estres. Incluye lectura de senales, enriquecimiento ambiental y condicionamiento, de modo que la atencion clinica y la rehabilitacion sean mas seguras para el animal y para el equipo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cuando abre la proxima edicion del curso de manejo conductual de fauna?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Estamos preparando la proxima edicion y la fecha se confirmara pronto. Si dejas tu correo en la lista de espera, seras de los primeros en saber cuando abran las inscripciones, junto con el temario definitivo, la duracion y el precio cuando se publiquen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Necesito ser veterinario para tomar el curso de manejo conductual de fauna?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El curso esta pensado para profesionales y tecnicos que trabajan con fauna silvestre: MVZ, biologos, cuidadores de centros de rescate, UMA y zoologicos. Los requisitos exactos de ingreso se confirmaran al publicar la edicion. Si tienes dudas sobre tu perfil, escribenos al unirte a la lista de espera."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Que voy a aprender en el curso de manejo conductual de fauna silvestre?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aprenderas fundamentos de etologia aplicada para leer el comportamiento, a disenar programas de enriquecimiento ambiental segun la especie y a usar condicionamiento para reducir el estres y facilitar procedimientos clinicos. El objetivo es un manejo mas seguro durante la atencion, la rehabilitacion y la preparacion para la liberacion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "El curso entrega constancia con valor curricular?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CELEBIOS emite constancias con valor curricular avaladas por CONCERVET en sus cursos. Los detalles de acreditacion de esta edicion (horas y tipo de constancia) se confirmaran al publicar el programa. Unete a la lista de espera para recibir esa informacion en cuanto este lista."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>

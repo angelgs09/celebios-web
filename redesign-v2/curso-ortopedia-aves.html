@@ -717,97 +717,112 @@
 
 <script type="application/ld+json">
 {
- "@context": "https://schema.org",
- "@graph": [
- {
- "@type": "EducationalOrganization",
- "@id": "https://www.celebios.com/#org",
- "name": "CELEBIOS",
- "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
- "url": "https://www.celebios.com",
- "logo": "https://www.celebios.com/brand/logo-white.png",
- "foundingDate": "2010",
- "areaServed": ["MX", "LATAM"],
- "sameAs": ["https://instagram.com/celebios_edu"]
- },
- {
- "@type": "Course",
- "name": "Curso de Ortopedia de Aves Silvestres",
- "description": "Curso online de ortopedia de aves: evaluacion clinica de fracturas, principios de fijacion (coaptacion externa, vendajes y fijacion esqueletica), manejo del ala y rehabilitacion ortopedica orientada a recuperar la funcion de vuelo en aves silvestres. Dirigido a MVZ, biologos y personal de centros de rescate en Mexico y LATAM. Avalado por CONCERVET. Proxima edicion: lista de espera abierta.",
- "url": "https://www.celebios.com/cursos/ortopedia-aves",
- "inLanguage": "es",
- "educationalCredentialAwarded": "Constancia con valor curricular",
- "provider": { "@id": "https://www.celebios.com/#org" },
- "hasCourseInstance": {
- "@type": "CourseInstance",
- "courseMode": "online",
- "courseSchedule": {
- "@type": "Schedule",
- "scheduleTimezone": "America/Mexico_City"
- }
- },
- "offers": {
- "@type": "Offer",
- "availability": "https://schema.org/PreOrder",
- "priceCurrency": "MXN",
- "url": "https://www.celebios.com/cursos/ortopedia-aves",
- "category": "Educacion continua"
- }
- },
- {
- "@type": "BreadcrumbList",
- "itemListElement": [
- { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.celebios.com/" },
- { "@type": "ListItem", "position": 2, "name": "Cursos de fauna silvestre", "item": "https://www.celebios.com/cursos" },
- { "@type": "ListItem", "position": 3, "name": "Curso de Ortopedia de Aves Silvestres", "item": "https://www.celebios.com/cursos/ortopedia-aves" }
- ]
- },
- {
- "@type": "FAQPage",
- "mainEntity": [
- {
- "@type": "Question",
- "name": "Cuando abre el curso de ortopedia de aves de CELEBIOS?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "El curso esta en su proxima edicion y aun no tiene fecha publica de apertura. Por eso no publicamos un dia exacto: lo confirmaremos por correo. Deja tus datos en la lista de espera y seras de los primeros en conocer fecha, cupo y precio en cuanto se definan."
- }
- },
- {
- "@type": "Question",
- "name": "Necesito ser veterinario para tomar el curso de ortopedia de aves?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "El curso esta orientado a perfiles que manejan aves: MVZ, estudiantes de los ultimos semestres, biologos y personal de centros de rescate y UMA. La ortopedia aviar implica decisiones clinicas, asi que la base biomedica es muy recomendable. Los requisitos finales se confirmaran al abrir la edicion."
- }
- },
- {
- "@type": "Question",
- "name": "Que cubre el curso de ortopedia de aves?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Cubre la evaluacion de fracturas en aves, los principios de fijacion y los tipos de vendaje, el manejo del ala lesionada y la rehabilitacion ortopedica orientada a recuperar el vuelo. Se trabaja el criterio para decidir entre coaptacion externa y fijacion, y el seguimiento hasta la prueba de vuelo previa a la liberacion."
- }
- },
- {
- "@type": "Question",
- "name": "El curso de ortopedia de aves entrega constancia con valor curricular?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Si. Como el resto de la formacion de CELEBIOS, esta edicion entregara una constancia con valor curricular avalada por CELEBIOS y CONCERVET al completar el curso. Las horas exactas que acredita la constancia se confirmaran junto con el temario definitivo de la edicion."
- }
- },
- {
- "@type": "Question",
- "name": "Puedo tomar el curso de ortopedia de aves desde fuera de Mexico?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Si. La edicion sera 100 por ciento en linea, pensada para Mexico y toda LATAM: solo necesitas conexion a internet. La parte teorica y de criterio clinico se cubre online; si la edicion incluye un componente practico presencial, se anunciara su sede y cupo con anticipacion en la lista de espera."
- }
- }
- ]
- }
- ]
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "EducationalOrganization",
+      "@id": "https://www.celebios.com/#org",
+      "name": "CELEBIOS",
+      "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+      "url": "https://www.celebios.com",
+      "logo": "https://www.celebios.com/brand/logo-white.png",
+      "foundingDate": "2010",
+      "areaServed": [
+        "MX",
+        "LATAM"
+      ],
+      "sameAs": [
+        "https://instagram.com/celebios_edu"
+      ]
+    },
+    {
+      "@type": "Course",
+      "name": "Curso de Ortopedia de Aves Silvestres",
+      "description": "Curso online de ortopedia de aves: evaluacion clinica de fracturas, principios de fijacion (coaptacion externa, vendajes y fijacion esqueletica), manejo del ala y rehabilitacion ortopedica orientada a recuperar la funcion de vuelo en aves silvestres. Dirigido a MVZ, biologos y personal de centros de rescate en Mexico y LATAM. Avalado por CONCERVET. Proxima edicion: lista de espera abierta.",
+      "url": "https://www.celebios.com/cursos/ortopedia-aves",
+      "inLanguage": "es",
+      "educationalCredentialAwarded": "Constancia con valor curricular",
+      "provider": {
+        "@id": "https://www.celebios.com/#org"
+      },
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "online",
+        "courseSchedule": {
+          "@type": "Schedule",
+          "scheduleTimezone": "America/Mexico_City"
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://www.celebios.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Cursos de fauna silvestre",
+          "item": "https://www.celebios.com/cursos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Curso de Ortopedia de Aves Silvestres",
+          "item": "https://www.celebios.com/cursos/ortopedia-aves"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Cuando abre el curso de ortopedia de aves de CELEBIOS?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El curso esta en su proxima edicion y aun no tiene fecha publica de apertura. Por eso no publicamos un dia exacto: lo confirmaremos por correo. Deja tus datos en la lista de espera y seras de los primeros en conocer fecha, cupo y precio en cuanto se definan."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Necesito ser veterinario para tomar el curso de ortopedia de aves?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El curso esta orientado a perfiles que manejan aves: MVZ, estudiantes de los ultimos semestres, biologos y personal de centros de rescate y UMA. La ortopedia aviar implica decisiones clinicas, asi que la base biomedica es muy recomendable. Los requisitos finales se confirmaran al abrir la edicion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Que cubre el curso de ortopedia de aves?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cubre la evaluacion de fracturas en aves, los principios de fijacion y los tipos de vendaje, el manejo del ala lesionada y la rehabilitacion ortopedica orientada a recuperar el vuelo. Se trabaja el criterio para decidir entre coaptacion externa y fijacion, y el seguimiento hasta la prueba de vuelo previa a la liberacion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "El curso de ortopedia de aves entrega constancia con valor curricular?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Si. Como el resto de la formacion de CELEBIOS, esta edicion entregara una constancia con valor curricular avalada por CELEBIOS y CONCERVET al completar el curso. Las horas exactas que acredita la constancia se confirmaran junto con el temario definitivo de la edicion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Puedo tomar el curso de ortopedia de aves desde fuera de Mexico?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Si. La edicion sera 100 por ciento en linea, pensada para Mexico y toda LATAM: solo necesitas conexion a internet. La parte teorica y de criterio clinico se cubre online; si la edicion incluye un componente practico presencial, se anunciara su sede y cupo con anticipacion en la lista de espera."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>

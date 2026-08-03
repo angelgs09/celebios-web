@@ -707,92 +707,107 @@
 
 <script type="application/ld+json">
 {
- "@context": "https://schema.org",
- "@graph": [
- {
- "@type": "EducationalOrganization",
- "@id": "https://www.celebios.com/#org",
- "name": "CELEBIOS",
- "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
- "url": "https://www.celebios.com",
- "logo": "https://www.celebios.com/brand/logo-white.png",
- "foundingDate": "2010",
- "areaServed": ["MX", "LATAM"],
- "sameAs": ["https://instagram.com/celebios_edu"]
- },
- {
- "@type": "Course",
- "name": "Anestesia y Contencion de Fauna Silvestre",
- "description": "Curso de anestesia y contencion de fauna silvestre: contencion fisica vs quimica y cuando usar cada una, principios de seguridad anestesica, monitoreo de planos y signos vitales, y manejo del estres y del riesgo en especies silvestres. Para MVZ, biologos y personal de UMA, centros de rescate y zoologicos en Mexico y LATAM. Curso en desarrollo: lista de espera abierta.",
- "url": "https://www.celebios.com/cursos/anestesia-contencion-fauna",
- "inLanguage": "es",
- "provider": { "@id": "https://www.celebios.com/#org" },
- "hasCourseInstance": {
- "@type": "CourseInstance",
- "courseMode": "online"
- },
- "offers": {
- "@type": "Offer",
- "priceCurrency": "MXN",
- "availability": "https://schema.org/PreOrder",
- "category": "Lista de espera",
- "url": "https://www.celebios.com/cursos/anestesia-contencion-fauna"
- }
- },
- {
- "@type": "BreadcrumbList",
- "itemListElement": [
- { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.celebios.com/" },
- { "@type": "ListItem", "position": 2, "name": "Cursos de fauna silvestre", "item": "https://www.celebios.com/cursos" },
- { "@type": "ListItem", "position": 3, "name": "Anestesia y Contencion de Fauna Silvestre", "item": "https://www.celebios.com/cursos/anestesia-contencion-fauna" }
- ]
- },
- {
- "@type": "FAQPage",
- "mainEntity": [
- {
- "@type": "Question",
- "name": "Cuando abre el curso de anestesia y contencion de fauna silvestre?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "El curso esta en desarrollo y aun no tiene fecha de apertura publica. Si te unes a la lista de espera, seras de los primeros en saber cuando confirmemos calendario, temario final, docente y costo. No se cobra nada por anotarte en la lista."
- }
- },
- {
- "@type": "Question",
- "name": "Cual es la diferencia entre contencion fisica y contencion quimica?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "La contencion fisica usa medios manuales y de manejo (mallas, guantes, cajas, tubos) sin farmacos; la quimica usa sedacion o anestesia. La fisica es util en manejos breves; la quimica reduce estres y riesgo en procedimientos largos o dolorosos. El curso ensena cuando elegir cada una."
- }
- },
- {
- "@type": "Question",
- "name": "Necesito ser veterinario para tomar este curso de anestesia en fauna?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "El perfil objetivo es profesional: MVZ, biologos y personal tecnico de UMA, centros de rescate y zoologicos. El manejo anestesico implica decisiones clinicas y de dosificacion, por lo que se recomienda formacion previa. El requisito final se confirmara antes de la apertura del curso."
- }
- },
- {
- "@type": "Question",
- "name": "El curso tendra constancia con valor curricular?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Los cursos de CELEBIOS se emiten con constancia con valor curricular avalada por CELEBIOS y CONCERVET. Para este curso, los detalles de acreditacion, horas y aval se confirmaran al cerrar el temario. Quien este en la lista de espera recibira esa informacion en primer lugar."
- }
- },
- {
- "@type": "Question",
- "name": "Cuanto costara el curso y desde que paises podre tomarlo?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "El precio aun no esta definido y se anunciara junto con la apertura. El formato sera 100% en linea, por lo que podras tomarlo desde Mexico o cualquier pais de LATAM con conexion a internet. Unete a la lista de espera para recibir costo y fechas en cuanto se confirmen."
- }
- }
- ]
- }
- ]
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "EducationalOrganization",
+      "@id": "https://www.celebios.com/#org",
+      "name": "CELEBIOS",
+      "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+      "url": "https://www.celebios.com",
+      "logo": "https://www.celebios.com/brand/logo-white.png",
+      "foundingDate": "2010",
+      "areaServed": [
+        "MX",
+        "LATAM"
+      ],
+      "sameAs": [
+        "https://instagram.com/celebios_edu"
+      ]
+    },
+    {
+      "@type": "Course",
+      "name": "Anestesia y Contencion de Fauna Silvestre",
+      "description": "Curso de anestesia y contencion de fauna silvestre: contencion fisica vs quimica y cuando usar cada una, principios de seguridad anestesica, monitoreo de planos y signos vitales, y manejo del estres y del riesgo en especies silvestres. Para MVZ, biologos y personal de UMA, centros de rescate y zoologicos en Mexico y LATAM. Curso en desarrollo: lista de espera abierta.",
+      "url": "https://www.celebios.com/cursos/anestesia-contencion-fauna",
+      "inLanguage": "es",
+      "provider": {
+        "@id": "https://www.celebios.com/#org"
+      },
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "online"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://www.celebios.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Cursos de fauna silvestre",
+          "item": "https://www.celebios.com/cursos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Anestesia y Contencion de Fauna Silvestre",
+          "item": "https://www.celebios.com/cursos/anestesia-contencion-fauna"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Cuando abre el curso de anestesia y contencion de fauna silvestre?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El curso esta en desarrollo y aun no tiene fecha de apertura publica. Si te unes a la lista de espera, seras de los primeros en saber cuando confirmemos calendario, temario final, docente y costo. No se cobra nada por anotarte en la lista."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cual es la diferencia entre contencion fisica y contencion quimica?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La contencion fisica usa medios manuales y de manejo (mallas, guantes, cajas, tubos) sin farmacos; la quimica usa sedacion o anestesia. La fisica es util en manejos breves; la quimica reduce estres y riesgo en procedimientos largos o dolorosos. El curso ensena cuando elegir cada una."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Necesito ser veterinario para tomar este curso de anestesia en fauna?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El perfil objetivo es profesional: MVZ, biologos y personal tecnico de UMA, centros de rescate y zoologicos. El manejo anestesico implica decisiones clinicas y de dosificacion, por lo que se recomienda formacion previa. El requisito final se confirmara antes de la apertura del curso."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "El curso tendra constancia con valor curricular?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Los cursos de CELEBIOS se emiten con constancia con valor curricular avalada por CELEBIOS y CONCERVET. Para este curso, los detalles de acreditacion, horas y aval se confirmaran al cerrar el temario. Quien este en la lista de espera recibira esa informacion en primer lugar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cuanto costara el curso y desde que paises podre tomarlo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El precio aun no esta definido y se anunciara junto con la apertura. El formato sera 100% en linea, por lo que podras tomarlo desde Mexico o cualquier pais de LATAM con conexion a internet. Unete a la lista de espera para recibir costo y fechas en cuanto se confirmen."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>

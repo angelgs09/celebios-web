@@ -718,96 +718,111 @@
 
 <script type="application/ld+json">
 {
- "@context": "https://schema.org",
- "@graph": [
- {
- "@type": "EducationalOrganization",
- "@id": "https://www.celebios.com/#org",
- "name": "CELEBIOS",
- "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
- "url": "https://www.celebios.com",
- "logo": "https://www.celebios.com/brand/logo-white.png",
- "foundingDate": "2010",
- "areaServed": ["MX", "LATAM"],
- "sameAs": ["https://instagram.com/celebios_edu"]
- },
- {
- "@type": "Course",
- "name": "Curso de Nutricion de Fauna en Cautiverio",
- "description": "Curso de nutricion de fauna silvestre en cautiverio: requerimientos nutricionales por grupo taxonomico, formulacion y balanceo de dietas, y los errores de alimentacion mas comunes en cautiverio y su impacto en la salud. En desarrollo, con lista de espera abierta. Para MVZ, biologos y personal de zoologicos, UMA y centros de rescate en Mexico y LATAM.",
- "url": "https://www.celebios.com/cursos/nutricion-fauna-cautiverio",
- "inLanguage": "es",
- "provider": { "@id": "https://www.celebios.com/#org" },
- "hasCourseInstance": {
- "@type": "CourseInstance",
- "courseMode": "online",
- "courseSchedule": {
- "@type": "Schedule",
- "scheduleTimezone": "America/Mexico_City"
- }
- },
- "offers": {
- "@type": "Offer",
- "availability": "https://schema.org/PreOrder",
- "priceCurrency": "MXN",
- "url": "https://www.celebios.com/cursos/nutricion-fauna-cautiverio",
- "category": "Lista de espera"
- }
- },
- {
- "@type": "BreadcrumbList",
- "itemListElement": [
- { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.celebios.com/" },
- { "@type": "ListItem", "position": 2, "name": "Cursos de fauna silvestre", "item": "https://www.celebios.com/cursos" },
- { "@type": "ListItem", "position": 3, "name": "Curso de Nutricion de Fauna en Cautiverio", "item": "https://www.celebios.com/cursos/nutricion-fauna-cautiverio" }
- ]
- },
- {
- "@type": "FAQPage",
- "mainEntity": [
- {
- "@type": "Question",
- "name": "El curso de nutricion de fauna en cautiverio ya esta disponible?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Todavia no. El curso esta en desarrollo y la inscripcion aun no abre. Por ahora puedes unirte a la lista de espera dejando tu correo: te avisaremos en cuanto se publique la primera edicion, con el temario final, el precio y la fecha de apertura confirmados."
- }
- },
- {
- "@type": "Question",
- "name": "Que cubrira el curso de nutricion de fauna en cautiverio?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Aborda tres ejes: los requerimientos nutricionales por grupo taxonomico, la formulacion y el balanceo de dietas para fauna cautiva, y los errores de alimentacion mas frecuentes en cautiverio, esos desbalances, deficiencias y excesos que derivan en enfermedad metabolica, osea o reproductiva."
- }
- },
- {
- "@type": "Question",
- "name": "Para quien es este curso de nutricion de fauna silvestre?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Esta pensado para medicos veterinarios, biologos y personal tecnico que alimentan o supervisan dietas de fauna en zoologicos, UMA, aviarios, santuarios y centros de rescate. Tambien para estudiantes de ultimos semestres que quieren especializarse en el manejo nutricional de especies silvestres en cautiverio."
- }
- },
- {
- "@type": "Question",
- "name": "Cuanto costara y cuando abre la inscripcion?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "El precio y la fecha de apertura aun no estan confirmados porque el curso sigue en produccion. No publicamos cifras que no podamos sostener. Las personas en lista de espera son las primeras en recibir el dato exacto y, cuando aplique, condiciones de preventa."
- }
- },
- {
- "@type": "Question",
- "name": "El curso tendra constancia con valor curricular?",
- "acceptedAnswer": {
- "@type": "Answer",
- "text": "Esa es la intencion: como el resto de la oferta de CELEBIOS, el curso busca emitir constancia con valor curricular avalada por CONCERVET al completarlo. Confirmaremos los terminos exactos de la constancia al cerrar el programa, antes de abrir la inscripcion."
- }
- }
- ]
- }
- ]
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "EducationalOrganization",
+      "@id": "https://www.celebios.com/#org",
+      "name": "CELEBIOS",
+      "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+      "url": "https://www.celebios.com",
+      "logo": "https://www.celebios.com/brand/logo-white.png",
+      "foundingDate": "2010",
+      "areaServed": [
+        "MX",
+        "LATAM"
+      ],
+      "sameAs": [
+        "https://instagram.com/celebios_edu"
+      ]
+    },
+    {
+      "@type": "Course",
+      "name": "Curso de Nutricion de Fauna en Cautiverio",
+      "description": "Curso de nutricion de fauna silvestre en cautiverio: requerimientos nutricionales por grupo taxonomico, formulacion y balanceo de dietas, y los errores de alimentacion mas comunes en cautiverio y su impacto en la salud. En desarrollo, con lista de espera abierta. Para MVZ, biologos y personal de zoologicos, UMA y centros de rescate en Mexico y LATAM.",
+      "url": "https://www.celebios.com/cursos/nutricion-fauna-cautiverio",
+      "inLanguage": "es",
+      "provider": {
+        "@id": "https://www.celebios.com/#org"
+      },
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "online",
+        "courseSchedule": {
+          "@type": "Schedule",
+          "scheduleTimezone": "America/Mexico_City"
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://www.celebios.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Cursos de fauna silvestre",
+          "item": "https://www.celebios.com/cursos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Curso de Nutricion de Fauna en Cautiverio",
+          "item": "https://www.celebios.com/cursos/nutricion-fauna-cautiverio"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "El curso de nutricion de fauna en cautiverio ya esta disponible?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Todavia no. El curso esta en desarrollo y la inscripcion aun no abre. Por ahora puedes unirte a la lista de espera dejando tu correo: te avisaremos en cuanto se publique la primera edicion, con el temario final, el precio y la fecha de apertura confirmados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Que cubrira el curso de nutricion de fauna en cautiverio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aborda tres ejes: los requerimientos nutricionales por grupo taxonomico, la formulacion y el balanceo de dietas para fauna cautiva, y los errores de alimentacion mas frecuentes en cautiverio, esos desbalances, deficiencias y excesos que derivan en enfermedad metabolica, osea o reproductiva."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Para quien es este curso de nutricion de fauna silvestre?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Esta pensado para medicos veterinarios, biologos y personal tecnico que alimentan o supervisan dietas de fauna en zoologicos, UMA, aviarios, santuarios y centros de rescate. Tambien para estudiantes de ultimos semestres que quieren especializarse en el manejo nutricional de especies silvestres en cautiverio."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cuanto costara y cuando abre la inscripcion?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El precio y la fecha de apertura aun no estan confirmados porque el curso sigue en produccion. No publicamos cifras que no podamos sostener. Las personas en lista de espera son las primeras en recibir el dato exacto y, cuando aplique, condiciones de preventa."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "El curso tendra constancia con valor curricular?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Esa es la intencion: como el resto de la oferta de CELEBIOS, el curso busca emitir constancia con valor curricular avalada por CONCERVET al completarlo. Confirmaremos los terminos exactos de la constancia al cerrar el programa, antes de abrir la inscripcion."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>
