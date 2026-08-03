@@ -271,7 +271,28 @@ def generar_404():
     )
 
 
-def generar_vercel_json():
+# Tope del propio esquema de Vercel para `redirects` (openapi.vercel.sh/vercel.json,
+# maxItems). Si el inventario lo rebasa, el CSV deja de caber inline y la unica
+# salida es bulkRedirectsPath, que es de pago.
+MAX_REDIRECTS_INLINE = 2048
+
+
+def generar_vercel_json(reglas=()):
+    """`redirects` inline, NO bulkRedirectsPath.
+
+    El deploy del 2026-08-03 lo dejo claro en los logs: "Bulk redirects are not
+    available for teams on the Hobby plan". La cuenta esta en Hobby, asi que
+    esa propiedad no publicaba ni una sola regla.
+
+    Inline si funciona en Hobby y el esquema admite hasta 2048 reglas. Se emite
+    `statusCode` en vez de `permanent`, porque `permanent: true` responde 308 y
+    el inventario dice 301: son equivalentes para SEO, pero el contrato del CSV
+    es explicito y no hay razon para traicionarlo."""
+    if len(reglas) > MAX_REDIRECTS_INLINE:
+        raise SystemExit(
+            f"ERROR: {len(reglas)} redirects exceden el tope de {MAX_REDIRECTS_INLINE} "
+            f"que Vercel admite en vercel.json. Haria falta bulkRedirectsPath (plan Pro)."
+        )
     config = {
         "$schema": "https://openapi.vercel.sh/vercel.json",
         # Lo que se publica ya esta construido. Sin esto Vercel autodetecta el
@@ -279,7 +300,11 @@ def generar_vercel_json():
         "buildCommand": "",
         "cleanUrls": True,
         "trailingSlash": False,
-        "bulkRedirectsPath": "migracion/redirects.csv",
+        "redirects": [
+            {"source": r["source"], "destination": r["destination"],
+             "statusCode": r["statusCode"]}
+            for r in reglas
+        ],
         "headers": [
             {
                 "source": "/(.*)",
@@ -756,7 +781,7 @@ def construir(salida=None, cutover=False):
     (salida / "404.html").write_text(inyectar_ga4(generar_404(), ga4_id), encoding="utf-8")
     (salida / "sitemap.xml").write_text(generar_sitemap(paginas.values()), encoding="utf-8")
     (salida / "robots.txt").write_text(generar_robots(), encoding="utf-8")
-    (salida / "vercel.json").write_text(generar_vercel_json(), encoding="utf-8")
+    (salida / "vercel.json").write_text(generar_vercel_json(reglas_bulk), encoding="utf-8")
 
     (salida / "migracion").mkdir(parents=True, exist_ok=True)
     with (salida / "migracion" / "redirects.csv").open("w", encoding="utf-8", newline="") as f:

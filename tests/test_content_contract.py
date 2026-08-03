@@ -352,17 +352,52 @@ class TestGenerarRobots(unittest.TestCase):
 
 
 class TestGenerarVercelJson(unittest.TestCase):
+    REGLAS = [
+        {"source": "/viejo", "destination": "/nuevo", "statusCode": 301},
+        {"source": "/otro", "destination": "/cursos#historico-felidos", "statusCode": 301},
+    ]
+
     def setUp(self):
-        self.config = json.loads(build.generar_vercel_json())
+        self.config = json.loads(build.generar_vercel_json(self.REGLAS))
 
     def test_campos_obligatorios(self):
         self.assertEqual(self.config["$schema"], "https://openapi.vercel.sh/vercel.json")
         self.assertIs(self.config["cleanUrls"], True)
         self.assertIs(self.config["trailingSlash"], False)
-        self.assertEqual(self.config["bulkRedirectsPath"], "migracion/redirects.csv")
+        self.assertEqual(self.config["buildCommand"], "")
 
-    def test_no_usa_el_redirect_inline_viejo(self):
-        self.assertNotIn("redirects", self.config)
+    def test_no_usa_bulk_redirects_que_es_de_pago(self):
+        """Invierte a `test_no_usa_el_redirect_inline_viejo`, que fijaba lo
+        contrario. Lo decidio un dato empirico, no una preferencia: el deploy
+        del 2026-08-03 fallo con "Bulk redirects are not available for teams on
+        the Hobby plan", asi que esa propiedad no publicaba ni una regla."""
+        self.assertNotIn("bulkRedirectsPath", self.config)
+        self.assertEqual(len(self.config["redirects"]), 2)
+
+    def test_emite_301_y_no_el_308_de_permanent(self):
+        for regla in self.config["redirects"]:
+            with self.subTest(source=regla["source"]):
+                self.assertEqual(regla["statusCode"], 301)
+                self.assertNotIn("permanent", regla)
+
+    def test_conserva_el_fragmento_del_destino(self):
+        destinos = [r["destination"] for r in self.config["redirects"]]
+        self.assertIn("/cursos#historico-felidos", destinos)
+
+    def test_revienta_si_se_pasa_del_tope_del_esquema(self):
+        # maxItems de `redirects` en openapi.vercel.sh/vercel.json. Pasarse
+        # sin avisar dejaria reglas fuera en silencio.
+        muchas = [{"source": f"/x{i}", "destination": "/", "statusCode": 301}
+                  for i in range(build.MAX_REDIRECTS_INLINE + 1)]
+        with self.assertRaises(SystemExit) as ctx:
+            build.generar_vercel_json(muchas)
+        self.assertIn(str(build.MAX_REDIRECTS_INLINE), str(ctx.exception))
+
+    def test_el_tope_admite_el_inventario_actual(self):
+        with build.REDIRECTS_CSV.open(encoding="utf-8") as f:
+            activas, _ = build.convertir_redirects_bulk(
+                list(csv.DictReader(f)), build.rutas_canonicas_fuente())
+        self.assertLessEqual(len(activas), build.MAX_REDIRECTS_INLINE)
 
     def test_trae_headers_de_seguridad(self):
         headers_planos = [h for bloque in self.config["headers"] for h in bloque["headers"]]
@@ -581,9 +616,11 @@ class TestConstruirArtefactos(unittest.TestCase):
         self.assertIn("<html", html.lower())
         self.assertGreater(len(html), 200)
 
-    def test_vercel_json_referencia_bulk_redirects(self):
+    def test_vercel_json_publica_los_redirects_inline(self):
         config = json.loads((self.salida / "vercel.json").read_text(encoding="utf-8"))
-        self.assertEqual(config["bulkRedirectsPath"], "migracion/redirects.csv")
+        self.assertNotIn("bulkRedirectsPath", config)
+        self.assertGreater(len(config["redirects"]), 300)
+        self.assertEqual({r["statusCode"] for r in config["redirects"]}, {301})
 
     def test_redirects_csv_bulk_tiene_encabezado_exacto(self):
         with (self.salida / "migracion" / "redirects.csv").open(encoding="utf-8") as f:
