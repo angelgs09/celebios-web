@@ -15,6 +15,7 @@ que se corre el script (revienta si el conteo no cuadra).
 """
 import csv
 import io
+import tempfile
 import time
 import unittest
 from pathlib import Path
@@ -23,11 +24,13 @@ from unittest import mock
 import requests
 
 from scripts.sync_migration_inventory import (
+    CAMPOS_METRICA,
     CSV_FIELDS,
     DESTINOS_BASE_VALIDOS,
     build_inventory_rows,
     classify_source,
     fetch_sitemap_urls,
+    leer_metricas,
     normalize_source_url,
     write_csv,
 )
@@ -363,6 +366,62 @@ class TestCsvFields(unittest.TestCase):
         filas = build_inventory_rows(["https://www.celebios.com/blank"])
         self.assertEqual(filas[0]["confidence"], "alta")
         self.assertEqual(filas[0]["manual_review"], "false")
+
+
+class TestPreservacionDeMetricas(unittest.TestCase):
+    """Las columnas de Search Console entran a mano; write_csv regenera el
+    archivo entero. Sin preservacion, un `sync` las borra en silencio."""
+
+    def _csv_temporal(self, filas):
+        ruta = Path(self.enterContext(tempfile.TemporaryDirectory())) / "redirects.csv"
+        with ruta.open("w", encoding="utf-8", newline="") as f:
+            escritor = csv.DictWriter(f, fieldnames=CSV_FIELDS)
+            escritor.writeheader()
+            escritor.writerows(filas)
+        return ruta
+
+    def _fila(self, url, **extra):
+        base = {c: "" for c in CSV_FIELDS}
+        base["source_url"] = url
+        base.update(extra)
+        return base
+
+    def test_metricas_previas_sobreviven_a_la_regeneracion(self):
+        ruta = self._csv_temporal([
+            self._fila("https://www.celebios.com/cursos", clicks="7", impressions="120"),
+        ])
+        filas = build_inventory_rows(
+            ["https://www.celebios.com/cursos"], leer_metricas(ruta)
+        )
+        self.assertEqual(filas[0]["clicks"], "7")
+        self.assertEqual(filas[0]["impressions"], "120")
+
+    def test_se_reencuentran_aunque_la_url_cambie_de_forma(self):
+        # El sitemap puede publicar la variante con barra final o sin www;
+        # la metrica se indexa por la forma canonica, no por la cadena cruda.
+        ruta = self._csv_temporal([
+            self._fila("https://celebios.com/CURSOS/", clicks="7"),
+        ])
+        filas = build_inventory_rows(
+            ["https://www.celebios.com/cursos"], leer_metricas(ruta)
+        )
+        self.assertEqual(filas[0]["clicks"], "7")
+
+    def test_url_sin_metricas_queda_vacia_no_ausente(self):
+        filas = build_inventory_rows(["https://www.celebios.com/cursos"], {})
+        for campo in CAMPOS_METRICA:
+            self.assertEqual(filas[0][campo], "")
+
+    def test_filas_sin_metricas_no_entran_al_indice(self):
+        ruta = self._csv_temporal([
+            self._fila("https://www.celebios.com/cursos"),
+            self._fila("https://www.celebios.com/nosotros", impressions="3"),
+        ])
+        self.assertEqual(list(leer_metricas(ruta)), ["celebios.com/nosotros"])
+
+    def test_csv_inexistente_no_revienta(self):
+        ruta = Path(self.enterContext(tempfile.TemporaryDirectory())) / "no-existe.csv"
+        self.assertEqual(leer_metricas(ruta), {})
 
 
 class TestDuplicateDetection(unittest.TestCase):

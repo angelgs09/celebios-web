@@ -309,9 +309,35 @@ def _revision_manual(confianza: str) -> bool:
     return confianza == "baja"
 
 
-def build_inventory_rows(urls: list[str]) -> list[dict]:
+CAMPOS_METRICA = ("clicks", "impressions", "position", "backlinks")
+
+
+def leer_metricas(ruta) -> dict[str, dict]:
+    """Recupera las metricas ya capturadas de un CSV de inventario previo,
+    indexadas por la forma canonica del source_url.
+
+    Estas cuatro columnas no las produce este script: entran a mano desde
+    Search Console (ver migracion/evidencia/). Como write_csv regenera el
+    archivo entero, sin esto un simple `sync` las borraria en silencio."""
+    ruta = Path(ruta)
+    if not ruta.exists():
+        return {}
+    with ruta.open(encoding="utf-8-sig", newline="") as f:
+        previas = {}
+        for fila in csv.DictReader(f):
+            valores = {c: (fila.get(c) or "") for c in CAMPOS_METRICA}
+            if any(valores.values()):
+                previas[normalize_source_url(fila["source_url"])] = valores
+    return previas
+
+
+def build_inventory_rows(urls: list[str], metricas: dict[str, dict] | None = None) -> list[dict]:
     """Clasifica una lista de URLs de sitemap y deduplica por su forma
-    canonica. Conserva el orden de primera aparicion."""
+    canonica. Conserva el orden de primera aparicion.
+
+    metricas: lo devuelto por leer_metricas(), para no perder las columnas
+    de Search Console al regenerar."""
+    metricas = metricas or {}
     vistas = set()
     filas = []
     for url in urls:
@@ -324,16 +350,14 @@ def build_inventory_rows(urls: list[str]) -> list[dict]:
 
         categoria, tema, destino = classify_source(ruta, host)
         confianza = _confianza(categoria, tema)
+        previas = metricas.get(clave, {})
         filas.append({
             "source_url": url.strip(),
             "destination_path": destino,
             "status_code": _status_code(destino),
             "category": categoria,
             "topic_or_cohort": tema,
-            "clicks": "",
-            "impressions": "",
-            "position": "",
-            "backlinks": "",
+            **{c: previas.get(c, "") for c in CAMPOS_METRICA},
             "priority": _PRIORIDAD_POR_CATEGORIA[categoria],
             "confidence": confianza,
             "manual_review": "true" if _revision_manual(confianza) else "false",
@@ -376,8 +400,13 @@ def main() -> None:
             "Revisar migracion/README.md y reclasificar antes de continuar."
         )
 
-    filas_wix = build_inventory_rows(wix_urls)
-    filas_kajabi = build_inventory_rows(kajabi_urls)
+    # Antes de regenerar: rescatar lo que este script no sabe producir.
+    metricas = leer_metricas(SALIDA / "redirects.csv")
+    if metricas:
+        print(f"  {len(metricas)} fila(s) con metricas de Search Console, preservadas")
+
+    filas_wix = build_inventory_rows(wix_urls, metricas)
+    filas_kajabi = build_inventory_rows(kajabi_urls, metricas)
 
     SALIDA.mkdir(exist_ok=True)
     write_csv(SALIDA / "urls-wix.csv", filas_wix)

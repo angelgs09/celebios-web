@@ -24,9 +24,15 @@
     "https://www.celebios.com/copia-de-aula-promoción-aves-2022"
   ],
   "gsc_connection_status": "no_conectado",
-  "gsc_findings": "El reporte 'Top Search Queries on Google' de Wix no esta disponible porque este sitio Wix no esta conectado a Google Search Console. La propiedad sc-domain:celebios.com si se verifico el 2026-08-01, pero al 2026-08-02 Search Console sigue procesando los datos: EXPORTAR sigue deshabilitado en Rendimiento y en Enlaces, y no hay export disponible. clicks, impressions, position y backlinks siguen sin evidencia.",
+  "gsc_findings": "El reporte 'Top Search Queries on Google' de Wix no esta disponible porque este sitio Wix no esta conectado a Google Search Console. La propiedad sc-domain:celebios.com se verifico el 2026-08-01 y el 2026-08-02 21:30 libero el informe de Rendimiento: clicks e impressions ya estan capturados en migracion/evidencia/gsc-rendimiento-2026-08-01.csv y rellenados en redirects.csv para 17 URLs. position y backlinks siguen vacios: la tabla de paginas no desglosa posicion y el informe de Enlaces sigue procesando.",
+  "gsc_sin_historico": "Con el rango de 16 meses seleccionado, el grafico de Rendimiento se rotula 'del 1 de agosto de 2026 al 1 de agosto de 2026'. Los 16 meses de Search Console son retencion hacia adelante, no backfill: una propiedad acumula desde el dia que se verifica. El historico previo al 2026-08-01 no existe en GSC y no va a llegar. Por eso ESTE archivo -- Wix Page Visits, 12 meses, 3543 vistas -- es la unica fuente de historico de trafico del sitio, no un complemento de GSC.",
   "confidence": "alta_para_wix_page_visits",
   "gate_status": "blocked",
   "cutover_allowed": false,
+  "cutover_pendientes": [
+    "informe de Enlaces de GSC (backlinks externos), aun procesando",
+    "informe de Indexacion de paginas de GSC, aun procesando",
+    "preview deploy en Vercel que confirme el procesado del CSV de bulk redirects en los logs de build"
+  ],
   "contains_personal_data": false
 }
