@@ -966,6 +966,37 @@ class TestOfertaEnHistoricos(unittest.TestCase):
         self.assertEqual(hallados, [], f"ofertas en programas historicos: {hallados}")
 
 
+class TestPackageJsonDeSalida(unittest.TestCase):
+    """Copiar el package.json de la raiz tal cual rompia el deploy: arrastra
+    `"build": "python build.py"`, Vercel lo autodetectaba y trataba de
+    reconstruir un sitio ya construido desde un directorio sin redesign-v2/.
+    `npm run build` salia con codigo 2 y el despliegue moria."""
+
+    def test_no_publica_scripts_de_construccion(self):
+        salida = json.loads(build.package_json_de_salida())
+        self.assertNotIn("scripts", salida)
+
+    def test_conserva_lo_que_la_funcion_serverless_necesita(self):
+        salida = json.loads(build.package_json_de_salida())
+        fuente = json.loads((build.RAIZ / "package.json").read_text(encoding="utf-8"))
+        self.assertEqual(salida["dependencies"], fuente["dependencies"])
+        self.assertEqual(salida["type"], fuente["type"])
+        self.assertIn("@vercel/blob", salida["dependencies"])
+
+    def test_el_vercel_json_declara_que_no_hay_build(self):
+        self.assertEqual(json.loads(build.generar_vercel_json())["buildCommand"], "")
+
+    def test_el_construido_no_trae_scripts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            salida = Path(tmp) / "site"
+            with mock.patch.dict(os.environ, {}, clear=False):
+                os.environ.pop("GA4_MEASUREMENT_ID", None)
+                build.construir(salida=salida)
+            pkg = json.loads((salida / "package.json").read_text(encoding="utf-8"))
+            self.assertNotIn("scripts", pkg)
+            self.assertTrue((salida / "api" / "video.js").exists())
+
+
 class TestAvisoDePrivacidad(unittest.TestCase):
     """El aviso heredado de Wix citaba la Ley General ... en Posesion de
     SUJETOS OBLIGADOS, que rige a entes publicos. CELEBIOS es una S.C., o sea

@@ -274,6 +274,9 @@ def generar_404():
 def generar_vercel_json():
     config = {
         "$schema": "https://openapi.vercel.sh/vercel.json",
+        # Lo que se publica ya esta construido. Sin esto Vercel autodetecta el
+        # package.json y corre un build que no tiene nada que construir.
+        "buildCommand": "",
         "cleanUrls": True,
         "trailingSlash": False,
         "bulkRedirectsPath": "migracion/redirects.csv",
@@ -508,6 +511,28 @@ def buscar_oferta_en_historicos(paginas, programas):
     return hallados
 
 
+def package_json_de_salida():
+    """El package.json que se publica, derivado del de la raiz.
+
+    Copiarlo tal cual reventaba el deploy: arrastra `"build": "python
+    build.py"`, asi que Vercel intentaba reconstruir un sitio YA construido,
+    desde un directorio donde `redesign-v2/` no existe -- `npm run build`
+    salia con codigo 2 y el despliegue moria antes de servir nada.
+
+    El output solo necesita lo que la funcion de `api/` requiere para
+    compilar: sus dependencias y el tipo de modulo. Como construirse no es
+    asunto suyo, ya esta construido."""
+    fuente = json.loads((RAIZ / "package.json").read_text(encoding="utf-8"))
+    salida = {
+        "private": True,
+        "name": fuente["name"],
+        "description": fuente["description"],
+        "type": fuente["type"],
+        "dependencies": fuente["dependencies"],
+    }
+    return json.dumps(salida, ensure_ascii=False, indent=2) + "\n"
+
+
 def buscar_paginas_huerfanas(paginas):
     """[ruta] de paginas publicadas a las que no llega ningun enlace interno.
 
@@ -726,7 +751,7 @@ def construir(salida=None, cutover=False):
 
     # Lo unico que no es estatico: la funcion que firma las URLs de video.
     shutil.copytree(RAIZ / "api", salida / "api")
-    shutil.copy2(RAIZ / "package.json", salida / "package.json")
+    (salida / "package.json").write_text(package_json_de_salida(), encoding="utf-8")
 
     (salida / "404.html").write_text(inyectar_ga4(generar_404(), ga4_id), encoding="utf-8")
     (salida / "sitemap.xml").write_text(generar_sitemap(paginas.values()), encoding="utf-8")
