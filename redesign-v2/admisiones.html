@@ -70,7 +70,7 @@
 
  html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
  /* El header es sticky (69px). Sin esto, cada 301 con fragmento deja su
-    destino tapado debajo del header. Afecta a las 118 reglas activas. */
+    destino tapado debajo del header. */
  [id]{ scroll-margin-top:5.5rem; }
  @media (prefers-reduced-motion: reduce){
  html{ scroll-behavior:auto; }
@@ -366,6 +366,41 @@
  .ph{ font-style:italic; color:inherit; opacity:.7; }
 </style>
 
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "EducationalOrganization",
+   "@id": "https://www.celebios.com/#org",
+   "name": "CELEBIOS",
+   "alternateName": "Centro Latinoamericano de Estudios en Ciencias Biologicas y de la Salud Animal",
+   "url": "https://www.celebios.com",
+   "logo": "https://www.celebios.com/brand/logo-white.png",
+   "foundingDate": "2010",
+   "areaServed": [
+    "MX",
+    "LATAM"
+   ],
+   "sameAs": [
+    "https://instagram.com/celebios_edu",
+    "https://facebook.com/celebi0s"
+   ]
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://www.celebios.com/admisiones",
+   "name": "Admisiones e inscripcion",
+   "description": "Como se formaliza una inscripcion en CELEBIOS: solicitud, aceptacion, pago y envio de comprobante.",
+   "url": "https://www.celebios.com/admisiones",
+   "inLanguage": "es",
+   "isPartOf": {
+    "@id": "https://www.celebios.com/#org"
+   }
+  }
+ ]
+}
+</script>
 </head>
 <body>
 
