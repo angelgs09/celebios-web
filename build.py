@@ -508,6 +508,39 @@ def buscar_oferta_en_historicos(paginas, programas):
     return hallados
 
 
+# Una fecha de apertura anunciada con verbo: "Abre Sep 2026", "Inicia Oct 2026".
+# No toca fechas en pasado ni fechas sueltas, que son hechos historicos legitimos
+# ("la 3a edicion cerro en jun 2025").
+APERTURA_RE = re.compile(
+    r"(?:Abre|Inicia|Comienza|Arranca|Empieza)\s*(?:</span>)?\s*"
+    r"(?:Ene|Feb|Mar|Abr|May|Jun|Jul|Ago|Sep|Oct|Nov|Dic)\.?\s+20\d\d",
+    re.I,
+)
+# Cuanto texto despues de la fecha se admite para encontrar el marcador. Da para
+# el cierre de un par de <span> y el "por confirmar"; no para la siguiente celda.
+_MARGEN_MARCADOR = 90
+
+
+def buscar_fecha_sin_confirmar(paginas):
+    """[(archivo, linea, texto)] de fechas de apertura publicadas sin el
+    marcador "por confirmar".
+
+    redesign-v2/COWORK-GUIA-MONTAJE.md lista "fecha de la edicion 2026" entre
+    los datos que Angel todavia no ha dado, y fija el marcador como la forma
+    de publicarlo: "si ves 'por confirmar' en una pagina, es a proposito".
+    Una fecha sin el se lee como compromiso firme. Esto no se detecto solo:
+    la tarjeta de Manejo Conductual perdio el marcador al copiarse del
+    catalogo a dos fichas de curso, y esa es la lamina con mas trafico."""
+    hallados = []
+    for f in sorted(paginas, key=lambda p: p.name):
+        for n, linea in enumerate(f.read_text(encoding="utf-8").splitlines(), 1):
+            for m in APERTURA_RE.finditer(linea):
+                if "por confirmar" in linea[m.start():m.end() + _MARGEN_MARCADOR].lower():
+                    continue
+                hallados.append((f.name, n, re.sub(r"\s+", " ", m.group(0)).strip()))
+    return hallados
+
+
 def buscar_anclas_sin_destino(reglas, paginas):
     """[(source, destination)] de las reglas activas cuyo fragmento no existe
     como id en la pagina destino.
@@ -588,6 +621,15 @@ def construir(salida=None, cutover=False):
         raise SystemExit(
             f"ERROR: {len(falsas)} tarjeta(s) se anuncian disponibles sin enlazar a un "
             f"programa disponible en contenido/programas.json: {detalle}{mas}"
+        )
+
+    fechas = buscar_fecha_sin_confirmar(paginas)
+    if fechas:
+        detalle = "; ".join(f"{arch}:{ln} {txt!r}" for arch, ln, txt in fechas[:5])
+        mas = f" (+{len(fechas) - 5} mas)" if len(fechas) > 5 else ""
+        raise SystemExit(
+            f"ERROR: {len(fechas)} fecha(s) de apertura se publican sin el marcador "
+            f"'por confirmar': {detalle}{mas}"
         )
 
     ofertas = buscar_oferta_en_historicos(paginas, cargar_programas())

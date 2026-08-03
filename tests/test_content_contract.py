@@ -942,6 +942,60 @@ class TestOfertaEnHistoricos(unittest.TestCase):
         self.assertEqual(hallados, [], f"ofertas en programas historicos: {hallados}")
 
 
+class TestFechaSinConfirmar(unittest.TestCase):
+    """COWORK-GUIA-MONTAJE.md lista "fecha de la edicion 2026" entre los datos
+    que Angel no ha dado, y fija "por confirmar" como la forma de publicarlo.
+    Sin el marcador, la fecha se lee como compromiso firme."""
+
+    def _pagina(self, tmp, cuerpo):
+        f = Path(tmp) / "curso.html"
+        f.write_text(cuerpo, encoding="utf-8")
+        return {f: "/cursos/x"}
+
+    def test_fecha_de_apertura_sin_marcador_es_violacion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, '<span class="pill">Abre Sep 2026</span>')
+            hallados = build.buscar_fecha_sin_confirmar(paginas)
+            self.assertEqual([(a, t) for a, _, t in hallados], [("curso.html", "Abre Sep 2026")])
+
+    def test_con_el_marcador_pasa(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, '<span class="pill">Abre Sep 2026 por confirmar</span>')
+            self.assertEqual(build.buscar_fecha_sin_confirmar(paginas), [])
+
+    def test_el_marcador_vale_aunque_lo_separe_el_cierre_de_un_span(self):
+        # Es la forma real del catalogo: <span class="from">Inicia</span>Sep 2026...
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(
+                tmp,
+                '<span class="lam-price"><span class="from">Inicia</span>'
+                'Sep 2026 <span class="tbd-mark">por confirmar</span></span>',
+            )
+            self.assertEqual(build.buscar_fecha_sin_confirmar(paginas), [])
+
+    def test_una_fecha_historica_sin_verbo_no_se_toca(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, "<p>La 3a edicion cerro en jun 2025.</p>")
+            self.assertEqual(build.buscar_fecha_sin_confirmar(paginas), [])
+
+    def test_el_marcador_de_la_siguiente_celda_no_cuenta(self):
+        # Sin tope de distancia, un "por confirmar" de otra tarjeta absolveria
+        # a esta. El margen tiene que cubrir el cierre de spans, no media pagina.
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(
+                tmp,
+                "<span>Abre Sep 2026</span>" + "<td>relleno</td>" * 12 + "<span>por confirmar</span>",
+            )
+            self.assertEqual(len(build.buscar_fecha_sin_confirmar(paginas)), 1)
+
+    def test_las_paginas_reales_no_prometen_fecha_firme(self):
+        paginas = {f: build.ruta_canonica(f.read_text(encoding="utf-8"))
+                   for f in sorted(build.SRC.glob("*.html"))}
+        paginas = {f: r for f, r in paginas.items() if r}
+        hallados = build.buscar_fecha_sin_confirmar(paginas)
+        self.assertEqual(hallados, [], f"fechas sin marcador: {hallados}")
+
+
 class TestAnclasSinDestino(unittest.TestCase):
     """113 de las 118 reglas activas apuntan a /cursos#historico-*. Si el id no
     existe, el 301 aterriza arriba de la pagina en vez de en su seccion."""
