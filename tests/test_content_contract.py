@@ -966,6 +966,36 @@ class TestOfertaEnHistoricos(unittest.TestCase):
         self.assertEqual(hallados, [], f"ofertas en programas historicos: {hallados}")
 
 
+class TestAvisoDePrivacidad(unittest.TestCase):
+    """El aviso heredado de Wix citaba la Ley General ... en Posesion de
+    SUJETOS OBLIGADOS, que rige a entes publicos. CELEBIOS es una S.C., o sea
+    un particular: le aplica la LFPDPPP. Angel autorizo la correccion el
+    2026-08-03. Estos tests existen para que no se revierta al re-migrar."""
+
+    def _texto(self):
+        return (build.SRC / "aviso-de-privacidad.html").read_text(encoding="utf-8")
+
+    def test_no_cita_la_ley_de_sujetos_obligados(self):
+        self.assertNotRegex(self._texto(), r"(?i)Sujetos\s+Obligados")
+
+    def test_cita_la_ley_de_particulares(self):
+        self.assertRegex(self._texto(), r"(?i)Posesi.n\s+de\s+los\s+Particulares")
+
+    def test_declara_los_cuatro_derechos_arco(self):
+        texto = self._texto()
+        for derecho in ("Acceso", "Rectificación", "Cancelación", "Oposición"):
+            with self.subTest(derecho=derecho):
+                self.assertIn(derecho, texto)
+
+    def test_no_niega_toda_transferencia_habiendo_pasarela_de_pago(self):
+        """Cobrar por Stripe/PayPal implica que un tercero trate datos. Un
+        aviso que afirma que NO hay ninguna transferencia deja de ser cierto
+        en cuanto se conecta la pasarela."""
+        texto = self._texto()
+        self.assertNotIn("no se realizarán transferencias de datos personales", texto)
+        self.assertIn("plataformas de pago externas", texto)
+
+
 class TestPaginasHuerfanas(unittest.TestCase):
     """Una pagina huerfana esta en el sitemap pero no en el sitio: Google la
     ve sin contexto y un visitante no puede llegar navegando. /egresados nacio
