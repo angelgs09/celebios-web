@@ -946,13 +946,12 @@ class TestAnclasSinDestino(unittest.TestCase):
     """113 de las 118 reglas activas apuntan a /cursos#historico-*. Si el id no
     existe, el 301 aterriza arriba de la pagina en vez de en su seccion."""
 
-    # Temas historicos que aun no tienen tarjeta en el catalogo: los construye
-    # Task 3 con el archivo historico completo. El test admite que el conjunto
-    # de anclas huerfanas se encoja, nunca que crezca.
-    SIN_TARJETA_TODAVIA = {
-        "historico-medicina-preventiva", "historico-manejo-datos",
-        "historico-imagenologia-caballos", "historico-diagnostico-terapeutica",
-    }
+    # Vacio desde que las laminas 15-18 cubrieron los cuatro temas que
+    # faltaban (medicina-preventiva, manejo-datos, imagenologia-caballos,
+    # diagnostico-terapeutica). Se queda como constante, y no inline, para que
+    # reabrir el hueco sea un cambio explicito y documentado en vez de un
+    # borrado silencioso de tarjetas.
+    SIN_TARJETA_TODAVIA = set()
 
     def _paginas(self, tmp, cuerpo_cursos):
         f = Path(tmp) / "catalogo.html"
@@ -988,10 +987,30 @@ class TestAnclasSinDestino(unittest.TestCase):
         with build.REDIRECTS_CSV.open(encoding="utf-8") as f:
             activas, _ = build.convertir_redirects_bulk(list(csv.DictReader(f)), set(paginas.values()))
         huerfanas = {d.split("#", 1)[1] for _, d in build.buscar_anclas_sin_destino(activas, paginas)}
-        self.assertTrue(
-            huerfanas <= self.SIN_TARJETA_TODAVIA,
-            f"anclas huerfanas nuevas (alguien rompio un id existente): {huerfanas - self.SIN_TARJETA_TODAVIA}",
+        self.assertEqual(
+            huerfanas, self.SIN_TARJETA_TODAVIA,
+            f"anclas huerfanas nuevas (alguien rompio o borro una tarjeta): "
+            f"{huerfanas - self.SIN_TARJETA_TODAVIA}",
         )
+
+    def test_cada_tema_sin_ficha_propia_no_promete_convocatoria(self):
+        """Las laminas 15-18 existen solo porque hay 301 apuntando a ellas.
+        La evidencia sostiene que el tema se impartio y nada mas: si alguna
+        gana un precio, una fecha o un CTA de inscripcion, es una afirmacion
+        que ninguna fuente respalda."""
+        catalogo = build.SRC / "catalogo.html"
+        texto = catalogo.read_text(encoding="utf-8")
+        for ancla in ("historico-medicina-preventiva", "historico-diagnostico-terapeutica",
+                      "historico-imagenologia-caballos", "historico-manejo-datos"):
+            with self.subTest(ancla=ancla):
+                inicio = texto.index(f'id="{ancla}"')
+                tarjeta = texto[inicio:texto.index("</article>", inicio)]
+                self.assertNotRegex(tarjeta, r"\$\s?[\d,]+")
+                self.assertNotRegex(
+                    tarjeta,
+                    r"\b(?:Ene|Feb|Mar|Abr|May|Jun|Jul|Ago|Sep|Oct|Nov|Dic)\.?\s+20\d\d\b",
+                )
+                self.assertNotRegex(tarjeta, r"(?i)inscr|avisarme|matricul")
 
 
 if __name__ == "__main__":
