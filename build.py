@@ -508,6 +508,24 @@ def buscar_oferta_en_historicos(paginas, programas):
     return hallados
 
 
+def buscar_paginas_huerfanas(paginas):
+    """[ruta] de paginas publicadas a las que no llega ningun enlace interno.
+
+    Una pagina huerfana existe en el sitemap pero no en el sitio: Google la
+    descubre sin contexto ni autoridad, y un visitante no puede llegar a ella
+    navegando. Paso de verdad: /egresados nacio huerfana aun siendo el destino
+    de 234 reglas de redirect."""
+    rutas = set(paginas.values())
+    entrantes = {ruta: 0 for ruta in rutas}
+    por_nombre = {f.name: paginas[f] for f in paginas}
+    for f, propia in paginas.items():
+        for destino in set(HREF_RE.findall(f.read_text(encoding="utf-8"))):
+            ruta = por_nombre.get(destino.split("/")[-1])
+            if ruta is not None and ruta != propia:
+                entrantes[ruta] += 1
+    return sorted(ruta for ruta, n in entrantes.items() if n == 0)
+
+
 # Una fecha de apertura anunciada con verbo: "Abre Sep 2026", "Inicia Oct 2026".
 # No toca fechas en pasado ni fechas sueltas, que son hechos historicos legitimos
 # ("la 3a edicion cerro en jun 2025").
@@ -621,6 +639,13 @@ def construir(salida=None, cutover=False):
         raise SystemExit(
             f"ERROR: {len(falsas)} tarjeta(s) se anuncian disponibles sin enlazar a un "
             f"programa disponible en contenido/programas.json: {detalle}{mas}"
+        )
+
+    huerfanas = buscar_paginas_huerfanas(paginas)
+    if huerfanas:
+        raise SystemExit(
+            f"ERROR: {len(huerfanas)} pagina(s) publicadas sin ningun enlace interno "
+            f"que lleve a ellas: {', '.join(huerfanas)}"
         )
 
     fechas = buscar_fecha_sin_confirmar(paginas)

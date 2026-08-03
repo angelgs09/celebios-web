@@ -942,6 +942,54 @@ class TestOfertaEnHistoricos(unittest.TestCase):
         self.assertEqual(hallados, [], f"ofertas en programas historicos: {hallados}")
 
 
+class TestPaginasHuerfanas(unittest.TestCase):
+    """Una pagina huerfana esta en el sitemap pero no en el sitio: Google la
+    ve sin contexto y un visitante no puede llegar navegando. /egresados nacio
+    asi, siendo el destino de 234 reglas de redirect."""
+
+    def _paginas(self, tmp, archivos):
+        rutas = {}
+        for nombre, (ruta, cuerpo) in archivos.items():
+            f = Path(tmp) / nombre
+            f.write_text(cuerpo, encoding="utf-8")
+            rutas[f] = ruta
+        return rutas
+
+    def test_detecta_la_pagina_sin_enlaces_entrantes(self):
+        # a y b se enlazan mutuamente para que la unica huerfana sea "sola";
+        # si no, el par tambien saldria y el test no probaria lo que dice.
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(tmp, {
+                "a.html": ("/a", '<a href="b.html">b</a>'),
+                "b.html": ("/b", '<a href="a.html">a</a>'),
+                "sola.html": ("/sola", "<p>nadie me enlaza</p>"),
+            })
+            self.assertEqual(build.buscar_paginas_huerfanas(paginas), ["/sola"])
+
+    def test_un_enlace_entrante_basta(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(tmp, {
+                "a.html": ("/a", '<a href="b.html">b</a>'),
+                "b.html": ("/b", '<a href="a.html">a</a>'),
+            })
+            self.assertEqual(build.buscar_paginas_huerfanas(paginas), [])
+
+    def test_enlazarse_a_si_misma_no_cuenta(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(tmp, {
+                "a.html": ("/a", '<a href="b.html">b</a>'),
+                "b.html": ("/b", '<a href="a.html">a</a>'),
+                "c.html": ("/c", '<a href="c.html#seccion">yo misma</a>'),
+            })
+            self.assertEqual(build.buscar_paginas_huerfanas(paginas), ["/c"])
+
+    def test_el_sitio_real_no_tiene_huerfanas(self):
+        paginas = {f: build.ruta_canonica(f.read_text(encoding="utf-8"))
+                   for f in sorted(build.SRC.glob("*.html"))}
+        paginas = {f: r for f, r in paginas.items() if r}
+        self.assertEqual(build.buscar_paginas_huerfanas(paginas), [])
+
+
 class TestScrollMarginEnDestinosDeAncla(unittest.TestCase):
     """`header.site` es position:sticky y mide 69px. Sin scroll-margin-top, un
     301 con fragmento deja su destino tapado bajo el header: medido en vivo,
