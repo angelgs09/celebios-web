@@ -77,10 +77,10 @@
     {
       "slug": "/cursos/primeros-auxilios-fauna",
       "title": "Primeros Auxilios para Fauna Silvestre",
-      "status": "historical",
+      "status": "planned",
       "category": "curso",
       "topic": "Primeros auxilios para fauna silvestre",
-      "summary": "No hay ninguna fuente que confirme que CELEBIOS haya impartido este programa. Un barrido del 2026-08-02 sobre los sitemaps vivos de celebios.com (371 URLs) y celebios.online (15 URLs), el scrape del sitio anterior y el harvest de Facebook e Instagram no devolvio ni una coincidencia: la unica pagina que existe es la maqueta de redesign-v2, creada por este mismo redisenio. No se publica contenido, duracion, docentes, fechas ni precio, y no se presenta como impartido.",
+      "summary": "Curso planeado, nunca impartido hasta donde alcanza la evidencia. Nacio como ejemplo de catalogo en la ronda de diseno de junio de 2026, con un precio placeholder que ya se retiro. Un barrido del 2026-08-02 sobre los sitemaps vivos de celebios.com (371 URLs) y celebios.online (15 URLs), el scrape del sitio anterior y el harvest de Facebook e Instagram no devolvio ni una coincidencia. No se publica contenido, duracion, docentes, fechas, precio ni aval especifico de este curso.",
       "evidence": [
         "INVESTIGACION.md#L205-L219"
       ],
@@ -89,10 +89,10 @@
     {
       "slug": "/cursos/manejo-reptiles",
       "title": "Manejo de Reptiles",
-      "status": "historical",
+      "status": "planned",
       "category": "curso",
       "topic": "Manejo de reptiles",
-      "summary": "No hay ninguna fuente que confirme que CELEBIOS haya impartido este programa como curso independiente. El barrido del 2026-08-02 no encontro ni una coincidencia en los sitemaps vivos de ambos dominios, en el scrape del sitio anterior ni en el harvest de redes; el unico rastro real de reptiles es el modulo 7 dentro del Diplomado de Rescate y Rehabilitacion. La unica pagina que existe es la maqueta de redesign-v2. No se publica contenido, duracion, docentes, fechas ni precio, y no se presenta como impartido.",
+      "summary": "Curso planeado, nunca impartido como programa independiente hasta donde alcanza la evidencia. Nacio como ejemplo de catalogo en la ronda de diseno de junio de 2026, con un precio placeholder que ya se retiro. El barrido del 2026-08-02 no devolvio ni una coincidencia en los sitemaps vivos de ambos dominios, el scrape anterior ni el harvest de redes; el unico rastro real de reptiles es el modulo 7 dentro del Diplomado de Rescate y Rehabilitacion. No se publica contenido, duracion, docentes, fechas, precio ni aval especifico de este curso.",
       "evidence": [
         "INVESTIGACION.md#L205-L219"
       ],

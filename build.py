@@ -29,7 +29,17 @@ CANONICAL = re.compile(r'<link[^>]*rel=["\']canonical["\'][^>]*>', re.I)
 HREF_CANON = re.compile(r'href=["\']([^"\']+)["\']', re.I)
 MARCA = "\x00CANONICAL\x00"
 
-ESTADOS_VALIDOS = {"available", "historical"}
+# `planned` se agrega el 2026-08-02, desviandose del enum cerrado del plan
+# (available/historical), y la razon esta documentada: dos programas no son
+# ninguna de las dos cosas. Nacieron como ejemplos de catalogo en la ronda de
+# diseno de junio, con precio placeholder; no hay ni una prueba de que se
+# hayan impartido, y su propio HTML dice "Edicion en preparacion". Marcarlos
+# `historical` afirmaba una imparticion que nadie puede respaldar, y marcarlos
+# `available` habria sido peor. Un estado que dice la verdad es mejor que un
+# enum bonito. `planned` tiene exactamente las mismas restricciones que
+# `historical`: sin oferta, sin precio, sin CTA de inscripcion.
+ESTADOS_VALIDOS = {"available", "historical", "planned"}
+ESTADOS_SIN_OFERTA = {"historical", "planned"}
 CAMPOS_REQUERIDOS = {
     "slug", "title", "status", "category", "topic",
     "summary", "evidence", "interest_topic",
@@ -481,7 +491,7 @@ def buscar_oferta_en_historicos(paginas, programas):
         f"${p['offer']['price_mxn']:,} MXN".lower()
         for p in disponibles if isinstance(p.get("offer"), dict)
     }
-    historicos = {p["slug"] for p in programas if p["status"] == "historical"}
+    historicos = {p["slug"] for p in programas if p["status"] in ESTADOS_SIN_OFERTA}
     hallados = []
     for f in sorted(paginas, key=lambda p: p.name):
         if paginas[f] not in historicos:

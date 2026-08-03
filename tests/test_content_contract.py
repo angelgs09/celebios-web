@@ -844,6 +844,41 @@ class TestDisponibilidadFalsa(unittest.TestCase):
         self.assertEqual(hallados, [], f"tarjetas con disponibilidad falsa: {hallados}")
 
 
+class TestEstadoPlanned(unittest.TestCase):
+    """`planned` existe porque dos programas no eran ni `available` ni
+    `historical`: nacieron como ejemplos de catalogo en junio, con precio
+    placeholder, y no hay prueba de que se hayan impartido. Tiene las mismas
+    restricciones que `historical`."""
+
+    def test_un_planned_no_puede_traer_oferta(self):
+        p = _programa_base(status="planned", offer={"price_mxn": 1000, "payment_type": "unico",
+                                                    "hours": 8, "topics_count": 5, "access_months": 3})
+        with self.assertRaises(ValueError) as ctx:
+            build.validar_programas([p], rutas_validas={"/cursos/prueba"})
+        self.assertIn("no permitidos", str(ctx.exception))
+
+    def test_un_planned_no_cuenta_como_disponible(self):
+        programas = _cargar_programas_reales()
+        self.assertEqual(sum(1 for p in programas if p["status"] == "available"), 1)
+        self.assertEqual(
+            {p["slug"] for p in programas if p["status"] == "planned"},
+            {"/cursos/primeros-auxilios-fauna", "/cursos/manejo-reptiles"},
+        )
+
+    def test_la_guarda_de_oferta_cubre_planned_igual_que_historical(self):
+        programas = [
+            {"slug": "/curso-lenguaje-felino", "status": "available",
+             "offer": {"price_mxn": 1400, "payment_type": "unico", "hours": 12,
+                       "topics_count": 11, "access_months": 5}},
+            {"slug": "/cursos/x", "status": "planned"},
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            f = Path(tmp) / "curso-x.html"
+            f.write_text("<p>Desde $9,900 MXN</p>", encoding="utf-8")
+            hallados = build.buscar_oferta_en_historicos({f: "/cursos/x"}, programas)
+            self.assertTrue(any("precio propio" in m for _, m in hallados), hallados)
+
+
 class TestEvidenciaCircular(unittest.TestCase):
     """Dos programas se sostenian citando la linea del canonical de la maqueta
     que este mismo redisenio escribio. Eso no es evidencia de nada."""
