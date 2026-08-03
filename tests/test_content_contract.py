@@ -942,6 +942,40 @@ class TestOfertaEnHistoricos(unittest.TestCase):
         self.assertEqual(hallados, [], f"ofertas en programas historicos: {hallados}")
 
 
+class TestScrollMarginEnDestinosDeAncla(unittest.TestCase):
+    """`header.site` es position:sticky y mide 69px. Sin scroll-margin-top, un
+    301 con fragmento deja su destino tapado bajo el header: medido en vivo,
+    la tarjeta quedaba en top:0 con 69px comidos, justo el "Lam. NN" y el pill
+    de estado. Afecta a las reglas activas con fragmento, que son la mayoria."""
+
+    REGLA = re.compile(r"scroll-margin-top\s*:\s*[^;}]+")
+
+    def test_toda_pagina_destino_de_un_ancla_declara_scroll_margin(self):
+        paginas = {f: build.ruta_canonica(f.read_text(encoding="utf-8"))
+                   for f in sorted(build.SRC.glob("*.html"))}
+        paginas = {f: r for f, r in paginas.items() if r}
+        with build.REDIRECTS_CSV.open(encoding="utf-8") as f:
+            activas, _ = build.convertir_redirects_bulk(list(csv.DictReader(f)), set(paginas.values()))
+
+        destinos = {r["destination"].split("#", 1)[0] or "/"
+                    for r in activas if "#" in r["destination"]}
+        self.assertTrue(destinos, "no hay reglas con fragmento, el test no prueba nada")
+
+        sin_regla = sorted(
+            f.name for f, ruta in paginas.items()
+            if ruta in destinos and not self.REGLA.search(f.read_text(encoding="utf-8"))
+        )
+        self.assertEqual(sin_regla, [], f"aterrizarian bajo el header: {sin_regla}")
+
+    def test_el_margen_cubre_el_header(self):
+        # 5.5rem = 88px contra un header de 69px. Si alguien lo baja de 69,
+        # el ancla vuelve a quedar tapada y el test deja de protegerte.
+        texto = (build.SRC / "catalogo.html").read_text(encoding="utf-8")
+        m = re.search(r"scroll-margin-top\s*:\s*([\d.]+)rem", texto)
+        self.assertIsNotNone(m, "se esperaba el margen declarado en rem")
+        self.assertGreaterEqual(float(m.group(1)) * 16, 69)
+
+
 class TestFechaSinConfirmar(unittest.TestCase):
     """COWORK-GUIA-MONTAJE.md lista "fecha de la edicion 2026" entre los datos
     que Angel no ha dado, y fija "por confirmar" como la forma de publicarlo.
