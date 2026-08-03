@@ -844,6 +844,26 @@ class TestDisponibilidadFalsa(unittest.TestCase):
         self.assertEqual(hallados, [], f"tarjetas con disponibilidad falsa: {hallados}")
 
 
+class TestEvidenciaCircular(unittest.TestCase):
+    """Dos programas se sostenian citando la linea del canonical de la maqueta
+    que este mismo redisenio escribio. Eso no es evidencia de nada."""
+
+    def test_citar_una_maqueta_html_revienta(self):
+        maqueta = next(build.SRC.glob("*.html"))
+        with self.assertRaises(ValueError) as ctx:
+            build._validar_evidencia("/x", f"redesign-v2/{maqueta.name}#L8")
+        self.assertIn("circular", str(ctx.exception))
+
+    def test_los_md_de_redesign_v2_si_valen(self):
+        """El harvest de redes vive ahi y es registro de fuentes externas."""
+        build._validar_evidencia("/x", "redesign-v2/DATOS-REALES-harvest.md#L46")
+
+    def test_ninguna_evidencia_real_cita_una_maqueta(self):
+        for p in build.cargar_programas():
+            for fuente in p["evidence"]:
+                build._validar_evidencia(p["slug"], fuente)
+
+
 class TestOfertaEnHistoricos(unittest.TestCase):
     """La pagina del diplomado declaraba un Offer con availability InStock y
     precios 19500/26000 para un programa cuya edicion cerro. Structured data es

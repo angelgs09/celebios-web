@@ -129,6 +129,15 @@ def _validar_evidencia(slug, fuente):
     if not ruta.exists():
         raise ValueError(f"{slug}: evidencia inexistente: {fuente}")
 
+    # Una pagina no puede ser su propia evidencia. Dos programas se sostenian
+    # citando la linea del <link rel="canonical"> de la maqueta que este mismo
+    # redisenio escribio, o sea nada. Los .md de redesign-v2 (el harvest de
+    # redes) si valen: son registro de fuentes externas, no maquetas.
+    if ruta.suffix.lower() == ".html" and SRC in ruta.parents:
+        raise ValueError(
+            f"{slug}: evidencia circular, es una maqueta del propio redisenio: {fuente}"
+        )
+
     lineas = ruta.read_text(encoding="utf-8").splitlines()
     inicio = int(m.group("inicio"))
     fin = int(m.group("fin") or inicio)

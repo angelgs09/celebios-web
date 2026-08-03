@@ -218,9 +218,18 @@ maquetas del propio rediseño:
   `redesign-v2/curso-primeros-auxilios.html` dice "**Próxima edición — en desarrollo.** Este
   curso aún no tiene fecha de apertura".
 
-**Conflicto abierto, sin resolver:** el 2026-08-02 Angel atestiguó que ambos **sí se
-impartieron**. Esa atestación es una fuente, pero es la única, contradice el texto de las
-propias páginas del rediseño y no la respalda ningún documento. Mientras no exista una fuente
-documental (convocatoria, constancia, publicación), estos dos programas no deben presentarse
-como impartidos. Su evidencia actual en `contenido/programas.json` sigue siendo la maqueta
-citándose a sí misma, que no es evidencia de nada.
+**Resuelto como "no hay evidencia", el 2026-08-02.** Angel atestiguó primero que ambos sí se
+impartieron y poco después, al pedírsele la fuente, respondió que no tiene idea de ese dato y
+que se siga sin él. No queda entonces ninguna fuente: ni documental ni testimonial firme.
+
+Consecuencia aplicada: estos dos programas **no se presentan como impartidos**. Su `summary` en
+`contenido/programas.json` se corrigió —afirmaba que el programa estaba "presente como página
+propia en el sitio de CELEBIOS", cuando solo existe como maqueta en `redesign-v2/`— y su
+`evidence` dejó de ser la maqueta citándose a sí misma para apuntar a esta sección, que es lo
+único que sí está documentado: que se buscó y no se encontró nada.
+
+**Sigue abierto y es decisión de negocio, no de código:** las dos páginas publican el aval
+CONCERVET 13 y 10 veces respectivamente, y se presentan como "Próxima edición — en desarrollo".
+Un aval nominal sobre un curso del que no hay constancia de que exista es una afirmación del
+mismo tipo que las de la tabla de rechazadas. Retirarlo reestructura las dos páginas, así que
+queda para que Angel decida: retirar el aval, retirar las dos páginas, o aportar la fuente.

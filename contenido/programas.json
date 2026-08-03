@@ -80,9 +80,9 @@
       "status": "historical",
       "category": "curso",
       "topic": "Primeros auxilios para fauna silvestre",
-      "summary": "Programa presente como página propia en el sitio de CELEBIOS (canonical /cursos/primeros-auxilios-fauna). Ninguna de las fuentes de evidencia revisadas (CONTENIDO-REAL.md, DATOS-REALES-harvest.md, PENDIENTES-CONTENIDO.md) confirma contenido, duración, docentes o fechas para este programa: queda pendiente de investigación adicional antes de publicar cualquier dato específico.",
+      "summary": "No hay ninguna fuente que confirme que CELEBIOS haya impartido este programa. Un barrido del 2026-08-02 sobre los sitemaps vivos de celebios.com (371 URLs) y celebios.online (15 URLs), el scrape del sitio anterior y el harvest de Facebook e Instagram no devolvio ni una coincidencia: la unica pagina que existe es la maqueta de redesign-v2, creada por este mismo redisenio. No se publica contenido, duracion, docentes, fechas ni precio, y no se presenta como impartido.",
       "evidence": [
-        "redesign-v2/curso-primeros-auxilios.html#L8"
+        "INVESTIGACION.md#L205-L219"
       ],
       "interest_topic": "primeros-auxilios"
     },
@@ -92,9 +92,9 @@
       "status": "historical",
       "category": "curso",
       "topic": "Manejo de reptiles",
-      "summary": "Programa presente como página propia en el sitio de CELEBIOS (canonical /cursos/manejo-reptiles). Ninguna de las fuentes de evidencia revisadas (CONTENIDO-REAL.md, DATOS-REALES-harvest.md, PENDIENTES-CONTENIDO.md) confirma contenido, duración, docentes o fechas para este programa: queda pendiente de investigación adicional antes de publicar cualquier dato específico.",
+      "summary": "No hay ninguna fuente que confirme que CELEBIOS haya impartido este programa como curso independiente. El barrido del 2026-08-02 no encontro ni una coincidencia en los sitemaps vivos de ambos dominios, en el scrape del sitio anterior ni en el harvest de redes; el unico rastro real de reptiles es el modulo 7 dentro del Diplomado de Rescate y Rehabilitacion. La unica pagina que existe es la maqueta de redesign-v2. No se publica contenido, duracion, docentes, fechas ni precio, y no se presenta como impartido.",
       "evidence": [
-        "redesign-v2/curso-reptiles.html#L8"
+        "INVESTIGACION.md#L205-L219"
       ],
       "interest_topic": "reptiles"
     },
