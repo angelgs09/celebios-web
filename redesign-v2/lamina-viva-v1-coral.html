@@ -602,6 +602,29 @@
  /* .nav-cta declaraba el azul oscuro correcto y perdia la cascada contra
     `.nav-links a`, asi que se pintaba casi blanco sobre cian: 2.10:1. */
  .nav-links a.nav-cta{ color:#0C2447; }
+ /* --cobalto usado como FONDO, no como texto. En superficie oscura el token
+    se aclara a #B8A3C9 para poder leerse COMO TEXTO, y eso hunde a los
+    botones que lo usan de fondo: blanco sobre lila da 2.30:1. Y la buybar,
+    que no cuelga de .surface-dark, se quedaba con el morado base y texto
+    marino encima: 2.68:1. Se fija el par fondo/tinta en el componente, que es
+    donde se sabe cual de los dos papeles juega el color. */
+ .btn-wait, .btn-prox, .buybar .nav-cta,
+ .cta-card .cc-action .btn-primary{ background:#6B4A87; color:#FFFFFF; }
+ .btn-wait:hover, .btn-prox:hover, .buybar .nav-cta:hover,
+ .cta-card .cc-action .btn-primary:hover{ background:#5E3F79; color:#FFFFFF; }
+ /* La buybar tiene fondo marino propio (rgba(20,41,79,.96)) pero no cuelga de
+    .surface-dark, asi que se quedaba con los tokens de superficie clara: el
+    precio salia morado #7A5797 sobre marino, 2.24:1. */
+ .buybar{ --cobalto:#B8A3C9; --ceibo:#4CB7D5; --coral:#4CB7D5; --lodo:#95A4BD; }
+ /* Separadores de miga y de meta al 50% de alfa: 2.59-2.83:1 segun la pagina. */
+ /* .sep cae sobre marino Y sobre papel segun la seccion. Un solo valor
+    arreglaba una mitad y rompia la otra -- el mismo error que ya me costo una
+    revertida con .sec-kicker. Va por superficie. */
+ .surface-dark .sep, .on-dark .sep,
+ .art-hero .crumbs .sep, .art-hero .crumbs .msep{ color:rgba(185,196,212,.9); }
+ .surface-light .sep, .surface-paper .sep{ color:#5A6B85; }
+ .art-meta .sep, .art-meta .msep, .bb-trust .sep{ color:rgba(185,196,212,.9); }
+ .cta-card{ --ceibo:#4CB7D5; --coral:#4CB7D5; --cobalto:#B8A3C9; --lodo:#95A4BD; --foco:#7FD4EC; }
  
  /* Estos usan el acento como FONDO, no como texto. La tinta accesible de
     arriba les oscurecio el fondo y su texto oscuro cayo a 2.97:1, asi que
@@ -611,8 +634,6 @@
  .surface-paper .ccta-disp{ --ceibo:#2FA8C9; --coral:#2FA8C9; }
  .surface-light .feat-badge, .surface-paper .feat-badge{ --sage:#6FB07A; }
  /* separadores decorativos casi invisibles */
- .art-meta .sep{ color:rgba(238,242,236,.55); }
- .bb-trust .sep{ color:rgba(238,242,236,.62); }
  </style>
 </head>
 <body>
@@ -893,7 +914,7 @@
             <path d="M68 58 C58 60 52 68 50 78"/>
           </svg>
         </div>
-        <span class="kicker-sci mono">Ara · nutrición</span>
+        <span class="kicker-sci mono">Psittacidae · nutrición</span>
         <h3>Nutrición de Fauna en Cautiverio</h3>
         <p class="lam-meta">Nutrición · en producción</p>
         <div class="lam-foot">

@@ -390,7 +390,14 @@
  display:grid; grid-template-columns:1.3fr .7fr; gap:clamp(1.6rem,4vw,3rem);
  align-items:center;
  border-radius:var(--r-plate);
- background:linear-gradient(155deg, rgba(47,168,201,.16), rgba(122,87,151,.12) 70%, rgba(11,43,46,.3));
+ /* La tarjeta esta disenada como panel OSCURO -- su h2 va en --hueso, su
+    kicker en cian y su boton en morado -- pero vive dentro de una
+    section.surface-light y el degradado era de alfa 12-30%: sobre papel
+    #EEF2EC eso sigue siendo papel, asi que el titular de la unica llamada a
+    la accion de los 16 articulos salia a 1.00:1. Invisible, literal.
+    Se le pone base opaca, que es lo que el resto de bandas oscuras (.ctaband)
+    ya hacian: degradado ENCIMA de var(--charca), no en su lugar. */
+ background:linear-gradient(155deg, rgba(47,168,201,.16), rgba(122,87,151,.12) 70%, rgba(11,43,46,.3)), var(--charca);
  border:1px solid rgba(238,242,236,.16);
  box-shadow:var(--shadow-plate);
  padding:clamp(1.6rem,4vw,3rem);
@@ -423,7 +430,7 @@
  }
  .btn-primary{ background:var(--coral); color:#0C2447; box-shadow:0 14px 30px -14px rgba(47,168,201,.95); }
  .btn-primary:hover{ transform:translateY(-2px); background:#3FB8D8; box-shadow:0 20px 38px -16px rgba(47,168,201,1); }
- @media (max-width:760px){ .cta-card{ grid-template-columns:1fr; } }
+ @media (max-width:760px){ .cta-card{ grid-template-columns:minmax(0, 1fr); } }
 
  /* ============================================================
  ARTICULOS RELACIONADOS (placa clara, laminas)
@@ -438,11 +445,11 @@
 
  .grid-rel{
  display:grid;
- grid-template-columns: repeat(3, 1fr);
+ grid-template-columns: repeat(3, minmax(0, 1fr));
  gap:clamp(1rem, 2vw, 1.6rem);
  }
- @media (max-width:820px){ .grid-rel{ grid-template-columns:repeat(2,1fr); } }
- @media (max-width:520px){ .grid-rel{ grid-template-columns:1fr; } }
+ @media (max-width:820px){ .grid-rel{ grid-template-columns:repeat(2, minmax(0, 1fr)); } }
+ @media (max-width:520px){ .grid-rel{ grid-template-columns:minmax(0, 1fr); } }
 
  .lamina{
  position:relative; display:flex; flex-direction:column;
@@ -536,6 +543,29 @@
  /* .nav-cta declaraba el azul oscuro correcto y perdia la cascada contra
     `.nav-links a`, asi que se pintaba casi blanco sobre cian: 2.10:1. */
  .nav-links a.nav-cta{ color:#0C2447; }
+ /* --cobalto usado como FONDO, no como texto. En superficie oscura el token
+    se aclara a #B8A3C9 para poder leerse COMO TEXTO, y eso hunde a los
+    botones que lo usan de fondo: blanco sobre lila da 2.30:1. Y la buybar,
+    que no cuelga de .surface-dark, se quedaba con el morado base y texto
+    marino encima: 2.68:1. Se fija el par fondo/tinta en el componente, que es
+    donde se sabe cual de los dos papeles juega el color. */
+ .btn-wait, .btn-prox, .buybar .nav-cta,
+ .cta-card .cc-action .btn-primary{ background:#6B4A87; color:#FFFFFF; }
+ .btn-wait:hover, .btn-prox:hover, .buybar .nav-cta:hover,
+ .cta-card .cc-action .btn-primary:hover{ background:#5E3F79; color:#FFFFFF; }
+ /* La buybar tiene fondo marino propio (rgba(20,41,79,.96)) pero no cuelga de
+    .surface-dark, asi que se quedaba con los tokens de superficie clara: el
+    precio salia morado #7A5797 sobre marino, 2.24:1. */
+ .buybar{ --cobalto:#B8A3C9; --ceibo:#4CB7D5; --coral:#4CB7D5; --lodo:#95A4BD; }
+ /* Separadores de miga y de meta al 50% de alfa: 2.59-2.83:1 segun la pagina. */
+ /* .sep cae sobre marino Y sobre papel segun la seccion. Un solo valor
+    arreglaba una mitad y rompia la otra -- el mismo error que ya me costo una
+    revertida con .sec-kicker. Va por superficie. */
+ .surface-dark .sep, .on-dark .sep,
+ .art-hero .crumbs .sep, .art-hero .crumbs .msep{ color:rgba(185,196,212,.9); }
+ .surface-light .sep, .surface-paper .sep{ color:#5A6B85; }
+ .art-meta .sep, .art-meta .msep, .bb-trust .sep{ color:rgba(185,196,212,.9); }
+ .cta-card{ --ceibo:#4CB7D5; --coral:#4CB7D5; --cobalto:#B8A3C9; --lodo:#95A4BD; --foco:#7FD4EC; }
  
  /* Estos usan el acento como FONDO, no como texto. La tinta accesible de
     arriba les oscurecio el fondo y su texto oscuro cayo a 2.97:1, asi que
@@ -545,8 +575,6 @@
  .surface-paper .ccta-disp{ --ceibo:#2FA8C9; --coral:#2FA8C9; }
  .surface-light .feat-badge, .surface-paper .feat-badge{ --sage:#6FB07A; }
  /* separadores decorativos casi invisibles */
- .art-meta .sep{ color:rgba(238,242,236,.55); }
- .bb-trust .sep{ color:rgba(238,242,236,.62); }
  
  /* ============================================================
     SALTAR AL CONTENIDO + ANILLO DE FOCO
@@ -568,6 +596,29 @@
   text-decoration:none; transition:top .15s ease;
  }
  .saltar:focus{ top:.5rem; }
+ 
+ /* ============================================================
+    NADA EMPUJA LA PAGINA A SCROLL LATERAL
+    Medido en 34 paginas a 1440, 768, 390 y 320 px. El culpable era siempre el
+    mismo: filas flex con justify-content:space-between y sin wrap. Con una
+    etiqueta larga ("Leer guia", "Ver el diplomado de rehabilitacion"), la fila
+    no cabe y arrastra el documento entero -- en 13 paginas a 390 px, que es un
+    telefono normal. Las tablas anchas ya viven en .table-wrap con overflow-x,
+    asi que esas se desplazan solas y no cuentan.
+    ============================================================ */
+ .lam-foot, .rec-foot, .lamina-top, .bb-trust, .art-meta, .crumbs{
+  flex-wrap:wrap; row-gap:.4rem;
+ }
+ .ccta, .pill, .lam-state, .rec-tag, .lam-no, .btn{ max-width:100%; }
+ .lam-foot > *, .rec-foot > *, .lamina-top > *{ min-width:0; }
+ dd, dt, li, p, h1, h2, h3{ overflow-wrap:anywhere; }
+ table{ max-width:100%; }
+ /* La buybar es una fila fija de 64 px con space-between: a 320 px el nombre
+    del curso no cedia y empujaba el CTA fuera del viewport. */
+ .buybar-in{ min-width:0; }
+ .buybar .bbar-info{ min-width:0; flex:1 1 auto; }
+ .buybar .bbar-info .nm{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+ .buybar .nav-cta{ flex:0 0 auto; }
  </style>
 
 <script type="application/ld+json">

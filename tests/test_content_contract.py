@@ -2030,6 +2030,80 @@ class TestArticulosDeRecursos(unittest.TestCase):
                             self.assertIn(n["isPartOf"].get("@id"), ids)
 
 
+class TestDegradadoSinBase(unittest.TestCase):
+    """Un degradado con TODAS las paradas traslucidas no es un fondo: es un
+    tinte sobre lo que haya debajo. `.cta-card` -- la unica llamada a la accion
+    de los 16 articulos -- lo usaba con alfas de 12 a 30% dentro de una
+    `section.surface-light`, y su titular en --hueso quedaba a 1.00:1. Texto
+    blanco sobre papel blanco: invisible, medido en navegador."""
+
+    def test_el_sitio_publicado_no_tiene_ninguno(self):
+        self.assertEqual(build.buscar_degradado_sin_base(_publicadas()), [])
+
+    def test_detecta_el_degradado_traslucido(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            f = Path(tmp) / "x.html"
+            f.write_text(
+                ".cta-card{ background:linear-gradient(155deg, rgba(47,168,201,.16),"
+                " rgba(11,43,46,.3)); color:var(--hueso); }", encoding="utf-8")
+            self.assertTrue(build.buscar_degradado_sin_base([f]))
+
+    def test_con_base_opaca_no_dispara(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            f = Path(tmp) / "x.html"
+            f.write_text(
+                ".cta-card{ background:linear-gradient(155deg, rgba(47,168,201,.16),"
+                " rgba(11,43,46,.3)), var(--charca); color:var(--hueso); }", encoding="utf-8")
+            self.assertEqual(build.buscar_degradado_sin_base([f]), [])
+
+    def test_no_se_conforma_con_el_parentesis_de_la_base(self):
+        """La primera version usaba rfind(')') y se quedaba con el cierre de
+        var(--charca), asi que daba por buena cualquier declaracion. Este es
+        el caso que la desenmascara: parentesis anidados y SIN base."""
+        with tempfile.TemporaryDirectory() as tmp:
+            f = Path(tmp) / "x.html"
+            f.write_text(
+                ".cta-card{ background:linear-gradient(155deg, rgba(47,168,201,.16),"
+                " rgba(122,87,151,.12) 70%, rgba(11,43,46,.3)); }", encoding="utf-8")
+            self.assertTrue(build.buscar_degradado_sin_base([f]))
+
+
+class TestLaminaTipografica(unittest.TestCase):
+    """Los 18 visores del catalogo llevaban dibujos de linea a mano, y seis
+    eran el MISMO contorno de cuadrupedo con otra cabeza, rotulados Tapirus,
+    Mazama, Leopardus, Puma, Panthera y Didelphis. Ante MVZ eso no se lee como
+    estilo: se lee como material sin terminar."""
+
+    def test_no_quedan_dibujos_de_especimen(self):
+        for p in _publicadas():
+            with self.subTest(pagina=p.name):
+                self.assertNotIn('class="specimen"', p.read_text(encoding="utf-8"))
+
+    def test_cada_marco_lleva_su_rotulo(self):
+        """Los dos contenedores que antes tenian dibujo: la tarjeta (.visor) y
+        la placa ancla (.ap-rotulo). Ninguno puede quedarse sin etiqueta."""
+        for p in _publicadas():
+            texto = p.read_text(encoding="utf-8")
+            cuerpo = texto[texto.rfind("</style>"):]
+            marcos = (len(re.findall(r'<div class="visor(?: [^"]*)?"', cuerpo))
+                      + len(re.findall(r'<div class="art ap-rotulo"', cuerpo)))
+            rotulos = len(re.findall(r'<span class="esp-taxon">', cuerpo))
+            with self.subTest(pagina=p.name):
+                self.assertEqual(marcos, rotulos)
+
+    def test_el_rotulo_no_se_repite_debajo_del_marco(self):
+        """El kicker de debajo se mudo DENTRO del marco. Si vuelve a aparecer
+        pegado al visor, es que alguien lo duplico."""
+        for p in _publicadas():
+            texto = p.read_text(encoding="utf-8")
+            pegados = re.findall(
+                r'<span class="esp-taxon">([^<]+)</span>.{0,400}?'
+                r'<span class="kicker-sci[^"]*"[^>]*>([^<]*)</span>', texto, re.S)
+            for taxon, kicker in pegados:
+                with self.subTest(pagina=p.name, taxon=taxon):
+                    self.assertNotIn(taxon.split()[0], kicker)
+
+
 class TestNavegacionGlobal(unittest.TestCase):
     def test_el_cta_del_header_lleva_al_unico_programa_vendible(self):
         """Apuntaba al MISMO destino que el enlace "Cursos" de al lado -- el

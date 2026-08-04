@@ -850,6 +850,50 @@ def buscar_javascript_roto(paginas):
     return hallados
 
 
+# Un degradado con TODAS las paradas traslucidas no es un fondo: es un tinte
+# sobre lo que haya debajo. `.cta-card` lo usaba (alfas de 12 a 30%) dentro de
+# una `section.surface-light`, asi que su titular en --hueso quedaba a 1.00:1
+# -- invisible, en la unica llamada a la accion de los 16 articulos. La guarda
+# no puede medir contraste sin navegador, pero SI puede exigir que un bloque
+# que se pinta con tinta de superficie oscura tenga una base opaca debajo.
+FONDO_DEGRADADO = re.compile(r'background:\s*(linear-gradient\()', re.I)
+COLOR_OPACO = re.compile(r'(?:var\(--\w[\w-]*\)|#[0-9a-fA-F]{3,8}|\brgb\()')
+# Bloques cuyo texto se pinta con tinta de superficie oscura. Si alguno se
+# apoya en un degradado traslucido, el color efectivo es el de la seccion.
+BLOQUES_OSCUROS = ("cta-card", "ctaband")
+
+
+def buscar_degradado_sin_base(paginas):
+    """[(archivo, regla)] de bloques que pintan texto claro sobre un degradado
+    cuyas paradas son todas traslucidas: sin base opaca, el color efectivo es
+    el de la seccion que hay debajo, no el que el diseno supone."""
+    hallados = []
+    for f in paginas:
+        texto = f.read_text(encoding="utf-8")
+        for bloque in BLOQUES_OSCUROS:
+            for m in re.finditer(r'\.' + bloque + r'\{([^}]*)\}', texto):
+                cuerpo = m.group(1)
+                g = FONDO_DEGRADADO.search(cuerpo)
+                if not g:
+                    continue
+                # se cuenta el parentesis para saber DONDE cierra el degradado:
+                # rfind() se quedaba con el de var(--charca) y daba por buena
+                # cualquier declaracion, que es como se colo la primera vez.
+                prof, i = 0, g.end(1) - 1
+                while i < len(cuerpo):
+                    if cuerpo[i] == "(":
+                        prof += 1
+                    elif cuerpo[i] == ")":
+                        prof -= 1
+                        if prof == 0:
+                            break
+                    i += 1
+                cola = cuerpo[i + 1:].split(";", 1)[0]
+                if not COLOR_OPACO.search(cola):
+                    hallados.append((f.name, f".{bloque} " + re.sub(r"\s+", " ", cuerpo[g.start():i + 1])[:110]))
+    return hallados
+
+
 def buscar_json_ld_malformado(paginas):
     """[(archivo, error)] por cada bloque JSON-LD que no parsea.
 
@@ -1027,6 +1071,15 @@ def construir(salida=None, cutover=False):
         raise SystemExit(
             f"ERROR: {len(js_roto)} script(s) inline no compilan; el navegador "
             f"descarta el bloque completo: {detalle}{mas}"
+        )
+
+    sin_base = buscar_degradado_sin_base(paginas)
+    if sin_base:
+        detalle = "; ".join(f"{arch}: {regla}" for arch, regla in sin_base[:3])
+        raise SystemExit(
+            f"ERROR: {len(sin_base)} bloque(s) pintan texto de superficie oscura "
+            f"sobre un degradado sin base opaca; el texto acaba del color de la "
+            f"seccion que hay debajo: {detalle}"
         )
 
     ld_roto = buscar_json_ld_malformado(paginas)
