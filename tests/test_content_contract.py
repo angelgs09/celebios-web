@@ -1043,34 +1043,44 @@ class TestImagenesPublicadas(unittest.TestCase):
 
     PUBLICADAS = {
         # material propio de la escuela, sin personas
-        "cartel-anestesia-cirugia-2013", "cartel-contencion-quimica-anestesia",
-        "cartel-curso-tarantulas-2014", "cartel-diagnostico-terapeutica",
+        "cartel-contencion-quimica-anestesia", "cartel-diagnostico-terapeutica",
         "cartel-medicina-preventiva-2014", "cartel-medicina-preventiva-2017",
-        "cartel-nutricion-fauna-cautiverio", "cartel-ortopedia-aves-silvestres",
-        "cartel-rehabilitacion-fauna-2019",
+        "cartel-nutricion-2019",
         "fauna-cocodrilo-habitat", "fauna-grulla-coronada",
         "fauna-loro-alimentacion", "fauna-rapaz-alas-abiertas",
         # practicas reencuadradas en el animal, las manos o el instrumento: la
         # foto sigue siendo documental y real, pero ya no hay rostro que
         # identifique a nadie, asi que deja de ser dato personal.
         "practica-ecografo-consola", "practica-equino-auscultacion",
-        "practica-guacamaya-monitoreo", "practica-lechuza-auscultacion",
-        "practica-loro-manejo", "practica-manejo-quelonio",
+        "practica-lechuza-auscultacion", "practica-manejo-quelonio",
         "practica-perezoso-auscultacion",
     }
-    # Retiradas a proposito, no por descuido. Dos por como se leen fuera de su
-    # contexto clinico (el ave de alas extendidas sobre la mesa -- que estaba en
-    # la portada -- y el perezoso boca arriba inmovilizado). Cuatro porque lo
-    # unico que aportaban era el grupo entero: no hay recorte que las salve sin
-    # dejar rostros dentro.
+    # NINGUN nombre de archivo de esta lista es evidencia de lo que contiene:
+    # vienen del scraping del Wix y cinco mentian descaradamente (un logo de la
+    # UAEH se llamaba "cartel-anestesia-cirugia-2013", una foto de una persona
+    # con un erizo se llamaba "cartel-curso-tarantulas-2014"). Ninguna prueba
+    # automatica puede detectar eso. Las 14 se abrieron y se miraron una por una
+    # el 2026-08-03; cualquier alta futura exige lo mismo.
     RETIRADAS = {
+        # se leen mal fuera de su contexto clinico
         "practica-guacamaya-exploracion", "practica-perezoso-manejo",
+        "practica-guacamaya-monitoreo", "practica-loro-manejo",
+        # lo unico que aportaban era el grupo entero
         "practica-clinica-grupo", "practica-sesion-campo",
         "practica-equino-grupo", "practica-imagenologia-equipo",
+        # no eran carteles: dos logos de terceros y una foto con rostro
+        "cartel-anestesia-cirugia-2013", "cartel-nutricion-fauna-cautiverio",
+        "cartel-curso-tarantulas-2014",
+        # cartel real, pero sin edicion a la que pertenecer: anuncia
+        # "inscripciones abiertas" de 2024 y trae ocho logos de alianzas cuyo
+        # verbo exacto sigue sin fuente
+        "cartel-ortopedia-aves-silvestres", "cartel-rescate-rehabilitacion-2024",
     }
-    # Cambiaron de nombre porque el recorte les cambio el tema: ya no son "el
-    # grupo" ni "las alumnas", son la guacamaya y la consola.
-    RENOMBRADAS = {"practica-ave-clinica-grupo", "practica-ecografo-alumnas"}
+    # Cambiaron de nombre porque el nombre no describia el archivo.
+    RENOMBRADAS = {
+        "practica-ave-clinica-grupo", "practica-ecografo-alumnas",
+        "cartel-rehabilitacion-fauna-2019",
+    }
 
     def _en_disco(self):
         return {f.stem for f in (build.SRC / "media").glob("*.webp")}

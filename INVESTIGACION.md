@@ -261,11 +261,54 @@ ecógrafo ya cuenta mejor). Salieron. Los dos huecos de portada que dejaron se l
 láminas de fauna que ya estaban en el archivo: el cocodrilo en su encierro para `/nosotros`, la
 grulla coronada para el curso de conducta.
 
-**Verificación independiente.** Como el mismo que eligió los recortes es el peor juez de si
-funcionaron, los siete se revisaron con catorce agentes: dos lentes por foto —un abogado de
-protección de datos buscando cualquier rasgo identificable hasta en las orillas, y un visitante
-frío preocupado por el bienestar animal— con la instrucción explícita de encontrar el problema,
-no de absolver.
+**Verificación independiente, y lo que encontró.** Como el mismo que eligió los recortes es el
+peor juez de si funcionaron, los siete se revisaron con catorce agentes: dos lentes por foto —un
+abogado de protección de datos buscando cualquier rasgo identificable hasta en las orillas, y un
+visitante frío preocupado por el bienestar animal— con la instrucción explícita de encontrar el
+problema, no de absolver. **Solo dos de las siete salieron limpias en ambos lentes.** Los cinco
+hallazgos, todos reales:
+
+| foto | lente | hallazgo |
+|---|---|---|
+| equino | identificabilidad | un fragmento de cubrebocas de **14×9 px** en la orilla superior |
+| quelonio | identificabilidad | un **tatuaje botánico de línea fina** en el antebrazo: en una generación de 32 personas eso identifica igual que una cara |
+| perezoso | lectura fría | guante de carga sobre el hocico con **dientes expuestos**, sin ojo visible, sobre plancha de acero vacía → se leía como necropsia |
+| guacamaya | lectura fría | cuerpo plano, cola en abanico, cabeza tapada → "¿esa guacamaya está muerta?" |
+| loro | lectura fría | ave rodeada por cuatro manos y una mancha roja que en miniatura se lee como sangre |
+
+Los tres primeros se arreglaron recortando más. Los dos últimos no: el verificador del loro lo
+dijo textual —"recortar no lo arregla: el problema son las manos y la postura, y ambas están en
+el núcleo de la imagen"— y la guacamaya tenía la cola y el monitor del mismo lado, así que
+cualquier recorte que quitara la silueta desparramada se llevaba también la única señal
+clínica. **Salieron las dos.** El hueco que dejaron en las portadas de anestesia y ortopedia de
+aves no se llenó con otra foto: esas dos páginas volvieron a su **lámina de línea dibujada**,
+que es lo que el diseño ya traía y lo que sus propias etiquetas describen ("Tapirus bairdii",
+"Curso · Aves").
+
+**Los nombres de archivo mentían (2026-08-03, tercera pasada).** Al renderizar la galería
+offline saltó algo que ninguna revisión de rostros iba a encontrar: **cinco de los nueve
+"carteles" no eran carteles**, y se publicaban con una descripción falsa en el `alt` —o sea, lo
+que lee Google y lo que anuncia un lector de pantalla:
+
+| se publicaba como | lo que realmente era |
+|---|---|
+| "Cartel del diplomado en anestesia y cirugía" | el **logo pelón de la UAEH** |
+| "Cartel del diplomado en nutrición y alimentación" | el **logo pelón de ConcerVet** |
+| "Cartel del curso internacional de tarántulas" | una **foto de una persona sosteniendo un erizo**, con el rostro identificable |
+| "Cartel del diplomado en ortopedia de aves" | el cartel de **rescate y rehabilitación, 3ª ed. 2024** |
+| "Cartel del diplomado en rehabilitación de fauna" | el cartel de **nutrición 2019** (la jirafa) |
+
+Y era peor de lo que parecía, porque los carteles no viven en el mosaico: **ilustran una línea
+de ediciones históricas, uno por edición**. No era una descripción floja, era una edición
+ilustrada con el cartel de otra. Cuatro ediciones se quedaron sin imagen y la de nutrición 2019
+recuperó la suya. El cartel del jaguar salió por partida doble: anuncia "inscripciones
+abiertas" de 2024 y arrastra una barra de ocho logos de alianzas cuyo verbo exacto sigue sin
+fuente.
+
+La lección para quien siga: **el nombre de un archivo del scraping no es evidencia de lo que
+contiene.** Ninguna prueba automática detecta esto —probé una regla de coincidencia entre el id
+de la edición y el slug del cartel y habría dejado pasar cuatro de los cinco—, así que la única
+defensa es abrir cada imagen y mirarla. Las 14 que quedan se abrieron una por una.
 
 También se excluyeron desde el principio los logos de terceros y la señalización de sedes
 ajenas (Zoológico de Cali, Bioparque Yana-Cocha).
@@ -282,14 +325,14 @@ saltaba al cargar cada foto. Ahora se sincronizan contra el archivo real y hay u
 la cabecera WebP a mano —sin Pillow, que no es dependencia del repo— para que no vuelva a
 desalinearse.
 
-**Imágenes.** Se rescataron del Wix vivo y se guardaron en `redesign-v2/media/` (20 archivos
+**Imágenes.** Se rescataron del Wix vivo y se guardaron en `redesign-v2/media/` (14 archivos
 tras el recorte y la depuración) en vez de enlazarlas a `static.wixstatic.com`: si se cancela la cuenta de Wix,
 ese CDN deja de servirlas y desaparece el único registro visual del archivo. De 59 imágenes
 descargadas se descartaron 33 por dos motivos explícitos: **stock del banco de Wix** (jaguar,
 flamenco, paisajes, gato, mujer con laptop — su licencia cubre el uso *dentro* de Wix, no
 fuera) y **logos de terceros** (CONCERVET, UAEH, YanaCocha, Tamandúa), porque el verbo exacto
-de las alianzas sigue sin fuente. Lo que se conserva es material propio: 9 carteles de
-convocatorias con marca CELEBIOS, 4 láminas de fauna y 7 fotos de prácticas docentes ya
+de las alianzas sigue sin fuente. Lo que se conserva es material propio: 5 carteles de
+convocatorias con marca CELEBIOS, 4 láminas de fauna y 5 fotos de prácticas docentes ya
 reencuadradas.
 
 ## Actualización 2026-08-02 21:30 — Rendimiento liberado, y NO hay histórico
