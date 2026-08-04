@@ -343,6 +343,31 @@ saltaba al cargar cada foto. Ahora se sincronizan contra el archivo real y hay u
 la cabecera WebP a mano —sin Pillow, que no es dependencia del repo— para que no vuelva a
 desalinearse.
 
+**Láminas de ambiente: 12 imágenes GENERADAS (2026-08-04).** Los 16 artículos de `recurso-*`
+—los que traen tráfico de búsqueda— salían a texto pelón, y el archivo fotográfico real no daba
+para más: sólo hay material de aves, equinos, perezoso y quelonio. Se generaron 12 paisajes con
+Higgsfield (`soul_location`, 21:9, 0.12 créditos cada uno) y se repartieron por tema.
+
+**Son paisaje a propósito, no especies.** La audiencia del sitio son MVZ: un animal generado con
+la fórmula alar equivocada o la estructura de plumas mal lo cazan al instante, y el costo no es
+estético sino de credibilidad ante el único público que compra los cursos. Un paisaje no tiene
+anatomía que se pueda desmentir. Tampoco afirma nada: no dice "ésta es nuestra práctica", no
+identifica una especie, no documenta una edición.
+
+Van con prefijo **`ambiente-`** y hay un test que lo vigila, porque ese prefijo es lo único que
+impide que dentro de seis meses alguien las confunda con archivo real —que es exactamente el
+error que ya cometimos con los nombres del scraping—. Otro test impide que entren como `<img>`
+con `alt` o con pie de foto: eso las presentaría como registro de algo que pasó.
+
+**Dónde iban y dónde acabaron.** El primer intento las puso de fondo del hero, detrás del
+título, a 32% de opacidad. Medido: el texto hueso aguantaba (4.61:1 en el peor caso), pero **el
+kicker cian `#2FA8C9` caía de 5.18:1 a menos de 3:1 en las doce**. Para devolverlo a 4.5:1 había
+que bajar la opacidad a **0.05**, o sea a invisible. La conclusión no fue "ajustar el número"
+sino que una fotografía detrás de ese texto es incompatible con ese cian a cualquier opacidad
+útil: **el fondo era el lugar equivocado**. Acabaron como banda entre el hero oscuro y el cuerpo
+claro —imagen a fuerza completa, cero texto encima, y de paso hace de transición entre las dos
+superficies—. El test guarda la banda vacía y prohíbe que vuelva `art-fondo`.
+
 **Imágenes.** Se rescataron del Wix vivo y se guardaron en `redesign-v2/media/` (13 archivos
 tras el recorte y la depuración) en vez de enlazarlas a `static.wixstatic.com`: si se cancela la cuenta de Wix,
 ese CDN deja de servirlas y desaparece el único registro visual del archivo. De 59 imágenes

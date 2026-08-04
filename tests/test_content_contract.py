@@ -1041,6 +1041,19 @@ class TestImagenesPublicadas(unittest.TestCase):
     aviso de privacidad. Por eso el conjunto publicado es una lista cerrada:
     anadir una imagen tiene que ser un cambio deliberado, no un descuido."""
 
+    # Laminas de ambiente GENERADAS con IA (Higgsfield soul_location, 2026-08-03),
+    # no fotografia de CELEBIOS. Ilustran los articulos, que salian a texto pelon.
+    # Son paisaje deliberadamente: la audiencia son MVZ y un animal generado con la
+    # anatomia mal lo cazan al instante. Un paisaje no tiene anatomia que desmentir.
+    # El prefijo `ambiente-` es lo unico que impide que dentro de seis meses alguien
+    # las confunda con archivo real, por eso hay un test que lo vigila.
+    GENERADAS = {
+        "ambiente-bosque-tarde", "ambiente-claro-luz", "ambiente-dosel-amanecer",
+        "ambiente-dosel-contraluz", "ambiente-follaje-lluvia", "ambiente-hojarasca",
+        "ambiente-humedal", "ambiente-matorral-seco", "ambiente-niebla-canada",
+        "ambiente-ramas-cielo", "ambiente-rio-montana", "ambiente-selva-nublada",
+    }
+
     PUBLICADAS = {
         # material propio de la escuela, sin personas
         "cartel-contencion-quimica-anestesia", "cartel-diagnostico-terapeutica",
@@ -1053,7 +1066,7 @@ class TestImagenesPublicadas(unittest.TestCase):
         # identifique a nadie, asi que deja de ser dato personal.
         "practica-ecografo-consola", "practica-equino-auscultacion",
         "practica-lechuza-auscultacion", "practica-manejo-quelonio",
-    }
+    } | GENERADAS
     # NINGUN nombre de archivo de esta lista es evidencia de lo que contiene:
     # vienen del scraping del Wix y cinco mentian descaradamente (un logo de la
     # UAEH se llamaba "cartel-anestesia-cirugia-2013", una foto de una persona
@@ -1090,6 +1103,49 @@ class TestImagenesPublicadas(unittest.TestCase):
 
     def test_el_conjunto_publicado_es_el_declarado(self):
         self.assertEqual(self._en_disco(), self.PUBLICADAS)
+
+    def test_lo_generado_se_distingue_de_lo_documental(self):
+        """La linea entre "foto real de una practica" y "paisaje generado" no
+        puede depender de que alguien se acuerde. Vive en el prefijo."""
+        for slug in self.GENERADAS:
+            with self.subTest(slug=slug):
+                self.assertTrue(slug.startswith("ambiente-"))
+        for slug in self.PUBLICADAS - self.GENERADAS:
+            with self.subTest(slug=slug):
+                self.assertFalse(slug.startswith("ambiente-"))
+
+    def test_la_banda_de_ambiente_nunca_lleva_texto_encima(self):
+        """El primer intento puso la lamina DETRAS del titulo, a 32% de
+        opacidad. Medido: el kicker cian (#2FA8C9) caia de 5.18:1 a menos de
+        3:1 en las doce, y para devolverlo a 4.5:1 habia que bajar la opacidad
+        a 0.05 -- invisible. Una foto detras de ese texto es incompatible con
+        ese cian a cualquier opacidad util, asi que la banda va aparte y vacia.
+        Si alguien vuelve a meterle contenido, vuelve el problema."""
+        bandas = 0
+        for f in sorted(build.SRC.glob("*.html")):
+            texto = f.read_text(encoding="utf-8")
+            with self.subTest(archivo=f.name):
+                self.assertNotIn("art-fondo", texto)   # el enfoque descartado
+            for m in re.finditer(r'<div class="art-banda"([^>]*)></div>', texto):
+                bandas += 1
+                with self.subTest(archivo=f.name):
+                    self.assertIn('aria-hidden="true"', m.group(1))
+            self.assertEqual(texto.count("art-banda") - texto.count(".art-banda{"),
+                             len(re.findall(r'<div class="art-banda"[^>]*></div>', texto)),
+                             f"{f.name}: alguna banda dejo de estar vacia")
+        self.assertEqual(bandas, len(self.GENERADAS))
+
+    def test_lo_generado_nunca_se_presenta_como_documental(self):
+        """Una imagen generada no puede entrar como <img> con alt ni llevar pie
+        de foto: eso la presentaria como registro de algo que paso. Va como
+        capa de fondo decorativa y nada mas."""
+        for f in sorted(build.SRC.glob("*.html")):
+            texto = f.read_text(encoding="utf-8")
+            for tag in re.findall(r"<img[^>]*>", texto):
+                m = re.search(r"/media/([a-z0-9-]+)\.webp", tag)
+                if m:
+                    with self.subTest(archivo=f.name, imagen=m.group(1)):
+                        self.assertNotIn(m.group(1), self.GENERADAS)
 
     def test_las_retiradas_no_vuelven(self):
         fuera = self.RETIRADAS | self.RENOMBRADAS
