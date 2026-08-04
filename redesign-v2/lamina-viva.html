@@ -393,6 +393,13 @@
  position:relative; z-index:1;
  }
  .hero-visor .art svg{ width:78%; height:auto; }
+ /* La lamina admite fotografia documental: el caption la pedia desde el
+    principio ("[ FOTO DOCUMENTAL ]") y el marco coral la enmarca igual que
+    al dibujo. Las fotos verticales son 3/4, la misma proporcion del visor. */
+ .hero-visor .art img, .anchor-plate .art img{
+  width:100%; height:100%; object-fit:cover; border-radius:4px; display:block;
+ }
+ .hero-visor .art:has(img){ margin:calc(-1 * var(--s5)) calc(-1 * var(--s5)) var(--s3); }
  .hero-visor .visor-cap{
  position:relative; z-index:2;
  font-size:.6rem; color:var(--lodo-soft);
@@ -862,26 +869,14 @@
  <span class="mono">Lam. 00 · Portada</span>
  <span class="visor-badge mono">Panthera onca</span>
  </div>
- <div class="art" aria-hidden="true">
- <!-- JAGUAR line-art -->
- <svg viewBox="0 0 200 200" fill="none" stroke="#EEF2EC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
- <path d="M30 120 C30 100 46 92 64 92 L120 92 C140 92 156 100 168 112"/>
- <path d="M168 112 C176 104 186 104 190 112 C192 118 186 122 180 120"/>
- <path d="M168 112 C170 98 168 86 158 80"/>
- <path d="M158 80 C168 74 172 64 168 56 C162 62 158 64 154 64"/>
- <path d="M158 80 C148 76 138 78 132 86"/>
- <circle cx="150" cy="92" r="2.4" fill="#EEF2EC" stroke="none"/>
- <path d="M150 100 C153 104 157 104 160 101"/>
- <path d="M64 92 L58 150"/><path d="M84 96 L80 152"/>
- <path d="M120 96 L126 150"/><path d="M140 100 L148 150"/>
- <path d="M30 120 C24 130 24 142 30 150"/>
- <path d="M50 110 q6 -6 12 0"/><path d="M86 104 q6 -5 12 0"/><path d="M118 108 q6 -5 12 0"/>
- <path d="M70 118 q5 -4 10 0"/><path d="M104 120 q5 -4 10 0"/>
- </svg>
- </div>
+ <div class="art">
+<img src="/media/practica-guacamaya-exploracion.webp"
+     alt="Exploración de una guacamaya roja con las alas extendidas sobre la mesa clínica"
+     width="640" height="853" fetchpriority="high" decoding="async">
+</div>
  <figcaption class="visor-cap mono">
- <span>[ FOTO DOCUMENTAL ]</span>
- <span>Esc. 1:1</span>
+ <span>Ara macao · práctica clínica</span>
+ <span>Gen. 2022</span>
  </figcaption>
  </figure>
  </div>
@@ -1160,25 +1155,11 @@
  <span class="ap-no mono">Lam. 02 · Premium</span>
  <span class="pill pill-disp">Disponible</span>
  </div>
- <div class="art" aria-hidden="true">
- <svg viewBox="0 0 220 200" fill="none">
- <!-- JAGUAR pleno -->
- <path d="M28 130 C28 106 48 96 72 96 L132 96 C158 96 178 106 190 124"/>
- <path d="M190 124 C200 116 212 116 216 126 C218 134 210 138 202 134"/>
- <path d="M190 124 C193 106 190 90 176 82"/>
- <path d="M176 82 C188 74 192 62 186 52 C178 60 174 62 168 62"/>
- <path d="M176 82 C164 76 150 78 142 88"/>
- <circle cx="166" cy="98" r="2.6" fill="#EEF2EC" stroke="none"/>
- <path d="M166 108 C170 112 176 112 180 108"/>
- <path d="M72 96 L64 168"/><path d="M96 100 L90 170"/>
- <path d="M132 100 L140 168"/><path d="M158 106 L168 168"/>
- <path d="M28 130 C20 142 22 158 32 164"/>
- <path d="M58 116 q7 -6 14 0"/><path d="M98 110 q7 -5 14 0"/><path d="M134 116 q7 -5 14 0"/>
- <path d="M78 128 q6 -5 12 0"/><path d="M116 130 q6 -5 12 0"/>
- <path d="M52 140 q5 -4 10 0"/><path d="M150 138 q5 -4 10 0"/>
- </svg>
- </div>
- <figcaption class="ap-cap mono">[ FOTO DOCUMENTAL ] · Panthera onca · Esc. 1:1</figcaption>
+ <div class="art">
+<img src="/media/practica-perezoso-auscultacion.webp" alt="Auscultación de un perezoso durante la práctica del diplomado de rehabilitación"
+     width="640" height="853" loading="lazy" decoding="async">
+</div>
+ <figcaption class="ap-cap mono">Choloepus sp. · práctica de rehabilitación</figcaption>
  </figure>
 
  <div class="anchor-body">
@@ -1281,7 +1262,7 @@
  <path d="M136 108 L172 102"/><path d="M136 114 L170 120"/>
  </svg>
  </div>
- <figcaption class="ap-cap mono">[ FOTO DOCUMENTAL ] · Felis catus · Esc. 1:1</figcaption>
+ <figcaption class="ap-cap mono">Felis catus · ilustración</figcaption>
  </figure>
  </div>
  </div>

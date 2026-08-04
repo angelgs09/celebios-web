@@ -286,6 +286,7 @@
  flex:1; display:flex; align-items:center; justify-content:center;
  position:relative; z-index:1;
  }
+ .hero-visor .art img{ width:100%; height:100%; object-fit:cover; border-radius:4px; display:block; }
  .hero-visor .art svg{ width:82%; height:auto; }
  .hero-visor .visor-cap{
  position:relative; z-index:2;
@@ -891,27 +892,10 @@
  <span class="mono">Curso · Aves</span>
  <span class="visor-badge mono">Próxima edición</span>
  </div>
- <div class="art" aria-hidden="true">
- <!-- AVE / ala line-art (escala hero) -->
- <svg viewBox="0 0 200 200" fill="none" stroke="#7A5797" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
- <!-- cuerpo -->
- <path d="M86 122 C78 110 80 96 92 90 C104 84 120 86 128 96 C134 104 134 116 126 124 C116 134 96 134 86 122 Z"/>
- <!-- cabeza -->
- <path d="M128 98 C140 92 150 92 156 98 C150 106 140 108 130 106"/>
- <circle cx="142" cy="98" r="2.4" fill="#7A5797" stroke="none"/>
- <path d="M156 98 L168 96"/>
- <!-- ala extendida (plumas) -->
- <path d="M92 96 C70 78 50 66 30 64"/>
- <path d="M96 100 C76 86 56 78 36 78"/>
- <path d="M100 106 C82 96 62 92 44 94"/>
- <path d="M40 64 L30 64 L36 74"/>
- <path d="M46 78 L36 78 L42 88"/>
- <!-- cola -->
- <path d="M86 122 L62 140"/><path d="M90 126 L70 148"/><path d="M96 128 L80 152"/>
- <!-- patas -->
- <path d="M104 132 L102 150"/><path d="M114 132 L116 150"/>
- </svg>
- </div>
+ <div class="art">
+<img src="/media/practica-loro-manejo.webp" alt="Manejo de un loro durante una revisión clínica"
+     width="640" height="853" fetchpriority="high" decoding="async">
+</div>
  <figcaption class="visor-cap mono">
  <span>Aves · Ortopedia</span>
  <span>Lám. en preparación</span>
