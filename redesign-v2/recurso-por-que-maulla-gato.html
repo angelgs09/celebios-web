@@ -511,6 +511,27 @@
  /* separadores decorativos casi invisibles */
  .art-meta .sep{ color:rgba(238,242,236,.55); }
  .bb-trust .sep{ color:rgba(238,242,236,.62); }
+ 
+ /* ============================================================
+    SALTAR AL CONTENIDO + ANILLO DE FOCO
+    Ninguna de las 33 paginas tenia forma de saltarse el header: quien navega
+    con teclado o lector de pantalla recorria los 8 enlaces de la nav en cada
+    pagina antes de llegar al contenido.
+    El anillo de foco colgaba de --coral, que es un token de MARCA: sobre
+    superficie clara daba 2.45:1 contra el 3:1 que pide 1.4.11. Se le da token
+    propio, elegido por visibilidad y no por marca, para no volver a quedar
+    atado a lo que decida el color de acento.
+    ============================================================ */
+ :root{ --foco:#0B4E63; }            /* 7.13:1 sobre el papel #EEF2EC */
+ .surface-dark, .on-dark, .ctaband, .buybar{ --foco:#7FD4EC; }  /* 6.86:1 o mas sobre las placas oscuras */
+ :focus-visible{ outline:3px solid var(--foco); outline-offset:3px; }
+ .saltar{
+  position:fixed; left:.5rem; top:-4rem;
+  z-index:999; padding:.7rem 1.1rem; border-radius:.4rem;
+  background:var(--hueso); color:#0C2447; font-weight:600;
+  text-decoration:none; transition:top .15s ease;
+ }
+ .saltar:focus{ top:.5rem; }
  </style>
 
 <script type="application/ld+json">
@@ -582,6 +603,7 @@
 </script>
 </head>
 <body>
+<a class="saltar" href="#top">Saltar al contenido</a>
 
 <!-- ===================== HEADER ===================== -->
 <header class="site on-dark">
@@ -597,7 +619,7 @@
  <nav class="nav-links" id="navLinks" aria-label="Principal">
  <a href="catalogo.html">Cursos</a>
  <a href="diplomado-rehab.html">Diplomado</a>
- <a href="recursos.html" class="is-active" aria-current="page">Recursos</a>
+ <a href="recursos.html" class="is-active" aria-current="true">Recursos</a>
  <a href="nosotros.html">Nosotros</a>
  <a class="nav-cta" href="catalogo.html">Explorar cursos</a>
  </nav>
@@ -780,7 +802,7 @@
  <span class="pill pill-disp">Curso</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: gato">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: gato">
  <path class="fill" d="M52 96 C52 78 66 70 84 70 C102 70 116 78 116 96 C116 110 102 116 84 116 C66 116 52 110 52 96 Z"/>
  <path d="M66 70 L60 50 L76 64"/><path d="M102 64 L108 50 L102 70"/>
  <circle cx="76" cy="92" r="2.2" fill="currentColor" stroke="none"/>
@@ -805,7 +827,7 @@
  <span class="pill pill-prox">Próximamente</span>
  </div>
  <div class="visor tone-cobalto">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: gato agazapado">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: gato agazapado">
  <path class="fill" d="M40 100 C40 86 56 80 80 80 C104 80 120 86 120 100 C120 110 104 114 80 114 C56 114 40 110 40 100 Z"/>
  <path d="M56 80 L52 62 L68 76"/><path d="M100 76 L106 62 L104 80"/>
  <circle cx="72" cy="98" r="2" fill="currentColor" stroke="none"/>
@@ -829,7 +851,7 @@
  <span class="pill pill-prox">Próximamente</span>
  </div>
  <div class="visor tone-cobalto">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: cola de gato">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: cola de gato">
  <path class="fill" d="M46 98 C46 82 60 74 82 74 C104 74 118 82 118 98 C118 110 104 114 82 114 C60 114 46 110 46 98 Z"/>
  <path d="M60 74 L54 56 L70 70"/><path d="M98 70 L104 56 L102 74"/>
  <circle cx="74" cy="94" r="2" fill="currentColor" stroke="none"/>

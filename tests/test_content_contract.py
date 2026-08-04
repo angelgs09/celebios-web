@@ -1645,5 +1645,81 @@ class TestAnclasSinDestino(unittest.TestCase):
                 self.assertNotRegex(tarjeta, r"(?i)inscr|avisarme|matricul")
 
 
+def _publicadas():
+    """Las fuentes que SI se publican: las maquetas de redesign-v2 no llevan
+    canonical y build.py las salta."""
+    return [p for p in sorted(build.SRC.glob("*.html"))
+            if "canonical" in p.read_text(encoding="utf-8")]
+
+
+class TestAccesibilidadEstructural(unittest.TestCase):
+    """Cuatro defectos que un lector de pantalla sufre y un navegador no
+    reporta. Se congelan aqui porque son invisibles en revision visual: nadie
+    los ve al mirar la pagina, y vuelven en la primera reescritura."""
+
+    def test_toda_pagina_tiene_salto_al_contenido_con_destino_real(self):
+        """Sin esto, quien navega con teclado recorre los 8 enlaces de la nav
+        en CADA pagina antes de llegar al contenido."""
+        for p in _publicadas():
+            with self.subTest(pagina=p.name):
+                texto = p.read_text(encoding="utf-8")
+                self.assertRegex(texto, r'<a class="saltar" href="#top">')
+                self.assertIn('id="top"', texto)
+
+    def test_ningun_salto_de_nivel_en_los_encabezados(self):
+        """h2 -> h4 le dice al lector de pantalla que falta una seccion
+        intermedia que no existe. Las 8 paginas de programa saltaban."""
+        for p in _publicadas():
+            with self.subTest(pagina=p.name):
+                niveles = [int(m.group(1))
+                           for m in re.finditer(r"<h([1-6])\b", p.read_text(encoding="utf-8"))]
+                saltos = [(a, b) for a, b in zip(niveles, niveles[1:]) if b > a + 1]
+                self.assertEqual(saltos, [], f"saltos de jerarquia: {saltos}")
+
+    def test_aria_current_page_solo_en_el_enlace_a_la_propia_pagina(self):
+        """23 de 33 paginas marcaban "estas aqui" en un enlace que apunta a
+        OTRA pagina (la de la seccion). El valor correcto para el padre de
+        seccion es "true", no "page"."""
+        for p in _publicadas():
+            texto = p.read_text(encoding="utf-8")
+            for m in re.finditer(r'<a[^>]*aria-current="page"[^>]*>', texto):
+                href = re.search(r'href="([^"]+)"', m.group(0))
+                href = href.group(1) if href else ""
+                propia = href == p.name or (
+                    p.name == "lamina-viva.html" and href in ("index.html", "./"))
+                with self.subTest(pagina=p.name, href=href):
+                    self.assertTrue(propia, f'aria-current="page" apunta a {href}')
+
+    def test_todo_svg_con_aria_label_declara_role_img(self):
+        """Un <svg> sin role no tiene rol implicito que acepte nombre
+        accesible: la etiqueta puede no anunciarse nunca."""
+        for p in _publicadas():
+            texto = p.read_text(encoding="utf-8")
+            sin_rol = [m.group(0)[:60]
+                       for m in re.finditer(r'<svg\b[^>]*\baria-label="[^"]*"[^>]*>', texto)
+                       if "role=" not in m.group(0)]
+            with self.subTest(pagina=p.name):
+                self.assertEqual(sin_rol, [])
+
+
+class TestPagina404(unittest.TestCase):
+    """El 404 recibe TODO enlace muerto de Wix y Kajabi que las 368 reglas no
+    cubran. Era HTML pelon con un solo enlace."""
+
+    def test_es_navegable_y_ofrece_salidas(self):
+        html = build.generar_404()
+        self.assertIn('name="viewport"', html)
+        self.assertIn('content="noindex"', html)
+        for salida in ('href="/cursos"', 'href="/"', 'href="/contacto"'):
+            with self.subTest(salida=salida):
+                self.assertIn(salida, html)
+
+    def test_el_anillo_de_foco_es_visible_sobre_su_fondo(self):
+        """No comparte el sistema de diseno, asi que su anillo se declara
+        aparte y nadie lo revisa cuando cambian los tokens."""
+        html = build.generar_404()
+        self.assertRegex(html, r":focus-visible\{[^}]*outline:\s*3px solid")
+
+
 if __name__ == "__main__":
     unittest.main()

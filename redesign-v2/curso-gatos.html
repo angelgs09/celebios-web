@@ -531,7 +531,7 @@
  }
  .aud-card .ico{ display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; color:var(--ceibo); margin-bottom:var(--s3); }
  .aud-card .ico svg{ display:block; width:100%; height:100%; max-width:40px; max-height:40px; }
- .aud-card h4{
+ .aud-card h3{
  font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.01em;
  font-size:1.05rem; margin:0 0 .35rem; color:var(--ink);
  }
@@ -619,7 +619,7 @@
  display:inline-flex; align-items:center; justify-content:center;
  }
  .inc-item .check svg{ width:60%; height:60%; }
- .inc-item h4{
+ .inc-item h3{
  font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.01em;
  font-size:1.02rem; margin:0 0 .25rem; color:var(--ink);
  }
@@ -841,6 +841,27 @@
  /* separadores decorativos casi invisibles */
  .art-meta .sep{ color:rgba(238,242,236,.55); }
  .bb-trust .sep{ color:rgba(238,242,236,.62); }
+ 
+ /* ============================================================
+    SALTAR AL CONTENIDO + ANILLO DE FOCO
+    Ninguna de las 33 paginas tenia forma de saltarse el header: quien navega
+    con teclado o lector de pantalla recorria los 8 enlaces de la nav en cada
+    pagina antes de llegar al contenido.
+    El anillo de foco colgaba de --coral, que es un token de MARCA: sobre
+    superficie clara daba 2.45:1 contra el 3:1 que pide 1.4.11. Se le da token
+    propio, elegido por visibilidad y no por marca, para no volver a quedar
+    atado a lo que decida el color de acento.
+    ============================================================ */
+ :root{ --foco:#0B4E63; }            /* 7.13:1 sobre el papel #EEF2EC */
+ .surface-dark, .on-dark, .ctaband, .buybar{ --foco:#7FD4EC; }  /* 6.86:1 o mas sobre las placas oscuras */
+ :focus-visible{ outline:3px solid var(--foco); outline-offset:3px; }
+ .saltar{
+  position:fixed; left:.5rem; top:-4rem;
+  z-index:999; padding:.7rem 1.1rem; border-radius:.4rem;
+  background:var(--hueso); color:#0C2447; font-weight:600;
+  text-decoration:none; transition:top .15s ease;
+ }
+ .saltar:focus{ top:.5rem; }
  </style>
 
 <script type="application/ld+json">
@@ -944,6 +965,7 @@
 </script>
 </head>
 <body>
+<a class="saltar" href="#top">Saltar al contenido</a>
 
 <!-- ===================== HEADER ===================== -->
 <header class="site on-dark">
@@ -957,7 +979,7 @@
  </button>
 
  <nav class="nav-links" id="navLinks" aria-label="Principal">
- <a href="catalogo.html" class="is-active" aria-current="page">Cursos</a>
+ <a href="catalogo.html" class="is-active" aria-current="true">Cursos</a>
  <a href="diplomado-rehab.html">Diplomado</a>
  <a href="recursos.html">Recursos</a>
  <a href="nosotros.html">Nosotros</a>
@@ -1066,21 +1088,21 @@
  <span class="ico" aria-hidden="true">
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M17 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15 15c2.8 0 6 2 6 5"/></svg>
  </span>
- <h4>Profesionales</h4>
+ <h3>Profesionales</h3>
  <p>MVZ, etólogos, criadores, refugios y rescate que quieren afinar su lectura conductual felina.</p>
  </article>
  <article class="aud-card">
  <span class="ico" aria-hidden="true">
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>
  </span>
- <h4>Tutores de gatos</h4>
+ <h3>Tutores de gatos</h3>
  <p>Personas que viven con uno o varios gatos y quieren entenderlos para mejorar su bienestar.</p>
  </article>
  <article class="aud-card">
  <span class="ico" aria-hidden="true">
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4Z"/><path d="M7 9.5V15c0 1.5 2.2 3 5 3s5-1.5 5-3V9.5"/><path d="M21 7v6"/></svg>
  </span>
- <h4>Sin requisitos</h4>
+ <h3>Sin requisitos</h3>
  <p>No pedimos conocimientos previos ni cédula. Solo curiosidad por la mente de tu gato.</p>
  </article>
  </div>
@@ -1140,7 +1162,7 @@
  <div class="temario-wrap">
  <aside class="temario-aside" aria-hidden="true">
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: gato doméstico">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: gato doméstico">
  <path class="fill" d="M40 70 C40 50 56 42 80 42 C104 42 120 50 120 70 C120 96 104 110 80 110 C56 110 40 96 40 70 Z"/>
  <path d="M48 50 L42 30 L60 44"/><path d="M112 50 L118 30 L100 44"/>
  <circle cx="68" cy="68" r="2.6" fill="currentColor" stroke="none"/>
@@ -1214,19 +1236,19 @@
  <div class="incluye">
  <div class="inc-item">
  <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
- <div><h4>Clases grabadas</h4><p>12 horas de contenido en video que avanzas a tu propio ritmo, sin horarios fijos.</p></div>
+ <div><h3>Clases grabadas</h3><p>12 horas de contenido en video que avanzas a tu propio ritmo, sin horarios fijos.</p></div>
  </div>
  <div class="inc-item">
  <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
- <div><h4>Acceso 5 meses 24/7</h4><p>Revisa y repasa el material cuando quieras durante todo el periodo de acceso.</p></div>
+ <div><h3>Acceso 5 meses 24/7</h3><p>Revisa y repasa el material cuando quieras durante todo el periodo de acceso.</p></div>
  </div>
  <div class="inc-item">
  <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
- <div><h4>Constancia con valor curricular</h4><p>Al terminar recibes una constancia que acredita tu formación.</p></div>
+ <div><h3>Constancia con valor curricular</h3><p>Al terminar recibes una constancia que acredita tu formación.</p></div>
  </div>
  <div class="inc-item">
  <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 L10 18 L20 6"/></svg></span>
- <div><h4>Pago único</h4><p>Una sola exhibición, sin mensualidades. Sin requisitos previos para inscribirte.</p></div>
+ <div><h3>Pago único</h3><p>Una sola exhibición, sin mensualidades. Sin requisitos previos para inscribirte.</p></div>
  </div>
  </div>
 
@@ -1388,7 +1410,7 @@
  <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: tortuga">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: tortuga">
  <path class="fill" d="M40 88 C40 64 62 52 88 52 C114 52 132 64 132 86 C132 98 122 104 108 104 L56 104 C46 104 40 98 40 88 Z"/>
  <path d="M62 70 q26 -12 50 0"/>
  <path d="M54 86 q34 -10 64 0"/>
@@ -1412,7 +1434,7 @@
  <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: zarigüeya">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: zarigüeya">
  <path class="fill" d="M44 84 C44 66 60 56 84 56 C108 56 124 66 124 84 C124 100 108 110 84 110 C60 110 44 100 44 84 Z"/>
  <path d="M124 84 C136 82 146 78 150 70 C144 66 138 68 134 74"/>
  <path d="M150 70 L156 66"/>
@@ -1436,7 +1458,7 @@
  <span class="pill pill-prox">Abre Sep 2026 por confirmar</span>
  </div>
  <div class="visor tone-cobalto">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: puma">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: puma">
  <path class="fill" d="M30 96 C30 80 46 72 66 72 L108 72 C126 72 138 80 142 92 C140 102 128 106 108 106 L48 106 C36 106 30 102 30 96 Z"/>
  <path d="M142 92 C148 86 156 88 156 96"/>
  <path d="M142 92 C144 78 140 70 130 66"/>

@@ -267,18 +267,55 @@ def generar_robots():
 
 
 def generar_404():
+    """El 404 es el aterrizaje de TODO enlace muerto de Wix y Kajabi que las
+    368 reglas no cubran: durante una migracion es la pagina que mas gente ve
+    por accidente, y era HTML pelon en Times New Roman. No puede compartir el
+    sistema de diseno (se genera aqui, no sale de redesign-v2), asi que lleva
+    lo minimo propio: los colores de marca, la tipografia del sistema y tres
+    salidas reales en vez de una."""
     return (
         '<!doctype html>\n'
         '<html lang="es">\n'
         '<head>\n'
         '  <meta charset="utf-8">\n'
+        '  <meta name="viewport" content="width=device-width, initial-scale=1">\n'
         '  <title>Pagina no encontrada · CELEBIOS</title>\n'
         '  <meta name="robots" content="noindex">\n'
+        '  <meta name="theme-color" content="#14294F">\n'
+        '  <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png">\n'
+        '  <style>\n'
+        '    :root{ --marino:#14294F; --hueso:#EEF2EC; --ceibo:#7FD4EC; --lodo:#B9C4D4 }\n'
+        '    *{ box-sizing:border-box }\n'
+        '    body{ margin:0; min-height:100vh; display:grid; place-items:center;\n'
+        '          padding:2rem 1.25rem; background:var(--marino); color:var(--hueso);\n'
+        '          font-family:system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.6 }\n'
+        '    main{ max-width:36rem; text-align:center }\n'
+        '    img{ width:120px; height:auto; margin-bottom:2.5rem }\n'
+        '    .cod{ font-family:ui-monospace,"Cascadia Mono",Menlo,monospace; font-size:.8rem;\n'
+        '          letter-spacing:.18em; text-transform:uppercase; color:var(--ceibo) }\n'
+        '    h1{ font-size:clamp(1.6rem,4vw,2.3rem); line-height:1.2; margin:.6rem 0 1rem }\n'
+        '    p{ color:var(--lodo); margin:0 0 2rem }\n'
+        '    .salidas{ display:flex; flex-wrap:wrap; gap:.75rem; justify-content:center }\n'
+        '    a{ display:inline-block; padding:.8rem 1.4rem; border-radius:.45rem;\n'
+        '       text-decoration:none; font-weight:600; border:1px solid rgba(238,242,236,.28);\n'
+        '       color:var(--hueso) }\n'
+        '    a.primaria{ background:var(--hueso); color:#0C2447; border-color:var(--hueso) }\n'
+        '    a:focus-visible{ outline:3px solid var(--ceibo); outline-offset:3px }\n'
+        '  </style>\n'
         '</head>\n'
         '<body>\n'
-        '  <h1>404 — No encontramos esta pagina</h1>\n'
-        '  <p>El enlace que seguiste no existe o ya no esta disponible.</p>\n'
-        '  <p><a href="/">Volver al inicio de CELEBIOS</a></p>\n'
+        '  <main>\n'
+        '    <img src="/brand/logo-white.webp" alt="CELEBIOS" width="360" height="136">\n'
+        '    <p class="cod">Error 404</p>\n'
+        '    <h1>No encontramos esta página.</h1>\n'
+        '    <p>El enlace que seguiste no existe o cambió de lugar cuando renovamos el sitio.\n'
+        '       Desde aquí puedes seguir a lo que sí está.</p>\n'
+        '    <div class="salidas">\n'
+        '      <a class="primaria" href="/cursos">Ver los cursos</a>\n'
+        '      <a href="/">Ir al inicio</a>\n'
+        '      <a href="/contacto">Escribirnos</a>\n'
+        '    </div>\n'
+        '  </main>\n'
         '</body>\n'
         '</html>\n'
     )

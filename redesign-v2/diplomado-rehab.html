@@ -928,7 +928,7 @@
  display:flex; align-items:center; justify-content:center;
  font-family:"Space Grotesk", monospace; font-weight:600; font-size:.95rem;
  }
- .step .sc h4{
+ .step .sc h3{
  font-family:"Bricolage Grotesque", sans-serif; font-weight:700; letter-spacing:-.01em;
  font-size:1.1rem; margin:.4rem 0 .35rem; color:var(--hueso);
  }
@@ -1103,9 +1103,31 @@
  /* separadores decorativos casi invisibles */
  .art-meta .sep{ color:rgba(238,242,236,.55); }
  .bb-trust .sep{ color:rgba(238,242,236,.62); }
+ 
+ /* ============================================================
+    SALTAR AL CONTENIDO + ANILLO DE FOCO
+    Ninguna de las 33 paginas tenia forma de saltarse el header: quien navega
+    con teclado o lector de pantalla recorria los 8 enlaces de la nav en cada
+    pagina antes de llegar al contenido.
+    El anillo de foco colgaba de --coral, que es un token de MARCA: sobre
+    superficie clara daba 2.45:1 contra el 3:1 que pide 1.4.11. Se le da token
+    propio, elegido por visibilidad y no por marca, para no volver a quedar
+    atado a lo que decida el color de acento.
+    ============================================================ */
+ :root{ --foco:#0B4E63; }            /* 7.13:1 sobre el papel #EEF2EC */
+ .surface-dark, .on-dark, .ctaband, .buybar{ --foco:#7FD4EC; }  /* 6.86:1 o mas sobre las placas oscuras */
+ :focus-visible{ outline:3px solid var(--foco); outline-offset:3px; }
+ .saltar{
+  position:fixed; left:.5rem; top:-4rem;
+  z-index:999; padding:.7rem 1.1rem; border-radius:.4rem;
+  background:var(--hueso); color:#0C2447; font-weight:600;
+  text-decoration:none; transition:top .15s ease;
+ }
+ .saltar:focus{ top:.5rem; }
  </style>
 </head>
 <body>
+<a class="saltar" href="#top">Saltar al contenido</a>
 
 <!-- ===================== HEADER ===================== -->
 <header class="site on-dark">
@@ -1592,7 +1614,7 @@
  <div class="step">
  <span class="sn">1</span>
  <div class="sc">
- <h4>Reúne tus documentos</h4>
+ <h3>Reúne tus documentos</h3>
  <p>Prepara lo que acredita tu perfil de ingreso. No pedimos cédula profesional.</p>
  <div class="docs">
  <span>Título o historial académico</span>
@@ -1604,14 +1626,14 @@
  <div class="step">
  <span class="sn">2</span>
  <div class="sc">
- <h4>Envía tu postulación por correo</h4>
+ <h3>Envía tu postulación por correo</h3>
  <p>Manda tus documentos a contacto@celebios.com indicando la modalidad de tu interés: teórica, práctica o semipresencial.</p>
  </div>
  </div>
  <div class="step">
  <span class="sn">3</span>
  <div class="sc">
- <h4>El comité resuelve</h4>
+ <h3>El comité resuelve</h3>
  <p>Revisamos tu postulación y te confirmamos el resultado en aproximadamente 72 horas, junto con los pasos de pago e ingreso.</p>
  </div>
  </div>

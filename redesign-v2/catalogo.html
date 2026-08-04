@@ -892,9 +892,31 @@
  /* separadores decorativos casi invisibles */
  .art-meta .sep{ color:rgba(238,242,236,.55); }
  .bb-trust .sep{ color:rgba(238,242,236,.62); }
+ 
+ /* ============================================================
+    SALTAR AL CONTENIDO + ANILLO DE FOCO
+    Ninguna de las 33 paginas tenia forma de saltarse el header: quien navega
+    con teclado o lector de pantalla recorria los 8 enlaces de la nav en cada
+    pagina antes de llegar al contenido.
+    El anillo de foco colgaba de --coral, que es un token de MARCA: sobre
+    superficie clara daba 2.45:1 contra el 3:1 que pide 1.4.11. Se le da token
+    propio, elegido por visibilidad y no por marca, para no volver a quedar
+    atado a lo que decida el color de acento.
+    ============================================================ */
+ :root{ --foco:#0B4E63; }            /* 7.13:1 sobre el papel #EEF2EC */
+ .surface-dark, .on-dark, .ctaband, .buybar{ --foco:#7FD4EC; }  /* 6.86:1 o mas sobre las placas oscuras */
+ :focus-visible{ outline:3px solid var(--foco); outline-offset:3px; }
+ .saltar{
+  position:fixed; left:.5rem; top:-4rem;
+  z-index:999; padding:.7rem 1.1rem; border-radius:.4rem;
+  background:var(--hueso); color:#0C2447; font-weight:600;
+  text-decoration:none; transition:top .15s ease;
+ }
+ .saltar:focus{ top:.5rem; }
  </style>
 </head>
 <body>
+<a class="saltar" href="#top">Saltar al contenido</a>
 
 <!-- ===================== HEADER ===================== -->
 <header class="site on-dark">
@@ -1036,7 +1058,7 @@
  <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 220 130" aria-label="Ilustración: jaguar">
+ <svg role="img" class="specimen" viewBox="0 0 220 130" aria-label="Ilustración: jaguar">
  <!-- JAGUAR pleno (ancla) -->
  <path class="fill" d="M28 96 C28 74 48 64 72 64 L132 64 C158 64 178 74 190 90 C188 102 174 108 150 108 L52 108 C38 108 28 104 28 96 Z"/>
  <path d="M190 90 C200 82 212 82 216 92 C218 100 210 104 202 100"/>
@@ -1072,7 +1094,7 @@
  <span class="pill pill-disp">Disponible</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: gato doméstico">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: gato doméstico">
  <!-- GATO -->
  <path class="fill" d="M40 70 C40 50 56 42 80 42 C104 42 120 50 120 70 C120 96 104 110 80 110 C56 110 40 96 40 70 Z"/>
  <path d="M48 50 L42 30 L60 44"/><path d="M112 50 L118 30 L100 44"/>
@@ -1101,7 +1123,7 @@
  <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: zarigüeya">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: zarigüeya">
  <!-- ZARIGUEYA -->
  <path class="fill" d="M44 84 C44 66 60 56 84 56 C108 56 124 66 124 84 C124 100 108 110 84 110 C60 110 44 100 44 84 Z"/>
  <path d="M124 84 C136 82 146 78 150 70 C144 66 138 68 134 74"/>
@@ -1126,7 +1148,7 @@
  <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: tortuga">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: tortuga">
  <!-- TORTUGA -->
  <path class="fill" d="M40 88 C40 64 62 52 88 52 C114 52 132 64 132 86 C132 98 122 104 108 104 L56 104 C46 104 40 98 40 88 Z"/>
  <path d="M62 70 q26 -12 50 0"/>
@@ -1151,7 +1173,7 @@
  <span class="pill pill-prox">Abre Sep 2026 por confirmar</span>
  </div>
  <div class="visor tone-cobalto">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: puma">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: puma">
  <!-- PUMA -->
  <path class="fill" d="M30 96 C30 80 46 72 66 72 L108 72 C126 72 138 80 142 92 C140 102 128 106 108 106 L48 106 C36 106 30 102 30 96 Z"/>
  <path d="M142 92 C148 86 156 88 156 96"/>
@@ -1179,7 +1201,7 @@
  <span class="pill pill-prox">Abre Oct 2026 por confirmar</span>
  </div>
  <div class="visor tone-cobalto">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: ave rapaz">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: ave rapaz">
  <!-- AVE RAPAZ -->
  <path class="fill" d="M84 42 C74 42 66 50 66 60 C66 66 68 70 72 74 L72 104 C76 100 80 100 84 104 L84 76 C92 72 100 70 104 64 C100 50 94 42 84 42 Z"/>
  <path d="M84 40 C72 40 64 48 64 60 C64 66 66 70 70 74 L70 104"/>
@@ -1208,7 +1230,7 @@
  <span class="pill pill-prod">En producción</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: guacamaya">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: guacamaya">
  <!-- GUACAMAYA -->
  <path d="M84 36 C72 36 66 46 68 58 C68 70 72 84 80 100 L84 118"/>
  <path d="M84 36 C90 30 98 30 100 38 C97 42 92 42 90 42"/>
@@ -1235,7 +1257,7 @@
  <span class="pill pill-prod">En producción</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: tapir">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: tapir">
  <!-- TAPIR -->
  <path d="M34 88 C34 72 48 64 66 64 L112 64 C130 64 142 70 148 80"/>
  <path d="M148 80 C156 80 162 84 160 92 C156 98 150 98 146 92 C144 86 146 82 148 80 Z"/>
@@ -1262,7 +1284,7 @@
  <span class="pill pill-prod">En producción</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: venado">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: venado">
  <!-- VENADO (cabeza con asta, cuerpo) -->
  <path d="M50 92 C50 76 64 68 84 68 L110 68 C124 68 134 76 138 88"/>
  <path d="M138 88 C146 84 150 76 148 66"/>
@@ -1291,7 +1313,7 @@
  <span class="pill pill-prod">En producción</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: ocelote">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: ocelote">
  <!-- OCELOTE (felino mediano, cola anillada) -->
  <path d="M36 90 C36 74 52 66 72 66 L112 66 C128 66 138 74 142 86"/>
  <path d="M142 86 C146 74 142 66 132 62"/>
@@ -1320,7 +1342,7 @@
  <span class="pill pill-prod">En producción</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: balanza y hoja">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: balanza y hoja">
  <!-- BIOETICA: balanza + hoja (concepto, no especie) -->
  <path d="M80 32 L80 110"/>
  <path d="M52 44 L108 44"/>
@@ -1349,7 +1371,7 @@
  <span class="pill pill-prod">En producción</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: radiografía de ave">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: radiografía de ave">
  <!-- IMAGENOLOGIA: silueta de ave dentro de "placa" -->
  <path d="M34 30 L126 30 L126 110 L34 110 Z"/>
  <path d="M44 30 L44 110"/>
@@ -1377,7 +1399,7 @@
  <span class="pill pill-prod">En producción</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: mapa con pin">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: mapa con pin">
  <!-- SIG: mapa plegado + pin -->
  <path d="M40 40 L70 50 L100 40 L130 50 L130 104 L100 94 L70 104 L40 94 Z"/>
  <path d="M70 50 L70 104"/><path d="M100 40 L100 94"/>
@@ -1402,7 +1424,7 @@
  <span class="pill pill-prod">En producción</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: árbol y cuenca">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: árbol y cuenca">
  <!-- IMPACTO AMBIENTAL: arbol + linea de suelo/cuenca -->
  <path d="M80 110 L80 70"/>
  <path d="M80 70 C70 64 64 54 66 44 C76 46 82 54 82 64"/>
@@ -1439,7 +1461,7 @@
  <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: escudo con hoja">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: escudo con hoja">
  <!-- MEDICINA PREVENTIVA: escudo + hoja (proteger antes de tratar) -->
  <path class="fill" d="M80 30 L118 44 L118 78 C118 100 100 112 80 118 C60 112 42 100 42 78 L42 44 Z"/>
  <path d="M80 96 L80 62"/>
@@ -1463,7 +1485,7 @@
  <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: estetoscopio">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: estetoscopio">
  <!-- DIAGNOSTICO Y TERAPEUTICA: estetoscopio -->
  <path d="M54 34 L54 62 C54 78 66 88 80 88 C94 88 106 78 106 62 L106 34"/>
  <path d="M46 34 L62 34"/><path d="M98 34 L114 34"/>
@@ -1488,7 +1510,7 @@
  <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: herradura sobre placa radiográfica">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: herradura sobre placa radiográfica">
  <!-- IMAGENOLOGIA EN CABALLOS: herradura dentro del marco de la placa.
       El casco es lo que de verdad se radiografia en equinos, y la
       herradura se lee al instante; la cabeza de perfil no. -->
@@ -1516,7 +1538,7 @@
  <span class="pill pill-prod">Sin convocatoria abierta</span>
  </div>
  <div class="visor">
- <svg class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: libreta de campo con serie de datos">
+ <svg role="img" class="specimen" viewBox="0 0 160 140" aria-label="Ilustración: libreta de campo con serie de datos">
  <!-- MANEJO DE DATOS: libreta de campo + serie -->
  <path class="fill" d="M40 26 L120 26 L120 114 L40 114 Z"/>
  <path d="M40 26 L40 114"/><path d="M52 26 L52 114"/>
