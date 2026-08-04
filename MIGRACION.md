@@ -327,12 +327,21 @@ retirar Wix, y lo decide Angel.
    volver a usar una foto de grupo, ahí sí hace falta consentimiento.
 6. **Higgsfield perdió la sesión** (`Error: Not authenticated`). El re-login es
    por navegador, así que lo tiene que correr Angel: `! higgsfield auth login`.
-   No hace falta para las fotos —eso se resolvió recortando— sino para las
-   **25 páginas publicadas que hoy no tienen ninguna imagen**: 3 cursos
-   (gatos, reptiles, primeros auxilios), los 17 artículos de `recurso-*` y los
-   hubs. Los artículos son justamente los que traen tráfico de búsqueda y
-   salen a texto pelón. El archivo de fotos reales ya no da para más: solo hay
-   material de aves, equinos, perezoso y quelonio.
+   **Ya no hace falta para el sitio.** Cuando se escribió esta nota faltaban
+   imágenes en 25 páginas; hoy son 13, y ninguna de las 13 las necesita:
+
+   - Los 15 artículos de fauna llevan su lámina de ambiente generada.
+   - `/recursos/que-es-concervet` es el único sin banda, y a propósito: habla
+     de un consejo de certificación, no de fauna en campo. Una franja de selva
+     ahí sería ruido.
+   - Las 8 páginas de programa y los hubs llevan ahora el rótulo de lámina
+     tipográfico, que fue lo que sustituyó a los dibujos de línea.
+   - `/contacto`, `/admisiones` y `/aviso-de-privacidad` son páginas de
+     trámite. No piden imagen.
+
+   El archivo de fotos reales sigue dando solo para aves, equinos, perezoso y
+   quelonio, así que si algún día se quiere fotografía documental nueva, sale
+   de una sesión de fotos, no de un generador.
 
 ---
 
