@@ -1339,12 +1339,12 @@
 </div>
 
 <script>
- (function{
+ (function(){
  // menu movil
  var btn = document.getElementById("menuBtn");
  var links = document.getElementById("navLinks");
  if(btn && links){
- btn.addEventListener("click", function{
+ btn.addEventListener("click", function(){
  var open = links.classList.toggle("open");
  btn.setAttribute("aria-expanded", open ? "true" : "false");
  });
@@ -1361,12 +1361,12 @@
  var hero = document.querySelector(".hero");
  var buybox = document.getElementById("inscribirme");
  if(bar && hero){
- var onScroll = function{
- var heroBottom = hero.getBoundingClientRect.bottom;
+ var onScroll = function(){
+ var heroBottom = hero.getBoundingClientRect().bottom;
  var pastHero = heroBottom < 0;
  var overBox = false;
  if(buybox){
- var r = buybox.getBoundingClientRect;
+ var r = buybox.getBoundingClientRect();
  overBox = r.top < window.innerHeight && r.bottom > 0;
  }
  if(pastHero && !overBox){
@@ -1378,17 +1378,17 @@
  }
  };
  var ticking = false;
- var requestTick = function{
+ var requestTick = function(){
  if(!ticking){
  ticking = true;
- window.requestAnimationFrame(function{ onScroll; ticking = false; });
+ window.requestAnimationFrame(function(){ onScroll(); ticking = false; });
  }
  };
  window.addEventListener("scroll", requestTick, { passive:true });
  window.addEventListener("resize", requestTick);
- onScroll;
+ onScroll();
  }
- });
+ })();
 </script>
 
 </body>

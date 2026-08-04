@@ -70,12 +70,12 @@
  {
  "@type": "ListItem",
  "position": 2,
- "url": "https://www.celebios.com/cursos/lenguaje-gatos",
+ "url": "https://www.celebios.com/curso-lenguaje-felino",
  "item": {
  "@type": "Course",
  "name": "Lenguaje y Comunicación de los Gatos",
  "description": "Curso online a tu ritmo, sin requisitos: posturas, vocalizaciones y señales de estrés del gato. Con certificado.",
- "url": "https://www.celebios.com/cursos/lenguaje-gatos",
+ "url": "https://www.celebios.com/curso-lenguaje-felino",
  "provider": { "@id": "https://www.celebios.com/#org" },
  "inLanguage": "es"
  }
@@ -1067,7 +1067,6 @@
  </div>
  <span class="kicker-sci mono">Fauna · urgencias</span>
  <h3><a href="curso-primeros-auxilios.html">Primeros Auxilios en Fauna Silvestre</a></h3>
- <p class="lam-meta">10 h · 100% online a tu ritmo</p>
  <div class="lam-foot">
  <a class="ccta ccta-prod" href="curso-primeros-auxilios.html" aria-label="Ver la ficha del curso de Primeros Auxilios en Fauna Silvestre">Ver curso</a>
  </div>
@@ -1093,7 +1092,6 @@
  </div>
  <span class="kicker-sci mono">Testudines · manejo</span>
  <h3><a href="curso-reptiles.html">Manejo y Bienestar de Reptiles</a></h3>
- <p class="lam-meta">14 h · 100% online a tu ritmo</p>
  <div class="lam-foot">
  <a class="ccta ccta-prod" href="curso-reptiles.html" aria-label="Ver la ficha del curso de Manejo y Bienestar de Reptiles">Ver curso</a>
  </div>
@@ -1697,12 +1695,12 @@
 </footer>
 
 <script>
- (function{
+ (function(){
  /* ---- Menu movil ---- */
  var btn = document.getElementById("menuBtn");
  var links = document.getElementById("navLinks");
  if(btn && links){
- btn.addEventListener("click", function{
+ btn.addEventListener("click", function(){
  var open = links.classList.toggle("open");
  btn.setAttribute("aria-expanded", open ? "true" : "false");
  });
@@ -1734,7 +1732,7 @@
  }
  }
 
- function apply{
+ function apply(){
  var shown = 0;
  for(var i=0;i<laminas.length;i++){
  var lam = laminas[i];
@@ -1755,30 +1753,30 @@
  }
 
  for(var a=0;a<areaChips.length;a++){
- areaChips[a].addEventListener("click", function{
+ areaChips[a].addEventListener("click", function(){
  state.area = this.getAttribute("data-area");
  setActive(areaChips, "data-area", state.area);
- apply;
+ apply();
  });
  }
  for(var e=0;e<estadoChips.length;e++){
- estadoChips[e].addEventListener("click", function{
+ estadoChips[e].addEventListener("click", function(){
  state.estado = this.getAttribute("data-estado");
  setActive(estadoChips, "data-estado", state.estado);
- apply;
+ apply();
  });
  }
  if(btnReset){
- btnReset.addEventListener("click", function{
+ btnReset.addEventListener("click", function(){
  state.area = "all"; state.estado = "all";
  setActive(areaChips, "data-area", "all");
  setActive(estadoChips, "data-estado", "all");
- apply;
+ apply();
  });
  }
 
- apply;
- });
+ apply();
+ })();
 </script>
 
 </body>

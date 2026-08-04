@@ -1238,6 +1238,68 @@ class TestImagenesPublicadas(unittest.TestCase):
                         self._dims_webp(build.SRC / "media" / f"{m.group(1)}.webp"))
 
 
+class TestJavaScriptPublicado(unittest.TestCase):
+    """Al JS inline de las 33 paginas le faltaban TODOS los parentesis de
+    invocacion. `(function{` era la punta visible: no compilaba. Lo peligroso
+    era el resto, que compila y no hace nada -- `onScroll;`, un IIFE que se
+    declara y no se llama, `getBoundingClientRect` sin `()`. Cero errores en
+    consola y el menu movil, la barra de compra y los filtros del catalogo
+    muertos desde el primer dia.
+
+    Se descubrio abriendo un navegador de verdad. Ninguna prueba lo miraba."""
+
+    def _guarda(self, js):
+        p = Path(tempfile.mkdtemp()) / "x.html"
+        p.write_text(f"<script>\n{js}\n</script>", encoding="utf-8")
+        return build.buscar_javascript_roto([p])
+
+    def test_el_sitio_publicado_no_tiene_llamadas_mutiladas(self):
+        self.assertEqual(build.buscar_javascript_roto(list(build.SRC.glob("*.html"))), [])
+
+    def test_caza_la_funcion_que_no_compila(self):
+        self.assertTrue(self._guarda("(function{\n})();"))
+
+    def test_caza_el_metodo_sin_parentesis(self):
+        """Devuelve la funcion en vez de llamarla, y `.bottom` sale undefined
+        sin lanzar: el sintoma es que no pasa nada."""
+        self.assertTrue(self._guarda("(function(){\n var r = el.getBoundingClientRect.bottom;\n})();"))
+
+    def test_caza_la_llamada_suelta(self):
+        self.assertTrue(self._guarda("(function(){\n var f = function(){};\n f;\n})();"))
+
+    def test_caza_el_iife_que_nunca_se_invoca(self):
+        self.assertTrue(self._guarda("(function(){\n var x = 1;\n});"))
+
+    def test_no_marca_codigo_correcto(self):
+        self.assertEqual(self._guarda(
+            "(function(){\n var f = function(){ el.getBoundingClientRect().top; };\n f();\n})();"), [])
+
+    def test_el_json_ld_publicado_parsea(self):
+        self.assertEqual(build.buscar_json_ld_malformado(list(build.SRC.glob("*.html"))), [])
+
+
+class TestPromesasSinRespaldo(unittest.TestCase):
+    """La portada anunciaba "Disponible" dos cursos que programas.json marca
+    `planned` -- "nunca impartido" -- con duraciones de 10 h y 14 h que no salen
+    de ninguna fuente. La guarda vieja no lo veia porque miraba `data-estado`, y
+    la portada no tiene ni uno."""
+
+    def test_ninguna_tarjeta_promete_lo_que_el_contrato_no_respalda(self):
+        self.assertEqual(
+            build.buscar_promesas_sin_respaldo(
+                [p for p in build.SRC.glob("*.html") if "canonical" in p.read_text(encoding="utf-8")],
+                build.cargar_programas()),
+            [])
+
+    def test_la_duracion_se_permite_en_los_historicos(self):
+        """Las 170 h del diplomado son un hecho documentado, no una promesa: el
+        programa si se impartio. Solo se prohibe inventar duracion de los que
+        nunca existieron."""
+        estados = {p["status"] for p in build.cargar_programas()}
+        self.assertIn("historical", estados)
+        self.assertIn("planned", estados)
+
+
 class TestAvisoDePrivacidad(unittest.TestCase):
     """El aviso heredado de Wix citaba la Ley General ... en Posesion de
     SUJETOS OBLIGADOS, que rige a entes publicos. CELEBIOS es una S.C., o sea

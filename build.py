@@ -576,6 +576,143 @@ def package_json_de_salida():
     return json.dumps(salida, ensure_ascii=False, indent=2) + "\n"
 
 
+TARJETA = re.compile(r"<article[^>]*class=\"[^\"]*lamina[^\"]*\"[^>]*>(.*?)</article>", re.S)
+PILL_DISPONIBLE = re.compile(r"pill-disp\"[^>]*>\s*Disponible")
+DURACION = re.compile(r"class=\"lam-meta\">\s*(\d+)\s*h\b")
+
+
+def buscar_promesas_sin_respaldo(paginas, programas):
+    """[(archivo, linea, motivo)] por cada tarjeta que anuncia disponibilidad o
+    duracion de un programa que el contrato de datos no respalda.
+
+    Complementa a `buscar_disponibilidad_falsa`, que solo mira `data-estado`:
+    la PORTADA no tiene ni un solo `data-estado`, asi que anunciaba "Disponible"
+    dos cursos marcados `planned` -- "nunca impartido" -- y publicaba para ellos
+    duraciones de 10 h y 14 h que no salen de ninguna fuente. La guarda vieja no
+    veia nada porque buscaba un atributo que ahi no existe.
+
+    Se ancla al enlace de la tarjeta y no al texto del titulo, que se escribe
+    distinto en cada pagina ("Manejo y Bienestar de Reptiles" y "Manejo y
+    Medicina de Reptiles" son la misma tarjeta). Y de los enlaces toma el del
+    PIE, no el primero: hay tarjetas que enlazan de paso a otro programa
+    ("compara con el diplomado") antes de enlazar al suyo.
+
+    La duracion solo se exige a los `planned`. Un programa `historical` si se
+    impartio y su duracion esta documentada -- las 170 h del diplomado son un
+    hecho verificado, no una promesa."""
+    por_slug = {p["slug"]: p for p in programas}
+    archivo_a_slug = {}
+    for slug, prog in por_slug.items():
+        archivo_a_slug[slug.lstrip("/") + ".html"] = prog
+    # el catalogo enlaza por nombre de archivo fuente, no por ruta canonica
+    for f in SRC.glob("*.html"):
+        m = re.search(r"canonical\" href=\"https://www\.celebios\.com(/[^\"]*)\"",
+                      f.read_text(encoding="utf-8"))
+        if m and m.group(1) in por_slug:
+            archivo_a_slug[f.name] = por_slug[m.group(1)]
+
+    hallados = []
+    for f in sorted(paginas, key=lambda p: p.name):
+        texto = f.read_text(encoding="utf-8")
+        for m in TARJETA.finditer(texto):
+            bloque = m.group(1)
+            pie = re.search(r"<div class=\"lam-foot\">(.*?)</div>", bloque, re.S)
+            candidatos = re.findall(r"href=\"([a-z0-9-]+\.html)\"", pie.group(1) if pie else bloque)
+            prog = archivo_a_slug.get(candidatos[-1]) if candidatos else None
+            if prog is None or prog.get("status") == "available":
+                continue
+            linea = texto[:m.start()].count("\n") + 1
+            if PILL_DISPONIBLE.search(bloque):
+                hallados.append((f.name, linea,
+                                 f"anuncia Disponible un programa status={prog['status']}"))
+            d = DURACION.search(bloque)
+            if d and prog.get("status") == "planned":
+                hallados.append((f.name, linea,
+                                 f"publica duracion ({d.group(1)} h) de un programa "
+                                 f"status=planned, que nunca se impartio"))
+    return hallados
+
+
+SCRIPT_INLINE = re.compile(r"<script([^>]*)>(.*?)</script>", re.S)
+# `function` tiene que ir seguida de un nombre opcional y SIEMPRE de `(`.
+# Lo que se publicaba era `function{` y `function apply{`: SyntaxError, o sea
+# que el navegador tiraba el script entero.
+FUNCION_ROTA = re.compile(r"\bfunction\s*(?:[A-Za-z_$][\w$]*\s*)?\{")
+
+
+METODOS_SIN_ARGS = ("getBoundingClientRect", "preventDefault", "stopPropagation",
+                    "focus", "blur", "click", "trim")
+LLAMADA_SIN_PARENTESIS = re.compile(
+    r"\.(" + "|".join(METODOS_SIN_ARGS) + r")(?!\s*\()")
+IIFE_SIN_INVOCAR = re.compile(r"\}\s*\)\s*;\s*$")
+DECLARA_FUNCION = re.compile(r"(?:var|let|const)\s+([A-Za-z_$][\w$]*)\s*=\s*function|"
+                             r"function\s+([A-Za-z_$][\w$]*)\s*\(")
+
+
+def buscar_javascript_roto(paginas):
+    """[(archivo, linea, motivo)] por cada script inline con una llamada mutilada.
+
+    Existe porque al JavaScript de las 33 paginas le faltaban TODOS los
+    parentesis de invocacion. `(function{` era la punta visible: no compilaba y
+    node --check lo cazaba. Lo peligroso era el resto, que compila perfectamente
+    y no hace nada:
+
+        hero.getBoundingClientRect.bottom  -> undefined, nunca lanza
+        onScroll;                          -> evalua la funcion y la tira
+        })                                 -> declara el IIFE y no lo llama
+
+    Cero errores en consola, cero sintomas, y el menu movil, la barra de compra
+    y los filtros del catalogo muertos desde el primer dia. Por eso la guarda no
+    se conforma con "compila": comprueba que lo que parece una llamada, lo sea.
+
+    Se valida con regex y no con `node --check` a proposito -- el build es
+    Python y no puede depender de que haya Node para publicar -- y de todos
+    modos node habria dado verde en los tres casos silenciosos."""
+    hallados = []
+    for f in sorted(paginas, key=lambda p: p.name):
+        texto = f.read_text(encoding="utf-8")
+        for attrs, cuerpo in SCRIPT_INLINE.findall(texto):
+            if "src=" in attrs or "ld+json" in attrs or not cuerpo.strip():
+                continue
+            base = texto.index(cuerpo)
+
+            def linea_de(pos):
+                return texto[:base + pos].count("\n") + 1
+
+            for m in FUNCION_ROTA.finditer(cuerpo):
+                hallados.append((f.name, linea_de(m.start()),
+                                 f"{m.group(0).strip()!r} no compila"))
+            for m in LLAMADA_SIN_PARENTESIS.finditer(cuerpo):
+                hallados.append((f.name, linea_de(m.start()),
+                                 f".{m.group(1)} sin () devuelve la funcion, no la llama"))
+            declaradas = {n for par in DECLARA_FUNCION.findall(cuerpo) for n in par if n}
+            for nombre in declaradas:
+                for m in re.finditer(rf"(?:^|[;{{}}])\s*{re.escape(nombre)}\s*;", cuerpo, re.M):
+                    hallados.append((f.name, linea_de(m.start()),
+                                     f"{nombre}; sin () no ejecuta nada"))
+            if cuerpo.strip().startswith("(function") and IIFE_SIN_INVOCAR.search(cuerpo.strip()):
+                hallados.append((f.name, linea_de(len(cuerpo) - 1),
+                                 "el IIFE se declara pero nunca se invoca"))
+    return hallados
+
+
+def buscar_json_ld_malformado(paginas):
+    """[(archivo, error)] por cada bloque JSON-LD que no parsea.
+
+    Un JSON-LD roto no rompe la pagina, y por eso es peor: se publica, Google
+    lo descarta en silencio y el sitio pierde sus rich results sin sintoma."""
+    hallados = []
+    for f in sorted(paginas, key=lambda p: p.name):
+        for attrs, cuerpo in SCRIPT_INLINE.findall(f.read_text(encoding="utf-8")):
+            if "ld+json" not in attrs:
+                continue
+            try:
+                json.loads(cuerpo)
+            except json.JSONDecodeError as e:
+                hallados.append((f.name, str(e)))
+    return hallados
+
+
 def buscar_paginas_huerfanas(paginas):
     """[ruta] de paginas publicadas a las que no llega ningun enlace interno.
 
@@ -707,6 +844,34 @@ def construir(salida=None, cutover=False):
         raise SystemExit(
             f"ERROR: {len(falsas)} tarjeta(s) se anuncian disponibles sin enlazar a un "
             f"programa disponible en contenido/programas.json: {detalle}{mas}"
+        )
+
+    promesas = buscar_promesas_sin_respaldo(paginas, cargar_programas())
+    if promesas:
+        detalle = "; ".join(f"{arch}:{ln} {motivo}" for arch, ln, motivo in promesas[:5])
+        mas = f" (+{len(promesas) - 5} mas)" if len(promesas) > 5 else ""
+        raise SystemExit(
+            f"ERROR: {len(promesas)} tarjeta(s) prometen disponibilidad o duracion "
+            f"que el contrato de datos no respalda: {detalle}{mas}"
+        )
+
+    # Un SyntaxError no degrada: mata el script entero. Va antes de escribir
+    # nada, igual que las demas guardas.
+    js_roto = buscar_javascript_roto(paginas)
+    if js_roto:
+        detalle = "; ".join(f"{arch}:{ln} {txt!r}" for arch, ln, txt in js_roto[:5])
+        mas = f" (+{len(js_roto) - 5} mas)" if len(js_roto) > 5 else ""
+        raise SystemExit(
+            f"ERROR: {len(js_roto)} script(s) inline no compilan; el navegador "
+            f"descarta el bloque completo: {detalle}{mas}"
+        )
+
+    ld_roto = buscar_json_ld_malformado(paginas)
+    if ld_roto:
+        detalle = "; ".join(f"{arch}: {err}" for arch, err in ld_roto[:3])
+        raise SystemExit(
+            f"ERROR: {len(ld_roto)} bloque(s) JSON-LD malformados; Google los "
+            f"descarta en silencio: {detalle}"
         )
 
     huerfanas = buscar_paginas_huerfanas(paginas)

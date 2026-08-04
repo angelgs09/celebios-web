@@ -796,12 +796,12 @@
 </footer>
 
 <script>
- (function{
+ (function(){
  // menu movil
  var btn = document.getElementById("menuBtn");
  var links = document.getElementById("navLinks");
  if(btn && links){
- btn.addEventListener("click", function{
+ btn.addEventListener("click", function(){
  var open = links.classList.toggle("open");
  btn.setAttribute("aria-expanded", open ? "true" : "false");
  });
@@ -812,7 +812,7 @@
  }
  });
  }
- });
+ })();
 </script>
 
 </body>
