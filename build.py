@@ -65,6 +65,19 @@ FRASES_RECHAZADAS = [
      "'validez oficial' es un termino legal (RVOE/SEP) que ninguna fuente confirma"),
     (re.compile(r'\d+\s+especialistas', re.I),
      "conteo de docentes sin fuente"),
+    # La portada revivio la afirmacion retirada el 2026-08-02 con otra
+    # redaccion ("Diploma universitario + CONCERVET") y paso limpia: la guarda
+    # solo miraba "validez oficial". Lo que se rechazo es que el diploma lo
+    # emita una universidad, se diga como se diga.
+    (re.compile(r'diploma\s+universitari\w*', re.I),
+     "atribuye el diploma a una universidad; la fuente solo respalda 'valor curricular'"),
+    # Lo mismo del lado institucional: el cuerpo de nosotros.html siempre dijo
+    # "docentes con trayectoria en", pero las meta y el JSON-LD afirmaban
+    # "alianzas" y publicaban affiliation, que es un vinculo legible por maquina.
+    (re.compile(r'alianzas?\s+(?:con\s+)?(?:UNAM|UAEH|IFAW)', re.I),
+     "verbo del vinculo institucional sin confirmar; usar 'docentes con trayectoria en'"),
+    (re.compile(r'"affiliation"\s*:\s*\[\s*\{\s*"@type"\s*:\s*"CollegeOrUniversity"', re.I),
+     "affiliation de Organization afirma convenio institucional sin fuente"),
 ]
 
 # Una tarjeta de catalogo que se anuncia disponible. El contrato de datos vive
@@ -453,9 +466,22 @@ def validar_ga4(measurement_id):
 def inyectar_ga4(html, measurement_id):
     """Sin measurement_id, el HTML no cambia (sin analytics). Con uno valido,
     inyecta el loader estandar de gtag.js antes de </head>: sin user_id ni
-    ninguna propiedad de usuario/PII."""
+    ninguna propiedad de usuario/PII.
+
+    Encenderlo es una variable de entorno en Vercel: nadie toca codigo y ningun
+    test se cae. Pero gtag.js pone cookies _ga y perfila navegacion, y el art.
+    30 del Reglamento de la LFPDPPP obliga a informarlo en el momento del
+    contacto. Por eso el encendido esta atado al aviso: si el aviso no habla de
+    cookies, el build revienta en vez de publicar 33 paginas que las ponen sin
+    declararlas."""
     if not measurement_id:
         return html
+    aviso = RAIZ / "redesign-v2" / "aviso-de-privacidad.html"
+    if "cookie" not in aviso.read_text(encoding="utf-8").lower():
+        raise SystemExit(
+            "GA4 encendido pero el aviso de privacidad no menciona cookies. "
+            "Declara la analitica en aviso-de-privacidad.html antes de activarla."
+        )
     snippet = (
         f'<script async src="https://www.googletagmanager.com/gtag/js?id={measurement_id}"></script>\n'
         '<script>\n'

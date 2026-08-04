@@ -1373,6 +1373,70 @@ class TestAvisoDePrivacidad(unittest.TestCase):
         self.assertNotIn("no se realizarán transferencias de datos personales", texto)
         self.assertIn("plataformas de pago externas", texto)
 
+    def test_declara_cookies_y_almacenamiento(self):
+        """El art. 30 del Reglamento obliga a informar los mecanismos que
+        recaban datos de forma automatica. El aula guarda el testigo de sesion
+        del alumno en el navegador, y GA4 esta a una variable de entorno de
+        distancia: sin esta clausula, encenderlo publica 33 paginas que ponen
+        cookies con un aviso que no las menciona."""
+        self.assertRegex(self._texto(), r"(?i)cookies")
+
+    def test_declara_el_comprobante_de_pago_como_dato_financiero(self):
+        """El aviso afirmaba que CELEBIOS no guarda datos bancarios del
+        pagador, mientras /admisiones pide que manden el comprobante de
+        transferencia por correo. Un aviso que niega un tratamiento que si
+        ocurre es peor que uno incompleto. Art. 8 parr. 3 LFPDPPP: los datos
+        financieros exigen consentimiento expreso."""
+        texto = self._texto()
+        self.assertNotIn(
+            "CELEBIOS no almacena números de tarjeta ni datos bancarios de la persona que paga",
+            texto)
+        self.assertRegex(texto, r"(?i)comprobante")
+        self.assertRegex(texto, r"(?i)datos financieros")
+
+    def test_el_aula_enlaza_el_aviso_donde_recaba(self):
+        """El unico formulario del sitio que recaba datos personales es el que
+        no mostraba el aviso. /aula esta en robots Disallow y ninguna pagina
+        publica la enlaza: el alumno llega por liga directa y nunca pasaba por
+        el aviso. Art. 17 fr. II LFPDPPP: a disposicion EN EL MOMENTO de la
+        recabacion, no en otra pagina."""
+        aula = (build.RAIZ / "aula" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("/aviso-de-privacidad", aula)
+
+
+class TestGA4AtadoAlAviso(unittest.TestCase):
+    """Encender GA4 es exportar una variable en Vercel: nadie toca codigo y
+    ningun test se cae. gtag.js pone cookies _ga. El encendido queda atado a
+    que el aviso las declare."""
+
+    def test_ga4_sin_clausula_de_cookies_revienta(self):
+        aviso = build.SRC / "aviso-de-privacidad.html"
+        original = aviso.read_text(encoding="utf-8")
+        sin_cookies = re.sub(r"(?i)cookies?", "galletas", original)
+        try:
+            aviso.write_text(sin_cookies, encoding="utf-8")
+            with self.assertRaises(SystemExit):
+                build.inyectar_ga4("<head></head>", "G-ABC123XYZ")
+        finally:
+            aviso.write_text(original, encoding="utf-8")
+
+    def test_con_clausula_inyecta(self):
+        self.assertIn("G-ABC123XYZ",
+                      build.inyectar_ga4("<head></head>", "G-ABC123XYZ"))
+
+
+class TestProgramasHistoricosNoSeAnuncianComoInéditos(unittest.TestCase):
+    """El sitio se contradecia a si mismo: curso-nutricion decia "la primera
+    edicion" mientras galeria.html publica el cartel de la 1a generacion de
+    2019 y egresados.html lista 2019 y 2021. Quien compara las dos paginas
+    concluye que una miente, y ambas estan publicadas."""
+
+    def test_ninguna_pagina_de_curso_promete_una_primera_edicion(self):
+        for pagina in sorted(build.SRC.glob("curso-*.html")):
+            with self.subTest(pagina=pagina.name):
+                texto = pagina.read_text(encoding="utf-8")
+                self.assertNotRegex(texto, r"(?i)primera\s+edici[óo]n")
+
 
 class TestPaginasHuerfanas(unittest.TestCase):
     """Una pagina huerfana esta en el sitemap pero no en el sitio: Google la

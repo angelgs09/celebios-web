@@ -45,6 +45,8 @@ button:disabled{opacity:.5; cursor:not-allowed}
 :focus-visible{outline:3px solid var(--sage); outline-offset:2px}
 
 label{display:block; font-size:.85rem; color:var(--lodo-soft); margin-bottom:var(--s2)}
+.legal{font-size:.85rem; color:var(--lodo-soft); margin:0}
+.legal a{color:inherit}
 input[type=email],input[type=password]{
   width:100%; font:inherit; padding:.7rem .9rem; border-radius:var(--r);
   border:1px solid var(--lodo-line); background:var(--charca-2); color:var(--hueso);
@@ -108,6 +110,8 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
       <button type="button" id="liga" class="btn-min">
         No tengo contraseña, mándame una liga de acceso
       </button>
+      <p class="legal">Al entrar aceptas el tratamiento de tus datos conforme al
+        <a href="/aviso-de-privacidad">aviso de privacidad</a>.</p>
     </form>
     <div id="msg-login" role="alert" aria-live="polite"></div>
   </section>
