@@ -380,6 +380,33 @@ class TestGenerarVercelJson(unittest.TestCase):
                 self.assertEqual(regla["statusCode"], 301)
                 self.assertNotIn("permanent", regla)
 
+    def test_la_copia_de_revision_no_se_indexa_pero_el_sitio_real_si(self):
+        """Angel quiere ensenar el sitio y que lo revisen ANTES de aprobarlo,
+        asi que vive publico en celebios.vercel.app mientras celebios.com sigue
+        en Wix. El riesgo es que Google indexe la copia de revision: los
+        canonical apuntan a www.celebios.com/<ruta> y esas rutas hoy NO existen,
+        y un canonical que apunta a un 404 lo ignora.
+
+        La regla va condicionada al host, NO como noindex global ni como
+        Disallow en robots.txt: esas dos hay que acordarse de quitarlas el dia
+        del cutover, y nadie se acuerda. Asi deja de coincidir sola."""
+        reglas = [h for h in self.config["headers"]
+                  if any(x["key"] == "X-Robots-Tag" for x in h["headers"])]
+        self.assertEqual(len(reglas), 1, "deberia haber exactamente una regla de noindex")
+        regla = reglas[0]
+        self.assertEqual(regla["source"], "/(.*)")
+        self.assertIn("noindex", regla["headers"][0]["value"])
+        # condicionada al host: sin esto el sitio real tampoco se indexaria
+        self.assertEqual(regla["has"], [{"type": "host", "value": r"(.*)\.vercel\.app"}])
+
+    def test_robots_no_bloquea_el_sitio_real(self):
+        """El noindex de la copia de revision va por cabecera, no por robots.
+        Si alguien lo "arregla" metiendo un Disallow global aqui, el dia del
+        cutover el sitio real sale de Google sin que nadie lo note."""
+        robots = build.generar_robots()
+        self.assertIn("Allow: /", robots)
+        self.assertNotIn("Disallow: /\n", robots)
+
     def test_conserva_el_fragmento_del_destino(self):
         destinos = [r["destination"] for r in self.config["redirects"]]
         self.assertIn("/cursos#historico-felidos", destinos)

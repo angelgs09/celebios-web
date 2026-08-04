@@ -320,6 +320,24 @@ def generar_vercel_json(reglas=()):
                     {"key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400"},
                 ],
             },
+            # La copia de revision en *.vercel.app no se indexa, y el sitio real
+            # si. Va condicionado al host y NO como noindex global ni como
+            # Disallow en robots.txt, porque las dos alternativas son trampas:
+            # habria que acordarse de quitarlas el dia del cutover, y nadie se
+            # acuerda. Asi la regla simplemente deja de coincidir cuando el
+            # dominio sea celebios.com.
+            #
+            # Hace falta ademas del canonical: los canonical apuntan a
+            # www.celebios.com/<ruta>, y esas rutas hoy NO existen (ahi sigue el
+            # Wix viejo). Un canonical que apunta a un 404 lo ignora Google, y
+            # entonces indexa la copia de revision.
+            {
+                "source": "/(.*)",
+                "has": [{"type": "host", "value": "(.*)\\.vercel\\.app"}],
+                "headers": [
+                    {"key": "X-Robots-Tag", "value": "noindex, nofollow"},
+                ],
+            },
         ],
     }
     return json.dumps(config, indent=2, ensure_ascii=False) + "\n"
