@@ -333,3 +333,90 @@ retirar Wix, y lo decide Angel.
    hubs. Los artículos son justamente los que traen tráfico de búsqueda y
    salen a texto pelón. El archivo de fotos reales ya no da para más: solo hay
    material de aves, equinos, perezoso y quelonio.
+
+---
+
+## Tres optimizaciones que se midieron y NO se hicieron
+
+La auditoría del 2026-08-03 dejó tres pendientes de rendimiento. Al medirlos
+con el sitio ya construido, ninguno paga lo que cuesta. Queda escrito con las
+cifras para no volver a abrirlos sin datos nuevos.
+
+### 1. Cortar el CSS duplicado a un archivo compartido
+
+**El hallazgo decía:** «el 76% del CSS enviado es duplicado entre páginas y
+nada de él es cacheable».
+
+**Lo que mide:** ese 76% es sobre **bytes en crudo**. Gzip deduplica texto
+repetido — es literalmente lo que hace — y el navegador nunca ve el crudo.
+Comparando regla por regla, con normalización agresiva (fuera comentarios,
+espacios y mayúsculas):
+
+| | |
+|---|---|
+| Reglas idénticas en las 33 páginas | 88 |
+| Su peso en crudo | 12 KB |
+| **Su peso en gzip** | **2 KB** |
+| Página típica (`/cursos`), CSS gzip | 6 KB |
+| Página típica, HTML completo gzip | 15 KB |
+
+Sacar eso a un archivo ahorra **2 KB gzip por visita repetida** y cuesta una
+petición más en cada primera visita. El tráfico de este sitio viene de
+búsqueda: alguien entra a un artículo y se va. La primera visita es el caso
+normal, y para ella el CSS en línea ya es lo más rápido que hay.
+
+### 2. Quitar el CSS muerto
+
+**El hallazgo decía:** «21.2 KB de CSS muerto, 197 reglas cuyas clases no
+aparecen en el markup de su propia página».
+
+**Lo que mide:** contando también las clases que el JS enciende en runtime
+(`.open`, `.show`, `.is-active` — quitarlas rompería el menú), son 36 KB en
+crudo. Reconstruyendo las 33 páginas sin ellas y comparando en gzip:
+
+    hoy             518 KB
+    sin CSS muerto  510 KB
+    ahorro          8.1 KB en total = 253 bytes por página (1.6%)
+
+Un 1.6% a cambio de que un detector automático se equivoque en un selector y
+rompa una página. No.
+
+### 3. srcset
+
+**El hallazgo decía:** «cero srcset: la misma imagen sirve una columna de
+280 px en desktop y una de ~700 px en móvil».
+
+**Lo que mide:** midiendo en el navegador el ancho al que **de verdad** se
+pinta cada imagen, y comparándolo con su resolución real a densidad 2x, de las
+27 imágenes de `/media/` solo **dos** exceden lo necesario de forma relevante:
+
+| archivo | px | hace falta | de más |
+|---|---|---|---|
+| `cartel-nutricion-2019` | 1389 | 680 | 2.04× |
+| `cartel-contencion-quimica-anestesia` | 1024 | 680 | 1.51× |
+
+Las otras 25 están **por debajo o justo** en lo que hace falta: se recortaron
+ya pensando en móvil, que es el caso ancho. Y las dos que sobran son carteles
+— material que alguien puede querer acercar para leer, así que la resolución
+de más ahí tiene función.
+
+Las que pesan mucho (`fauna-cocodrilo-habitat`, 227 KB) no pesan por tamaño
+sino por ser fotografía de naturaleza con mucho detalle: recomprimir a q78
+ahorra un 15% con pérdida visible, ante una audiencia de biólogos.
+
+### Dónde está hoy el rendimiento
+
+Medido en producción, portada:
+
+    HTML                  19 KB
+    Recursos               5 (3 tipografías, 2 imágenes)
+    Peso de recursos     163 KB
+    Orígenes de terceros   0
+    Bloqueantes de render  0
+    DOM interactivo      117 ms
+    Carga completa       124 ms
+
+El archivo más pesado que queda es la tipografía de display (75 KB, variable,
+cacheada un año como inmutable y con `font-display:swap`). Subsetearla al
+juego de glifos usado la bajaría a ~25 KB, pero se rompe en cuanto el
+contenido use un carácter que no estaba el día del subset.
