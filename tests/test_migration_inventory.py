@@ -287,11 +287,22 @@ class TestClassifySourceEgresados(unittest.TestCase):
 
 class TestClassifySource404Junk(unittest.TestCase):
     def test_paginas_de_constructor_wix_son_404(self):
-        for ruta in ("/blank", "/copia-de-copia-de-copia-de-copia-de-18", "/keeper", "/galeria-1"):
+        for ruta in ("/blank", "/copia-de-copia-de-copia-de-copia-de-18", "/keeper"):
             with self.subTest(ruta=ruta):
                 categoria, _, destino = classify_source(ruta, "celebios.com")
                 self.assertEqual(categoria, "sin_equivalente")
                 self.assertEqual(destino, "")
+
+    def test_la_galeria_no_es_basura_de_constructor(self):
+        """`/galeria-1` estaba en la lista de arriba: el sufijo "-1" la hacia
+        parecer un duplicado del editor de Wix. No lo es. Es la 8a pagina mas
+        visitada del sitio viejo (131 visitas) y la unica de las seis sin
+        destino que tenia contenido real: 25 imagenes y el registro escrito de
+        cada generacion desde 2010. Clasificarla como basura la mandaba a 404."""
+        categoria, tema, destino = classify_source("/galeria-1", "celebios.com")
+        self.assertEqual(categoria, "institucional")
+        self.assertEqual(destino, "/galeria")
+        self.assertEqual(tema, "galeria")
 
 
 class TestOneHopDestinations(unittest.TestCase):

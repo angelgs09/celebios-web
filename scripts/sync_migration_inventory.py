@@ -62,7 +62,7 @@ CSV_FIELDS = [
 # sitio (ver plan de rediseno). Cualquier fragmento (#...) es adicional a
 # esto, nunca reemplaza la base.
 DESTINOS_BASE_VALIDOS = {
-    "/", "/aula", "/cursos", "/curso-lenguaje-felino", "/nosotros",
+    "/", "/aula", "/cursos", "/curso-lenguaje-felino", "/nosotros", "/galeria",
     "/diplomado-rescate-rehabilitacion-fauna",
     "/egresados", "/practicas-de-campo", "/docentes", "/admisiones",
     "/contacto", "/aviso-de-privacidad",
@@ -174,6 +174,10 @@ _KAJABI_MAP = {
 }
 
 _WIX_EXPLICITAS = {
+    # La galeria del sitio viejo es la 8a pagina mas visitada (131 visitas).
+    # Estaba clasificada sin_equivalente, o sea 404.
+    "/galeria-1": ("institucional", "galeria", "/galeria"),
+    "/galeria": ("institucional", "galeria", "/galeria"),
     "/nosotros": ("institucional", "historia", "/nosotros"),
     "/contacto": ("institucional", "contacto", "/contacto"),
     "/aviso-de-privacidad": ("institucional", "aviso-privacidad", "/aviso-de-privacidad"),

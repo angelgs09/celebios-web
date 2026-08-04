@@ -769,6 +769,11 @@ def construir(salida=None, cutover=False):
 
     shutil.copytree(SRC / "brand", salida / "brand")
 
+    # Fotos y carteles historicos rescatados del Wix vivo. Viven aqui y no en
+    # static.wixstatic.com a proposito: si se cancela la cuenta de Wix, las
+    # URLs de ese CDN mueren y con ellas el unico registro visual del archivo.
+    shutil.copytree(SRC / "media", salida / "media")
+
     # El aula es estatica y va tal cual: no tiene canonical porque no debe
     # indexarse, asi que no pasa por el mapeo de rutas de arriba. Byte a byte,
     # sin tocar (ni GA4 le entra): es codigo fuente, no una vista publica.

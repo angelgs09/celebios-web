@@ -190,6 +190,38 @@ búsqueda orgánica de Google), ni con el informe HTTPS de GSC (28 URLs), que es
 estado de certificado. El corte real y el diseño final siguen esperando el
 primer export CON DATOS de `sc-domain:celebios.com` y su aprobación.
 
+## Actualización 2026-08-03 — el archivo histórico estaba en `/galeria-1`
+
+`/galeria-1` es la **8ª página más visitada** del sitio viejo (131 visitas en 12 meses) y
+estaba clasificada `sin_equivalente`, es decir **404** en el sitio nuevo. Era la única de las
+seis rutas sin destino con contenido real; las otras cinco son basura del editor (`/blank`,
+`copia-de-copia-de-…`, `/test`, `/keeper`).
+
+Su contenido resultó ser el registro escrito de la escuela, y **confirma hechos que hasta hoy
+estaban marcados sin fuente**. Todo lo que sigue es transcripción del sitio vivo de CELEBIOS
+(consultado 2026-08-03), no redacción:
+
+| Hecho | Detalle |
+|---|---|
+| **Fundación en 2010** | "Ene-Mar, 2010, 1ª generación" del diplomado de medicina y manejo de fauna silvestre en cautiverio. Sostiene el `foundingDate: 2010` del JSON-LD, que antes no tenía fuente citada. |
+| Serie de 8 generaciones | 1ª (ene-mar 2010), 2ª (jun-sep 2010), 3ª (ene-mar 2012), 4ª (jun-sep 2012), 5ª (sep-nov 2013), 6ª (feb-jun 2014), 7ª (abr-jul 2017), 8ª (oct 2018-ene 2019) |
+| Tamaño de dos generaciones | 38 alumnos (contención química y anestesia, 2017); 32 alumnos (diagnóstico y terapéutica) |
+| Formato semipresencial | 80 h teóricas en línea + 40 h prácticas presenciales; el de rehabilitación 2019 fue de 130 h + 40 h |
+| Prácticas en 7 países | Ecuador, Costa Rica, Perú, Argentina, México, Colombia y España (rehabilitación, 2019) |
+| Sedes de prácticas | Parque Ecológico Zacango, Reino Animal, laboratorios de la UAEH, Africam Safari, Laboratorio de Herpetología FES Iztacala/UNAM, Aviario El Nido, CIVS Los Reyes (SEMARNAT), Rancho Mágico |
+| Ponentes con adscripción | Dr. Randall Arguedas (Costa Rica), Dra. Valeria Aguilar Sánchez (FMVZ/UNAM), Dr. Emilio Rendón Franco (UAM), Dra. Claudia Rivera Cerecedo (IFC/UNAM), Dr. Jorge Luna del Villar (FMVZ/UNAM), Dr. Juan Carlos Morales Luna (Hospital de Aves FMVZ/UNAM), Biól. Jorge Mendoza Marroquín (Inst. Biología UNAM), MVZ Juliana Peña Stadlin (Zoológico de Cali), entre otros |
+
+Se publica en `/galeria`, y `/galeria-1` ahora redirige ahí en vez de morir en 404.
+
+**Imágenes.** Se rescataron del Wix vivo y se guardaron en `redesign-v2/media/` (26 archivos,
+2.4 MB en WebP) en vez de enlazarlas a `static.wixstatic.com`: si se cancela la cuenta de Wix,
+ese CDN deja de servirlas y desaparece el único registro visual del archivo. De 59 imágenes
+descargadas se descartaron 33 por dos motivos explícitos: **stock del banco de Wix** (jaguar,
+flamenco, paisajes, gato, mujer con laptop — su licencia cubre el uso *dentro* de Wix, no
+fuera) y **logos de terceros** (CONCERVET, UAEH, YanaCocha, Tamandúa), porque el verbo exacto
+de las alianzas sigue sin fuente. Lo que se conserva es material propio: 15 carteles de
+convocatorias con marca CELEBIOS y 11 fotos de prácticas docentes.
+
 ## Actualización 2026-08-02 21:30 — Rendimiento liberado, y NO hay histórico
 
 Search Console soltó el informe de **Rendimiento**: el banner de procesamiento
