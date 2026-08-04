@@ -314,6 +314,32 @@ def generar_vercel_json(reglas=()):
                     {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"},
                 ],
             },
+            # 1.7 MB de imagenes se revalidaban en CADA visita. Se cachean, pero
+            # NO como `immutable` de un anio: los nombres no llevan hash de
+            # contenido, y reemplazar una imagen conservando el nombre es algo
+            # que pasa de verdad -- las 15 laminas de ambiente se re-generaron
+            # el 2026-08-04 sin cambiar de nombre. Con `immutable` nadie habria
+            # visto la version nueva. Un dia en firme y una semana sirviendo lo
+            # viejo mientras revalida: rapido para el que vuelve, y un cambio
+            # llega en 24 h sin tener que renombrar nada.
+            # Es la misma razon por la que /brand/ ya tenia cache corta; ver
+            # TestGenerarVercelJson.test_brand_no_usa_cache_inmutable_de_un_anio.
+            {
+                "source": "/media/(.*)",
+                "headers": [
+                    {"key": "Cache-Control",
+                     "value": "public, max-age=86400, stale-while-revalidate=604800"},
+                ],
+            },
+            # Las fuentes SI van como inmutables: sus nombres llevan hash del
+            # contenido (spacegrotesk-611be241.woff2), asi que un archivo nuevo
+            # es un nombre nuevo y nunca se sirve rancio.
+            {
+                "source": "/fonts/(.*)",
+                "headers": [
+                    {"key": "Cache-Control", "value": "public, max-age=31536000, immutable"},
+                ],
+            },
             {
                 "source": "/brand/(.*)",
                 "headers": [
@@ -950,12 +976,35 @@ def construir(salida=None, cutover=False):
         destino.parent.mkdir(parents=True, exist_ok=True)
         destino.write_text(html, encoding="utf-8")
 
-    shutil.copytree(SRC / "brand", salida / "brand")
+    # Solo lo que el HTML referencia de verdad. El copytree publicaba tambien
+    # los PNG heredados de Wix y de Kajabi -- 271 KB que nadie pide nunca.
+    referidos = set()
+    for f in SRC.glob("*.html"):
+        referidos |= set(re.findall(r"brand/([A-Za-z0-9._-]+)", f.read_text(encoding="utf-8")))
+    (salida / "brand").mkdir(parents=True, exist_ok=True)
+    faltantes = []
+    for nombre in sorted(referidos):
+        origen = SRC / "brand" / nombre
+        if origen.exists():
+            shutil.copy2(origen, salida / "brand" / nombre)
+        else:
+            faltantes.append(nombre)
+    if faltantes:
+        raise SystemExit(
+            f"ERROR: el HTML referencia {len(faltantes)} archivo(s) de brand/ que no "
+            f"existen: {', '.join(faltantes)}"
+        )
 
     # Fotos y carteles historicos rescatados del Wix vivo. Viven aqui y no en
     # static.wixstatic.com a proposito: si se cancela la cuenta de Wix, las
     # URLs de ese CDN mueren y con ellas el unico registro visual del archivo.
     shutil.copytree(SRC / "media", salida / "media")
+    # Los woff2 auto-alojados. El .css de origen NO se publica: su contenido ya
+    # va inline en cada pagina, y publicarlo invitaria a enlazarlo y devolver la
+    # peticion bloqueante que acabamos de quitar.
+    (salida / "fonts").mkdir(parents=True, exist_ok=True)
+    for f in sorted((SRC / "fonts").glob("*.woff2")):
+        shutil.copy2(f, salida / "fonts" / f.name)
 
     # El aula es estatica y va tal cual: no tiene canonical porque no debe
     # indexarse, asi que no pasa por el mapeo de rutas de arriba. Byte a byte,

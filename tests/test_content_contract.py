@@ -432,6 +432,18 @@ class TestGenerarVercelJson(unittest.TestCase):
         self.assertIn("X-Content-Type-Options", claves)
         self.assertIn("X-Frame-Options", claves)
 
+    def test_media_se_cachea_pero_no_como_inmutable(self):
+        """1.7 MB de imagenes se revalidaban en cada visita. Ahora se cachean,
+        pero por la misma razon que /brand/ no van como `immutable`: los nombres
+        no llevan hash de contenido, y reemplazar una imagen conservando el
+        nombre pasa de verdad -- las 15 laminas de ambiente se re-generaron sin
+        cambiar de nombre. Con `immutable` nadie habria visto la nueva."""
+        bloque = next(b for b in self.config["headers"] if b["source"] == "/media/(.*)")
+        valor = next(h["value"] for h in bloque["headers"] if h["key"] == "Cache-Control")
+        self.assertNotIn("immutable", valor)
+        self.assertIn("max-age=86400", valor)
+        self.assertIn("stale-while-revalidate", valor)
+
     def test_brand_no_usa_cache_inmutable_de_un_anio(self):
         bloque = next(b for b in self.config["headers"] if b["source"] == "/brand/(.*)")
         valor = next(h["value"] for h in bloque["headers"] if h["key"] == "Cache-Control")
