@@ -213,6 +213,18 @@ estaban marcados sin fuente**. Todo lo que sigue es transcripción del sitio viv
 
 Se publica en `/galeria`, y `/galeria-1` ahora redirige ahí en vez de morir en 404.
 
+**Fotografía de prácticas (2026-08-03, segunda pasada).** El Wix no tiene fotos de cursos en
+vivo: solo carteles. Las fotos están en los álbumes de la página de Facebook de CELEBIOS
+(`facebook.com/celebi0s`, 18 mil seguidores), que la galería vieja ya enlazaba. Con
+autorización de Angel se descargaron de seis álbumes propios —Rehabilitación Fauna 2022 (95),
+Imagenología en equinos (40), Rescate y Rehabilitación 2024 (35), Imagenología diagnóstica
+(30), Manejo integral de aves (29) y Nutrición 2025 (8)— de los que la vista de álbum de
+Facebook sirve unas 9 por álbum a ~640-890 px. De 35 obtenidas se publican **10**, elegidas
+por mostrar trabajo clínico real y fechadas entre 2022 y 2025. Se descartaron los banners con
+el logo, los letreros de sedes de terceros (Zoológico de Cali, Bioparque Yana-Cocha), los
+selfies de grupo y los paisajes. Sustituyen a las fotos de 2010-2015 rescatadas del Wix, que
+eran de menor resolución y encuadre amateur.
+
 **Imágenes.** Se rescataron del Wix vivo y se guardaron en `redesign-v2/media/` (26 archivos,
 2.4 MB en WebP) en vez de enlazarlas a `static.wixstatic.com`: si se cancela la cuenta de Wix,
 ese CDN deja de servirlas y desaparece el único registro visual del archivo. De 59 imágenes
