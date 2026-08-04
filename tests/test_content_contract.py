@@ -661,18 +661,30 @@ class TestConstruirArtefactos(unittest.TestCase):
         self.assertGreater(len(config["redirects"]), 300)
         self.assertEqual({r["statusCode"] for r in config["redirects"]}, {301})
 
-    def test_redirects_csv_bulk_tiene_encabezado_exacto(self):
-        with (self.salida / "migracion" / "redirects.csv").open(encoding="utf-8") as f:
-            lector = csv.reader(f)
-            encabezado = next(lector)
-        self.assertEqual(encabezado, ["source", "destination", "statusCode"])
+    def test_los_redirects_que_se_publican_tienen_la_forma_exacta(self):
+        """Vivian en site/migracion/redirects.csv, el insumo de
+        bulkRedirectsPath. Esa propiedad publica CERO reglas en el plan Hobby
+        (lo dijeron los logs del deploy del 2026-08-03), asi que el CSV no lo
+        leia nadie y solo publicaba el mapa de la migracion. Las reglas viajan
+        inline en vercel.json: ahi es donde hay que comprobarlas."""
+        reglas = json.loads((self.salida / "vercel.json").read_text(encoding="utf-8"))["redirects"]
+        self.assertTrue(reglas)
+        for r in reglas:
+            with self.subTest(source=r["source"]):
+                self.assertEqual(set(r), {"source", "destination", "statusCode"})
+                self.assertEqual(r["statusCode"], 301)
 
-    def test_redirects_csv_bulk_no_sombrea_paginas_publicadas(self):
+    def test_ningun_redirect_sombrea_una_pagina_publicada(self):
         rutas_publicadas = build.rutas_canonicas_fuente()
-        with (self.salida / "migracion" / "redirects.csv").open(encoding="utf-8") as f:
-            for fila in csv.DictReader(f):
-                with self.subTest(source=fila["source"]):
-                    self.assertNotIn(fila["source"], rutas_publicadas)
+        reglas = json.loads((self.salida / "vercel.json").read_text(encoding="utf-8"))["redirects"]
+        for r in reglas:
+            with self.subTest(source=r["source"]):
+                self.assertNotIn(r["source"], rutas_publicadas)
+
+    def test_el_csv_de_migracion_ya_no_se_publica(self):
+        """17 KB con el mapa completo de la migracion, incluidas rutas viejas
+        que ya no queremos anunciar."""
+        self.assertFalse((self.salida / "migracion").exists())
 
     def test_sin_ga4_ninguna_pagina_tiene_gtag(self):
         for pagina in self.salida.rglob("*.html"):
@@ -760,7 +772,7 @@ class TestCutover(unittest.TestCase):
             with mock.patch.dict(os.environ, {}, clear=False):
                 os.environ.pop("GA4_MEASUREMENT_ID", None)
                 build.construir(salida=salida, cutover=True)
-            self.assertTrue((salida / "migracion" / "redirects.csv").exists())
+            self.assertTrue((salida / "vercel.json").exists())
 
     def test_preview_sin_cutover_tampoco_revienta(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -768,7 +780,7 @@ class TestCutover(unittest.TestCase):
             with mock.patch.dict(os.environ, {}, clear=False):
                 os.environ.pop("GA4_MEASUREMENT_ID", None)
                 build.construir(salida=salida, cutover=False)
-            self.assertTrue((salida / "migracion" / "redirects.csv").exists())
+            self.assertTrue((salida / "vercel.json").exists())
 
 
 class TestFrasesRechazadas(unittest.TestCase):
@@ -1886,6 +1898,128 @@ class TestPieLegal(unittest.TestCase):
             with self.subTest(pagina=p.name):
                 self.assertNotRegex(p.read_text(encoding="utf-8"),
                                     r"16 an(?:ios|os|hos) en LATAM")
+
+
+class TestElSitioNoSeContradice(unittest.TestCase):
+    """Cada uno de estos empezo siendo dos paginas del mismo sitio afirmando
+    cosas distintas. Quien compara concluye que una miente, y ambas estan
+    publicadas."""
+
+    def test_los_anios_de_trayectoria_son_los_mismos_en_todas(self):
+        """La galeria decia "Quince" en su titular y "16 anios" en su propio
+        pie, 265 lineas mas abajo."""
+        for p in _publicadas():
+            with self.subTest(pagina=p.name):
+                self.assertNotRegex(p.read_text(encoding="utf-8"),
+                                    r"(?i)quince a[nñ]")
+
+    def test_la_cifra_de_areas_coincide_con_las_tarjetas_del_catalogo(self):
+        """Decia "14 areas" en una pagina donde el lector puede contar 18
+        tarjetas. La cifra venia de "~14 temas" de la fuente, que es un conteo
+        historico aproximado, publicado como cifra exacta de la oferta."""
+        catalogo = build.SRC / "catalogo.html"
+        texto = catalogo.read_text(encoding="utf-8")
+        cuerpo = texto[texto.rfind("</style>"):]
+        tarjetas = len(re.findall(r'<article[^>]*class="[^"]*lamina[^"]*"', cuerpo))
+        for p in (catalogo, build.SRC / "lamina-viva.html"):
+            with self.subTest(pagina=p.name):
+                for n in re.findall(r"(\d+)\s+[áa]reas", p.read_text(encoding="utf-8")):
+                    self.assertEqual(int(n), tarjetas)
+
+    def test_el_curso_de_reptiles_tiene_un_solo_nombre(self):
+        """"Medicina de reptiles" y "bienestar de reptiles" no son el mismo
+        producto ante un MVZ: uno promete contenido clinico y el otro no."""
+        for p in _publicadas():
+            with self.subTest(pagina=p.name):
+                self.assertNotRegex(p.read_text(encoding="utf-8"),
+                                    r"(?i)Manejo y Medicina de Reptiles")
+
+    def test_los_meses_sin_intereses_se_niegan_igual_en_todas(self):
+        """/admisiones y /nosotros lo negaban de plano; el catalogo lo dejaba
+        "por confirmar". Es una condicion de pago, no un matiz."""
+        for p in _publicadas():
+            texto = p.read_text(encoding="utf-8")
+            if "meses sin intereses" not in texto:
+                continue
+            with self.subTest(pagina=p.name):
+                self.assertNotRegex(texto, r"meses sin intereses[^.]*por confirmar")
+
+    def test_ninguna_figura_rotula_como_foto_un_dibujo(self):
+        """Un pie decia "[ FOTO DOCUMENTAL ] · Panthera onca · Esc. 1:1" sobre
+        un dibujo de linea en SVG, en la pagina del programa insignia."""
+        for p in _publicadas():
+            texto = p.read_text(encoding="utf-8")
+            for fig in re.findall(r"<figure[^>]*>.*?</figure>", texto, re.S):
+                cap = re.search(r"<figcaption[^>]*>([^<]+)", fig)
+                if not cap or "FOTO" not in cap.group(1).upper():
+                    continue
+                with self.subTest(pagina=p.name, pie=cap.group(1)[:40]):
+                    self.assertIn("<img", fig, "se anuncia foto y no hay ninguna")
+
+    def test_el_aria_label_de_la_lamina_no_contradice_al_alt_de_su_imagen(self):
+        """Tres etiquetas quedaron describiendo al animal ANTERIOR tras
+        cambiar dibujos por fotos: la portada se presentaba como "especimen
+        jaguar" sobre una lechuza."""
+        especies = ("jaguar", "felino", "guacamaya", "lechuza", "grulla", "loro",
+                    "cocodrilo", "rapaz", "quelonio", "tortuga")
+        for p in _publicadas():
+            texto = p.read_text(encoding="utf-8")
+            for fig in re.findall(r'<figure[^>]*aria-label="([^"]+)"[^>]*>(.*?)</figure>',
+                                  texto, re.S):
+                etiqueta, cuerpo = fig
+                alt = re.search(r'<img[^>]*alt="([^"]*)"', cuerpo)
+                if not alt:
+                    continue
+                en_etiqueta = {e for e in especies if e in etiqueta.lower()}
+                en_alt = {e for e in especies if e in alt.group(1).lower()}
+                if not en_etiqueta or not en_alt:
+                    continue
+                with self.subTest(pagina=p.name, etiqueta=etiqueta[:40]):
+                    self.assertTrue(en_etiqueta & en_alt,
+                                    f"aria-label dice {en_etiqueta} y el alt {en_alt}")
+
+
+class TestArticulosDeRecursos(unittest.TestCase):
+    def test_todos_declaran_fecha_de_publicacion(self):
+        """Sin datePublished, un articulo de 2026 puede salir en resultados sin
+        fecha o con la que el rastreador se invente."""
+        articulos = sorted(build.SRC.glob("recurso-*.html"))
+        self.assertEqual(len(articulos), 16)
+        for p in articulos:
+            with self.subTest(articulo=p.name):
+                texto = p.read_text(encoding="utf-8")
+                self.assertRegex(texto, r'"datePublished":\s*"\d{4}-\d{2}-\d{2}"')
+                self.assertRegex(texto, r'"dateModified":\s*"\d{4}-\d{2}-\d{2}"')
+
+    def test_el_json_ld_no_deja_referencias_colgadas(self):
+        """isPartOf apuntaba a la organizacion en vez de al sitio. Al
+        reapuntarlo, el nodo WebSite tenia que existir en la MISMA pagina o la
+        referencia queda al aire."""
+        for p in _publicadas():
+            texto = p.read_text(encoding="utf-8")
+            for bloque in re.findall(r'<script type="application/ld\+json">(.*?)</script>',
+                                     texto, re.S):
+                datos = json.loads(bloque)
+                nodos = datos.get("@graph", [datos]) if isinstance(datos, dict) else datos
+                ids = {n.get("@id") for n in nodos if isinstance(n, dict)}
+                for n in nodos:
+                    if isinstance(n, dict) and isinstance(n.get("isPartOf"), dict):
+                        with self.subTest(pagina=p.name):
+                            self.assertIn(n["isPartOf"].get("@id"), ids)
+
+
+class TestNavegacionGlobal(unittest.TestCase):
+    def test_el_cta_del_header_lleva_al_unico_programa_vendible(self):
+        """Apuntaba al MISMO destino que el enlace "Cursos" de al lado -- el
+        hueco mas visible de las 33 paginas, duplicado -- mientras el unico
+        programa "available" del contrato no estaba en la nav global."""
+        vendible = [p for p in build.cargar_programas() if p["status"] == "available"]
+        self.assertEqual(len(vendible), 1)
+        for p in _publicadas():
+            with self.subTest(pagina=p.name):
+                cta = re.search(r'<a class="nav-cta" href="([^"]+)"', p.read_text(encoding="utf-8"))
+                self.assertIsNotNone(cta)
+                self.assertNotEqual(cta.group(1), "catalogo.html")
 
 
 if __name__ == "__main__":

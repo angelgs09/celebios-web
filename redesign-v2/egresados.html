@@ -452,6 +452,23 @@
  "@context": "https://schema.org",
  "@graph": [
   {
+ "@type": "WebSite",
+ "@id": "https://www.celebios.com/#website",
+ "url": "https://www.celebios.com/",
+ "name": "CELEBIOS",
+ "description": "Academia latinoamericana de fauna silvestre. Cursos avalados por CONCERVET para MVZ y biologos, 100% online.",
+ "inLanguage": "es",
+ "publisher": { "@id": "https://www.celebios.com/#org" },
+ "potentialAction": {
+ "@type": "SearchAction",
+ "target": {
+ "@type": "EntryPoint",
+ "urlTemplate": "https://www.celebios.com/cursos?q={search_term_string}"
+ },
+ "query-input": "required name=search_term_string"
+ }
+ },
+  {
    "@type": "EducationalOrganization",
    "@id": "https://www.celebios.com/#org",
    "name": "CELEBIOS",
@@ -476,7 +493,7 @@
    "url": "https://www.celebios.com/egresados",
    "inLanguage": "es",
    "isPartOf": {
-    "@id": "https://www.celebios.com/#org"
+    "@id": "https://www.celebios.com/#website"
    }
   }
  ]
@@ -502,7 +519,7 @@
  <a href="diplomado-rehab.html">Diplomado</a>
  <a href="recursos.html">Recursos</a>
  <a href="nosotros.html">Nosotros</a>
- <a class="nav-cta" href="catalogo.html">Explorar cursos</a>
+ <a class="nav-cta" href="curso-gatos.html">Curso de lenguaje felino</a>
  </nav>
  </div>
 </header>

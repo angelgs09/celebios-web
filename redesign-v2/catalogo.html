@@ -37,6 +37,23 @@
 {
  "@context": "https://schema.org",
  "@graph": [
+  {
+ "@type": "WebSite",
+ "@id": "https://www.celebios.com/#website",
+ "url": "https://www.celebios.com/",
+ "name": "CELEBIOS",
+ "description": "Academia latinoamericana de fauna silvestre. Cursos avalados por CONCERVET para MVZ y biologos, 100% online.",
+ "inLanguage": "es",
+ "publisher": { "@id": "https://www.celebios.com/#org" },
+ "potentialAction": {
+ "@type": "SearchAction",
+ "target": {
+ "@type": "EntryPoint",
+ "urlTemplate": "https://www.celebios.com/cursos?q={search_term_string}"
+ },
+ "query-input": "required name=search_term_string"
+ }
+ },
  {
  "@type": "EducationalOrganization",
  "@id": "https://www.celebios.com/#org",
@@ -54,7 +71,7 @@
  "description": "Catálogo de cursos y diplomados de fauna silvestre a distancia en México y LATAM. Certificado avalado por CONCERVET, con docentes con trayectoria en UNAM, UAEH e IFAW.",
  "url": "https://www.celebios.com/cursos",
  "inLanguage": "es",
- "isPartOf": { "@id": "https://www.celebios.com/#org" },
+ "isPartOf": { "@id": "https://www.celebios.com/#website" },
  "mainEntity": { "@id": "https://www.celebios.com/cursos#cursos" }
  },
  {
@@ -934,7 +951,7 @@
  <a href="diplomado-rehab.html">Diplomado</a>
  <a href="recursos.html">Recursos</a>
  <a href="nosotros.html">Nosotros</a>
- <a class="nav-cta" href="catalogo.html">Explorar cursos</a>
+ <a class="nav-cta" href="curso-gatos.html">Curso de lenguaje felino</a>
  </nav>
  </div>
 </header>
@@ -947,7 +964,7 @@
  <div class="cat-hero-head">
  <span class="kick mono"><span class="rule"></span>Atlas de especialidades</span>
  <h1 class="display">Cursos de fauna silvestre online en <span class="accent">México y LATAM</span></h1>
- <p class="lede">14 áreas, de la clínica al campo. Cursos cortos para empezar y el Diplomado para profundizar. Educación continua a distancia, avalada por CONCERVET, para MVZ, biólogos y tutores de animales.</p>
+ <p class="lede">18 áreas, de la clínica al campo. Cursos cortos para empezar y el Diplomado para profundizar. Educación continua a distancia, avalada por CONCERVET, para MVZ, biólogos y tutores de animales.</p>
  <p class="cat-trust mono-soft">Aval CONCERVET · docentes de UNAM, UAEH e IFAW por confirmar · 16 años en LATAM</p>
  </div>
 
@@ -1642,7 +1659,7 @@
  </tr>
  </tbody>
  </table>
- <p class="price-note">Las áreas marcadas como "próxima edición" o "en producción" aún no tienen precio publicado. Déjanos tu correo en la lista de espera y te avisamos en cuanto abran. Disponibilidad de pagos a plazos o meses sin intereses: por confirmar.</p>
+ <p class="price-note">Las áreas marcadas como "próxima edición" o "en producción" aún no tienen precio publicado. Déjanos tu correo en la lista de espera y te avisamos en cuanto abran. No manejamos meses sin intereses.</p>
  </div>
 </section>
 

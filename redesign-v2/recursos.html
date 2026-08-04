@@ -451,6 +451,23 @@
 {
  "@context": "https://schema.org",
  "@graph": [
+  {
+ "@type": "WebSite",
+ "@id": "https://www.celebios.com/#website",
+ "url": "https://www.celebios.com/",
+ "name": "CELEBIOS",
+ "description": "Academia latinoamericana de fauna silvestre. Cursos avalados por CONCERVET para MVZ y biologos, 100% online.",
+ "inLanguage": "es",
+ "publisher": { "@id": "https://www.celebios.com/#org" },
+ "potentialAction": {
+ "@type": "SearchAction",
+ "target": {
+ "@type": "EntryPoint",
+ "urlTemplate": "https://www.celebios.com/cursos?q={search_term_string}"
+ },
+ "query-input": "required name=search_term_string"
+ }
+ },
  {
  "@type": "EducationalOrganization",
  "@id": "https://www.celebios.com/#org",
@@ -469,7 +486,7 @@
  "description": "Articulos gratuitos sobre fauna silvestre y comportamiento felino para profesionales y tutores en Mexico y LATAM.",
  "url": "https://www.celebios.com/recursos",
  "inLanguage": "es",
- "isPartOf": { "@id": "https://www.celebios.com/#org" },
+ "isPartOf": { "@id": "https://www.celebios.com/#website" },
  "publisher": { "@id": "https://www.celebios.com/#org" },
  "mainEntity": {
  "@type": "ItemList",
@@ -632,7 +649,7 @@
  <a href="diplomado-rehab.html">Diplomado</a>
  <a href="recursos.html" class="is-active" aria-current="page">Recursos</a>
  <a href="nosotros.html">Nosotros</a>
- <a class="nav-cta" href="catalogo.html">Explorar cursos</a>
+ <a class="nav-cta" href="curso-gatos.html">Curso de lenguaje felino</a>
  </nav>
  </div>
 </header>

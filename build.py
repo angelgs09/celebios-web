@@ -1149,11 +1149,14 @@ def construir(salida=None, cutover=False):
     (salida / "robots.txt").write_text(generar_robots(), encoding="utf-8")
     (salida / "vercel.json").write_text(generar_vercel_json(reglas_bulk), encoding="utf-8")
 
-    (salida / "migracion").mkdir(parents=True, exist_ok=True)
-    with (salida / "migracion" / "redirects.csv").open("w", encoding="utf-8", newline="") as f:
-        escritor = csv.DictWriter(f, fieldnames=["source", "destination", "statusCode"])
-        escritor.writeheader()
-        escritor.writerows(reglas_bulk)
+    # site/migracion/redirects.csv era el insumo de bulkRedirectsPath, que en
+    # el plan Hobby publica CERO reglas: los logs del deploy del 2026-08-03 lo
+    # dijeron. Las 368 reglas viajan inline en vercel.json desde entonces, asi
+    # que este CSV no lo lee nadie -- solo publica 17 KB con el mapa completo
+    # de la migracion, incluidas rutas viejas que ya no queremos anunciar.
+    obsoleto = salida / "migracion"
+    if obsoleto.exists():
+        shutil.rmtree(obsoleto)
 
     print(f"  {len(paginas)} paginas + sitemap/robots/404/vercel.json -> {salida}")
     print(f"  {len(reglas_bulk)} redirects activos, {len(diferidas)} diferidos")
