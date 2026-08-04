@@ -1050,18 +1050,27 @@ class TestImagenesPublicadas(unittest.TestCase):
         "cartel-rehabilitacion-fauna-2019",
         "fauna-cocodrilo-habitat", "fauna-grulla-coronada",
         "fauna-loro-alimentacion", "fauna-rapaz-alas-abiertas",
-        # practicas con personas reconocibles: pendiente el consentimiento
-        "practica-ave-clinica-grupo", "practica-clinica-grupo",
-        "practica-ecografo-alumnas", "practica-equino-auscultacion",
-        "practica-equino-grupo", "practica-imagenologia-equipo",
-        "practica-lechuza-auscultacion", "practica-loro-manejo",
-        "practica-manejo-quelonio", "practica-perezoso-auscultacion",
-        "practica-sesion-campo",
+        # practicas reencuadradas en el animal, las manos o el instrumento: la
+        # foto sigue siendo documental y real, pero ya no hay rostro que
+        # identifique a nadie, asi que deja de ser dato personal.
+        "practica-ecografo-consola", "practica-equino-auscultacion",
+        "practica-guacamaya-monitoreo", "practica-lechuza-auscultacion",
+        "practica-loro-manejo", "practica-manejo-quelonio",
+        "practica-perezoso-auscultacion",
     }
-    # Retiradas a proposito, no por descuido: el ave de alas extendidas sobre la
-    # mesa y el perezoso boca arriba inmovilizado se leen como maltrato fuera de
-    # su contexto clinico, y la primera estaba en la portada.
-    RETIRADAS = {"practica-guacamaya-exploracion", "practica-perezoso-manejo"}
+    # Retiradas a proposito, no por descuido. Dos por como se leen fuera de su
+    # contexto clinico (el ave de alas extendidas sobre la mesa -- que estaba en
+    # la portada -- y el perezoso boca arriba inmovilizado). Cuatro porque lo
+    # unico que aportaban era el grupo entero: no hay recorte que las salve sin
+    # dejar rostros dentro.
+    RETIRADAS = {
+        "practica-guacamaya-exploracion", "practica-perezoso-manejo",
+        "practica-clinica-grupo", "practica-sesion-campo",
+        "practica-equino-grupo", "practica-imagenologia-equipo",
+    }
+    # Cambiaron de nombre porque el recorte les cambio el tema: ya no son "el
+    # grupo" ni "las alumnas", son la guacamaya y la consola.
+    RENOMBRADAS = {"practica-ave-clinica-grupo", "practica-ecografo-alumnas"}
 
     def _en_disco(self):
         return {f.stem for f in (build.SRC / "media").glob("*.webp")}
@@ -1070,7 +1079,13 @@ class TestImagenesPublicadas(unittest.TestCase):
         self.assertEqual(self._en_disco(), self.PUBLICADAS)
 
     def test_las_retiradas_no_vuelven(self):
-        self.assertEqual(self._en_disco() & self.RETIRADAS, set())
+        fuera = self.RETIRADAS | self.RENOMBRADAS
+        self.assertEqual(self._en_disco() & fuera, set())
+        referidas = set()
+        for f in build.SRC.glob("*.html"):
+            referidas |= set(re.findall(r"/media/([a-z0-9-]+)\.webp",
+                                        f.read_text(encoding="utf-8")))
+        self.assertEqual(referidas & fuera, set())
 
     def test_ninguna_imagen_queda_sin_usar(self):
         usadas = set()
@@ -1088,6 +1103,38 @@ class TestImagenesPublicadas(unittest.TestCase):
                     self.assertRegex(tag, r'alt="[^"]+"')
                     self.assertRegex(tag, r'width="\d+"')
                     self.assertRegex(tag, r'height="\d+"')
+
+    @staticmethod
+    def _dims_webp(ruta):
+        """Tamano real del WebP leyendo la cabecera. A mano y no con Pillow
+        porque el repo no lo lista como dependencia y un test no deberia
+        anadir una para medir dos enteros."""
+        b = ruta.read_bytes()
+        if b[12:16] == b"VP8X":                                    # extendido
+            return (int.from_bytes(b[24:27], "little") + 1,
+                    int.from_bytes(b[27:30], "little") + 1)
+        if b[12:16] == b"VP8L":                                    # sin perdida
+            n = int.from_bytes(b[21:25], "little")
+            return (n & 0x3FFF) + 1, ((n >> 14) & 0x3FFF) + 1
+        return (int.from_bytes(b[26:28], "little") & 0x3FFF,       # con perdida
+                int.from_bytes(b[28:30], "little") & 0x3FFF)
+
+    def test_las_dimensiones_declaradas_son_las_reales(self):
+        """Las laminas de fauna venian con width="1200" height="900" inventado
+        sobre archivos de 843x385. Como la galeria usa height:auto, el navegador
+        reserva la caja con esos numeros: maquetaba huecos que no existian y la
+        pagina saltaba al cargar cada foto."""
+        for f in sorted(build.SRC.glob("*.html")):
+            for tag in re.findall(r"<img[^>]*>", f.read_text(encoding="utf-8")):
+                m = re.search(r"/media/([a-z0-9-]+)\.webp", tag)
+                if not m:
+                    continue
+                declarado = (int(re.search(r'width="(\d+)"', tag).group(1)),
+                             int(re.search(r'height="(\d+)"', tag).group(1)))
+                with self.subTest(archivo=f.name, imagen=m.group(1)):
+                    self.assertEqual(
+                        declarado,
+                        self._dims_webp(build.SRC / "media" / f"{m.group(1)}.webp"))
 
 
 class TestAvisoDePrivacidad(unittest.TestCase):

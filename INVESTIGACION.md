@@ -234,27 +234,63 @@ de dos tipos:
    estiradas por manos enguantadas sobre la mesa —que estaba en el **hero de la portada**, la
    primera imagen del sitio— y el perezoso boca arriba inmovilizado. El hero pasó a la
    auscultación de una lechuza, que comunica cuidado profesional en vez de sujeción.
-2. **Rostros identificables.** De las 24 imágenes publicadas, **11 muestran caras
+2. **Rostros identificables.** De las 24 imágenes publicadas, **11 mostraban caras
    reconocibles** de alumnos y docentes. Que estén públicas en la página de Facebook no
    equivale a republicarlas en el sitio comercial: en México la imagen es dato personal bajo la
    LFPDPPP, la misma ley que este proyecto acaba de citar en el aviso de privacidad. **No hay
-   consentimiento documentado**, y obtenerlo es decisión de Angel. Las 11 están listadas en
-   `tests/test_content_contract.py::TestImagenesPublicadas`.
+   consentimiento documentado de ninguna.**
+
+**Resolución (2026-08-03): reencuadrar, no reemplazar.** Los tres caminos obvios —pedir
+consentimiento a 11 personas, quedarse solo con las 13 sin rostros, o asumir el riesgo— eran
+todos malos: el primero bloquea el lanzamiento, el segundo deja el sitio sin calor humano, el
+tercero contradice el aviso de privacidad que acabamos de corregir. Hay un cuarto: **la foto no
+tiene que salir, tiene que encuadrarse**.
+
+Siete de las once se recortaron al animal, las manos y el instrumento. La imagen sigue siendo
+documental y real —no hay nada generado ni escenificado—, deja de contener dato personal, y de
+paso **queda mejor**: era exactamente la queja de Angel sobre que la sección "el trabajo de
+cerca" no se veía de cerca. Dos cambiaron de nombre porque el recorte les cambió el tema
+(`practica-ave-clinica-grupo` → `practica-guacamaya-monitoreo`, `practica-ecografo-alumnas` →
+`practica-ecografo-consola`).
+
+Las otras cuatro **no se salvan con recorte** porque lo único que aportaban era el grupo
+entero: la sesión de campo (círculo de doce personas), la sesión de clínica (armarios blancos y
+nucas), el grupo con el caballo (queda un rostro con cubrebocas en el centro del encuadre) y el
+equipo de imagenología (el recorte pierde resolución y repite un tema que la consola del
+ecógrafo ya cuenta mejor). Salieron. Los dos huecos de portada que dejaron se llenaron con
+láminas de fauna que ya estaban en el archivo: el cocodrilo en su encierro para `/nosotros`, la
+grulla coronada para el curso de conducta.
+
+**Verificación independiente.** Como el mismo que eligió los recortes es el peor juez de si
+funcionaron, los siete se revisaron con catorce agentes: dos lentes por foto —un abogado de
+protección de datos buscando cualquier rasgo identificable hasta en las orillas, y un visitante
+frío preocupado por el bienestar animal— con la instrucción explícita de encontrar el problema,
+no de absolver.
 
 También se excluyeron desde el principio los logos de terceros y la señalización de sedes
 ajenas (Zoológico de Cali, Bioparque Yana-Cocha).
 
 El conjunto publicado es una **lista cerrada** en los tests: añadir una imagen obliga a un
-cambio explícito, para que no entre ninguna por descuido.
+cambio explícito, para que no entre ninguna por descuido. Los nombres retirados y los
+renombrados tampoco pueden reaparecer, ni en disco ni referenciados desde el HTML.
 
-**Imágenes.** Se rescataron del Wix vivo y se guardaron en `redesign-v2/media/` (26 archivos,
-2.4 MB en WebP) en vez de enlazarlas a `static.wixstatic.com`: si se cancela la cuenta de Wix,
+**Dimensiones declaradas (2026-08-03).** Al recortar salió a la luz que **las 26 etiquetas
+`<img>` de `/media/` traían `width`/`height` inventados**, casi todas `1200x900` sobre archivos
+que medían 843x385 o 640x853. Como la galería usa `columns` + `height:auto`, el navegador
+reserva la caja con esos números: el masonry maquetaba huecos que no existían y la página
+saltaba al cargar cada foto. Ahora se sincronizan contra el archivo real y hay un test que lee
+la cabecera WebP a mano —sin Pillow, que no es dependencia del repo— para que no vuelva a
+desalinearse.
+
+**Imágenes.** Se rescataron del Wix vivo y se guardaron en `redesign-v2/media/` (20 archivos
+tras el recorte y la depuración) en vez de enlazarlas a `static.wixstatic.com`: si se cancela la cuenta de Wix,
 ese CDN deja de servirlas y desaparece el único registro visual del archivo. De 59 imágenes
 descargadas se descartaron 33 por dos motivos explícitos: **stock del banco de Wix** (jaguar,
 flamenco, paisajes, gato, mujer con laptop — su licencia cubre el uso *dentro* de Wix, no
 fuera) y **logos de terceros** (CONCERVET, UAEH, YanaCocha, Tamandúa), porque el verbo exacto
-de las alianzas sigue sin fuente. Lo que se conserva es material propio: 15 carteles de
-convocatorias con marca CELEBIOS y 11 fotos de prácticas docentes.
+de las alianzas sigue sin fuente. Lo que se conserva es material propio: 9 carteles de
+convocatorias con marca CELEBIOS, 4 láminas de fauna y 7 fotos de prácticas docentes ya
+reencuadradas.
 
 ## Actualización 2026-08-02 21:30 — Rendimiento liberado, y NO hay histórico
 

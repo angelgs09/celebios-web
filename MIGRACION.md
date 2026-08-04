@@ -298,5 +298,17 @@ a este proyecto y retirar el Wix. Eso lo decide Angel.
    desmontar el Wix viejo. No se hace sin decirlo.
 4. **Correos.** Si hoy Kajabi manda los correos de la academia, hace falta
    reemplazo antes de apagarlo. Sin confirmar.
-5. `redesign-v2/` **no está en git.** Las 28 páginas y todo el harvest viven
-   solo en el disco de Angel.
+5. **Consentimiento de imagen.** Ninguna foto publicada muestra ya un rostro
+   identificable —las siete que quedan están reencuadradas en el animal, las
+   manos o el instrumento—, así que el sitio puede salir sin pedirle permiso a
+   nadie. Pero **los originales sin recortar siguen en el historial de git**,
+   y los álbumes completos siguen públicos en Facebook. Si algún día se quiere
+   volver a usar una foto de grupo, ahí sí hace falta consentimiento.
+6. **Higgsfield perdió la sesión** (`Error: Not authenticated`). El re-login es
+   por navegador, así que lo tiene que correr Angel: `! higgsfield auth login`.
+   No hace falta para las fotos —eso se resolvió recortando— sino para las
+   **25 páginas publicadas que hoy no tienen ninguna imagen**: 3 cursos
+   (gatos, reptiles, primeros auxilios), los 17 artículos de `recurso-*` y los
+   hubs. Los artículos son justamente los que traen tráfico de búsqueda y
+   salen a texto pelón. El archivo de fotos reales ya no da para más: solo hay
+   material de aves, equinos, perezoso y quelonio.
