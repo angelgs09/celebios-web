@@ -1053,18 +1053,21 @@ class TestImagenesPublicadas(unittest.TestCase):
         # identifique a nadie, asi que deja de ser dato personal.
         "practica-ecografo-consola", "practica-equino-auscultacion",
         "practica-lechuza-auscultacion", "practica-manejo-quelonio",
-        "practica-perezoso-auscultacion",
     }
     # NINGUN nombre de archivo de esta lista es evidencia de lo que contiene:
     # vienen del scraping del Wix y cinco mentian descaradamente (un logo de la
     # UAEH se llamaba "cartel-anestesia-cirugia-2013", una foto de una persona
     # con un erizo se llamaba "cartel-curso-tarantulas-2014"). Ninguna prueba
-    # automatica puede detectar eso. Las 14 se abrieron y se miraron una por una
+    # automatica puede detectar eso. Las 13 se abrieron y se miraron una por una
     # el 2026-08-03; cualquier alta futura exige lo mismo.
     RETIRADAS = {
         # se leen mal fuera de su contexto clinico
         "practica-guacamaya-exploracion", "practica-perezoso-manejo",
         "practica-guacamaya-monitoreo", "practica-loro-manejo",
+        # ademas: entra al campo un antebrazo desnudo sin guante a centimetros
+        # de un perezoso silvestre. Para una escuela que ensena riesgo
+        # zoonotico eso lo nota su propia audiencia.
+        "practica-perezoso-auscultacion",
         # lo unico que aportaban era el grupo entero
         "practica-clinica-grupo", "practica-sesion-campo",
         "practica-equino-grupo", "practica-imagenologia-equipo",

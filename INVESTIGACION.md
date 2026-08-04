@@ -285,6 +285,24 @@ aves no se llenó con otra foto: esas dos páginas volvieron a su **lámina de l
 que es lo que el diseño ya traía y lo que sus propias etiquetas describen ("Tapirus bairdii",
 "Curso · Aves").
 
+**Segunda ronda de verificación.** Los tres recortes rehechos se volvieron a revisar con los
+mismos dos lentes: **6 de 6 confirmaron que el recorte cerró lo señalado**. Pero un revisor
+apuntó algo fuera de su lente que pesa más que todo lo anterior: en la foto del perezoso entra
+al campo quirúrgico un **antebrazo desnudo, sin guante, a centímetros de un perezoso
+silvestre**. No es un problema legal ni de lectura: es que una escuela que enseña riesgo
+zoonótico estaría publicando una falla de bioseguridad delante de la audiencia que le compra
+los cursos. Sumado a que era la imagen de menor resolución del conjunto (314×275), a que
+necesitó dos rondas de recorte para ser publicable, y a que el animal quedó sin cabeza ni ojo
+visible —"no afirmativamente vivo", en palabras del revisor—, **salió**. Las dos láminas que
+ocupaba volvieron al jaguar dibujado que había desplazado, que es de donde venía el badge
+"Panthera onca" que apareció descuadrado en la portada.
+
+De la tortuga el revisor frío dijo "media": la palma abierta sobre el caparazón se lee como
+inmovilización si nadie explica nada. Ahí discrepo —a un lente adversarial se le pide encontrar
+problemas, y el mismo lente calificó de "ninguna" a la lechuza, el ecógrafo y el equino—, así
+que se queda, con el pie de foto nombrando el acto clínico, que es gratis y cierra la
+ambigüedad para quien lo lea. Queda anotado por si Angel prefiere retirarla.
+
 **Los nombres de archivo mentían (2026-08-03, tercera pasada).** Al renderizar la galería
 offline saltó algo que ninguna revisión de rostros iba a encontrar: **cinco de los nueve
 "carteles" no eran carteles**, y se publicaban con una descripción falsa en el `alt` —o sea, lo
@@ -308,7 +326,7 @@ fuente.
 La lección para quien siga: **el nombre de un archivo del scraping no es evidencia de lo que
 contiene.** Ninguna prueba automática detecta esto —probé una regla de coincidencia entre el id
 de la edición y el slug del cartel y habría dejado pasar cuatro de los cinco—, así que la única
-defensa es abrir cada imagen y mirarla. Las 14 que quedan se abrieron una por una.
+defensa es abrir cada imagen y mirarla. Las 13 que quedan se abrieron una por una.
 
 También se excluyeron desde el principio los logos de terceros y la señalización de sedes
 ajenas (Zoológico de Cali, Bioparque Yana-Cocha).
@@ -325,14 +343,14 @@ saltaba al cargar cada foto. Ahora se sincronizan contra el archivo real y hay u
 la cabecera WebP a mano —sin Pillow, que no es dependencia del repo— para que no vuelva a
 desalinearse.
 
-**Imágenes.** Se rescataron del Wix vivo y se guardaron en `redesign-v2/media/` (14 archivos
+**Imágenes.** Se rescataron del Wix vivo y se guardaron en `redesign-v2/media/` (13 archivos
 tras el recorte y la depuración) en vez de enlazarlas a `static.wixstatic.com`: si se cancela la cuenta de Wix,
 ese CDN deja de servirlas y desaparece el único registro visual del archivo. De 59 imágenes
 descargadas se descartaron 33 por dos motivos explícitos: **stock del banco de Wix** (jaguar,
 flamenco, paisajes, gato, mujer con laptop — su licencia cubre el uso *dentro* de Wix, no
 fuera) y **logos de terceros** (CONCERVET, UAEH, YanaCocha, Tamandúa), porque el verbo exacto
 de las alianzas sigue sin fuente. Lo que se conserva es material propio: 5 carteles de
-convocatorias con marca CELEBIOS, 4 láminas de fauna y 5 fotos de prácticas docentes ya
+convocatorias con marca CELEBIOS, 4 láminas de fauna y 4 fotos de prácticas docentes ya
 reencuadradas.
 
 ## Actualización 2026-08-02 21:30 — Rendimiento liberado, y NO hay histórico
