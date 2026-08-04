@@ -282,6 +282,21 @@ con el título correcto. `cleanUrls` y el 301 funcionan.
 Falta un paso que **no** es técnico y sí es irreversible: apuntar `celebios.com`
 a este proyecto y retirar el Wix. Eso lo decide Angel.
 
+**Preview desplegado y verificado en vivo (2026-08-04).**
+`celebios-5dmwcpoh1-konecta-estudio.vercel.app`, proyecto `celebios`, desde
+`site/`. Comprobado con cookie de bypass: **33 páginas con 200**, `/aula` 200
+(el 308 de `/aula/index` es `cleanUrls` haciendo su trabajo, no un fallo), las
+láminas de ambiente sirviéndose, las imágenes retiradas dando 404 como deben, y
+una muestra de los 368 redirects emitiendo **301** —no 308— a su destino
+correcto.
+
+Sin la cookie todo devuelve 302 a `vercel.com/sso-api`: Deployment Protection
+responde ANTES de que se evalúe ninguna regla, así que verificar sin ella no
+prueba nada. Ya nos costó una verificación falsa una vez.
+
+Sigue sin hacerse `vercel deploy --prod`: eso implica apuntar el dominio y
+retirar Wix, y lo decide Angel.
+
 ---
 
 ## Decisiones abiertas
