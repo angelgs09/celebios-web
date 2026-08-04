@@ -19,7 +19,7 @@ sitemap-index que apunta a `pages-sitemap.xml`) y
 |---|---|
 | `urls-wix.csv` | Snapshot completo del sitemap de Wix. |
 | `urls-kajabi.csv` | Snapshot completo del sitemap de Kajabi. |
-| `redirects.csv` | Unión de los dos anteriores: el contrato completo. |
+| `redirects.csv` | El contrato completo. Nace de la unión de los dos anteriores, pero **ya no es idéntico**: 5 filas se corrigieron a mano al decidir destinos (`/nosotros`, `/galeria-1`, `/about`, `/diplomado-rescate-rehabilitacion-fauna`, `.online/nosotros`), así que volver a correr el script sobrescribe esas decisiones. |
 
 Snapshot del 2026-08-01: **371 URLs en Wix, 15 en Kajabi.** Si el sitio vivo
 cambia, correr el script otra vez regenera los tres archivos — no se edita
@@ -90,14 +90,17 @@ a `/` — cada uno cae en su ancla de archivo histórico en `/cursos`.
 Este CSV dejó de ser solo un contrato de datos en el commit `af7b766`
 ("establish verified content and build contracts"): `build.py` lo consume.
 
-- El `vercel.json` generado declara `bulkRedirectsPath:
-  "migracion/redirects.csv"` (`build.generar_vercel_json`).
-- El build escribe en `site/migracion/redirects.csv` **solo el subconjunto
-  ACTIVO**, en el formato bulk de Vercel — encabezado exacto
-  `source,destination,statusCode` (final de `build.construir`).
+- El `vercel.json` generado declara las reglas **inline**, en `redirects`, con
+  `{source, destination, statusCode: 301}` (`build.generar_vercel_json`).
+  **No** usa `bulkRedirectsPath`: el deploy del 2026-08-03 lo dejó en los logs
+  — "Bulk redirects are not available for teams on the Hobby plan" — y esa
+  propiedad no publicaba ni una sola regla. El esquema de Vercel admite hasta
+  2048 inline, y el build revienta si el inventario las rebasa.
+- Por lo mismo, el build ya **no** escribe `site/migracion/redirects.csv`: no
+  lo leía nadie y publicaba 17 KB con el mapa completo de la migración.
 - `build.convertir_redirects_bulk` decide qué entra.
 
-Cifras del 2026-08-02, contra el CSV comiteado y las 28 rutas canónicas que hoy
+Cifras del 2026-08-04, contra el CSV comiteado y las 33 rutas canónicas que hoy
 publica `redesign-v2/`. Son un snapshot que se mueve conforme Task 3 publica
 páginas; para recalcularlas sin escribir en `site/`:
 
@@ -112,26 +115,20 @@ print(len(activas), len(diferidas))
 | | Filas |
 |---|---|
 | Filas en `migracion/redirects.csv` | 386 |
-| — con `status_code=404` (no generan regla) | 6 |
-| — con `status_code=301` | 380 |
-| Descartadas: origen igual al destino | 8 |
-| Descartadas: mismo origen repetido con destino idéntico | 3 |
-| Orígenes únicos evaluados | 369 |
-| **Reglas activas emitidas** | **118** |
-| **Reglas diferidas (no se emiten)** | **251** |
+| — con `status_code=404` (no generan regla) | 5 |
+| — con `status_code=301` | 381 |
+| Descartadas: origen igual al destino | 11 |
+| **Reglas activas emitidas** | **368** |
+| **Reglas diferidas (no se emiten)** | **0** |
 
 Una regla se DIFIERE si su origen ya es una página publicada (la sombrearía) o
 si la base de su destino todavía no se publica (sería un 301 a un 404); `/aula`
-es la única excepción explícita. Hoy son 249 por `destination_not_published`, 1
-por `source_shadows_published_page` y 1 por ambas. Los destinos que todavía no
-existen — ninguna página de `redesign-v2/` los declara como canonical, los crea
-Task 3 — son `/egresados` (233 reglas), `/admisiones` (14), `/historia` (2) y
-`/contacto` (1). El caso restante es distinto: `/diplomado-rescate-rehabilitacion-fauna`
-→ `/cursos#historico-rehabilitacion` se difiere porque el ORIGEN ya es una
-página viva del sitio nuevo, no porque falte el destino.
+es la única excepción explícita. **Hoy no queda ninguna diferida**: las 33
+páginas publicadas cubren todos los destinos, incluidos `/egresados` (161
+reglas), `/admisiones` (14) y `/contacto`, que en agosto todavía no existían.
 
-`python build.py --cutover` revienta si queda alguna diferida, así que ese 251
-tiene que llegar a 0 antes del corte real. Un mismo origen con dos destinos
+`python build.py --cutover` revienta si queda alguna diferida, así que ese 0 es
+la condición que ya se cumple para el corte. Un mismo origen con dos destinos
 distintos también revienta el build, en cualquier modo.
 
 ## Lo que este inventario NO hace

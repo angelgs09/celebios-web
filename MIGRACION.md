@@ -266,18 +266,24 @@ Las rutas absolutas no son estética: con `cleanUrls`, un enlace relativo se
 resuelve contra el directorio, así que `catalogo.html` dentro de
 `/cursos/anestesia-contencion-fauna` apuntaría a `/cursos/catalogo.html`.
 
-Resultado: 28 páginas, 0 enlaces rotos. Quedan fuera 4 archivos que son
-maquetas de diseño sin canonical (`estacion-de-campo`, `visor-de-especie`,
-`lamina-viva-v1-coral`, `index` comparador).
+Resultado: 33 páginas + sitemap, robots, 404 y `vercel.json`; 0 enlaces rotos.
+Quedan fuera 4 archivos que son maquetas de diseño sin canonical
+(`estacion-de-campo`, `visor-de-especie`, `lamina-viva-v1-coral`, `index`
+comparador).
 
-El `vercel.json` lleva el redirect que más vale del proyecto: 301 de
-`/rehabilitacion-fauna-2024` (la página de Wix que rankea #3 nacional y dice
-"inscripciones cerradas") al diplomado vivo.
+El `vercel.json` lleva las 368 reglas **inline**, no por `bulkRedirectsPath`:
+esa propiedad no está disponible en el plan Hobby y publicaba cero reglas (lo
+dijeron los logs del deploy del 2026-08-03).
 
-**Verificado en el deploy, no supuesto:** las 9 rutas probadas dan 200
-—incluidas las anidadas sin `.html`, el logo y las dos páginas del aula— y
-`/rehabilitacion-fauna-2024` aterriza en `/diplomado-rescate-rehabilitacion-fauna`
-con el título correcto. `cleanUrls` y el 301 funcionan.
+Entre ellas, el redirect que más vale del proyecto: 301 de
+`/rehabilitacion-fauna-2024` — la página de Wix que rankea #3 nacional y dice
+"inscripciones cerradas" — a `/diplomado-rescate-rehabilitacion-fauna`.
+
+Ese destino se cambió a propósito el 2026-08-04. Aterrizaba en
+`/cursos#historico-rehabilitacion`, o sea en una tarjeta dentro de la rejilla
+del catálogo, existiendo la página dedicada del mismo programa. Las otras tres
+rutas de rehabilitación (`/rehabilitacion`, `/rehabilitacion2021`,
+`/rehabilitacion-fauna-2025`) se movieron con ella.
 
 Falta un paso que **no** es técnico y sí es irreversible: apuntar `celebios.com`
 a este proyecto y retirar el Wix. Eso lo decide Angel.
