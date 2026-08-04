@@ -376,10 +376,12 @@
  .ed-periodo{ color:var(--coral); font-size:.78rem; margin:0 0 var(--s4); }
  .ed-desc,.ed-nota{ color:var(--ink-soft); font-size:.94rem; margin:0 0 var(--s3); max-width:62ch; }
  .ed-nota{ font-size:.87rem; color:var(--lodo); border-left:2px solid var(--lodo-line); padding-left:.8rem; }
- .gfotos{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:var(--s5); }
- .gfoto{ margin:0; }
- .gfoto img{ width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:var(--r-plate);
-  box-shadow:var(--shadow-plate); }
+ /* Columnas, no rejilla: las fotos van de 0.75 a 1.55 de proporcion y
+    recortarlas a 4/3 les cortaba la cabeza al animal o al alumno. */
+ .gfotos{ columns:3 260px; column-gap:var(--s5); }
+ .gfoto{ margin:0 0 var(--s5); break-inside:avoid; }
+ .gfoto img{ width:100%; height:auto; max-height:460px; object-fit:cover; object-position:center;
+  border-radius:var(--r-plate); box-shadow:var(--shadow-plate); background:var(--hueso-2); }
  .gfoto figcaption{ font-size:.8rem; color:var(--lodo); margin-top:.5rem; }
  @media (max-width:760px){ .edicion{ grid-template-columns:1fr; } }
 </style>
@@ -610,54 +612,30 @@
    <div>
     <span class="sec-kicker mono">Prácticas</span>
     <h2 class="display" id="sec-fotos">El trabajo, de cerca</h2>
-    <p class="sub">Cirugías, manejo y talleres de las prácticas presenciales.</p>
+    <p class="sub">Registro de las prácticas presenciales de las primeras generaciones. Los álbumes completos de cada edición están en <a href="https://facebook.com/celebi0s" target="_blank" rel="noopener">nuestra página de Facebook</a>.</p>
    </div>
   </div>
 
   <div class="gfotos">
    <figure class="gfoto">
-    <img src="/media/practica-cirugia-equipo.webp" alt="Equipo en cirugía durante una práctica del diplomado" width="1200" height="900" loading="lazy" decoding="async">
-    <figcaption>Equipo en cirugía durante una práctica del diplomado</figcaption>
+    <img src="/media/practica-cirugia-equipo.webp" alt="Cirugía durante una práctica presencial del diplomado" width="1200" height="900" loading="lazy" decoding="async">
+    <figcaption>Cirugía durante una práctica presencial del diplomado</figcaption>
    </figure>
    <figure class="gfoto">
-    <img src="/media/practica-quirofano-alumnos.webp" alt="Alumnos alrededor de la mesa quirúrgica en una práctica" width="1200" height="900" loading="lazy" decoding="async">
-    <figcaption>Alumnos alrededor de la mesa quirúrgica en una práctica</figcaption>
+    <img src="/media/practica-quirofano-equipo.webp" alt="Sesión de técnicas quirúrgicas con el grupo" width="1200" height="900" loading="lazy" decoding="async">
+    <figcaption>Sesión de técnicas quirúrgicas con el grupo</figcaption>
    </figure>
    <figure class="gfoto">
-    <img src="/media/practica-quirofano-equipo.webp" alt="Práctica quirúrgica con el grupo completo" width="1200" height="900" loading="lazy" decoding="async">
-    <figcaption>Práctica quirúrgica con el grupo completo</figcaption>
+    <img src="/media/practica-manejo-aguila.webp" alt="Manejo de un águila en una práctica de aves rapaces" width="1200" height="900" loading="lazy" decoding="async">
+    <figcaption>Manejo de un águila en una práctica de aves rapaces</figcaption>
    </figure>
    <figure class="gfoto">
-    <img src="/media/practica-felido-sedado.webp" alt="Manejo de un felino bajo sedación durante una práctica" width="1200" height="900" loading="lazy" decoding="async">
-    <figcaption>Manejo de un felino bajo sedación durante una práctica</figcaption>
+    <img src="/media/practica-felido-exploracion.webp" alt="Exploración de las almohadillas de un felino bajo sedación" width="1200" height="900" loading="lazy" decoding="async">
+    <figcaption>Exploración de las almohadillas de un felino bajo sedación</figcaption>
    </figure>
    <figure class="gfoto">
-    <img src="/media/practica-felido-exploracion.webp" alt="Exploración de las extremidades de un felino" width="1200" height="900" loading="lazy" decoding="async">
-    <figcaption>Exploración de las extremidades de un felino</figcaption>
-   </figure>
-   <figure class="gfoto">
-    <img src="/media/practica-manejo-ave-rapaz.webp" alt="Manejo de un ave rapaz en campo" width="1200" height="900" loading="lazy" decoding="async">
-    <figcaption>Manejo de un ave rapaz en campo</figcaption>
-   </figure>
-   <figure class="gfoto">
-    <img src="/media/practica-manejo-aguila.webp" alt="Práctica de manejo con ave rapaz" width="1200" height="900" loading="lazy" decoding="async">
-    <figcaption>Práctica de manejo con ave rapaz</figcaption>
-   </figure>
-   <figure class="gfoto">
-    <img src="/media/practica-manejo-erizo.webp" alt="Manejo de un erizo, animal de compañía no convencional" width="1200" height="900" loading="lazy" decoding="async">
-    <figcaption>Manejo de un erizo, animal de compañía no convencional</figcaption>
-   </figure>
-   <figure class="gfoto">
-    <img src="/media/practica-tarantula.webp" alt="Ejemplar del curso de mantenimiento y reproducción de tarántulas" width="1200" height="900" loading="lazy" decoding="async">
-    <figcaption>Ejemplar del curso de mantenimiento y reproducción de tarántulas</figcaption>
-   </figure>
-   <figure class="gfoto">
-    <img src="/media/practica-taller-grupo.webp" alt="Grupo durante un taller presencial" width="1200" height="900" loading="lazy" decoding="async">
-    <figcaption>Grupo durante un taller presencial</figcaption>
-   </figure>
-   <figure class="gfoto">
-    <img src="/media/fauna-buho-cornudo.webp" alt="Búho fotografiado en una salida de campo" width="1200" height="900" loading="lazy" decoding="async">
-    <figcaption>Búho fotografiado en una salida de campo</figcaption>
+    <img src="/media/practica-manejo-ave-rapaz.webp" alt="Manejo de un búho en campo" width="1200" height="900" loading="lazy" decoding="async">
+    <figcaption>Manejo de un búho en campo</figcaption>
    </figure>
   </div>
  </div>
