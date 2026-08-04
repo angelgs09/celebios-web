@@ -326,6 +326,26 @@ def generar_404():
 # salida es bulkRedirectsPath, que es de pago.
 MAX_REDIRECTS_INLINE = 2048
 
+# El proyecto de Supabase del aula. Va aqui y no incrustado en la CSP para que
+# se vea que es el MISMO al que apunta createClient() en aula/index.html: si
+# alguien migra de proyecto y no toca esto, el aula deja de conectar y se nota
+# de inmediato, en vez de quedar una CSP permisiva de sobra.
+SUPABASE_AULA = "https://lwawpdjsfjvlyvqwqiqp.supabase.co"
+CSP_AULA = "; ".join([
+    "default-src 'self'",
+    # esm.sh sirve supabase-js; 'unsafe-inline' porque el modulo del aula va
+    # inline en el HTML. Quitarlo exige sacar el JS a un archivo aparte.
+    "script-src 'self' 'unsafe-inline' https://esm.sh",
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
+    "img-src 'self' data:",
+    f"connect-src 'self' https://esm.sh {SUPABASE_AULA} wss://lwawpdjsfjvlyvqwqiqp.supabase.co",
+    "media-src 'self' https:",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+])
+
 
 def generar_vercel_json(reglas=()):
     """`redirects` inline, NO bulkRedirectsPath.
@@ -362,6 +382,25 @@ def generar_vercel_json(reglas=()):
                     {"key": "X-Content-Type-Options", "value": "nosniff"},
                     {"key": "X-Frame-Options", "value": "DENY"},
                     {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"},
+                ],
+            },
+            # El aula es la unica pagina con datos de alumno en memoria (el
+            # access_token de Supabase) y la unica que importa codigo de un
+            # tercero. Fijar la version de supabase-js cierra la mitad del
+            # riesgo; esta CSP cierra la otra, acotando a que hosts puede
+            # hablar la pagina si ese codigo cambiara. El resto del sitio no
+            # la lleva: es 100% estatico y sin terceros, y una CSP de mas
+            # rompe en silencio.
+            {
+                "source": "/aula/(.*)",
+                "headers": [
+                    {"key": "Content-Security-Policy", "value": CSP_AULA},
+                ],
+            },
+            {
+                "source": "/aula",
+                "headers": [
+                    {"key": "Content-Security-Policy", "value": CSP_AULA},
                 ],
             },
             # 1.7 MB de imagenes se revalidaban en CADA visita. Se cachean, pero
@@ -1138,12 +1177,26 @@ def verificar(salida=None):
         # Dentro de <script> hay plantillas JS como src="${url}" que no son
         # marcado; escanearlas da falsos positivos.
         html = re.sub(r"<script\b.*?</script>", "", html, flags=re.S | re.I)
-        canon = CANONICAL.search(html)
-        canon = canon.group(0) if canon else ""
-        for attr, valor in re.findall(r'(href|src)=["\']([^"\']+)["\']', html):
+        # El canonical es absoluto y no se comprueba, pero eximirlo comparando
+        # `valor in canon` contra el TAG ENTERO dejaba fuera cualquier valor que
+        # fuese substring de esa cadena: '/cursos' y hasta '/cur' salian del
+        # scan en toda pagina con canonical anidado. Eran 99 enlaces que el
+        # "0 enlaces rotos" nunca miro. Se borra el tag y se acabo el agujero.
+        html = CANONICAL.sub("", html)
+        # `content=` tampoco se auditaba nunca: asi viajo a produccion un
+        # og:image que apuntaba a un JPG inexistente, y la ficha del diplomado
+        # se compartia en WhatsApp sin tarjeta de vista previa.
+        for attr, valor in re.findall(r'(href|src|content)=["\']([^"\']+)["\']', html):
+            if attr == "content":
+                # En preview la tarjeta social apunta al host de revision, asi
+                # que hay que aceptar los dos o el chequeo solo corre en cutover.
+                for host in (DOMINIO, HOST_REVISION):
+                    if valor.startswith(host):
+                        valor = valor[len(host):] or "/"
+                        break
+                if not valor.startswith("/"):
+                    continue
             if valor.startswith(("http", "mailto:", "tel:", "#", "data:", "//")):
-                continue
-            if valor in canon:
                 continue
             valor = re.split(r"[#?]", valor, maxsplit=1)[0] or "/"
             if not valor.startswith("/"):

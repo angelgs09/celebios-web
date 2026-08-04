@@ -1721,5 +1721,172 @@ class TestPagina404(unittest.TestCase):
         self.assertRegex(html, r":focus-visible\{[^}]*outline:\s*3px solid")
 
 
+class TestVerificar(unittest.TestCase):
+    """verificar() es el UNICO gate de enlaces rotos y no tenia ni un test.
+    Ademas eximia 99 enlaces por comparar `valor in canon` contra el tag
+    canonical entero: '/cur' era substring de
+    '<link rel="canonical" href=".../cursos">' y salia del scan."""
+
+    def _sitio(self, tmp, cuerpo, canonical="/cursos"):
+        salida = Path(tmp) / "site"
+        salida.mkdir()
+        (salida / "cursos.html").write_text(
+            f'<link rel="canonical" href="{build.DOMINIO}{canonical}">{cuerpo}',
+            encoding="utf-8")
+        return salida
+
+    def test_enlace_a_ruta_inexistente_revienta(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            salida = self._sitio(tmp, '<a href="/no-existe">x</a>')
+            with self.assertRaises(SystemExit):
+                build.verificar(salida)
+
+    def test_substring_del_canonical_ya_no_exime(self):
+        """El caso exacto que colaba: '/cur' no existe en el sitio, pero SI es
+        substring del tag canonical. Antes pasaba limpio."""
+        with tempfile.TemporaryDirectory() as tmp:
+            salida = self._sitio(tmp, '<a href="/cur">x</a>')
+            with self.assertRaises(SystemExit):
+                build.verificar(salida)
+
+    def test_ruta_relativa_revienta(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            salida = self._sitio(tmp, '<a href="relativo.html">x</a>')
+            with self.assertRaises(SystemExit):
+                build.verificar(salida)
+
+    def test_content_apuntando_a_un_asset_inexistente_revienta(self):
+        """Asi viajo a produccion un og:image a un JPG que no existe: el regex
+        solo miraba href y src."""
+        with tempfile.TemporaryDirectory() as tmp:
+            salida = self._sitio(
+                tmp, f'<meta property="og:image" content="{build.DOMINIO}/brand/no-existe.jpg">')
+            with self.assertRaises(SystemExit):
+                build.verificar(salida)
+
+    def test_content_en_el_host_de_revision_tambien_se_comprueba(self):
+        """En preview la tarjeta social apunta a celebios.vercel.app. Si solo
+        se comprobara el dominio definitivo, el chequeo no correria nunca."""
+        with tempfile.TemporaryDirectory() as tmp:
+            salida = self._sitio(
+                tmp,
+                f'<meta property="og:image" content="{build.HOST_REVISION}/brand/no-existe.jpg">')
+            with self.assertRaises(SystemExit):
+                build.verificar(salida)
+
+    def test_content_que_no_es_una_url_no_estorba(self):
+        """La mayoria de los content= son texto: descripciones, anchos, temas."""
+        with tempfile.TemporaryDirectory() as tmp:
+            salida = self._sitio(
+                tmp, '<meta name="description" content="Cursos de fauna"><meta name="theme-color" content="#14294F">')
+            build.verificar(salida)
+
+    def test_javascript_roto_revienta(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            salida = self._sitio(tmp, '<script type="module">const a = ;</script>')
+            with self.assertRaises(SystemExit):
+                build.verificar(salida)
+
+    def test_sitio_sano_no_revienta(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            salida = self._sitio(
+                tmp, '<a href="/cursos">x</a><a href="mailto:a@b.c">y</a><a href="#top">z</a>')
+            build.verificar(salida)
+
+
+class TestReescribir(unittest.TestCase):
+    """reescribir() toca CADA href/src de las 33 paginas y hace malabares
+    sacando y devolviendo el canonical con un centinela. Si su regex deja de
+    casar, lo unico que lo atrapa es verificar()."""
+
+    MAPA = {"curso-gatos.html": "/curso-lenguaje-felino"}
+
+    def test_conserva_el_ancla(self):
+        salida = build.reescribir('<a href="curso-gatos.html#temario">x</a>', self.MAPA)
+        self.assertIn('href="/curso-lenguaje-felino#temario"', salida)
+
+    def test_conserva_el_query(self):
+        salida = build.reescribir('<a href="curso-gatos.html?ref=ig">x</a>', self.MAPA)
+        self.assertIn('href="/curso-lenguaje-felino?ref=ig"', salida)
+
+    def test_el_canonical_conserva_el_dominio_absoluto(self):
+        """Es lo unico que NO debe volverse raiz-relativo: un canonical
+        relativo le dice a Google que la pagina canonica es otra."""
+        html = f'<link rel="canonical" href="{build.DOMINIO}/curso-lenguaje-felino"><a href="{build.DOMINIO}/cursos">x</a>'
+        salida = build.reescribir(html, self.MAPA)
+        self.assertIn(f'canonical" href="{build.DOMINIO}/curso-lenguaje-felino"', salida)
+        self.assertIn('<a href="/cursos">', salida)
+
+    def test_los_assets_relativos_se_vuelven_absolutos(self):
+        salida = build.reescribir('<img src="brand/logo-white.webp">', {})
+        self.assertIn('src="/brand/logo-white.webp"', salida)
+
+
+class TestAula(unittest.TestCase):
+    """Es la unica pagina con datos de alumno en memoria (el access_token de
+    Supabase) y la unica que importa codigo de un tercero."""
+
+    def _paginas(self):
+        return sorted((build.RAIZ / "aula").glob("*.html"))
+
+    def test_supabase_js_va_con_version_fija(self):
+        """Con el rango @2, cualquier release del canal 2.x se ejecuta en la
+        pagina que tiene el token del alumno, sin que nadie lo revise."""
+        for p in self._paginas():
+            with self.subTest(pagina=p.name):
+                texto = p.read_text(encoding="utf-8")
+                if "supabase-js" not in texto:
+                    continue
+                self.assertRegex(texto, r"supabase-js@\d+\.\d+\.\d+")
+                self.assertNotRegex(texto, r"supabase-js@\d+['\"]")
+
+    def test_no_pide_nada_a_un_tercer_origen_salvo_el_modulo(self):
+        """El aviso declara que las tipografias salen del propio dominio. El
+        aula seguia pidiendolas a Google, o sea mandandole la IP del ALUMNO."""
+        for p in self._paginas():
+            with self.subTest(pagina=p.name):
+                texto = p.read_text(encoding="utf-8")
+                self.assertNotIn("fonts.googleapis.com", texto)
+                self.assertNotIn("fonts.gstatic.com", texto)
+                self.assertIn("@font-face", texto)
+
+    def test_la_csp_del_aula_se_publica_y_cubre_su_supabase(self):
+        cabeceras = json.loads(build.generar_vercel_json())["headers"]
+        aula = [h for h in cabeceras if h["source"].startswith("/aula")]
+        self.assertTrue(aula, "sin cabeceras para /aula")
+        for h in aula:
+            with self.subTest(source=h["source"]):
+                csp = next(x["value"] for x in h["headers"]
+                           if x["key"] == "Content-Security-Policy")
+                self.assertIn(build.SUPABASE_AULA, csp)
+                self.assertIn("frame-ancestors 'none'", csp)
+
+    def test_la_csp_apunta_al_mismo_proyecto_que_el_codigo(self):
+        """Si alguien migra de proyecto de Supabase y no toca la CSP, el aula
+        deja de conectar. Mejor que se caiga aqui."""
+        codigo = (build.RAIZ / "aula" / "index.html").read_text(encoding="utf-8")
+        self.assertIn(build.SUPABASE_AULA, codigo)
+
+
+class TestPieLegal(unittest.TestCase):
+    """Las tres paginas mas visitadas -- portada, /cursos y /diplomado -- eran
+    justo las que no enlazaban el aviso, porque su pie es otro. Y /aula no
+    tenia NI UN enlace entrante desde las 33 publicadas: el alumno solo llegaba
+    por liga directa de correo."""
+
+    def test_toda_pagina_enlaza_el_aviso_y_el_aula(self):
+        for p in _publicadas():
+            with self.subTest(pagina=p.name):
+                texto = p.read_text(encoding="utf-8")
+                self.assertIn("aviso-de-privacidad.html", texto)
+                self.assertIn('href="/aula"', texto)
+
+    def test_sin_restos_de_la_pasada_sin_acentos(self):
+        for p in _publicadas():
+            with self.subTest(pagina=p.name):
+                self.assertNotRegex(p.read_text(encoding="utf-8"),
+                                    r"16 an(?:ios|os|hos) en LATAM")
+
+
 if __name__ == "__main__":
     unittest.main()
