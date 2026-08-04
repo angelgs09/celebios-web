@@ -1113,7 +1113,7 @@ class TestImagenesPublicadas(unittest.TestCase):
     PUBLICADAS = {
         # material propio de la escuela, sin personas
         "cartel-contencion-quimica-anestesia", "cartel-diagnostico-terapeutica",
-        "cartel-medicina-preventiva-2014", "cartel-medicina-preventiva-2017",
+        "cartel-medicina-preventiva-2017",
         "cartel-nutricion-2019",
         "fauna-cocodrilo-habitat", "fauna-grulla-coronada",
         "fauna-loro-alimentacion", "fauna-rapaz-alas-abiertas",
@@ -1147,6 +1147,12 @@ class TestImagenesPublicadas(unittest.TestCase):
         # "inscripciones abiertas" de 2024 y trae ocho logos de alianzas cuyo
         # verbo exacto sigue sin fuente
         "cartel-ortopedia-aves-silvestres", "cartel-rescate-rehabilitacion-2024",
+        # el escudo de la UATx ocupa la columna izquierda entera, en las mismas
+        # filas que el titulo: no hay recorte que lo quite sin destruir el
+        # cartel. Y ademas publica un contacto en Gmail, que contradice la
+        # advertencia antifraude de /admisiones. Queda la ficha de texto, como
+        # en las ediciones 01, 03, 04 y 08.
+        "cartel-medicina-preventiva-2014",
     }
     # Cambiaron de nombre porque el nombre no describia el archivo.
     RENOMBRADAS = {
