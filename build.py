@@ -867,13 +867,21 @@ def buscar_json_ld_malformado(paginas):
     return hallados
 
 
+MINIMO_ENLACES_ENTRANTES = 2
+
+
 def buscar_paginas_huerfanas(paginas):
-    """[ruta] de paginas publicadas a las que no llega ningun enlace interno.
+    """[ruta] de paginas publicadas con menos de MINIMO_ENLACES_ENTRANTES.
 
     Una pagina huerfana existe en el sitemap pero no en el sitio: Google la
     descubre sin contexto ni autoridad, y un visitante no puede llegar a ella
     navegando. Paso de verdad: /egresados nacio huerfana aun siendo el destino
-    de 234 reglas de redirect."""
+    de 234 reglas de redirect.
+
+    El umbral es 2 y no 1 a proposito: nueve fichas de /recursos colgaban de un
+    UNICO enlace, todas desde la misma pagina. A un enlace de ser huerfanas, y
+    la guarda con n == 0 no habria dicho nada el dia que ese bloque se
+    reescribiera."""
     rutas = set(paginas.values())
     entrantes = {ruta: 0 for ruta in rutas}
     por_nombre = {f.name: paginas[f] for f in paginas}
@@ -882,7 +890,8 @@ def buscar_paginas_huerfanas(paginas):
             ruta = por_nombre.get(destino.split("/")[-1])
             if ruta is not None and ruta != propia:
                 entrantes[ruta] += 1
-    return sorted(ruta for ruta, n in entrantes.items() if n == 0)
+    return sorted(ruta for ruta, n in entrantes.items()
+                  if n < MINIMO_ENLACES_ENTRANTES)
 
 
 # Una fecha de apertura anunciada con verbo: "Abre Sep 2026", "Inicia Oct 2026".

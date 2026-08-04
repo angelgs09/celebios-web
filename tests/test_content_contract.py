@@ -1468,26 +1468,42 @@ class TestPaginasHuerfanas(unittest.TestCase):
         # si no, el par tambien saldria y el test no probaria lo que dice.
         with tempfile.TemporaryDirectory() as tmp:
             paginas = self._paginas(tmp, {
-                "a.html": ("/a", '<a href="b.html">b</a>'),
-                "b.html": ("/b", '<a href="a.html">a</a>'),
+                "a.html": ("/a", '<a href="b.html">b</a><a href="c.html">c</a>'),
+                "b.html": ("/b", '<a href="a.html">a</a><a href="c.html">c</a>'),
+                "c.html": ("/c", '<a href="a.html">a</a><a href="b.html">b</a>'),
                 "sola.html": ("/sola", "<p>nadie me enlaza</p>"),
             })
             self.assertEqual(build.buscar_paginas_huerfanas(paginas), ["/sola"])
 
-    def test_un_enlace_entrante_basta(self):
+    def test_un_solo_enlace_entrante_ya_es_senal(self):
+        """El umbral es 2 y no 1 a proposito: nueve fichas de /recursos
+        colgaban de un UNICO enlace, todas desde la misma pagina. Estaban a un
+        enlace de ser huerfanas, y con n == 0 la guarda no decia nada."""
         with tempfile.TemporaryDirectory() as tmp:
             paginas = self._paginas(tmp, {
                 "a.html": ("/a", '<a href="b.html">b</a>'),
                 "b.html": ("/b", '<a href="a.html">a</a>'),
+            })
+            self.assertEqual(build.buscar_paginas_huerfanas(paginas), ["/a", "/b"])
+
+    def test_dos_enlaces_entrantes_bastan(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._paginas(tmp, {
+                "a.html": ("/a", '<a href="b.html">b</a><a href="c.html">c</a>'),
+                "b.html": ("/b", '<a href="a.html">a</a><a href="c.html">c</a>'),
+                "c.html": ("/c", '<a href="a.html">a</a><a href="b.html">b</a>'),
             })
             self.assertEqual(build.buscar_paginas_huerfanas(paginas), [])
 
     def test_enlazarse_a_si_misma_no_cuenta(self):
         with tempfile.TemporaryDirectory() as tmp:
+            enlaces = '<a href="a.html">a</a><a href="b.html">b</a><a href="d.html">d</a>'
             paginas = self._paginas(tmp, {
-                "a.html": ("/a", '<a href="b.html">b</a>'),
-                "b.html": ("/b", '<a href="a.html">a</a>'),
-                "c.html": ("/c", '<a href="c.html#seccion">yo misma</a>'),
+                "a.html": ("/a", enlaces),
+                "b.html": ("/b", enlaces),
+                "d.html": ("/d", enlaces),
+                # c enlaza a las demas pero a ella solo se enlaza a si misma
+                "c.html": ("/c", '<a href="c.html#seccion">yo misma</a>' + enlaces),
             })
             self.assertEqual(build.buscar_paginas_huerfanas(paginas), ["/c"])
 
