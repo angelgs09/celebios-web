@@ -225,6 +225,28 @@ el logo, los letreros de sedes de terceros (Zoológico de Cali, Bioparque Yana-C
 selfies de grupo y los paisajes. Sustituyen a las fotos de 2010-2015 rescatadas del Wix, que
 eran de menor resolución y encuadre amateur.
 
+**Criterio de publicación de imágenes (2026-08-03).** Angel advirtió que "imágenes
+polémicas nos pueden causar problemas". En un sitio de fauna silvestre el riesgo es concreto y
+de dos tipos:
+
+1. **Lectura fuera de contexto.** Una exploración clínica normal puede leerse como maltrato
+   por quien no ve el contexto. Se retiraron dos: la guacamaya con las alas extendidas y
+   estiradas por manos enguantadas sobre la mesa —que estaba en el **hero de la portada**, la
+   primera imagen del sitio— y el perezoso boca arriba inmovilizado. El hero pasó a la
+   auscultación de una lechuza, que comunica cuidado profesional en vez de sujeción.
+2. **Rostros identificables.** De las 24 imágenes publicadas, **11 muestran caras
+   reconocibles** de alumnos y docentes. Que estén públicas en la página de Facebook no
+   equivale a republicarlas en el sitio comercial: en México la imagen es dato personal bajo la
+   LFPDPPP, la misma ley que este proyecto acaba de citar en el aviso de privacidad. **No hay
+   consentimiento documentado**, y obtenerlo es decisión de Angel. Las 11 están listadas en
+   `tests/test_content_contract.py::TestImagenesPublicadas`.
+
+También se excluyeron desde el principio los logos de terceros y la señalización de sedes
+ajenas (Zoológico de Cali, Bioparque Yana-Cocha).
+
+El conjunto publicado es una **lista cerrada** en los tests: añadir una imagen obliga a un
+cambio explícito, para que no entre ninguna por descuido.
+
 **Imágenes.** Se rescataron del Wix vivo y se guardaron en `redesign-v2/media/` (26 archivos,
 2.4 MB en WebP) en vez de enlazarlas a `static.wixstatic.com`: si se cancela la cuenta de Wix,
 ese CDN deja de servirlas y desaparece el único registro visual del archivo. De 59 imágenes

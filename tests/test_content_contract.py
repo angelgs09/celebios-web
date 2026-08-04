@@ -1034,6 +1034,62 @@ class TestPackageJsonDeSalida(unittest.TestCase):
             self.assertTrue((salida / "api" / "video.js").exists())
 
 
+class TestImagenesPublicadas(unittest.TestCase):
+    """Angel: "imagenes polemicas nos pueden causar problemas". En un sitio de
+    fauna silvestre una foto clinica sacada de contexto se lee como maltrato, y
+    los rostros de alumnos son dato personal bajo la misma LFPDPPP que cita el
+    aviso de privacidad. Por eso el conjunto publicado es una lista cerrada:
+    anadir una imagen tiene que ser un cambio deliberado, no un descuido."""
+
+    PUBLICADAS = {
+        # material propio de la escuela, sin personas
+        "cartel-anestesia-cirugia-2013", "cartel-contencion-quimica-anestesia",
+        "cartel-curso-tarantulas-2014", "cartel-diagnostico-terapeutica",
+        "cartel-medicina-preventiva-2014", "cartel-medicina-preventiva-2017",
+        "cartel-nutricion-fauna-cautiverio", "cartel-ortopedia-aves-silvestres",
+        "cartel-rehabilitacion-fauna-2019",
+        "fauna-cocodrilo-habitat", "fauna-grulla-coronada",
+        "fauna-loro-alimentacion", "fauna-rapaz-alas-abiertas",
+        # practicas con personas reconocibles: pendiente el consentimiento
+        "practica-ave-clinica-grupo", "practica-clinica-grupo",
+        "practica-ecografo-alumnas", "practica-equino-auscultacion",
+        "practica-equino-grupo", "practica-imagenologia-equipo",
+        "practica-lechuza-auscultacion", "practica-loro-manejo",
+        "practica-manejo-quelonio", "practica-perezoso-auscultacion",
+        "practica-sesion-campo",
+    }
+    # Retiradas a proposito, no por descuido: el ave de alas extendidas sobre la
+    # mesa y el perezoso boca arriba inmovilizado se leen como maltrato fuera de
+    # su contexto clinico, y la primera estaba en la portada.
+    RETIRADAS = {"practica-guacamaya-exploracion", "practica-perezoso-manejo"}
+
+    def _en_disco(self):
+        return {f.stem for f in (build.SRC / "media").glob("*.webp")}
+
+    def test_el_conjunto_publicado_es_el_declarado(self):
+        self.assertEqual(self._en_disco(), self.PUBLICADAS)
+
+    def test_las_retiradas_no_vuelven(self):
+        self.assertEqual(self._en_disco() & self.RETIRADAS, set())
+
+    def test_ninguna_imagen_queda_sin_usar(self):
+        usadas = set()
+        for f in build.SRC.glob("*.html"):
+            usadas |= set(re.findall(r"/media/([a-z0-9-]+)\.webp", f.read_text(encoding="utf-8")))
+        self.assertEqual(self._en_disco() - usadas, set())
+
+    def test_toda_imagen_lleva_alt_y_dimensiones(self):
+        """Sin width/height la pagina salta al cargar; sin alt no es accesible."""
+        for f in sorted(build.SRC.glob("*.html")):
+            for tag in re.findall(r"<img[^>]*>", f.read_text(encoding="utf-8")):
+                if "/media/" not in tag:
+                    continue
+                with self.subTest(archivo=f.name, tag=tag[:60]):
+                    self.assertRegex(tag, r'alt="[^"]+"')
+                    self.assertRegex(tag, r'width="\d+"')
+                    self.assertRegex(tag, r'height="\d+"')
+
+
 class TestAvisoDePrivacidad(unittest.TestCase):
     """El aviso heredado de Wix citaba la Ley General ... en Posesion de
     SUJETOS OBLIGADOS, que rige a entes publicos. CELEBIOS es una S.C., o sea
