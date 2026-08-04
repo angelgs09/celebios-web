@@ -368,6 +368,19 @@ sino que una fotografía detrás de ese texto es incompatible con ese cian a cua
 claro —imagen a fuerza completa, cero texto encima, y de paso hace de transición entre las dos
 superficies—. El test guarda la banda vacía y prohíbe que vuelva `art-fondo`.
 
+**Trampa del prompt negativo (2026-08-04).** Los tres artículos de gatos recibieron ambiente
+doméstico —luz de ventana sobre un piso, una cortina, un rincón al anochecer— y no un gato, por
+la misma razón anatómica. El primer intento pedía literalmente *"no animals, no cats"* y **el
+modelo puso un gato tumbado en la mancha de luz**: nombrar algo en negativo lo invoca. Se
+rehicieron describiendo la escena en positivo y sin mencionar animales en absoluto. Vale la pena
+recordarlo: no basta con prohibir, hay que no nombrar.
+
+**Corrección de especie (2026-08-04).** `curso-nutricion.html` rotulaba su lámina como
+***Ara macao*** —guacamaya escarlata, que es roja— sobre una foto de una guacamaya **verde** con
+parche rojo en el hombro y cara blanca desnuda, compatible con *Ara severus* o militar. En el
+sitio de una escuela de veterinaria eso lo caza su propia audiencia. No se sustituyó por otra
+identificación que tampoco se puede verificar: se bajó a **Psittacidae**, que es seguro.
+
 **Imágenes.** Se rescataron del Wix vivo y se guardaron en `redesign-v2/media/` (13 archivos
 tras el recorte y la depuración) en vez de enlazarlas a `static.wixstatic.com`: si se cancela la cuenta de Wix,
 ese CDN deja de servirlas y desaparece el único registro visual del archivo. De 59 imágenes

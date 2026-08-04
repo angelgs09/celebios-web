@@ -340,6 +340,16 @@
 
  /* --- HERO de articulo (placa oscura) --- */
  .art-hero{ position:relative; overflow:hidden; padding-block:clamp(3rem, 7vw, 5.5rem); }
+ /* Banda de ambiente entre el hero y el cuerpo. Es fotografia GENERADA y
+    decorativa: va como capa de fondo y no como <img> porque no documenta
+    ninguna practica de CELEBIOS y no hay alt que le aporte algo a quien no
+    la ve. Nunca lleva texto encima -- ese fue el primer intento y hundia el
+    contraste del kicker cian de 5.18:1 a menos de 3:1. */
+ .art-banda{
+  height:clamp(120px, 22vw, 250px);
+  background-size:cover; background-position:center;
+  background-color:var(--charca);
+ }
  .art-kicker{
  display:inline-flex; align-items:center; gap:.65rem;
  color:var(--ceibo); font-size:.72rem; margin-bottom:var(--s5);
@@ -564,6 +574,8 @@
  </div>
  </div>
 </section>
+
+<div class="art-banda" aria-hidden="true" style="background-image:url(/media/ambiente-rincon-anochecer.webp)"></div>
 
 <!-- ===================== CUERPO ===================== -->
 <article class="surface-light reading">

@@ -1052,6 +1052,11 @@ class TestImagenesPublicadas(unittest.TestCase):
         "ambiente-dosel-contraluz", "ambiente-follaje-lluvia", "ambiente-hojarasca",
         "ambiente-humedal", "ambiente-matorral-seco", "ambiente-niebla-canada",
         "ambiente-ramas-cielo", "ambiente-rio-montana", "ambiente-selva-nublada",
+        # los tres articulos de gatos: interior domestico, sin animal. El
+        # primer intento pedia "no cats" y el modelo puso un gato en la mancha
+        # de luz -- nombrar algo en negativo lo invoca. Se rehicieron sin
+        # mencionar animales en absoluto.
+        "ambiente-luz-interior", "ambiente-cortina-luz", "ambiente-rincon-anochecer",
     }
 
     PUBLICADAS = {
