@@ -364,7 +364,58 @@
  .foot-meta{ font-family:"Space Grotesk", monospace; letter-spacing:.14em; text-transform:uppercase; font-size:.62rem; color:var(--lodo); }
 
  .ph{ font-style:italic; color:inherit; opacity:.7; }
-</style>
+
+ /* ============================================================
+    TINTA ACCESIBLE POR SUPERFICIE
+    Los acentos de marca cumplen como texto sobre marino pero no sobre papel,
+    y los grises del pie al reves. Se redefine el TOKEN dentro de cada
+    superficie en vez de parchear regla por regla: la misma clase (.sec-kicker,
+    .kicker-sci) cae en las dos segun la seccion, y el parcheo regla-a-regla
+    arreglo una mitad rompiendo la otra -- medido en navegador, 2.26:1.
+    Solo se mueve la luminosidad; tono y saturacion son los del logo.
+    ============================================================ */
+ .surface-light, .surface-paper{
+  --sage:   #42794C;  /* 4.56:1 sobre #EEF2EC (era 2.27:1) */
+  --ceibo:  #21768D;  /* 4.59:1 sobre #EEF2EC (era 2.45:1) */
+  --coral:  #21768D;
+  --cobalto:#795696;  /* 5.17:1 sobre #EEF2EC */
+ }
+ .surface-dark, .on-dark, .ctaband{
+  --sage:   #72B17C;  /* 4.60:1 sobre el panel #1E3768 */
+  --ceibo:  #4CB7D5;  /* 4.61:1 sobre el panel (era 4.20:1) */
+  --coral:  #4CB7D5;
+  --cobalto:#B8A3C9;  /* 4.66:1 sobre el panel (era 2.02:1) */
+  --lodo:   #95A4BD;  /* 4.62:1 sobre el panel (era 1.80:1) */
+  --lodo-soft:#B9C4D4;
+ }
+ /* .nav-cta declaraba el azul oscuro correcto y perdia la cascada contra
+    `.nav-links a`, asi que se pintaba casi blanco sobre cian: 2.10:1. */
+ .nav-links a.nav-cta{ color:#0C2447; }
+ 
+ /* La banda CTA se diseno para fondo oscuro: su gradiente es translucido y su
+    titulo, parrafo y kicker son de tinta clara. Pero vive dentro de
+    .surface-light en las 5 paginas que la usan, asi que el parrafo salia
+    literalmente invisible -- casi blanco sobre #EEF2EC, ratio 1.00:1. Se le
+    devuelve el fondo marino que el diseno daba por hecho, en vez de oscurecer
+    un texto que fue pensado claro. */
+ .surface-light .ctaband{
+  background:
+   linear-gradient(155deg, rgba(47,168,201,.16), rgba(122,87,151,.12) 70%, rgba(11,43,46,.3)),
+   var(--charca);
+  border-color:rgba(238,242,236,.16);
+ }
+ 
+ /* Estos usan el acento como FONDO, no como texto. La tinta accesible de
+    arriba les oscurecio el fondo y su texto oscuro cayo a 2.97:1, asi que
+    recuperan el tono de marca: con el, #0C2447 encima da 5.57:1. */
+ .surface-light .btn-primary, .surface-light .pill-disp, .surface-light .ccta-disp,
+ .surface-light .cb-cta, .surface-paper .btn-primary, .surface-paper .pill-disp,
+ .surface-paper .ccta-disp{ --ceibo:#2FA8C9; --coral:#2FA8C9; }
+ .surface-light .feat-badge, .surface-paper .feat-badge{ --sage:#6FB07A; }
+ /* separadores decorativos casi invisibles */
+ .art-meta .sep{ color:rgba(238,242,236,.55); }
+ .bb-trust .sep{ color:rgba(238,242,236,.62); }
+ </style>
 
 <script type="application/ld+json">
 {
