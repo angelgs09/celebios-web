@@ -38,17 +38,24 @@ latinoamericano, cada programa como una lámina numerada de un atlas de campo. L
 tesis me sigue gustando; la ejecución se quedó a medias. Puedes profundizarla o
 proponer romperla, pero si la rompes, defiéndelo.
 
-**Los cuatro problemas que tienes que resolver:**
+**Los cinco problemas que tienes que resolver:**
 
+- **Solo un programa de diecinueve se puede comprar hoy**: un curso pregrabado de
+  12 horas y $1,400 MXN. Los otros dieciocho no tienen convocatoria ni precio,
+  incluido el diplomado de 170 horas que ancla la marca. El catálogo son 19 cajas
+  casi idénticas en cuatro columnas, y la única diferencia entre la que se vende y
+  las que no es una píldora de color. Lo comprable tiene que ganar sin esconder al
+  resto, que es el argumento de que esto es una academia con recorrido.
 - El sitio casi no tiene imágenes: la home tiene una sola foto y el catálogo
   ninguna. Diecinueve tarjetas de puro texto.
-- El catálogo son 19 cajas idénticas en cuatro columnas para 19 programas que están
-  en cuatro estados distintos (disponible, próxima edición, en producción, sin
-  convocatoria).
 - La home alterna fondo marino y fondo papel siete veces. Lee como acordeón, no
   como jerarquía.
 - El hero tiene siete elementos de texto compitiendo por el momento de mayor
   atención del sitio.
+- Las nueve fichas de programas sin convocatoria son fichas de venta con el botón
+  apagado. La del diplomado mide 18,000 px de alto en móvil: veintiuna pantallas
+  de scroll para algo que no está a la venta. Necesitan ser otra cosa —algo que
+  convenza y capte lista de espera sin fingir disponibilidad.
 
 **Reglas duras. Ganan sobre cualquier preferencia estética:**
 
@@ -64,6 +71,12 @@ proponer romperla, pero si la rompes, defiéndelo.
   docentes, ni testimonios, ni porcentajes. El sitio tiene ~110 marcadores "por
   confirmar" justamente porque esos datos todavía no existen. Si necesitas un número
   para que la composición funcione, escribe `[por confirmar]`.
+- **Un solo precio en todo el sitio ($1,400 MXN, el curso de gatos) y ninguna fecha
+  de apertura**, ni siquiera marcada "por confirmar". No es una preferencia
+  estética: en agosto de 2026 se retiraron siete precios publicados —dos de ellos
+  inventados en una ronda de diseño anterior— y dos fechas de apertura de programas
+  cuya edición ya había cerrado. Si tu composición necesita una tabla de precios o
+  una cuenta regresiva, no la tiene.
 - **La paleta sale del logo real, no de tu gusto:** marino `#14294F`, cian `#2FA8C9`,
   morado `#7A5797`, salvia `#6FB07A`, papel `#EEF2EC`, tinta `#16294C`. El cian marca
   disponible y acción; el morado, próxima edición; la salvia es acento de vida. Puedes

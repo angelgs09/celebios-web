@@ -18,10 +18,21 @@ Ecuador, Perú o Venezuela, que ya trabaja o quiere trabajar con fauna silvestre
 Compra formación, no inspiración. Detecta el rigor y detecta la falta de rigor —
 un dibujo mal hecho de un tapir le dice más de la academia que tres párrafos de copy.
 
-**Qué vende hoy:** un curso corto abierto (Lenguaje y Comunicación de los Gatos,
-12 h, Dra. Camila Hernández) y un diplomado ancla de 170 h en Rescate y
-Rehabilitación de Fauna. El resto del catálogo son 17 áreas en distintos estados:
-próxima edición, en producción, sin convocatoria abierta.
+**Qué vende hoy: exactamente un producto.** El curso corto pregrabado de Lenguaje
+y Comunicación de los Gatos (12 h, Dra. Camila Hernández, $1,400 MXN de pago
+único). **Nada más tiene precio ni convocatoria abierta**, incluido el diplomado
+ancla de 170 h en Rescate y Rehabilitación de Fauna, cuya tercera edición cerró
+el 30 de junio de 2025. Los otros 18 programas del catálogo están en dos estados
+y ninguno se puede comprar:
+
+| Estado | Cuántos | Qué significa |
+|---|---|---|
+| **Disponible** | 1 | se vende hoy, con precio |
+| **Sin convocatoria** | 9 | se impartió antes; no hay edición abierta ni precio |
+| **En producción** | 8 | área del atlas todavía sin construir |
+
+Esa asimetría —un producto vendible contra dieciocho que no lo son— es la
+tensión central del diseño, no un detalle de contenido.
 
 **El sitio es la única superficie de venta.** SEO es el canal #1: la página vieja de
 Wix `celebios.com/rehabilitacion-fauna-2024` rankea #3 nacional.
@@ -41,8 +52,14 @@ Wix `celebios.com/rehabilitacion-fauna-2024` rankea #3 nacional.
 
 **Las 4 primeras son el encargo.** El resto hereda el sistema que salga de ellas.
 
-**Capturas del estado actual, tomadas hoy del sitio en vivo** (no del código, no de
-un kit viejo): `docs/design/capturas/` — 01 a 05 a 1440 px, 06 a 09 a 390 px.
+**Capturas del estado actual, tomadas del sitio en vivo** (no del código, no de un
+kit viejo): `docs/design/capturas/` — 01 a 05 a 1440 px, 06 a 08 a 390 px.
+
+La novena no es la ficha completa del diplomado en móvil sino solo su sección de
+modalidades (`09-diplomado-movil-modalidades.png`), y la razón es en sí misma un
+dato: **esa página mide 18,108 px de alto a 390 px**, más de lo que Chrome puede
+capturar de una vez. Son unas 21 pantallas de scroll para una ficha de un
+programa que hoy ni siquiera se puede comprar.
 
 > ⚠️ Si no puedes ver esas imágenes, **dilo antes de diseñar**. No supongas su
 > contenido. Descríbeme qué ves en `01-home-desktop.png` antes de proponer nada.
@@ -99,6 +116,13 @@ Verificado mirando las capturas, no leyendo el código.
    grid de 4 columnas, y lo único que cambia es una palabra en cursiva dentro de un
    marco. Escanear ese muro no produce jerarquía: produce fatiga.
 
+   Y ahora el problema es peor de lo que se ve, porque **18 de esas 19 tarjetas no
+   llevan a ninguna parte**: no se pueden comprar. El catálogo tiene que hacer que
+   la única tarjeta comprable gane sin esconder a las otras dieciocho, que siguen
+   siendo el argumento de que esto es una academia con recorrido y no un curso
+   suelto. Hoy la única diferencia entre la que se vende y las que no es una
+   píldora de color y un precio en letra pequeña.
+
 3. **Cebra de superficies.** La home alterna marino / papel / marino / papel siete
    veces. Cada banda cambia de tema completo. Lee como acordeón, no como jerarquía —
    el lector no sabe qué es importante porque todo grita lo mismo por turnos.
@@ -140,11 +164,16 @@ Preguntas que el rediseño tiene que contestar:
 - ¿Cómo se ve un **atlas de campo** que no puede apoyarse en ilustraciones a medida?
   (No hay presupuesto de ilustración validada por un MVZ, y ese era el gate original
   de esta dirección.)
-- ¿Cómo se distingue un catálogo de **19 programas en 4 estados distintos** sin
-  convertirlo en 19 cajas iguales?
+- ¿Cómo se distingue un catálogo de **19 programas de los que solo uno se vende**
+  sin convertirlo en 19 cajas iguales, y sin esconder los otros 18?
 - ¿Cómo se ordena una home cuya única foto es el hero?
-- ¿Cómo se sostiene la **jerarquía entre lo que se vende hoy** (un curso de $1,400)
-  y **lo que ancla la marca** (un diplomado de 170 h) sin que compitan?
+- ¿Cómo se sostiene la **jerarquía entre lo único que se vende hoy** (un curso de
+  $1,400 que dura 12 horas) y **lo que ancla la marca** (un diplomado de 170 h que
+  hoy no tiene convocatoria)? El barato es el que paga; el caro es el que da
+  autoridad. Hoy el diplomado ocupa mucho más espacio y no se puede comprar.
+- ¿Cómo se ve una ficha de un programa **sin convocatoria** para que siga
+  convenciendo y captando lista de espera, sin fingir que está a la venta? Son
+  nueve páginas del sitio y hoy son fichas de venta con el botón desactivado.
 
 ---
 
@@ -170,6 +199,15 @@ que ya costaron trabajo en este proyecto.
   testimonios, ni "+500 egresados". El sitio tiene ~110 marcadores "por confirmar"
   precisamente porque el dueño todavía no aporta esos datos. Un número inventado en
   una academia con aval profesional es un problema legal, no un detalle de copy.
+- **Un solo precio en todo el sitio: $1,400 MXN**, y solo para el curso de lenguaje
+  felino. Ningún otro programa lleva importe. Esto no es una preferencia: el 4 de
+  agosto de 2026 se retiraron siete precios que se habían publicado un mes, dos de
+  ellos ($1,200 y $1,600) sin ninguna fuente en el repositorio — eran placeholders
+  de una ronda de diseño anterior que se colaron a producción.
+- **Ninguna fecha de apertura, ni marcada "por confirmar".** El mismo día se
+  retiraron "Abre Sep 2026" y "Abre Oct 2026" de dos programas cuya edición ya
+  había cerrado. Una fecha por confirmar sigue siendo una promesa. El build
+  rechaza el commit si aparece una.
 - **No generes imágenes.** Ni fotos de fauna, ni de alumnos, ni de instalaciones, ni
   "placeholder photography" tipo picsum. Una foto generada en el sitio de una
   academia se lee como evidencia de algo que pasó. Las 13 imágenes reales del repo
