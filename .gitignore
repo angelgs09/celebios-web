@@ -20,3 +20,6 @@ dist/
 site/
 .vercel/
 COMMIT_MSG.tmp
+
+# Skills de diseno instalados localmente (taste-skill), re-instalables con npx skills add
+.agents/
