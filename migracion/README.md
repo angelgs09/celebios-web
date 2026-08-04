@@ -124,8 +124,8 @@ print(len(activas), len(diferidas))
 Una regla se DIFIERE si su origen ya es una página publicada (la sombrearía) o
 si la base de su destino todavía no se publica (sería un 301 a un 404); `/aula`
 es la única excepción explícita. **Hoy no queda ninguna diferida**: las 33
-páginas publicadas cubren todos los destinos, incluidos `/egresados` (161
-reglas), `/admisiones` (14) y `/contacto`, que en agosto todavía no existían.
+páginas publicadas cubren todos los destinos, incluidos `/egresados` (234
+reglas), `/admisiones` (14) y `/contacto` (2), que en agosto todavía no existían.
 
 `python build.py --cutover` revienta si queda alguna diferida, así que ese 0 es
 la condición que ya se cumple para el corte. Un mismo origen con dos destinos
