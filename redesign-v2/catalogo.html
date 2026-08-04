@@ -699,8 +699,6 @@
  .chip.is-on{ background:var(--ceibo); border-color:var(--ceibo); color:#0C2447; }
  .chip.is-on:hover{ background:var(--ceibo-deep); border-color:var(--ceibo-deep); color:#fff; }
  /* chip activo de ESTADO toma el color de su estado */
- .chip.is-on[data-estado="prox"]{ background:var(--cobalto); border-color:var(--cobalto); color:#fff; }
- .chip.is-on[data-estado="prox"] .dotc.d-prox{ border-color:#fff; }
  .chip.is-on[data-estado="prod"]{ background:rgba(238,242,236,.12); border-color:var(--hueso); color:var(--hueso); }
  .chip.is-on[data-estado="hist"]{ background:rgba(238,242,236,.12); border-color:var(--hueso); color:var(--hueso); }
 
@@ -817,6 +815,10 @@
  .price-table .pt-name a{ color:var(--ceibo-deep); border-bottom:1px solid rgba(35,130,160,.4); }
  .price-table .pt-name a:hover{ color:var(--coral); border-bottom-color:var(--coral); }
  .price-table .pt-price{ font-family:"Space Grotesk", monospace; letter-spacing:.04em; font-weight:600; color:var(--ink); white-space:nowrap; }
+ /* Cuatro de las cinco filas no llevan importe: solo un programa tiene
+    convocatoria abierta. La celda dice por que esta vacia en vez de dejar el
+    hueco, y se atenua para que el unico precio real siga siendo el que salta. */
+ .price-table .pt-na{ font-family:"Instrument Sans", system-ui, sans-serif; font-weight:500; font-size:.82rem; letter-spacing:0; color:var(--lodo); white-space:normal; }
  .price-note{ margin-top:var(--s4); font-size:.78rem; color:var(--ink-soft); max-width:60ch; }
  @media (max-width:560px){
  .price-table thead{ display:none; }
@@ -1071,8 +1073,7 @@
  <div class="chips" id="chipsEstado" role="group" aria-label="Filtrar por estado" aria-controls="catGrid">
  <button type="button" class="chip is-on" data-estado="all" aria-pressed="true">Todos</button>
  <button type="button" class="chip" data-estado="disp" aria-pressed="false"><span class="dotc d-disp"></span>Disponible</button>
- <button type="button" class="chip" data-estado="prox" aria-pressed="false"><span class="dotc d-prox"></span>Próxima</button>
- <button type="button" class="chip" data-estado="prod" aria-pressed="false"><span class="dotc d-prod"></span>En producción</button>
+  <button type="button" class="chip" data-estado="prod" aria-pressed="false"><span class="dotc d-prod"></span>En producción</button>
  <button type="button" class="chip" data-estado="hist" aria-pressed="false"><span class="dotc d-prod"></span>Sin convocatoria</button>
  </div>
  </div>
@@ -1133,7 +1134,7 @@
  <div>
  <span class="sec-kicker mono">Todas las láminas del atlas</span>
  <h2 id="h2-catalogo" class="display">Cursos cortos disponibles y próximas ediciones</h2>
- <p class="sub">Filtra por área o por estado. Los cursos disponibles abren inscripción ya; los de <strong>próxima edición</strong> y <strong>en producción</strong> ya se indexan aquí para que dejes tu correo y entres a la lista de espera.</p>
+ <p class="sub">Filtra por área o por estado. Los cursos disponibles abren inscripción ya; los de <strong>Sin convocatoria abierta</strong> y <strong>en producción</strong> ya se indexan aquí para que dejes tu correo y entres a la lista de espera.</p>
  </div>
  </div>
 
@@ -1230,10 +1231,10 @@
  </article>
 
  <!-- ====== LAM 03 — MANEJO CONDUCTUAL · PROXIMA / Comportamiento ====== -->
- <article id="historico-conductual" class="lamina is-prox" data-area="comportamiento" data-estado="prox">
+ <article id="historico-conductual" class="lamina is-hist" data-area="comportamiento" data-estado="hist">
  <div class="lamina-top">
  <span class="lam-no">Lam. 03</span>
- <span class="pill pill-prox">Abre Sep 2026 por confirmar</span>
+ <span class="pill pill-hist">Sin convocatoria abierta</span>
  </div>
  <div class="visor tone-cobalto" role="img" aria-label="Lámina de Felidae">
      <span class="esp-taxon">Felidae</span>
@@ -1241,18 +1242,17 @@
      <span class="esp-rotulo mono">conducta</span>
     </div>
  <h3><a href="curso-manejo-conductual.html">Manejo Conductual de Fauna</a></h3>
- <p class="lam-meta">Comportamiento · próxima edición</p>
+ <p class="lam-meta">Comportamiento · sin convocatoria</p>
  <div class="lam-foot">
- <span class="lam-price"><span class="from">Inicia</span>Sep 2026 por confirmar</span>
- <a class="ccta ccta-prox" href="curso-manejo-conductual.html" aria-label="Avisarme cuando abra el curso de Manejo Conductual de Fauna">Avisarme</a>
+ <a class="ccta ccta-prod" href="curso-manejo-conductual.html" aria-label="Ver la ficha del curso de Manejo Conductual de Fauna">Ver curso</a>
  </div>
  </article>
 
  <!-- ====== LAM 04 — ORTOPEDIA DE AVES · PROXIMA / Clinica ====== -->
- <article id="historico-ortopedia-aves" class="lamina is-prox" data-area="clinica" data-estado="prox">
+ <article id="historico-ortopedia-aves" class="lamina is-hist" data-area="clinica" data-estado="hist">
  <div class="lamina-top">
  <span class="lam-no">Lam. 04</span>
- <span class="pill pill-prox">Abre Oct 2026 por confirmar</span>
+ <span class="pill pill-hist">Sin convocatoria abierta</span>
  </div>
  <div class="visor tone-cobalto" role="img" aria-label="Lámina de Accipitridae">
      <span class="esp-taxon">Accipitridae</span>
@@ -1260,10 +1260,9 @@
      <span class="esp-rotulo mono">ortopedia</span>
     </div>
  <h3><a href="curso-ortopedia-aves.html">Ortopedia de Aves</a></h3>
- <p class="lam-meta">Clínica · próxima edición</p>
+ <p class="lam-meta">Clínica · sin convocatoria</p>
  <div class="lam-foot">
- <span class="lam-price"><span class="from">Inicia</span>Oct 2026 por confirmar</span>
- <a class="ccta ccta-prox" href="curso-ortopedia-aves.html" aria-label="Avisarme cuando abra el curso de Ortopedia de Aves">Avisarme</a>
+ <a class="ccta ccta-prod" href="curso-ortopedia-aves.html" aria-label="Ver la ficha del curso de Ortopedia de Aves">Ver curso</a>
  </div>
  </article>
 
@@ -1543,14 +1542,14 @@
  <div class="wrap">
  <div class="sec-head">
  <div>
- <span class="sec-kicker mono">Rangos de precio · MXN</span>
+ <span class="sec-kicker mono">Costo · MXN</span>
  <h2 id="h2-precios" class="display">¿Cuánto cuesta un curso de fauna silvestre?</h2>
  <p class="sub">El único curso con convocatoria abierta hoy es Lenguaje y Comunicación de los Gatos, en $1,400 MXN de pago único. Los demás programas no tienen convocatoria abierta y su costo se publicará cuando se abran.</p>
  </div>
  </div>
 
  <table class="price-table">
- <caption>Rangos de precio de los cursos y el diplomado de fauna silvestre en CELEBIOS (MXN).</caption>
+ <caption>Costo de los programas de fauna silvestre de CELEBIOS. Solo el curso con convocatoria abierta tiene precio publicado; el de los demas se define cuando abre su proxima edicion.</caption>
  <thead>
  <tr>
  <th scope="col">Programa</th>
@@ -1567,26 +1566,26 @@
  <tr>
  <td class="pt-name" data-th="Programa">Primeros Auxilios en Fauna Silvestre</td>
  <td data-th="Formato">Curso corto · 10 h · 100% online</td>
- <td class="pt-price" data-th="Precio">$1,200</td>
+ <td class="pt-price" data-th="Precio"><span class="pt-na">Sin convocatoria</span></td>
  </tr>
  <tr>
  <td class="pt-name" data-th="Programa">Manejo y Bienestar de Reptiles</td>
  <td data-th="Formato">Curso corto · 14 h · 100% online</td>
- <td class="pt-price" data-th="Precio">$1,600</td>
+ <td class="pt-price" data-th="Precio"><span class="pt-na">Sin convocatoria</span></td>
  </tr>
  <tr>
  <td class="pt-name" data-th="Programa"><a href="diplomado-rehab.html">Diplomado: Rescate y Rehabilitación</a> · solo teoría</td>
  <td data-th="Formato">170 h · 13 módulos · online</td>
- <td class="pt-price" data-th="Precio">$19,500</td>
+ <td class="pt-price" data-th="Precio"><span class="pt-na">Sin convocatoria</span></td>
  </tr>
  <tr>
  <td class="pt-name" data-th="Programa"><a href="diplomado-rehab.html">Diplomado: Rescate y Rehabilitación</a> · formación completa</td>
  <td data-th="Formato">170 h + práctica de campo · semipresencial</td>
- <td class="pt-price" data-th="Precio">$26,000</td>
+ <td class="pt-price" data-th="Precio"><span class="pt-na">Sin convocatoria</span></td>
  </tr>
  </tbody>
  </table>
- <p class="price-note">Las áreas marcadas como "próxima edición" o "en producción" aún no tienen precio publicado. Déjanos tu correo en la lista de espera y te avisamos en cuanto abran. No manejamos meses sin intereses.</p>
+ <p class="price-note">Los programas sin convocatoria abierta no tienen precio publicado: el costo de cada edición se define cuando se abre. Déjanos tu correo en la lista de espera y te avisamos. No manejamos meses sin intereses.</p>
  </div>
 </section>
 

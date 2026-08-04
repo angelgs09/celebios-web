@@ -92,7 +92,18 @@ HREF_RE = re.compile(r'href="([^"#?]+\.html)', re.I)
 # La otra mitad de la restriccion: un programa historico no lleva precio. Los
 # de Primeros Auxilios ($1,200) y Reptiles ($1,600) eran placeholders de una
 # ronda de diseno y se publicaron un mes como si fueran oferta real.
-PRECIO_RE = re.compile(r'\$\s?[\d,]+\s*(?:MXN|USD)\b', re.I)
+#
+# El sufijo de moneda es OPCIONAL, y no siempre lo fue: la version que exigia
+# `MXN` pegado al importe era ciega justo donde vivian los precios que se
+# colaron -- celdas de <table> y tarjetas de precio, donde la moneda va una vez
+# en el encabezado de la columna y no en cada fila.
+PRECIO_RE = re.compile(r'\$\s?\d{1,3}(?:,\d{3})+(?:\s*(?:MXN|USD))?\b', re.I)
+
+# El articulo de sueldos habla de dinero que no es una oferta: rangos salariales
+# del mercado veterinario, cada uno con su fuente citada en el propio texto
+# (Data Mexico, Computrabajo, Jooble). Es la unica excepcion, y va nombrada aqui
+# para que agregar otra sea una decision consciente y no un descuido.
+PAGINAS_CON_IMPORTES_EDITORIALES = {"recurso-cuanto-gana-veterinario.html"}
 
 
 def ruta_canonica(html):
@@ -676,6 +687,67 @@ def buscar_disponibilidad_falsa(paginas, programas):
     return hallados
 
 
+def precios_del_contrato(programas):
+    """Las formas escritas admisibles del precio de cada programa disponible.
+
+    Con sufijo de moneda y sin el, porque el HTML usa las dos: '$1,400 MXN' en
+    prosa, '$1,400' a secas en una celda cuya columna ya dice MXN."""
+    ok = set()
+    for p in programas:
+        if p["status"] != "available" or not isinstance(p.get("offer"), dict):
+            continue
+        importe = f"${p['offer']['price_mxn']:,}"
+        ok.add(importe.lower())
+        ok.add(f"{importe} mxn".lower())
+    return ok
+
+
+def buscar_precios_fuera_de_contrato(paginas, programas):
+    """[(archivo, [importes])] por cada pagina publicada que muestra un importe
+    que el contrato de contenido no respalda.
+
+    contenido/programas.json decide que se vende y en cuanto. La guarda que ya
+    existia solo miraba las paginas de programa historico, y la tabla de
+    /cursos no es la pagina de ningun programa: publico cuatro precios sin
+    contrato durante un mes, dos de ellos ($1,200 de Primeros Auxilios y $1,600
+    de Reptiles) sin ninguna fuente en todo el repositorio -- eran placeholders
+    de la ronda de diseno de junio."""
+    ok = precios_del_contrato(programas)
+    hallados = []
+    for f in sorted(paginas, key=lambda p: p.name):
+        if f.name in PAGINAS_CON_IMPORTES_EDITORIALES:
+            continue
+        ajenos = sorted({
+            re.sub(r"\s+", " ", m).strip()
+            for m in PRECIO_RE.findall(f.read_text(encoding="utf-8"))
+            if re.sub(r"\s+", " ", m).strip().lower() not in ok
+        })
+        if ajenos:
+            hallados.append((f.name, ajenos))
+    return hallados
+
+
+def buscar_apertura_anunciada(paginas):
+    """[(archivo, linea, texto)] por cada fecha de apertura publicada.
+
+    `buscar_fecha_sin_confirmar` exige que toda fecha lleve su marcador; esta
+    guarda es mas dura y responde a una instruccion posterior de Angel: solo el
+    curso corto pregrabado queda disponible, y un programa sin convocatoria no
+    anuncia cuando abre ni siquiera marcado. El catalogo decia "Abre Sep 2026
+    por confirmar" de dos programas que el contrato marca historicos: cumplia
+    el marcador y aun asi prometia una fecha.
+
+    Sin escape a proposito. El dia que un programa tenga convocatoria real con
+    fecha, esta guarda se ajusta a mano y esa es justamente la revision que se
+    quiere forzar."""
+    hallados = []
+    for f in sorted(paginas, key=lambda p: p.name):
+        texto = f.read_text(encoding="utf-8")
+        for m in APERTURA_RE.finditer(texto):
+            hallados.append((f.name, texto.count("\n", 0, m.start()) + 1, m.group(0)))
+    return hallados
+
+
 def buscar_oferta_en_historicos(paginas, programas):
     """[(archivo, motivo)] por cada pagina de un programa historico que publica
     una oferta: `offers` en JSON-LD, o un precio que no sea el del unico
@@ -686,11 +758,7 @@ def buscar_oferta_en_historicos(paginas, programas):
     con `availability: InStock` y precios 19500/26000 para un programa cuya
     edicion cerro el 30-jun-2025. Structured data es lo que Google lee como
     producto comprable, asi que el dano no depende de lo que diga el texto."""
-    disponibles = [p for p in programas if p["status"] == "available"]
-    precios_ok = {
-        f"${p['offer']['price_mxn']:,} MXN".lower()
-        for p in disponibles if isinstance(p.get("offer"), dict)
-    }
+    precios_ok = precios_del_contrato(programas)
     historicos = {p["slug"] for p in programas if p["status"] in ESTADOS_SIN_OFERTA}
     hallados = []
     for f in sorted(paginas, key=lambda p: p.name):
@@ -941,9 +1009,15 @@ def buscar_paginas_huerfanas(paginas):
 # Una fecha de apertura anunciada con verbo: "Abre Sep 2026", "Inicia Oct 2026".
 # No toca fechas en pasado ni fechas sueltas, que son hechos historicos legitimos
 # ("la 3a edicion cerro en jun 2025").
+#
+# El mes admite su cola ("Sep" y "Septiembre" por igual): escribirlo completo es
+# la forma mas natural de ponerlo y era la salida mas facil para burlar la guarda
+# sin querer. La usan dos funciones -- buscar_fecha_sin_confirmar, que exige el
+# marcador, y buscar_apertura_anunciada, que prohibe la fecha entera -- asi que
+# ampliarla las endurece a las dos.
 APERTURA_RE = re.compile(
     r"(?:Abre|Inicia|Comienza|Arranca|Empieza)\s*(?:</span>)?\s*"
-    r"(?:Ene|Feb|Mar|Abr|May|Jun|Jul|Ago|Sep|Oct|Nov|Dic)\.?\s+20\d\d",
+    r"(?:Ene|Feb|Mar|Abr|May|Jun|Jul|Ago|Sep|Oct|Nov|Dic)[a-záéíóú]*\.?\s+20\d\d",
     re.I,
 )
 # Cuanto texto despues de la fecha se admite para encontrar el marcador. Da para
@@ -1106,7 +1180,27 @@ def construir(salida=None, cutover=False):
             f"'por confirmar': {detalle}{mas}"
         )
 
-    ofertas = buscar_oferta_en_historicos(paginas, cargar_programas())
+    aperturas = buscar_apertura_anunciada(paginas)
+    if aperturas:
+        detalle = "; ".join(f"{arch}:{ln} {txt!r}" for arch, ln, txt in aperturas[:5])
+        mas = f" (+{len(aperturas) - 5} mas)" if len(aperturas) > 5 else ""
+        raise SystemExit(
+            f"ERROR: {len(aperturas)} fecha(s) de apertura publicadas; ningun "
+            f"programa tiene convocatoria abierta con fecha: {detalle}{mas}"
+        )
+
+    programas = cargar_programas()
+
+    sin_contrato = buscar_precios_fuera_de_contrato(paginas, programas)
+    if sin_contrato:
+        detalle = "; ".join(f"{arch}: {', '.join(imp)}" for arch, imp in sin_contrato[:5])
+        mas = f" (+{len(sin_contrato) - 5} mas)" if len(sin_contrato) > 5 else ""
+        raise SystemExit(
+            f"ERROR: {len(sin_contrato)} pagina(s) publican importes que "
+            f"contenido/programas.json no respalda: {detalle}{mas}"
+        )
+
+    ofertas = buscar_oferta_en_historicos(paginas, programas)
     if ofertas:
         detalle = "; ".join(f"{arch}: {motivo}" for arch, motivo in ofertas[:5])
         mas = f" (+{len(ofertas) - 5} mas)" if len(ofertas) > 5 else ""

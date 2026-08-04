@@ -1054,6 +1054,89 @@ class TestOfertaEnHistoricos(unittest.TestCase):
         self.assertEqual(hallados, [], f"ofertas en programas historicos: {hallados}")
 
 
+class TestPreciosFueraDeContrato(unittest.TestCase):
+    """La guarda anterior solo miraba paginas de programa historico, y exigia el
+    sufijo MXN pegado al importe. La tabla de /cursos no es la pagina de ningun
+    programa y sus celdas llevan el importe pelado, con la moneda en el
+    encabezado de columna: publico $1,200, $1,600, $19,500 y $26,000 durante un
+    mes. Los dos primeros no tenian fuente en ningun archivo del repositorio."""
+
+    PROGRAMAS = [
+        {"slug": "/curso-lenguaje-felino", "status": "available",
+         "offer": {"price_mxn": 1400, "payment_type": "unico", "hours": 12,
+                   "topics_count": 11, "access_months": 5}},
+        {"slug": "/diplomado-x", "status": "historical"},
+    ]
+
+    def _pagina(self, tmp, cuerpo, nombre="catalogo.html"):
+        f = Path(tmp) / nombre
+        f.write_text(cuerpo, encoding="utf-8")
+        return {f: "/cursos"}
+
+    def test_caza_el_importe_sin_sufijo_de_moneda(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, '<td class="pt-price">$19,500</td>')
+            hallados = build.buscar_precios_fuera_de_contrato(paginas, self.PROGRAMAS)
+            self.assertEqual(hallados, [("catalogo.html", ["$19,500"])])
+
+    def test_el_precio_del_programa_disponible_pasa_en_sus_dos_formas(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, '<p>$1,400 MXN</p><td class="pt-price">$1,400</td>')
+            self.assertEqual(build.buscar_precios_fuera_de_contrato(paginas, self.PROGRAMAS), [])
+
+    def test_el_articulo_de_sueldos_puede_citar_rangos_salariales(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, "<p>de $7,600 a $17,000 MXN al mes</p>",
+                                   nombre="recurso-cuanto-gana-veterinario.html")
+            self.assertEqual(build.buscar_precios_fuera_de_contrato(paginas, self.PROGRAMAS), [])
+
+    def test_el_sitio_real_no_publica_ni_un_importe_sin_contrato(self):
+        paginas = {f: build.ruta_canonica(f.read_text(encoding="utf-8"))
+                   for f in sorted(build.SRC.glob("*.html"))}
+        paginas = {f: r for f, r in paginas.items() if r}
+        hallados = build.buscar_precios_fuera_de_contrato(paginas, build.cargar_programas())
+        self.assertEqual(hallados, [], f"importes sin respaldo del contrato: {hallados}")
+
+    def test_solo_un_programa_del_contrato_lleva_precio(self):
+        conprecio = [p["slug"] for p in build.cargar_programas()
+                     if isinstance(p.get("offer"), dict) and p["offer"].get("price_mxn")]
+        self.assertEqual(conprecio, ["/curso-lenguaje-felino"])
+
+
+class TestAperturaAnunciada(unittest.TestCase):
+    """Una fecha de apertura es una promesa aunque lleve marcador. El catalogo
+    anunciaba "Abre Sep 2026 por confirmar" de dos programas que el contrato
+    marca historicos: pasaba la guarda del marcador y aun asi prometia."""
+
+    def _pagina(self, tmp, cuerpo):
+        f = Path(tmp) / "catalogo.html"
+        f.write_text(cuerpo, encoding="utf-8")
+        return {f: "/cursos"}
+
+    def test_la_fecha_marcada_por_confirmar_sigue_siendo_una_promesa(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, '<span class="pill">Abre Sep 2026 por confirmar</span>')
+            hallados = build.buscar_apertura_anunciada(paginas)
+            self.assertEqual([t for _, _, t in hallados], ["Abre Sep 2026"])
+
+    def test_caza_las_otras_formas_de_anunciar_apertura(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, "<p>Inicia Oct 2026</p><p>Comienza enero 2027</p>")
+            self.assertEqual(len(build.buscar_apertura_anunciada(paginas)), 2)
+
+    def test_una_fecha_que_no_anuncia_apertura_no_es_violacion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            paginas = self._pagina(tmp, "<p>La tercera edicion cerro en junio 2025.</p>")
+            self.assertEqual(build.buscar_apertura_anunciada(paginas), [])
+
+    def test_el_sitio_real_no_anuncia_ninguna_apertura(self):
+        paginas = {f: build.ruta_canonica(f.read_text(encoding="utf-8"))
+                   for f in sorted(build.SRC.glob("*.html"))}
+        paginas = {f: r for f, r in paginas.items() if r}
+        hallados = build.buscar_apertura_anunciada(paginas)
+        self.assertEqual(hallados, [], f"aperturas anunciadas: {hallados}")
+
+
 class TestPackageJsonDeSalida(unittest.TestCase):
     """Copiar el package.json de la raiz tal cual rompia el deploy: arrastra
     `"build": "python build.py"`, Vercel lo autodetectaba y trataba de
