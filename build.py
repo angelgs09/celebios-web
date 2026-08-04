@@ -468,6 +468,32 @@ def inyectar_ga4(html, measurement_id):
     return html.replace('</head>', snippet + '</head>', 1)
 
 
+HOST_REVISION = "https://celebios.vercel.app"
+IMAGEN_SOCIAL = re.compile(
+    r'(<meta (?:property="og:image"|name="twitter:image") content=")'
+    r'https://www\.celebios\.com(/brand/[^"]+")')
+
+
+def apuntar_tarjeta_social(html, cutover):
+    """La imagen de la tarjeta social tiene que resolver en el host que SIRVE la
+    pagina, no en el que servira algun dia.
+
+    Mientras el sitio vive en celebios.vercel.app para revision, un og:image
+    absoluto a www.celebios.com da 404 -- ahi sigue el Wix viejo -- y cualquiera
+    que comparta el link por WhatsApp o LinkedIn ve la vista previa rota.
+    Comprobado: 404 en el dominio real, 200 en el de revision.
+
+    El canonical NO se toca: debe seguir apuntando a celebios.com para que
+    Google consolide ahi y la copia de revision no compita. Solo cambia la
+    imagen, que es lo unico que el crawler social descarga de verdad.
+
+    Con --cutover vuelve sola al dominio definitivo, asi que no hay que
+    acordarse de nada el dia del corte."""
+    if cutover:
+        return html
+    return IMAGEN_SOCIAL.sub(r"\g<1>" + HOST_REVISION + r"\g<2>", html)
+
+
 def reescribir(html, mapa):
     # El canonical debe conservar el dominio absoluto: lo saco de la jugada.
     tag = CANONICAL.search(html)
@@ -971,6 +997,7 @@ def construir(salida=None, cutover=False):
         shutil.rmtree(hijo) if hijo.is_dir() else hijo.unlink()
     for f, ruta in paginas.items():
         html = reescribir(f.read_text(encoding="utf-8"), mapa)
+        html = apuntar_tarjeta_social(html, cutover)
         html = inyectar_ga4(html, ga4_id)
         destino = salida / archivo_destino(ruta)
         destino.parent.mkdir(parents=True, exist_ok=True)

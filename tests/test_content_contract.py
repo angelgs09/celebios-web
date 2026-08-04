@@ -1250,6 +1250,38 @@ class TestImagenesPublicadas(unittest.TestCase):
                         self._dims_webp(build.SRC / "media" / f"{m.group(1)}.webp"))
 
 
+class TestTarjetaSocial(unittest.TestCase):
+    """Mientras el sitio vive en celebios.vercel.app para revision, un og:image
+    absoluto a www.celebios.com da 404 -- ahi sigue el Wix viejo -- y quien
+    comparta el link ve la vista previa rota. Comprobado en vivo: 404 en el
+    dominio real, 200 en el de revision."""
+
+    HTML = ('<meta property="og:image" content="https://www.celebios.com/brand/og-celebios.jpg">'
+            '<meta name="twitter:image" content="https://www.celebios.com/brand/og-celebios.jpg">'
+            '<link rel="canonical" href="https://www.celebios.com/galeria">')
+
+    def test_en_revision_apunta_al_host_que_sirve(self):
+        salida = build.apuntar_tarjeta_social(self.HTML, cutover=False)
+        self.assertEqual(salida.count("https://celebios.vercel.app/brand/og-celebios.jpg"), 2)
+        self.assertNotIn('content="https://www.celebios.com/brand/', salida)
+
+    def test_en_cutover_vuelve_al_dominio_definitivo(self):
+        """Sin esto habria que acordarse de revertirlo el dia del corte, y nadie
+        se acuerda."""
+        self.assertEqual(build.apuntar_tarjeta_social(self.HTML, cutover=True), self.HTML)
+
+    def test_el_canonical_nunca_se_toca(self):
+        """Debe seguir apuntando a celebios.com en los dos modos: es lo que hace
+        que Google consolide ahi y que la copia de revision no compita."""
+        for cutover in (False, True):
+            with self.subTest(cutover=cutover):
+                self.assertIn('rel="canonical" href="https://www.celebios.com/galeria"',
+                              build.apuntar_tarjeta_social(self.HTML, cutover))
+
+    def test_la_imagen_social_existe_en_disco(self):
+        self.assertTrue((build.SRC / "brand" / "og-celebios.jpg").exists())
+
+
 class TestJavaScriptPublicado(unittest.TestCase):
     """Al JS inline de las 33 paginas le faltaban TODOS los parentesis de
     invocacion. `(function{` era la punta visible: no compilaba. Lo peligroso
