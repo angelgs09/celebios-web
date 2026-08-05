@@ -267,7 +267,13 @@ $('#f-login').addEventListener('submit', async e => {
 $('#liga').addEventListener('click', async () => {
   const email = $('#correo').value.trim()
   if (!email) return aviso('#msg-login', 'Escribe tu correo primero.')
-  const { error } = await sb.auth.signInWithOtp({ email })
+  // Sin emailRedirectTo, Supabase manda la liga a su "Site URL", que en un
+  // proyecto nuevo es http://localhost:3000: el alumno acaba en una pagina que
+  // no existe. Se lo decimos explicitamente, y en la ruta donde ya esta.
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: location.origin + '/aula' }
+  })
   aviso('#msg-login',
     error ? 'No se pudo enviar la liga. Intenta de nuevo en un minuto.'
           : 'Listo, te mandamos una liga a tu correo. Revisa también la carpeta de spam.',
