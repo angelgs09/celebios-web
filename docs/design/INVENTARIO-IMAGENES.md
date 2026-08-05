@@ -32,15 +32,26 @@ y **uno no**: eso decide para qué sirve cada uno.
 | `cartel-medicina-preventiva-2017.webp` | "DIPLOMADO en medicina preventiva y manejo en cautiverio de FAUNA SILVESTRE (animales de compañía no convencionales) · **ABRIL-JULIO, 2017**" | **Sí**, con fecha |
 | `cartel-diagnostico-terapeutica.webp` | "DIPLOMADO en DIAGNÓSTICO Y TERAPÉUTICA DE FAUNA SILVESTRE · animales de compañía no convencionales · **ABRIL-AGOSTO 2018** · MODALIDAD SEMIPRESENCIAL" | **Sí**, con fecha — aunque el nombre del archivo no la trae |
 | `cartel-nutricion-2019.webp` | "Diplomado NUTRICIÓN Y ALIMENTACIÓN DE FAUNA SILVESTRE EN CAUTIVERIO · **INICIO: 3 DE JUNIO, 2019** · FORMATO: SEMIPRESENCIAL · Informes: www.celebios.com" | **Sí**, con fecha |
-| `cartel-contencion-quimica-anestesia.webp` | "Diplomado CONTENCIÓN QUÍMICA Y ANESTESIA DE FAUNA SILVESTRE · **PRÓXIMAMENTE** · www.celebios.com" | **No.** Es un cartel de anuncio, no de edición impartida |
+| `cartel-contencion-quimica-anestesia.webp` | "Diplomado CONTENCIÓN QUÍMICA Y ANESTESIA DE FAUNA SILVESTRE · **PRÓXIMAMENTE** · www.celebios.com" | El cartel no, **pero el programa sí** — ver abajo |
 
 Imagen de cada uno: 2017, dos guacamayas y un lagarto sobre madera · 2018, un
 caracara en blanco y negro bajo un velo azul · 2019, una jirafa ramoneando ·
 contención, un tigre echado de frente.
 
-**El de contención no puede usarse como prueba de que ese diplomado se dio.** Su
-propio cartel dice que iba a abrir. Los otros tres sí sostienen la frase "esto se
-impartió, aquí está el cartel con su fecha".
+**Corregido el 5-ago:** el cartel de contención sigue sin probar nada por sí solo
+—dice "próximamente"—, pero **el diplomado sí se impartió**: 1ª generación,
+agosto a diciembre de 2017, 125 horas teóricas más 40 prácticas, 38 alumnos de
+México, Colombia, Perú y Ecuador. La prueba está en `celebios.com/galeria-1`, que
+nadie había leído; la encontró Claude Design y está en `ATLAS-PROGRAMAS.md`.
+
+Así que los cuatro carteles sirven como evidencia. La distinción que se mantiene
+es otra: **tres traen su fecha impresa y el cuarto necesita la galería como
+respaldo**. Si un diseño pone los cuatro juntos con su fecha, la del cuarto sale
+de la galería, no del cartel.
+
+Y hay mucho más de donde salió eso: **dieciséis ediciones fechadas entre 2010 y
+2019**, de nueve programas distintos, incluida una octava generación y una
+práctica repartida en siete países.
 
 Dos de ellos se recortaron en una ronda anterior para quitar escudos de
 universidades cuyo convenio no está confirmado por escrito. Están así a
