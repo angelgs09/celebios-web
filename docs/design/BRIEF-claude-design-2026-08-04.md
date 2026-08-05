@@ -22,14 +22,26 @@ un dibujo mal hecho de un tapir le dice más de la academia que tres párrafos d
 y Comunicación de los Gatos (12 h, Dra. Camila Hernández, $1,400 MXN de pago
 único). **Nada más tiene precio ni convocatoria abierta**, incluido el diplomado
 ancla de 170 h en Rescate y Rehabilitación de Fauna, cuya tercera edición cerró
-el 30 de junio de 2025. Los otros 18 programas del catálogo están en dos estados
-y ninguno se puede comprar:
+el 30 de junio de 2025.
 
-| Estado | Cuántos | Qué significa |
-|---|---|---|
-| **Disponible** | 1 | se vende hoy, con precio |
-| **Sin convocatoria** | 9 | se impartió antes; no hay edición abierta ni precio |
-| **En producción** | 8 | área del atlas todavía sin construir |
+**El catálogo tiene 18 láminas, no 19, y no todas son lo mismo.** Ocho
+corresponden a programas con ficha propia y contrato de datos en
+`contenido/programas.json`; las otras diez son áreas del atlas **sin página**,
+que existen para dibujar el alcance de la academia y recoger lista de espera.
+Confundir unas con otras es el error más fácil de cometer aquí. Los 17 que no se
+venden se reparten en dos estados:
+
+| Estado en el HTML | Cuántos | Qué significa | Nombre en el contrato |
+|---|---|---|---|
+| **Disponible** | 1 | se vende hoy, con precio | `available` |
+| **Sin convocatoria** | 9 | se impartió antes; no hay edición abierta ni precio | `historical` |
+| **En producción** | 8 | área del atlas todavía sin construir | `planned` |
+
+⚠️ **El par de nombres no mapea 1:1 y hay cuatro casos cruzados hoy:** Primeros
+Auxilios y Reptiles son `planned` en el contrato y salen como "sin convocatoria";
+Nutrición y Anestesia son `historical` y salen como "en producción". Está
+reportado y pendiente de resolver — trátalo como ruido de datos, no como una
+distinción de diseño que debas honrar.
 
 Esa asimetría —un producto vendible contra dieciocho que no lo son— es la
 tensión central del diseño, no un detalle de contenido.
@@ -44,7 +56,7 @@ Wix `celebios.com/rehabilitacion-fauna-2024` rankea #3 nacional.
 | Ruta | Archivo fuente | Papel |
 |---|---|---|
 | `/` | `redesign-v2/lamina-viva.html` | Home |
-| `/cursos` | `redesign-v2/catalogo.html` | Catálogo de 19 programas |
+| `/cursos` | `redesign-v2/catalogo.html` | Catálogo: 18 láminas |
 | `/curso-lenguaje-felino` | `redesign-v2/curso-gatos.html` | Ficha de curso (plantilla) |
 | `/diplomado-rescate-rehabilitacion-fauna` | `redesign-v2/diplomado-rehab.html` | Ancla premium |
 | `/recursos/*` | `redesign-v2/recurso-*.html` | 14 artículos SEO |
@@ -146,6 +158,17 @@ Verificado mirando las capturas, no leyendo el código.
 
 7. **Footer de granja de enlaces**, cuatro columnas.
 
+8. **Hay evidencia real sin usar.** Tres de los cuatro carteles del repo llevan
+   fecha impresa: 2017, 2018 y 2019, con el nombre completo del diplomado y
+   "informes: www.celebios.com". Es la prueba documental de que esto tiene
+   recorrido —justo lo que el sitio hoy intenta decir con adjetivos— y está
+   enterrada. El cuarto cartel dice "próximamente" y no prueba nada; distinguirlos
+   importa.
+
+**Ojo con un dato que se lee mal en las capturas:** el sitio dice **16 años** (fundada
+en 2010) y **18 áreas**. No hay ningún "18 años" en ninguna página; si te parece
+verlo, es el 18 de las áreas.
+
 **Lo que sí está bien y hay que conservar:** el sistema de estados con color
 (cian/morado/gris), la numeración de láminas, la barra de escala, el bloque del
 diplomado, la honestidad del catálogo (dice "sin convocatoria abierta" en vez de
@@ -210,10 +233,20 @@ que ya costaron trabajo en este proyecto.
   rechaza el commit si aparece una.
 - **No generes imágenes.** Ni fotos de fauna, ni de alumnos, ni de instalaciones, ni
   "placeholder photography" tipo picsum. Una foto generada en el sitio de una
-  academia se lee como evidencia de algo que pasó. Las 13 imágenes reales del repo
-  (`redesign-v2/media/`) son todo lo que hay, y varias están recortadas a propósito
-  para que no aparezcan rostros identificables ni escudos de universidades ajenas.
-  Si una sección necesita una imagen que no existe, **deja el hueco marcado y dilo**.
+  academia se lee como evidencia de algo que pasó. `redesign-v2/media/` tiene
+  **27 archivos y son todo lo que hay**: 12 fotografías en `<img>` (4 carteles,
+  4 de fauna, 4 de práctica) y 15 bandas de ambiente de 1400 × 300 px que se usan
+  como fondo CSS. Varias están recortadas a propósito para que no aparezcan
+  rostros identificables ni escudos de universidades ajenas.
+  **Lee `docs/design/INVENTARIO-IMAGENES.md` antes de componer con ellas**: describe
+  lo que se ve en cada una, verificado abriéndolas. Ahí está, por ejemplo, que la
+  grulla es africana, que el cartel de contención dice "próximamente" y no prueba
+  ninguna edición, y que un archivo llamado `practica-equino-auscultacion` no
+  contiene ninguna auscultación.
+- **Ninguna imagen aguanta un hero a pantalla completa.** La más ancha del sitio
+  tiene 843 px; la del hero actual, 384 px. Las bandas de ambiente sí llegan a
+  1400 px pero miden 300 de alto: son franjas, no fondos. Si una composición pide
+  una fotografía de 1600 px, no se puede construir. Deja el hueco marcado y dilo.
 - **Los H1, H2 y el texto visible tienen mapa de palabras clave** (`SEO-COPY-STRATEGY.md`).
   Puedes reordenar y recortar; no reescribas los encabezados sin decir cuál cambias
   y por qué.
@@ -247,6 +280,8 @@ lenguaje gráfico · el espaciado.
 
 ## 8. Material en el repo
 
+- `docs/design/INVENTARIO-IMAGENES.md` — **léelo antes de componer con imágenes**:
+  qué se ve en cada una de las 27, verificado abriéndolas, con sus tamaños reales
 - `docs/design/capturas/` — 9 capturas del sitio en vivo, hoy
 - `redesign-v2/brand/` — logo real, versión navy y knockout blanco
 - `redesign-v2/fonts/` — las tres familias en woff2
