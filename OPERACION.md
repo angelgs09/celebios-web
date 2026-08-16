@@ -71,6 +71,37 @@ Respaldo en el Drive de `contacto@celebios.com`.
 
 ---
 
+## Cobrar desde el sitio (montado, falta encenderlo)
+
+Hoy los botones "Inscribirme" llevan a `celebios.online`, que es **Kajabi**. Cada
+venta entra a la plataforma de la que nos estamos yendo, el alumno queda dado de
+alta allá, y alguien lo pasa a mano al aula.
+
+El cobro propio ya está escrito: `api/checkout.js` abre el pago y
+`api/stripe-webhook.js` inscribe al alumno y le manda su liga en cuanto Stripe
+confirma. **No está encendido** porque faltan dos llaves, y hasta que existan
+las funciones responden 503 a propósito.
+
+La cuenta de Stripe **ya existe**: es la que Kajabi tiene conectada, en vivo y
+en pesos. No hay que dar de alta nada, solo sacar las llaves de su panel.
+
+1. En `dashboard.stripe.com` → Desarrolladores → Claves API, copiar la **clave
+   secreta** (`sk_live_…`) a `.env.production.local` como `STRIPE_SECRET_KEY`.
+2. En Webhooks, crear uno a `https://celebios.vercel.app/api/stripe-webhook`
+   escuchando `checkout.session.completed`, y copiar su **secreto de firma**
+   (`whsec_…`) como `STRIPE_WEBHOOK_SECRET`.
+3. Las mismas dos variables, en Vercel → Settings → Environment Variables.
+4. Hasta entonces **no cambiar los botones del sitio**: mientras no haya llaves,
+   apuntarlos aquí dejaría al comprador sin poder pagar. El cambio es en
+   `contenido/` y son cuatro enlaces.
+
+Lo que se gana al encenderlo: se deja de pagar Kajabi para vender, el alumno
+queda inscrito solo, y entran **meses sin intereses, SPEI y OXXO**, que Stripe
+México sí maneja y que hoy no existen (PayPal cobra 4% encima).
+
+`npm test` incluye once casos sobre la firma del webhook, que es lo único que
+impide que alguien se inscriba gratis mandando un POST a esa URL.
+
 ## Dar de alta e inscribir
 
 Todo desde **https://celebios.vercel.app/aula/admin**, con una cuenta que tenga
