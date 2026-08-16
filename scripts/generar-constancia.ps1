@@ -26,7 +26,11 @@
 
 param(
     [string]$Correo,
-    [switch]$Todos
+    [switch]$Todos,
+    # -Nombre emite sin consultar el CSV de Kajabi. Lo usa emitir-constancias.ps1,
+    # que saca de Supabase a quien acredito los once quizes EN EL AULA NUEVA: esa
+    # gente no existe en el export de Kajabi y de otro modo nunca tendria constancia.
+    [string]$Nombre
 )
 
 $ErrorActionPreference = 'Stop'
@@ -37,9 +41,11 @@ $PLANTILLA = "$DESTINO\plantilla-oficial.png"
 $FUENTE    = "$DESTINO\Montserrat.ttf"
 $EDGE      = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 
-foreach ($req in @($CSV, $PLANTILLA, $FUENTE, $EDGE)) {
+foreach ($req in @($PLANTILLA, $FUENTE, $EDGE)) {
     if (-not (Test-Path $req)) { throw "Falta: $req" }
 }
+# El CSV solo hace falta cuando se emite a partir de el.
+if (-not $Nombre -and -not (Test-Path $CSV)) { throw "Falta: $CSV" }
 
 # La plantilla mide 1280x896. El hueco del nombre queda entre "OTORGAN LA
 # PRESENTE CONSTANCIA A:" y "POR CONCLUIR SATISFACTORIAMENTE EL CURSO:".
@@ -52,10 +58,17 @@ $imgB64  = [Convert]::ToBase64String([IO.File]::ReadAllBytes($PLANTILLA))
 $fontB64 = [Convert]::ToBase64String([IO.File]::ReadAllBytes($FUENTE))
 
 # ---------------------------------------------------------------- alumnos --
-$alumnos = Import-Csv -Path $CSV -Encoding UTF8
-if     ($Correo) { $alumnos = @($alumnos | Where-Object { $_.correo -eq $Correo }) }
-elseif ($Todos)  { $alumnos = @($alumnos | Where-Object { [int]$_.progreso_pct -ge 100 -and $_.interna -ne 'si' }) }
-else   { Write-Output "Usa -Correo <mail> o -Todos"; exit 1 }
+if ($Nombre) {
+    # progreso_pct = 100 porque quien llama ya comprobo la acreditacion contra la
+    # base; aqui solo se dibuja.
+    $alumnos = @([pscustomobject]@{ nombre = $Nombre; correo = $Correo; progreso_pct = 100 })
+}
+else {
+    $alumnos = Import-Csv -Path $CSV -Encoding UTF8
+    if     ($Correo) { $alumnos = @($alumnos | Where-Object { $_.correo -eq $Correo }) }
+    elseif ($Todos)  { $alumnos = @($alumnos | Where-Object { [int]$_.progreso_pct -ge 100 -and $_.interna -ne 'si' }) }
+    else   { Write-Output "Usa -Correo <mail>, -Todos, o -Nombre <nombre>"; exit 1 }
+}
 
 if ($alumnos.Count -eq 0) { Write-Output "Ningun alumno coincide."; exit 1 }
 

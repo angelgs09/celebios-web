@@ -490,12 +490,30 @@ async function cargarCursos () {
       ? ` · vence el ${new Date(i.expira_en).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })}`
       : ''
 
+    // Kajabi prometia, con estas palabras: "si resuelves todos los quizes
+    // obteniendo una calificacion mayor a 80/100, obtendras una constancia de
+    // participacion del curso con validez curricular". La plataforma nueva no
+    // decia nada al terminar, y en Kajabi solo salieron 2 constancias de 24
+    // justamente porque nadie veia el estado y habia que emitirlas a mano.
+    const termino = mias.length > 0 && hechas === mias.length
+    const aviso = termino
+      ? `<div class="placa" style="border-color:var(--sage);margin-top:1.5rem">
+           <p class="kicker" style="color:var(--sage)">Curso acreditado</p>
+           <h3 style="margin-bottom:.5rem">Terminaste el curso</h3>
+           <p style="margin:0">Aprobaste los ${mias.length} módulos. Te enviamos por correo tu
+              <b>constancia de participación con validez curricular</b>.</p>
+           <p class="legal" style="margin-top:.75rem">¿No te llega? Escríbenos a
+              <a href="mailto:contacto@celebios.com">contacto@celebios.com</a>.</p>
+         </div>`
+      : ''
+
     const caja = document.createElement('article')
     caja.className = 'placa'
     caja.innerHTML =
       `<h2></h2>
        <p class="kicker">${hechas} de ${mias.length} lecciones aprobadas · ${pct}%${vence}</p>
        <div class="barra"><i style="width:${pct}%"></i></div>
+       ${aviso}
        <ul class="lista" style="margin-top:1.5rem"></ul>`
     caja.querySelector('h2').textContent = i.cursos?.titulo ?? 'Curso'
 
