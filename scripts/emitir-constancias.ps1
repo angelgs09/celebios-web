@@ -114,6 +114,25 @@ function Guardar-Registro {
     Set-Content -Path $ruta -Value $json -Encoding utf8
 }
 
+function Nombre-Sospechoso([string]$n) {
+    # La constancia lleva folio PG 144/26 de CONCERVET. Lo que se imprima ahi
+    # queda en un documento con validez curricular, y el nombre viene tal cual
+    # de lo que el alumno tecleo en Kajabi hace meses. Hoy en la base hay:
+    #   'EDGAR ISLAS CALDERON'  -> saldria gritado, y sin la tilde de Calderon
+    #   'au091928'              -> ni siquiera es un nombre, es su correo
+    # Mas vale no emitir y avisar, que imprimir eso y mandarlo.
+    $t = "$n".Trim()
+    if ($t.Length -lt 5)                        { return 'esta vacio o es muy corto' }
+    if ($t -match '@')                          { return 'parece un correo, no un nombre' }
+    if ($t -match '\d')                         { return 'trae digitos' }
+    if (($t -split '\s+').Count -lt 2)          { return 'viene sin apellido' }
+    # -cmatch para que distinga mayusculas de minusculas.
+    if ($t -cnotmatch '[a-z' + [char]0x00E1 + [char]0x00E9 + [char]0x00ED + [char]0x00F3 + [char]0x00FA + [char]0x00F1 + ']') {
+        return 'viene TODO EN MAYUSCULAS'
+    }
+    return $null
+}
+
 function Nuevo-Smtp {
     $pass = ((Get-Content $ENVFILE | Where-Object { $_ -like 'SMTP_APP_PASSWORD=*' } |
               Select-Object -First 1) -replace '^SMTP_APP_PASSWORD=', '').Trim().Trim('"') -replace '\s', ''
@@ -239,26 +258,53 @@ if ($Avisar) {
             continue
         }
 
-        $pdf = Generar-Pdf $a
-        if (-not $pdf) { Write-Output ("  X  {0}: no se genero el PDF" -f $a.nombre); continue }
+        # Si el nombre no sirve para imprimirlo, el aviso sale igual (que se
+        # sepa que acredito) pero SIN el PDF y pidiendo el nombre bueno.
+        $malNombre = Nombre-Sospechoso $a.nombre
+        $pdf = $null
+        if (-not $malNombre) {
+            $pdf = Generar-Pdf $a
+            if (-not $pdf) { Write-Output ("  X  {0}: no se genero el PDF" -f $a.nombre); continue }
+        }
 
         $dias = 0
         $asunto = "Acredit$O_ el curso: $($a.nombre)"
         $encabezado = ''
+        if ($malNombre) {
+            $asunto = "Acredit$O_ el curso, pero falta su nombre bien escrito: $($a.correo)"
+            $encabezado = "<p style=`"font-size:15px;line-height:1.6;margin:0 0 16px;color:#8A4B2A`"><strong>No le genere la constancia porque el nombre que tenemos ($([Net.WebUtility]::HtmlEncode($a.nombre))) $malNombre.</strong> Va en un documento con folio de CONCERVET, asi que hace falta el nombre completo tal como debe quedar impreso.</p>"
+        }
         if ($previo) {
             $dias = [int]($ahora - [datetime]$previo.acredito_en).TotalDays
-            $asunto = "RECORDATORIO ($dias d${I_}as): $($a.nombre) sigue sin su constancia"
-            $encabezado = "<p style=`"font-size:15px;line-height:1.6;margin:0 0 16px;color:#8A4B2A`"><strong>Van $dias d&iacute;as desde que acredit&oacute; y todav&iacute;a no se le manda.</strong></p>"
+            # El aviso del nombre no se pisa con el del recordatorio: si sigue sin
+            # nombre bueno, eso es lo que hay que resolver y va primero.
+            if ($malNombre) {
+                $asunto = "RECORDATORIO ($dias d${I_}as): falta el nombre de $($a.correo) para su constancia"
+            } else {
+                $asunto = "RECORDATORIO ($dias d${I_}as): $($a.nombre) sigue sin su constancia"
+                $encabezado = "<p style=`"font-size:15px;line-height:1.6;margin:0 0 16px;color:#8A4B2A`"><strong>Van $dias d&iacute;as desde que acredit&oacute; y todav&iacute;a no se le manda.</strong></p>"
+            }
+        }
+
+        if ($malNombre) {
+            $queHacer = @"
+  <p style="font-size:16px;line-height:1.6;margin:0 0 16px">Cuando tengas el nombre correcto, corrigelo en la base y el aviso del dia siguiente ya trae el PDF. O emitelo directo con el nombre a mano:</p>
+  <p style="font-family:ui-monospace,monospace;font-size:13px;line-height:1.5;background:#F4F6F4;border-left:3px solid #C3CDC0;padding:12px 14px;margin:0 0 24px;word-break:break-all">.\generar-constancia.ps1 -Nombre "Nombre Completo" -Correo $($a.correo)</p>
+"@
+        } else {
+            $queHacer = @"
+  <p style="font-size:16px;line-height:1.6;margin:0 0 16px">Su constancia va adjunta, ya lista sobre la plantilla oficial. <strong>Todav&iacute;a no la tiene</strong>: reenv&iacute;ale este PDF, o corre esto para que le llegue con el texto de siempre:</p>
+  <p style="font-family:ui-monospace,monospace;font-size:13px;line-height:1.5;background:#F4F6F4;border-left:3px solid #C3CDC0;padding:12px 14px;margin:0 0 24px;word-break:break-all">.\emitir-constancias.ps1 -Aplicar -Solo $($a.correo)</p>
+"@
         }
 
         $cuerpo = @"
   <p style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#4D5F7C;margin:0 0 24px">CELEBIOS &middot; Aula virtual</p>
-  <h1 style="font-size:22px;line-height:1.3;margin:0 0 16px;color:#16294C">$($a.nombre) acredit&oacute; el curso</h1>
+  <h1 style="font-size:22px;line-height:1.3;margin:0 0 16px;color:#16294C">$([Net.WebUtility]::HtmlEncode($a.nombre)) acredit&oacute; el curso</h1>
   $encabezado
   <p style="font-size:16px;line-height:1.6;margin:0 0 8px">Aprob&oacute; los <strong>$($a.de)</strong> cuestionarios de $($a.titulo).</p>
   <p style="font-size:16px;line-height:1.6;margin:0 0 24px">Correo del alumno: <strong>$($a.correo)</strong></p>
-  <p style="font-size:16px;line-height:1.6;margin:0 0 16px">Su constancia va adjunta, ya lista sobre la plantilla oficial. <strong>Todav&iacute;a no la tiene</strong>: reenv&iacute;ale este PDF, o corre esto para que le llegue con el texto de siempre:</p>
-  <p style="font-family:ui-monospace,monospace;font-size:13px;line-height:1.5;background:#F4F6F4;border-left:3px solid #C3CDC0;padding:12px 14px;margin:0 0 24px;word-break:break-all">.\emitir-constancias.ps1 -Aplicar -Solo $($a.correo)</p>
+$queHacer
   <p style="font-size:14px;line-height:1.6;color:#4D5F7C;margin:0 0 32px">Mientras siga pendiente, este aviso vuelve cada $RECORDAR_CADA_DIAS d&iacute;as.</p>
   <hr style="border:none;border-top:1px solid #C3CDC0;margin:0 0 16px">
   <p style="font-size:12px;line-height:1.5;color:#4D5F7C;margin:0">Aviso autom&aacute;tico del aula. No se le mand&oacute; nada al alumno.</p>
@@ -286,6 +332,16 @@ $emitidas = @()
 foreach ($k in $yaEmitidas.Keys) { $emitidas += $yaEmitidas[$k] }
 
 foreach ($a in $pendientes) {
+    # Aqui el guard NO deja pasar: este correo va al alumno con un documento
+    # que lleva folio de CONCERVET. Corrige el nombre en la base y vuelve a
+    # correr, o emitelo a mano con generar-constancia.ps1 -Nombre.
+    $malNombre = Nombre-Sospechoso $a.nombre
+    if ($malNombre) {
+        Write-Output ("  X {0} <{1}>: NO le mando nada, el nombre {2}." -f $a.nombre, $a.correo, $malNombre)
+        Write-Output ("      Corrigelo en perfiles.nombre, o: .\generar-constancia.ps1 -Nombre `"Nombre Completo`" -Correo {0}" -f $a.correo)
+        continue
+    }
+
     $pdf = Generar-Pdf $a
     if (-not $pdf) { Write-Output ("  X {0}: no se genero el PDF, no le mando nada" -f $a.nombre); continue }
 
