@@ -1,1 +1,6 @@
 migracion/evidencia/** -text
+
+# Bundle de terceros: se guarda tal cual salio del build de upstream. Si git le
+# normaliza los saltos de linea cambia los bytes de un archivo minificado que
+# lleva template literals, y ahi un salto no es cosmetico.
+aula/vendor/** -text

@@ -1979,6 +1979,37 @@ class TestAula(unittest.TestCase):
                                 f"{p.name}: {origen} no existe en el repo")
                 self.assertNotIn("://", origen, f"{p.name}: sigue apuntando a un host externo")
 
+    def test_el_bundle_de_vendor_no_depende_de_nada_de_fuera(self):
+        """Un bundle "autocontenido" que no lo esta deja la pagina en blanco.
+
+        Paso de verdad: el primer intento bajo el bundle ya hecho de esm.sh y
+        parecia limpio, pero sus dos primeras lineas eran
+
+            import __Process$ from "/node/process.mjs";
+            import { Buffer as __Buffer$ } from "/node/buffer.mjs";
+
+        rutas absolutas que solo existen en el host de esm.sh. Servidas desde
+        nuestro dominio dan 404, el modulo no evalua y el alumno ve una hoja
+        vacia. El grep que lo dio por bueno buscaba `from"x"` y no contemplaba
+        el espacio de `from "x"`, asi que aqui el patron lleva \\s* a proposito.
+
+        El bundle se regenera con: node scripts/empaquetar-supabase.mjs"""
+        vendor = build.RAIZ / "aula" / "vendor"
+        archivos = sorted(vendor.glob("*.js"))
+        self.assertTrue(archivos, "aula/vendor esta vacio")
+        for f in archivos:
+            with self.subTest(archivo=f.name):
+                js = f.read_text(encoding="utf-8")
+                fuera = [
+                    (m.group(1) or m.group(2))
+                    for m in re.finditer(
+                        r"""\bfrom\s*["']([^"']+)["']|\bimport\s*\(\s*["']([^"']+)["']""", js)
+                ]
+                self.assertEqual([], fuera,
+                                 f"{f.name} importa cosas de fuera: {fuera}")
+                self.assertNotRegex(js, r"""^\s*import\s""",
+                                    f"{f.name} empieza con un import")
+
     def test_no_pide_nada_a_un_tercer_origen_salvo_el_modulo(self):
         """El aviso declara que las tipografias salen del propio dominio. El
         aula seguia pidiendolas a Google, o sea mandandole la IP del ALUMNO."""

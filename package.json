@@ -10,5 +10,9 @@
   },
   "dependencies": {
     "@vercel/blob": "^2.0.0"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.112.0",
+    "esbuild": "^0.25.10"
   }
 }
