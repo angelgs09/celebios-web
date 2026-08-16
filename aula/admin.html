@@ -138,10 +138,9 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
 </main>
 
 <script type="module">
-// Version FIJA, no el rango @2: esta pagina tiene el access_token del
-// alumno en memoria, asi que cualquier release del canal 2.x se
-// ejecutaria aqui sin que nadie lo revise. Subirla es un commit.
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.112.0'
+// El mismo archivo local que usa el aula, no un CDN. Ver el comentario en
+// index.html: un modulo remoto que no carga deja la pagina en blanco.
+import { createClient } from '/aula/vendor/supabase-js-2.112.0.js'
 
 const sb = createClient(
   'https://lwawpdjsfjvlyvqwqiqp.supabase.co',

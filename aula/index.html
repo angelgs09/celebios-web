@@ -256,10 +256,15 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
 </main>
 
 <script type="module">
-// Version FIJA, no el rango @2: esta pagina tiene el access_token del
-// alumno en memoria, asi que cualquier release del canal 2.x se
-// ejecutaria aqui sin que nadie lo revise. Subirla es un commit.
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.112.0'
+// supabase-js se sirve DESDE AQUI, no desde un CDN. Era la unica pieza del aula
+// que vivia en un servidor de terceros, y si esm.sh no respondia el alumno no
+// veia un error: veia una pagina en blanco, porque un modulo que no carga no
+// ejecuta nada. Ahora cae con el resto del sitio o no cae.
+//
+// Version FIJA en el nombre del archivo, no el rango @2: esta pagina tiene el
+// access_token del alumno en memoria, asi que cualquier release del canal 2.x
+// se ejecutaria aqui sin que nadie lo revise. Subirla es un commit.
+import { createClient } from '/aula/vendor/supabase-js-2.112.0.js'
 
 // La clave publishable esta hecha para vivir en el navegador: quien protege los
 // datos es el RLS de Postgres, no esconder esta cadena. La service_role NUNCA

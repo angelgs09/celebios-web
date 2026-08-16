@@ -1950,16 +1950,34 @@ class TestAula(unittest.TestCase):
     def _paginas(self):
         return sorted((build.RAIZ / "aula").glob("*.html"))
 
-    def test_supabase_js_va_con_version_fija(self):
-        """Con el rango @2, cualquier release del canal 2.x se ejecuta en la
-        pagina que tiene el token del alumno, sin que nadie lo revise."""
+    def test_supabase_js_se_sirve_local_y_con_version_fija(self):
+        """Dos cosas a la vez.
+
+        La version tiene que ser fija: con el rango @2, cualquier release del
+        canal 2.x se ejecutaria en la pagina que tiene el token del alumno sin
+        que nadie lo revise.
+
+        Y tiene que salir de nuestro dominio. Mientras vino de esm.sh, un modulo
+        que no carga no lanza un error visible: deja la pagina EN BLANCO, asi
+        que una caida del CDN se veia igual que el aula rota.
+
+        La ruta va ABSOLUTA a proposito. Con cleanUrls, /aula/ redirige a /aula
+        sin barra, y desde ahi una relativa './vendor/x.js' resolveria a
+        /vendor/x.js -> 404 -> pagina en blanco. Y esto NO se cae probando en
+        local, porque python -m http.server si conserva la barra final."""
         for p in self._paginas():
             with self.subTest(pagina=p.name):
                 texto = p.read_text(encoding="utf-8")
                 if "supabase-js" not in texto:
                     continue
-                self.assertRegex(texto, r"supabase-js@\d+\.\d+\.\d+")
-                self.assertNotRegex(texto, r"supabase-js@\d+['\"]")
+                m = re.search(r"""import\s*\{[^}]*\}\s*from\s*['"]([^'"]*supabase-js[^'"]*)['"]""", texto)
+                self.assertIsNotNone(m, f"{p.name}: no se encontro el import de supabase-js")
+                origen = m.group(1)
+                self.assertRegex(origen, r"^/aula/vendor/supabase-js-\d+\.\d+\.\d+\.js$",
+                                 f"{p.name}: el import debe ser una ruta absoluta al archivo local")
+                self.assertTrue((build.RAIZ / origen.lstrip("/")).is_file(),
+                                f"{p.name}: {origen} no existe en el repo")
+                self.assertNotIn("://", origen, f"{p.name}: sigue apuntando a un host externo")
 
     def test_no_pide_nada_a_un_tercer_origen_salvo_el_modulo(self):
         """El aviso declara que las tipografias salen del propio dominio. El

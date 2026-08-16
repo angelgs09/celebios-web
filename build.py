@@ -344,13 +344,14 @@ MAX_REDIRECTS_INLINE = 2048
 SUPABASE_AULA = "https://lwawpdjsfjvlyvqwqiqp.supabase.co"
 CSP_AULA = "; ".join([
     "default-src 'self'",
-    # esm.sh sirve supabase-js; 'unsafe-inline' porque el modulo del aula va
-    # inline en el HTML. Quitarlo exige sacar el JS a un archivo aparte.
-    "script-src 'self' 'unsafe-inline' https://esm.sh",
+    # Ya no hay ningun host de terceros: supabase-js se sirve desde
+    # /aula/vendor/. 'unsafe-inline' sigue porque el modulo del aula va inline
+    # en el HTML; quitarlo exige sacar el JS a un archivo aparte.
+    "script-src 'self' 'unsafe-inline'",
     "style-src 'self' 'unsafe-inline'",
     "font-src 'self'",
     "img-src 'self' data:",
-    f"connect-src 'self' https://esm.sh {SUPABASE_AULA} wss://lwawpdjsfjvlyvqwqiqp.supabase.co",
+    f"connect-src 'self' {SUPABASE_AULA} wss://lwawpdjsfjvlyvqwqiqp.supabase.co",
     "media-src 'self' https:",
     "frame-ancestors 'none'",
     "base-uri 'self'",
