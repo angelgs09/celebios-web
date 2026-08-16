@@ -66,6 +66,16 @@ $O_ = [char]0x00F3   # o con tilde
 # enterarse; el del alumno NUNCA va en esta lista.
 $AVISO_A = @('contacto@celebios.com')
 
+# Gente que esta en la base como alumno pero no lleva constancia.
+#
+# El filtro de rol no alcanza: la doctora Camila Hernandez (etologiach@gmail.com)
+# es la AUTORA del curso, escribio los 66 reactivos, y tiene rol 'alumno' con
+# inscripcion activa porque entra a revisar el contenido. El dia que conteste los
+# once quizes (que se sabe de memoria) el vigilante la tomaria por acreditada y
+# le insistiria a CELEBIOS cada 7 dias, para siempre, con la constancia de la
+# persona que da el curso.
+$NO_LLEVAN_CONSTANCIA = @('etologiach@gmail.com')
+
 # -Aplicar exige -Solo: la constancia sale de una en una, con un nombre escrito a
 # mano. Un lote automatico al alumno es justo lo que este diseno evita.
 if ($Aplicar -and -not $Solo) {
@@ -174,11 +184,18 @@ foreach ($i in $insc) {
     if (-not $suyas -or $suyas.Count -eq 0) { continue }
     $p = $perfiles | Where-Object { $_.id -eq $i.alumno_id } | Select-Object -First 1
     if (-not $p) { continue }
+    if ($p.correo -in $NO_LLEVAN_CONSTANCIA) { continue }
     $ok = @($progreso | Where-Object { $_.alumno_id -eq $i.alumno_id -and $suyas -contains $_.leccion_id }).Count
     if ($ok -lt $suyas.Count) { continue }
     $c = $cursos | Where-Object { $_.id -eq $i.curso_id } | Select-Object -First 1
+    # El nombre se normaliza UNA vez, aqui. generar-constancia.ps1 arma el nombre
+    # del archivo sobre $nombre.Trim() y este lo armaba sobre el crudo: con un
+    # espacio al inicio (que es lo que sale del export de Kajabi) cada uno
+    # calculaba una ruta distinta, el PDF quedaba con un nombre y este script lo
+    # buscaba con otro. Se veia como "no se genero el PDF" con el PDF ya escrito.
+    $nombreLimpio = ($p.nombre -replace '\s+', ' ').Trim()
     $acreditados += [pscustomobject]@{
-        id = $i.alumno_id; nombre = $p.nombre; correo = $p.correo
+        id = $i.alumno_id; nombre = $nombreLimpio; correo = $p.correo
         curso = $i.curso_id; titulo = $c.titulo; de = "$($ok)/$($suyas.Count)"
     }
 }
@@ -209,8 +226,27 @@ if (-not $Avisar -and -not $Aplicar) {
     exit 0
 }
 if ($pendientes.Count -eq 0) { Write-Output "Nada que hacer."; exit 0 }
+
+# El tope RECORTA la lista; no cancela la corrida.
+#
+# Antes esto era un `throw`, y estaba comparando el tope contra la FILA DE
+# ESPERA, no contra los correos que se iban a mandar. La fila solo se vacia
+# cuando alguien emite a mano con -Aplicar -Solo, asi que en cuanto seis
+# personas estuvieran esperando su constancia, la tarea diaria de las 9:30
+# reventaba ANTES de mandar nada: ni el aviso nuevo ni los recordatorios de los
+# que ya llevaban dias esperando, todos los dias, y el error muriendo en el
+# historial del Programador de tareas.
+#
+# O sea: la red que existe para que no se repita lo de Kajabi (2 constancias de
+# 24 porque nadie miraba) se apagaba sola justo cuando mas gente esperaba. Un
+# tope tiene que limitar el dano, nunca cancelar el trabajo.
 if ($pendientes.Count -gt $TopePorCorrida) {
-    throw ("Hay {0} pendientes y el tope por corrida es {1}. Si de verdad acreditaron todos, sube -TopePorCorrida a proposito." -f $pendientes.Count, $TopePorCorrida)
+    $fuera = $pendientes.Count - $TopePorCorrida
+    Write-Output ("  ATENCION: {0} pendientes y el tope por corrida es {1}. Atiendo los {1} primeros y dejo {2} para la siguiente." -f `
+        $pendientes.Count, $TopePorCorrida, $fuera)
+    Write-Output ("             Los que quedan fuera hoy: {0}" -f (($pendientes | Select-Object -Skip $TopePorCorrida).correo -join ', '))
+    Write-Output  "             Si de verdad acreditaron todos, corre con -TopePorCorrida mayor."
+    $pendientes = @($pendientes | Select-Object -First $TopePorCorrida)
 }
 
 $cliente = Nuevo-Smtp

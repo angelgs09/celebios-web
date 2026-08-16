@@ -120,6 +120,21 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
 </header>
 
 <main>
+  <!-- ============ red de seguridad ============
+       Esto es lo UNICO que se ve si el JavaScript no llega a correr: modulo que
+       no carga, error de sintaxis, navegador viejo, extension que lo bloquea.
+       Sin esto el alumno se queda mirando una pagina vacia, sin una sola
+       palabra que le diga si esta rota o si es el. mostrar() la oculta en
+       cuanto pinta la primera vista, asi que en el caso normal no se alcanza a
+       leer. Va aqui arriba, antes que nada, para que no dependa de nada. -->
+  <section id="v-sin-js" aria-labelledby="t-sin-js">
+    <h1 id="t-sin-js">Aula virtual</h1>
+    <p>Si esta pantalla se queda así unos segundos, recarga la página.</p>
+    <p class="legal">Si después de recargar sigue igual, escríbenos a
+      <a href="mailto:contacto@celebios.com">contacto@celebios.com</a> y te
+      ayudamos a entrar.</p>
+  </section>
+
   <!-- ============ mantenimiento ============
        Se enciende con EN_MANTENIMIENTO en el script de abajo. Tapa todo lo
        demas: mientras este en true, nadie ve cursos ni lecciones, tenga
@@ -502,12 +517,19 @@ async function cargarCursos () {
     // justamente porque nadie veia el estado y habia que emitirlas a mano.
     const termino = mias.length > 0 && hechas === mias.length
     const aviso = termino
+      // Ojo con el tiempo verbal: decia "Te enviamos por correo tu constancia"
+      // en el instante en que el alumno aprueba el ultimo quiz, y eso es falso.
+      // El vigilante corre a las 9:30 del dia siguiente, avisa a CELEBIOS, y
+      // una persona decide y manda. Entre una cosa y otra pasan horas o dias,
+      // y el alumno se queda revisando una bandeja donde no hay nada. Lo que
+      // se promete aqui es lo unico que esta garantizado: que ya se la gano.
       ? `<div class="placa" style="border-color:var(--sage);margin-top:1.5rem">
            <p class="kicker" style="color:var(--sage)">Curso acreditado</p>
            <h3 style="margin-bottom:.5rem">Terminaste el curso</h3>
-           <p style="margin:0">Aprobaste los ${mias.length} módulos. Te enviamos por correo tu
-              <b>constancia de participación con validez curricular</b>.</p>
-           <p class="legal" style="margin-top:.75rem">¿No te llega? Escríbenos a
+           <p style="margin:0">Aprobaste los ${mias.length} módulos, así que ya te ganaste tu
+              <b>constancia de participación con validez curricular</b>. Te la mandamos por
+              correo en los próximos días hábiles.</p>
+           <p class="legal" style="margin-top:.75rem">Si pasa una semana y no te llega, escríbenos a
               <a href="mailto:contacto@celebios.com">contacto@celebios.com</a>.</p>
          </div>`
       : ''
@@ -677,7 +699,18 @@ async function abrirLeccion (l) {
 
   if (gen !== generacion) return
   if (error) return aviso('#lec-examen', 'No pudimos cargar el examen.')
-  if (!preguntas.length) return ($('#lec-examen').innerHTML = '<p class="vacio">Esta lección no tiene examen.</p>')
+
+  // Cero preguntas NUNCA significa que la leccion no tenga examen: las once
+  // tienen seis, y el examen es lo unico que da la constancia. Lo que si pasa
+  // es que sin sesion PostgREST contesta 200 con [] en vez de un error (a anon
+  // se le revoco escribir, pero no leer, y la policy simplemente no encuentra
+  // filas). O sea que a un alumno con la sesion vencida el aula le decia que
+  // esa leccion no tenia examen, y se quedaba sin manera de acreditar.
+  if (!preguntas.length) {
+    return ($('#lec-examen').innerHTML =
+      '<p class="vacio">No pudimos cargar el examen. Vuelve a entrar desde la liga de tu correo; ' +
+      'si sigue igual, escríbenos a <a href="mailto:contacto@celebios.com">contacto@celebios.com</a>.</p>')
+  }
 
   // Con 6 preguntas el 80% no se puede sacar: los resultados posibles son 67% y
   // 83%. Decirle "se aprueba con 80%" era exacto de nombre e inutil de fondo;
@@ -819,6 +852,18 @@ async function arrancarInterno () {
 // primer paso de las 18 personas que estan por entrar.
 sb.auth.onAuthStateChange((evento) => {
   if (evento === 'SIGNED_IN' && !usuario) arrancar()
+  // Sin esta rama, una sesion que caduca sola no cambiaba nada en pantalla: el
+  // alumno seguia viendo sus lecciones y solo notaba algo raro al abrir una,
+  // porque las consultas empezaban a devolver listas vacias sin error. Mejor
+  // devolverlo al acceso, que ademas le dice que hacer.
+  if (evento === 'SIGNED_OUT' && usuario) {
+    usuario = null
+    leccionAbierta = null
+    generacion++
+    soltarVideo()
+    mostrar('#v-login')
+    aviso('#msg-login', 'Tu sesión expiró. Pide otra liga de acceso con tu correo.')
+  }
 })
 
 arrancar()

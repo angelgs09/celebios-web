@@ -252,12 +252,27 @@ if ($Aplicar) {
     # Solo -Constancia esta exento: es la unica plantilla SIN boton al aula.
     # -Correccion tambien lleva uno, asi que tiene que pasar por el guard.
     if (-not $Constancia) {
+        # OJO con el nombre de esta variable: NO puede llamarse $aula, porque
+        # PowerShell no distingue mayusculas y pisaria la constante $AULA de
+        # arriba con las 45 KB del HTML. El guard tapaba ese efecto al disparar
+        # siempre; el dia que se arreglara solo la condicion, habrian salido 17
+        # correos con la pagina entera metida dentro del href del boton.
         try {
-            $aula = (Invoke-WebRequest -Uri $AULA -UseBasicParsing -TimeoutSec 20).Content
+            $htmlDelAula = (Invoke-WebRequest -Uri $AULA -UseBasicParsing -TimeoutSec 20).Content
         } catch {
             throw "No pude comprobar si el aula esta abierta ($($_.Exception.Message)). No mando nada a ciegas."
         }
-        if ($aula -match 'v-mantenimiento|Volvemos muy pronto') {
+        # Se lee el VALOR de la bandera, no la presencia del markup. La seccion
+        # <section id="v-mantenimiento" hidden> y el titular "Volvemos muy
+        # pronto" estan SIEMPRE en el HTML servido (aula/index.html:127 y 131):
+        # lo que enciende esa pantalla es la constante de JS, y una descarga con
+        # Invoke-WebRequest no ejecuta JS. Buscar el markup daba positivo con el
+        # aula abierta, o sea que el gate no dejaba mandar nunca.
+        $bandera = [regex]::Match($htmlDelAula, 'const\s+EN_MANTENIMIENTO\s*=\s*(true|false)')
+        if (-not $bandera.Success) {
+            throw "No encontre EN_MANTENIMIENTO en el aula desplegada. Cambio el codigo y este guard ya no sabe leerlo; revisalo antes de mandar nada."
+        }
+        if ($bandera.Groups[1].Value -eq 'true') {
             throw "El aula esta en mantenimiento: estos correos llevan boton al aula y mandarian a la gente a la pantalla de 'Volvemos muy pronto'. Reabre primero (EN_MANTENIMIENTO = false) o quita el -Boton de las plantillas."
         }
     }
