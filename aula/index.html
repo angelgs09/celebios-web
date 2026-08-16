@@ -58,6 +58,12 @@ button:hover:not(:disabled){filter:brightness(1.1)}
 button:disabled{opacity:.5; cursor:not-allowed}
 .btn-lin{background:transparent; color:var(--hueso); border-color:var(--lodo-line)}
 .btn-min{background:none; border:none; color:var(--lodo-soft); text-decoration:underline; padding:var(--s2)}
+.clave-opcional{border-top:1px solid rgba(147,166,172,.3); padding-top:var(--s4)}
+.clave-opcional summary{cursor:pointer; color:var(--lodo-soft); font-size:.9rem; list-style:none}
+.clave-opcional summary::-webkit-details-marker{display:none}
+.clave-opcional summary::before{content:"+ "}
+.clave-opcional[open] summary::before{content:"\2212 "}
+.clave-opcional > *:not(summary){margin-top:var(--s3)}
 :focus-visible{outline:3px solid var(--sage); outline-offset:2px}
 
 label{display:block; font-size:.85rem; color:var(--lodo-soft); margin-bottom:var(--s2)}
@@ -109,23 +115,47 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
 </header>
 
 <main>
+  <!-- ============ mantenimiento ============
+       Se enciende con EN_MANTENIMIENTO en el script de abajo. Tapa todo lo
+       demas: mientras este en true, nadie ve cursos ni lecciones, tenga
+       sesion o no. Para reabrir, poner la constante en false y desplegar. -->
+  <section id="v-mantenimiento" hidden>
+    <p class="kicker">Aula virtual</p>
+    <!-- Sin explicaciones: al alumno se le dice que volvemos, no por que.
+         Los detalles internos no salen del equipo. -->
+    <h1>Volvemos muy pronto</h1>
+    <div class="caja">
+      <p>Estamos haciendo unos ajustes en el aula.</p>
+      <p><strong>Tu cuenta y tu acceso no cambian.</strong> No tienes que hacer
+        nada: te escribimos en cuanto vuelva a abrir.</p>
+      <p class="legal">¿Dudas? Escríbenos a contacto@celebios.com.</p>
+    </div>
+  </section>
+
   <!-- ============ acceso ============ -->
   <section id="v-login" hidden>
     <p class="kicker">Aula virtual</p>
     <h1>Entra a tus cursos</h1>
+    <!-- La liga va PRIMERO y es el submit del formulario: ninguno de los alumnos
+         que vienen de Kajabi tiene contrasena, asi que pedirsela de entrada era
+         mandarlos a una via muerta. La contrasena queda plegada por si alguien
+         llega a ponerse una. -->
     <form id="f-login" class="caja">
       <div>
         <label for="correo">Correo</label>
         <input id="correo" type="email" autocomplete="email" required>
       </div>
-      <div>
+      <button type="submit" id="liga">Mándame mi liga de acceso</button>
+      <p class="legal">Te llega un enlace a tu correo y entras con un clic.
+        No necesitas contraseña.</p>
+
+      <details class="clave-opcional">
+        <summary>Ya tengo contraseña</summary>
         <label for="clave">Contraseña</label>
         <input id="clave" type="password" autocomplete="current-password">
-      </div>
-      <button type="submit">Entrar</button>
-      <button type="button" id="liga" class="btn-min">
-        No tengo contraseña, mándame una liga de acceso
-      </button>
+        <button type="button" id="entrar-clave" class="btn-lin">Entrar con contraseña</button>
+      </details>
+
       <p class="legal">Al entrar aceptas el tratamiento de tus datos conforme al
         <a href="/aviso-de-privacidad">aviso de privacidad</a>.</p>
     </form>
@@ -157,8 +187,12 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
          participación con validez curricular.</p>
       <p>Si no acreditas alguno, puedes estudiar la clase de nuevo y volver a presentarlo:
          se conserva tu mejor calificación.</p>
-      <p>Cada módulo requiere aproximadamente <b>1 hora</b> de estudio. Administra tu tiempo
-         para alcanzar a completar los 11 módulos y sus evaluaciones dentro de los 5 meses.</p>
+      <!-- Los minutos salen de medir los MP4, no de estimar: el mas corto dura
+           38 min y el mas largo 69, y los once suman 9.85 h. El sitio y la
+           constancia dicen 10 horas; este parrafo tiene que cuadrar con eso. -->
+      <p>Cada módulo dura entre <b>40 minutos y una hora</b>, unas <b>10 horas</b> en total.
+         Administra tu tiempo para alcanzar a completar los 11 módulos y sus evaluaciones
+         dentro de los 5 meses.</p>
     </div>
 
     <h2>Código de ética y conducta</h2>
@@ -233,14 +267,37 @@ const APROBATORIA = 80   // debe coincidir con calificar() en 0001_aula.sql.
 // El curso promete constancia "con calificacion mayor a 80/100" (leccion
 // "Introduccion al curso" en Kajabi): el umbral no lo decide el codigo.
 
+// 14-ago-2026: se cerro el aula porque los MP4 subidos eran los cortes en crudo.
+// El 16-ago se subieron los editados, ya comprimidos, y las 11 lecciones apuntan
+// a ellos: PARA REABRIR BASTA PONER ESTO EN false Y DESPLEGAR. No hay que tocar
+// la base -- los video_url nunca se borraron. Vive aqui arriba y no al final
+// porque el handler de "cerrar sesion" tambien la consulta.
+const EN_MANTENIMIENTO = true
+
 let usuario = null
 let leccionAbierta = null
 let cursoPorAceptar = null
+// Contador de aperturas de leccion. Dos clics seguidos lanzan dos abrirLeccion()
+// en paralelo y sin esto gana la que resuelva al final EN CADA contenedor por
+// separado: se podia quedar el video de una leccion con el examen de otra.
+let generacion = 0
 
 function mostrar (vista) {
   for (const s of document.querySelectorAll('main > section')) s.hidden = true
   $(vista).hidden = false
-  $('#salir').hidden = vista === '#v-login'
+  // Se decide por si hay sesion, no por el nombre de la vista: durante el
+  // mantenimiento tambien hay gente con sesion abierta y antes se quedaba sin
+  // forma de cerrarla.
+  $('#salir').hidden = !usuario
+
+  // Sin esto, al ocultar la seccion que tenia el foco este se cae al <body>: un
+  // lector de pantalla no anuncia nada y el siguiente Tab reinicia el recorrido
+  // desde el encabezado de la pagina. Mover el foco al titulo destino es lo que
+  // convierte el cambio de vista en algo perceptible sin ver la pantalla.
+  // El scroll va DESPUES del focus: si el navegador ignora preventScroll, el
+  // ultimo en correr manda, y queremos que mande el scroll al inicio.
+  const titulo = $(vista).querySelector('h1')
+  if (titulo) { titulo.tabIndex = -1; titulo.focus({ preventScroll: true }) }
   window.scrollTo(0, 0)
 }
 
@@ -251,10 +308,19 @@ function aviso (donde, texto, tipo = 'err') {
 
 // ---------------------------------------------------------------- acceso
 
-$('#f-login').addEventListener('submit', async e => {
-  e.preventDefault()
-  const boton = e.target.querySelector('button[type=submit]')
+// Cuenta regresiva del boton de la liga. Vive fuera del handler para poder
+// cancelarla desde otros caminos.
+let cuentaLiga = null
+function liberarLiga () {
+  if (cuentaLiga) { clearInterval(cuentaLiga); cuentaLiga = null }
+  const b = $('#liga')
+  if (b) { b.disabled = false; b.textContent = 'Mándame mi liga de acceso' }
+}
+
+$('#entrar-clave').addEventListener('click', async () => {
+  const boton = $('#entrar-clave')
   boton.disabled = true
+  liberarLiga()
   aviso('#msg-login', '')
   const { error } = await sb.auth.signInWithPassword({
     email: $('#correo').value.trim(), password: $('#clave').value
@@ -264,35 +330,83 @@ $('#f-login').addEventListener('submit', async e => {
   arrancar()
 })
 
-$('#liga').addEventListener('click', async () => {
+// Es el submit del formulario, asi que Enter en el campo de correo hace lo
+// esperado: pedir la liga, no intentar entrar con una contrasena vacia.
+$('#f-login').addEventListener('submit', async e => {
+  e.preventDefault()
   const email = $('#correo').value.trim()
   if (!email) return aviso('#msg-login', 'Escribe tu correo primero.')
-  // Sin emailRedirectTo, Supabase manda la liga a su "Site URL", que en un
-  // proyecto nuevo es http://localhost:3000: el alumno acaba en una pagina que
-  // no existe. Se lo decimos explicitamente, y en la ruta donde ya esta.
+
+  // El boton se bloquea 60 s, que es justo la ventana de reenvio de Supabase.
+  // Sin esto el alumno no ve reaccion, vuelve a dar clic, el segundo envio
+  // choca con ese limite y su error PISA el mensaje de exito del primero: se
+  // queda leyendo "no se pudo enviar" y nunca revisa el correo que si le llego.
+  const boton = $('#liga')
+  const textoOriginal = boton.textContent
+  boton.disabled = true
+  boton.textContent = 'Enviando…'
+  aviso('#msg-login', '')
+
+  // shouldCreateUser: false es deliberado. Sin el, escribir un correo que no
+  // esta inscrito le CREA una cuenta: un alumno que se equivoca de direccion
+  // acaba con dos cuentas y sin su curso, y cualquiera puede ensuciar perfiles.
   const { error } = await sb.auth.signInWithOtp({
     email,
-    options: { emailRedirectTo: location.origin + '/aula' }
+    options: { emailRedirectTo: location.origin + '/aula', shouldCreateUser: false }
   })
-  aviso('#msg-login',
-    error ? 'No se pudo enviar la liga. Intenta de nuevo en un minuto.'
-          : 'Listo, te mandamos una liga a tu correo. Revisa también la carpeta de spam.',
-    error ? 'err' : 'ok')
+
+  if (error) {
+    boton.disabled = false
+    boton.textContent = textoOriginal
+    // "Intenta de nuevo en un minuto" seria un consejo falso cuando el correo
+    // simplemente no esta registrado: por mas que reintente no va a llegar nada.
+    const noExiste = /not found|no user|signups? not allowed|otp_disabled/i.test(error.message || '')
+    return aviso('#msg-login', noExiste
+      ? 'No encontramos ese correo. Si te inscribiste con otro, pruébalo; si crees que es un error, escríbenos a contacto@celebios.com'
+      : 'No se pudo enviar la liga. Intenta de nuevo en un minuto.')
+  }
+
+  aviso('#msg-login', 'Listo, te mandamos una liga a tu correo. Revisa también la carpeta de spam.', 'ok')
+  // Se cuenta contra un instante fijo y no decrementando: en iOS los timers se
+  // congelan al cambiar de app, y decrementar convertia los 60 s en varios
+  // minutos reales. El id vive fuera para poder cancelarlo si el alumno entra
+  // con contrasena o cierra sesion, y no dejar el boton bloqueado sobre una
+  // pantalla que ya nadie mira.
+  const hasta = Date.now() + 60000
+  const tick = () => {
+    const quedan = Math.ceil((hasta - Date.now()) / 1000)
+    if (quedan <= 0) return liberarLiga()
+    boton.textContent = `Espera ${quedan} s`
+  }
+  tick()
+  cuentaLiga = setInterval(tick, 1000)
 })
 
 $('#salir').addEventListener('click', async () => {
   await sb.auth.signOut()
   usuario = null
-  mostrar('#v-login')
+  leccionAbierta = null
+  generacion++
+  liberarLiga()
+  // Durante el mantenimiento el login NO se muestra: funciona de verdad, asi que
+  // el alumno pedia su liga, le llegaba, hacia clic y volvia a "Volvemos muy
+  // pronto" -- contradiciendo el aviso y quemando cuota de correo justo en la
+  // ventana en que se va a necesitar para reabrir.
+  mostrar(EN_MANTENIMIENTO ? '#v-mantenimiento' : '#v-login')
 })
 
 // ---------------------------------------------------------------- cursos
 
 async function cargarCursos () {
+  // Filtrar por alumno_id NO sobra aunque el RLS ya lo haga: a un admin el RLS
+  // le devuelve las 21 inscripciones, y esta vista siempre habla de UNA persona,
+  // la que trae la sesion. Sin esto, el `find` de mas abajo agarraba la fila de
+  // otro alumno sin terminos aceptados y el admin quedaba atrapado en la
+  // pantalla de introduccion: aceptaba, se guardaba lo suyo, y volvia a salir.
   const [insc, lecs, prog] = await Promise.all([
-    sb.from('inscripciones').select('curso_id, acepto_terminos_en, cursos(titulo, descripcion)').eq('estado', 'activa'),
+    sb.from('inscripciones').select('curso_id, acepto_terminos_en, expira_en, cursos(titulo, descripcion)').eq('estado', 'activa').eq('alumno_id', usuario.id),
     sb.from('lecciones').select('id, curso_id, numero, titulo').order('numero'),
-    sb.from('progreso').select('leccion_id, video_visto_en, calificacion, aprobado')
+    sb.from('progreso').select('leccion_id, video_visto_en, calificacion, aprobado').eq('alumno_id', usuario.id)
   ])
 
   if (insc.error || lecs.error || prog.error) {
@@ -308,11 +422,37 @@ async function cargarCursos () {
   const sinAceptar = insc.data.find(i => !i.acepto_terminos_en)
   if (sinAceptar) {
     cursoPorAceptar = sinAceptar.curso_id
+    // Se desmarcan las casillas y se limpia el aviso en CADA entrada. Con dos
+    // inscripciones, al aceptar la primera se volvia a esta pantalla con las dos
+    // casillas ya palomeadas: el segundo consentimiento se otorgaba con un clic
+    // y sin haber presentado nada nuevo, que es justo lo que un consentimiento
+    // no debe permitir.
+    for (const c of $('#v-intro').querySelectorAll('input[type=checkbox]')) c.checked = false
+    aviso('#msg-intro', '')
     return mostrar('#v-intro')
   }
 
   const porLeccion = new Map(prog.data.map(p => [p.leccion_id, p]))
   $('#lista-cursos').replaceChildren(...insc.data.map(i => {
+    // Nadie marca la inscripcion como 'vencida': no hay trigger ni cron, la fila
+    // se queda 'activa' para siempre. Pero inscrito_en() ya devuelve false al
+    // pasar expira_en, asi que el RLS deja de entregar el curso y sus lecciones
+    // y la tarjeta salia como "Curso — 0 de 0 lecciones aprobadas · 0%", sin una
+    // palabra sobre el vencimiento. El primero cae el 30-sep-2026.
+    if (i.expira_en && new Date(i.expira_en) <= new Date()) {
+      const vencida = document.createElement('article')
+      vencida.className = 'placa'
+      vencida.innerHTML = `<h2></h2>
+        <p class="kicker">Acceso vencido</p>
+        <p>Tu periodo de acceso a este curso terminó el <b class="fecha"></b>.</p>
+        <p>Si necesitas volver a entrar, escríbenos a
+           <a href="mailto:contacto@celebios.com">contacto@celebios.com</a>.</p>`
+      vencida.querySelector('h2').textContent = i.cursos?.titulo ?? 'Tu curso'
+      vencida.querySelector('.fecha').textContent =
+        new Date(i.expira_en).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })
+      return vencida
+    }
+
     const mias = lecs.data.filter(l => l.curso_id === i.curso_id)
     const hechas = mias.filter(l => porLeccion.get(l.id)?.aprobado).length
     const pct = mias.length ? Math.round(hechas * 100 / mias.length) : 0
@@ -361,47 +501,135 @@ $('#f-acepto').addEventListener('submit', async e => {
 
 // ---------------------------------------------------------------- leccion
 
+// Da de baja el <video> que este montado antes de sustituirlo. Sin esto el
+// elemento viejo sigue descargando hasta que pase el recolector, y iOS Safari
+// tiene un tope de elementos media cargados: pasado ese numero el video nuevo
+// ya no arranca y el alumno cae en un bucle de "Se interrumpio el video" con la
+// red perfecta. Cada Reintentar empeoraba la cuenta.
+function soltarVideo () {
+  const v = $('#lec-video')?.querySelector('video')
+  if (!v) return
+  v.pause()
+  v.removeAttribute('src')
+  v.load()
+}
+
+// Pinta un parrafo de aviso dentro del recuadro del video, opcionalmente con un
+// boton para reintentar.
+function avisoVideo (texto, alReintentar) {
+  soltarVideo()
+  const p = document.createElement('p')
+  p.className = 'sinvideo'
+  p.textContent = texto
+  const caja = [p]
+  if (alReintentar) {
+    const b = document.createElement('button')
+    b.type = 'button'
+    b.className = 'btn-lin'
+    b.textContent = 'Reintentar'
+    b.addEventListener('click', async () => {
+      // Bloquearlo importa: tres clics rapidos eran tres <video> vivos, que es
+      // exactamente como se llega al tope de iOS.
+      b.disabled = true
+      b.textContent = 'Cargando…'
+      await alReintentar()
+    })
+    caja.push(b)
+  }
+  $('#lec-video').replaceChildren(...caja)
+}
+
+async function cargarVideo (l, gen) {
+  $('#lec-video').innerHTML = '<p class="sinvideo">Cargando el video…</p>'
+
+  let res, cuerpo
+  try {
+    const { data: { session } } = await sb.auth.getSession()
+    res = await fetch(`/api/video?leccion=${encodeURIComponent(l.id)}`,
+      { headers: { Authorization: `Bearer ${session?.access_token ?? ''}` } })
+    cuerpo = await res.json().catch(() => ({}))
+  } catch {
+    // Antes esto no existia: en movil con la red intermitente el fetch lanzaba,
+    // la funcion abortaba, y el alumno se quedaba en "Cargando el video…" para
+    // siempre Y SIN EXAMEN, porque el examen se cargaba despues del video.
+    if (gen !== generacion) return
+    return avisoVideo('No pudimos conectarnos. Revisa tu conexión.', () => cargarVideo(l, gen))
+  }
+  if (gen !== generacion) return
+
+  if (!res.ok || !cuerpo.url) {
+    // Sin boton en lo que no se arregla reintentando: 404 (no hay video), 403
+    // (acceso vencido), 401 (sesion muerta) y 500 (ruta mal configurada) son
+    // condiciones permanentes, y ofrecer "Reintentar" ahi es invitar al alumno a
+    // darle diez veces para obtener el mismo resultado.
+    const permanentes = { 404: 'El video de esta lección todavía no se ha subido.',
+                          403: 'Tu acceso a este curso no está vigente. Escríbenos a contacto@celebios.com',
+                          401: 'Tu sesión expiró. Vuelve a entrar desde el correo o con tu contraseña.',
+                          500: 'Este video está mal configurado. Escríbenos a contacto@celebios.com' }
+    return avisoVideo(permanentes[res.status] ?? 'No pudimos cargar el video.',
+                      permanentes[res.status] ? null : () => cargarVideo(l, gen))
+  }
+
+  const v = document.createElement('video')
+  v.controls = true; v.playsInline = true; v.preload = 'metadata'
+  v.style.cssText = 'width:100%;border-radius:6px;background:#000'
+  // La URL firmada caduca. Si el alumno deja la pestana abierta y vuelve horas
+  // despues, el siguiente rango que pida el reproductor recibe 403 y el <video>
+  // emite 'error': sin este listener se quedaba en negro, mudo, sin decir que
+  // bastaba con recargar. Se conserva el minuto donde iba.
+  v.addEventListener('error', () => {
+    if (gen !== generacion) return
+    const segundo = v.currentTime
+    avisoVideo('Se interrumpió el video. Vuelve a cargarlo para seguir donde ibas.', async () => {
+      await cargarVideo(l, gen)
+      if (gen !== generacion) return   // el alumno navego mientras recargaba
+      const nuevo = $('#lec-video').querySelector('video')
+      // El seek va en 'loadedmetadata', no inmediatamente: con preload='metadata'
+      // el readyState todavia es HAVE_NOTHING y varios navegadores descartan la
+      // posicion; Safari viejo ademas lanza InvalidStateError. Asignarlo aqui
+      // hacia que la promesa de "seguir donde ibas" fallara la mitad de las veces.
+      if (nuevo && segundo) {
+        nuevo.addEventListener('loadedmetadata', () => { nuevo.currentTime = segundo }, { once: true })
+      }
+    })
+  })
+  v.src = cuerpo.url            // como propiedad, no interpolado en HTML
+  soltarVideo()
+  $('#lec-video').replaceChildren(v)
+}
+
 async function abrirLeccion (l) {
+  const gen = ++generacion
   leccionAbierta = l
   $('#lec-kicker').textContent = `Lección ${String(l.numero).padStart(2, '0')}`
   $('#lec-titulo').textContent = l.titulo
   aviso('#msg-examen', '')
+  // Limpiar el examen AQUI, antes del primer await, no es cosmetico: si no, el
+  // examen de la leccion anterior seguia en pantalla y clickeable bajo el titulo
+  // de la nueva, y su submit calificaba la leccion vieja porque el listener
+  // cierra sobre la `l` de su propio closure.
+  $('#lec-examen').replaceChildren()
   mostrar('#v-leccion')
 
-  // El video no se sirve por una ruta fija: se pide una URL firmada que caduca.
-  // Quien autoriza es el RLS, dentro de /api/video — aqui no se decide nada.
-  $('#lec-video').innerHTML = '<p class="sinvideo">Cargando el video…</p>'
-  const { data: { session } } = await sb.auth.getSession()
-  const res = await fetch(`/api/video?leccion=${encodeURIComponent(l.id)}`,
-    { headers: { Authorization: `Bearer ${session?.access_token ?? ''}` } })
-  const cuerpo = await res.json().catch(() => ({}))
-
-  if (res.ok && cuerpo.url) {
-    const v = document.createElement('video')
-    v.controls = true; v.playsInline = true; v.preload = 'metadata'
-    v.style.cssText = 'width:100%;border-radius:6px;background:#000'
-    v.src = cuerpo.url            // como propiedad, no interpolado en HTML
-    $('#lec-video').replaceChildren(v)
-  } else {
-    const p = document.createElement('p')
-    p.className = 'sinvideo'
-    p.textContent = res.status === 404
-      ? 'El video de esta lección todavía no se ha subido.'
-      : res.status === 403
-        ? 'Tu acceso a este curso no está vigente. Escríbenos a contacto@celebios.com'
-        : 'No pudimos cargar el video. Recarga la página e intenta de nuevo.'
-    $('#lec-video').replaceChildren(p)
-  }
+  // El video se pide aparte y NO se espera: si tarda o falla, el examen sale
+  // igual. Antes iba primero y en serie, asi que un video caido dejaba al
+  // alumno sin poder presentar nada.
+  cargarVideo(l, gen)
 
   const { data: preguntas, error } = await sb
     .from('preguntas').select('numero, enunciado, opciones').eq('leccion_id', l.id).order('numero')
 
+  if (gen !== generacion) return
   if (error) return aviso('#lec-examen', 'No pudimos cargar el examen.')
   if (!preguntas.length) return ($('#lec-examen').innerHTML = '<p class="vacio">Esta lección no tiene examen.</p>')
 
+  // Con 6 preguntas el 80% no se puede sacar: los resultados posibles son 67% y
+  // 83%. Decirle "se aprueba con 80%" era exacto de nombre e inutil de fondo;
+  // lo accionable es cuantas tiene que acertar.
+  const minimas = Math.ceil(preguntas.length * APROBATORIA / 100)
   const form = document.createElement('form')
   form.innerHTML = `<h2 style="margin-top:2rem">Examen</h2>
-    <p class="kicker">${preguntas.length} preguntas · se aprueba con ${APROBATORIA}%</p>`
+    <p class="kicker">${preguntas.length} preguntas · necesitas ${minimas} correctas para aprobar</p>`
 
   for (const p of preguntas) {
     const fs = document.createElement('fieldset')
@@ -430,27 +658,88 @@ async function abrirLeccion (l) {
     const respuestas = Object.fromEntries(
       preguntas.map(p => [p.numero, form.querySelector(`input[name=p${p.numero}]:checked`)?.value])
     )
-    const { data, error } = await sb.rpc('calificar', { p_leccion: l.id, p_respuestas: respuestas })
+    let data, error
+    try {
+      ({ data, error } = await sb.rpc('calificar', { p_leccion: l.id, p_respuestas: respuestas }))
+    } catch {
+      error = true
+    }
     enviar.disabled = false
-    if (error) return aviso('#msg-examen', 'No se pudo calificar. Vuelve a intentarlo.')
+    // Este era el UNICO await que escribia en el DOM sin comprobar la generacion:
+    // con la red lenta, enviar el examen y navegar a otra leccion pintaba
+    // "Sacaste 83%" bajo el titulo de una leccion que el alumno ni ha abierto.
+    if (gen !== generacion) return
+    if (error || !data?.length) {
+      // calificar() lanza "no inscrito en este curso" en el minuto exacto en que
+      // vence el acceso. Colapsarlo en "vuelve a intentarlo" mandaba al alumno a
+      // reintentar para siempre algo que ya nunca va a funcionar.
+      const vencido = /no inscrito|not enrolled/i.test(error?.message ?? '')
+      return aviso('#msg-examen', vencido
+        ? 'Tu acceso a este curso no está vigente. Escríbenos a contacto@celebios.com'
+        : 'No se pudo calificar. Vuelve a intentarlo.')
+    }
     const r = data[0]
     aviso('#msg-examen',
       r.aprobado
         ? `Sacaste ${r.calificacion}%. Aprobado — guardamos tu mejor calificación.`
-        : `Sacaste ${r.calificacion}%. Necesitas ${APROBATORIA}% para aprobar; puedes volver a intentarlo, tu mejor nota no se pierde.`,
+        : `Sacaste ${r.calificacion}%. Necesitas ${minimas} de ${preguntas.length} correctas; puedes volver a intentarlo, tu mejor nota no se pierde.`,
       r.aprobado ? 'ok' : 'err')
-    cargarCursos()
   })
 
   $('#lec-examen').replaceChildren(form)
 }
 
-$('#volver').addEventListener('click', () => mostrar('#v-cursos'))
+$('#volver').addEventListener('click', () => {
+  // Sin esto, leccionAbierta se queda con la ultima leccion para siempre y el
+  // guard de onAuthStateChange deja de dispararse el resto de la sesion.
+  leccionAbierta = null
+  generacion++            // cancela cualquier carga de video en vuelo
+  soltarVideo()
+  mostrar('#v-cursos')
+  // Aqui, y no al enviar el examen, es donde se repinta el avance: el alumno
+  // esta viendo ESTA pantalla. Intentar refrescarla mientras miraba la leccion
+  // fue justo lo que dejo la barra de progreso congelada en 0%.
+  cargarCursos()
+})
 
 // ---------------------------------------------------------------- arranque
 
+// (la constante vive arriba, junto al resto del estado)
+
+// Evita que arrancar() se solape consigo mismo: entrar con contrasena lo llama
+// a mano Y dispara SIGNED_IN, con lo que las seis consultas de la pantalla de
+// cursos salian por duplicado.
+let arrancando = false
+
 async function arrancar () {
+  if (arrancando) return
+  arrancando = true
+  try { await arrancarInterno() } finally { arrancando = false }
+}
+
+async function arrancarInterno () {
   const { data: { session } } = await sb.auth.getSession()
+  if (EN_MANTENIMIENTO) {
+    usuario = session?.user ?? null    // para que el boton de salir aparezca
+    return mostrar('#v-mantenimiento')
+  }
+
+  // La liga caducada o ya usada regresa el error en el FRAGMENTO de la URL, no
+  // en la query. Como nadie lo leia, el alumno aterrizaba en un formulario de
+  // login idéntico al de siempre, sin una palabra: lo tipico es que asuma que su
+  // cuenta no existe. Va a pasar a escala, porque 17 de los 21 nunca han entrado
+  // y las ligas de Supabase caducan en una hora.
+  if (location.hash.includes('error')) {
+    const h = new URLSearchParams(location.hash.slice(1))
+    history.replaceState(null, '', location.pathname)
+    if (!session) {
+      mostrar('#v-login')
+      return aviso('#msg-login', h.get('error_code') === 'otp_expired'
+        ? 'Esa liga ya venció o ya se usó. Pide una nueva aquí abajo.'
+        : 'No pudimos validar tu acceso. Pide una liga nueva aquí abajo.')
+    }
+  }
+
   if (!session) return mostrar('#v-login')
   usuario = session.user
 

@@ -8,22 +8,103 @@ Los alumnos vienen de Kajabi y **nadie eligió contraseña**: para casi todos, e
 primer correo de CELEBIOS que reciban será éste. Que llegue en inglés y de un
 remitente desconocido es la forma más rápida de acabar en spam.
 
-## Antes de pegar nada
+## Antes de pegar nada: quién manda el correo
+
+**Resend quedó descartado el 5 de agosto.** Pide tres registros —DKIM (TXT),
+más un MX y un TXT en el subdominio `send`— y **los tres son obligatorios**
+(verificado contra su API: `type=MX name=send status=not_started`). Ninguno de
+los dos dominios lo permite:
+
+- **`celebios.com`** vive en **DNS de Wix**, con el correo en Google Workspace
+  (MX = `aspmx.l.google.com`). Wix **no ofrece "Add Record" en la sección MX**
+  mientras Google esté conectado, ni siquiera para un subdominio.
+- **`celebios.online`** está en nameservers de Cloudflare
+  (`jermaine`/`joyce.ns.cloudflare.com`) pero **no en la cuenta de Angel** —la
+  suya tiene cero dominios—. Además es **el dominio de Kajabi**, la plataforma
+  que se apaga el 30-ago: no es sitio donde fundar una identidad de correo.
+
+Lo que sí hay y ya está pagado: **Google Workspace en `celebios.com`**, con
+`contacto@celebios.com` funcionando. Supabase habla SMTP con Google sin tocar
+un solo registro DNS.
 
 En **Project Settings → Authentication → SMTP Settings**:
 
 | Campo | Valor |
 |---|---|
-| Host | `smtp.resend.com` |
+| Host | `smtp.gmail.com` |
 | Port | `465` |
-| Username | `resend` |
-| Password | la API key de Resend |
-| Sender email | `aula@celebios.com` |
+| Username | `contacto@celebios.com` (el correo completo) |
+| Password | una **contraseña de aplicación** de Google, no la del correo |
+| Sender email | `contacto@celebios.com` |
 | Sender name | `CELEBIOS` |
+
+La contraseña de aplicación se genera en la cuenta de Google
+(`myaccount.google.com` → Seguridad → Verificación en dos pasos → Contraseñas
+de aplicaciones) y **exige tener 2FA encendida**. Es un secreto: va del gestor
+de contraseñas al campo de Supabase, nunca al chat ni al repo.
 
 Y súbele el **rate limit** (en Authentication → Rate Limits): el de fábrica son
 unos pocos por hora y por eso hoy da `over_email_send_rate_limit`. Con SMTP
 propio se puede subir a 30 por hora sin problema.
+
+### Si el correo no sale: leer el log, no adivinar
+
+El endpoint devuelve un `500` mudo (`"Error sending magic link email"`). El
+motivo real está en **Authentication logs**, y se saca así:
+
+```
+mcp Supabase get_logs → project lwawpdjsfjvlyvqwqiqp, service "auth"
+```
+
+El 5 de agosto el primer intento dio:
+
+```
+535 5.7.8 Username and Password not accepted
+https://support.google.com/mail/?p=BadCredentials
+```
+
+**Ese error significa que el puerto y el TLS están bien** —se llegó hasta la
+fase de autenticación— y que lo único mal es la credencial.
+
+**Y el 14 de agosto se encontró por qué, y no era un dedazo.** La cadena, de
+abajo hacia arriba:
+
+1. En la consola de administrador de `celebios.com`, **Seguridad → Verificación
+   en 2 pasos**, la casilla *"Permitir que los usuarios activen la verificación
+   en 2 pasos"* estaba **apagada**.
+2. Por eso `contacto@celebios.com` no podía activar 2FA. Su propia página lo
+   decía: *"No podrás activar la Verificación en 2 pasos hasta que el
+   administrador lo permita"*.
+3. Sin 2FA, Google **no ofrece contraseñas de aplicación**:
+   `myaccount.google.com/apppasswords` respondía *"La opción de configuración
+   que buscas no está disponible para tu cuenta"*.
+4. Y sin contraseña de aplicación, el SMTP de Gmail rechaza cualquier cosa.
+
+O sea: **no existía una contraseña válida que se pudiera poner.** Ninguna
+habría pasado. Se destrabó marcando esa casilla (verificado recargando la
+página) y el orden correcto de ahí en adelante es: activar 2FA en la cuenta →
+generar la contraseña de aplicación → pegarla en Supabase.
+
+Si el 535 vuelve **después** de tener una contraseña de aplicación real, ahí sí
+las sospechas de siempre: pegada con espacios (van **16 caracteres seguidos**),
+o generada en la cuenta equivocada.
+
+⚠️ **Y una fecha que se come todo esto.** El mismo día se vio en la consola:
+*"No pudimos procesar tu último pago… para evitar que se suspenda el servicio
+el **3 sept 2026**, actualiza tu información de pago"*. Si Workspace se
+suspende, no es solo el aula: es el correo de CELEBIOS entero, y este montaje
+SMTP deja de existir. **Si esa fecha se acerca sin resolverse, mover el correo
+del aula a un ESP que se valide solo con TXT** —Brevo, p. ej.— porque Wix
+acepta TXT aunque no deje tocar el MX.
+
+### Lo que esto cuesta y cuándo dejará de alcanzar
+
+Gmail corta alrededor de los **2,000 destinatarios al día**: sobra para 21
+alumnos y para las ligas de acceso. Lo que no da es tablero de envíos, ni
+reintentos, ni rebotes separados —los rebotes caen en la bandeja de
+`contacto@`—. El día que CELEBIOS mande cientos de correos, o quiera ver qué
+se abrió, hay que mover el DNS de `celebios.com` a Cloudflare y volver a
+Resend; ahí el MX deja de ser un problema.
 
 ---
 
@@ -78,8 +159,29 @@ propio se puede subir a 30 por hora sin problema.
 
 ## Invite user
 
-El que se manda una sola vez a los 21 que vienen de Kajabi. **Este es el que más
-importa**: es el correo que explica por qué su aula cambió de dirección.
+🔴 **OJO (14-ago-2026): a los 21 de Kajabi esta plantilla NO se les puede
+mandar.** El script de importación ya los creó como usuarios con el correo
+confirmado, y `POST /auth/v1/invite` sobre un usuario existente contesta:
+
+```
+422 {"error_code":"email_exists","msg":"A user with this email address has already been registered"}
+```
+
+Supabase sólo usa esta plantilla para **cuentas nuevas**. Comprobado sin mandar
+nada (se probó contra la cuenta de Angel, que también existe).
+
+Así que el correo de "tu curso se mudó" **no sale de Supabase**: hay que
+mandarlo aparte, desde `contacto@celebios.com`, con un enlace normal a
+`/aula` donde cada quien pide su propia liga. Es además mejor así: 21 ligas
+mágicas disparadas a la vez **caducan en una hora**, y la mayoría se leería
+tarde. Separando el aviso del acceso, el aviso no caduca nunca.
+
+El texto de abajo sirve tal cual como cuerpo de ese correo, quitándole el
+botón con `{{ .ConfirmationURL }}` y dejando en su lugar una liga a
+`https://celebios.vercel.app/aula`.
+
+La plantilla se queda cargada de todos modos: el día que entre un alumno
+nuevo de verdad, es la que le toca.
 
 **Asunto:** `Tu curso de CELEBIOS cambió de casa`
 
@@ -141,15 +243,36 @@ Mismo cuerpo que el Magic Link, cambiando el titular por
 
 ---
 
-## Qué revisar después de pegarlas
+## ✅ Verificado en vivo el 14-ago-2026
+
+El primer correo real salió a las 17:42 y **llegó a Recibidos**, no a spam:
+
+- Remitente `contacto@celebios.com`, asunto `Tu acceso al aula de CELEBIOS`.
+- Acentos perfectos —"botón", "contraseña", "ignóralo", "Biológicas"—: **no hace
+  falta pelearse con el charset.** Las entidades HTML (`&oacute;`) tampoco
+  estorban.
+- El botón apunta a `.../auth/v1/verify?...&redirect_to=…`, sin rastro de
+  `localhost`.
+
+⚠️ **El destino hay que pedirlo cada vez.** Sin `redirect_to`, GoTrue usa el
+**Site URL**, que es `https://celebios.vercel.app` **a secas**: el alumno
+aterriza en la portada, no en el aula. El login del aula ya lo manda bien
+(`emailRedirectTo: location.origin + '/aula'` en `aula/index.html`), pero
+cualquier envío hecho **por API** tiene que añadirlo a mano:
+
+```
+POST /auth/v1/otp?redirect_to=https%3A%2F%2Fcelebios.vercel.app%2Faula
+```
+
+Comprobado con dos correos seguidos: el primero cayó en la portada, el segundo
+—con el parámetro— en `/aula`.
+
+## Qué revisar si se cambian
 
 1. Que el remitente diga **CELEBIOS**, no Supabase.
-2. Que llegue a **Recibidos** y no a spam. Con DKIM y SPF de Resend bien puestos
-   debería; si cae en Promociones, es normal y no es un fallo.
-3. Que el botón lleve a **celebios.vercel.app/aula** y no a `localhost:3000`
-   —ese fue el fallo del 5 de agosto y se arregla en URL Configuration, no aquí.
-4. Que los acentos se vean bien. Si salen como `Ã³`, falta el `charset` en el
-   encabezado del correo.
+2. Que llegue a **Recibidos**. Si cae en Promociones, es normal y no es un fallo.
+3. Que el botón lleve a **celebios.vercel.app/aula**.
+4. Que los acentos se vean bien.
 
 ## Lo que estas plantillas no hacen
 

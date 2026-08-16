@@ -193,7 +193,11 @@ class TestOfertaGatos(unittest.TestCase):
             {
                 "price_mxn": 1400,
                 "payment_type": "pago_unico",
-                "hours": 12,
+                # 10, no 12: los once MP4 suman 9.85 h medidas con ffprobe, y es
+                # lo que dice la constancia oficial. El sitio anunciaba 12 desde
+                # el principio y este contrato lo respaldaba, asi que la red que
+                # deberia atrapar cifras equivocadas venia repitiendo la mala.
+                "hours": 10,
                 "topics_count": 11,
                 "access_months": 5,
             },

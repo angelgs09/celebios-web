@@ -6,7 +6,7 @@
       "status": "available",
       "category": "curso",
       "topic": "Comportamiento y comunicación felina",
-      "summary": "Curso 100% en línea sobre lenguaje y comunicación felina: 12 horas de contenido grabado organizadas en 11 temas (territorialidad, percepción, expresiones faciales, vocalizaciones, señales de estrés y afecto, entre otros), acceso 5 meses 24/7 y constancia con valor curricular. Impartido por la Dra. Camila Hernández (médica veterinaria chilena, Máster en Etología Clínica por la Universidad Autónoma de Barcelona, autora de \"Miaulogía: Guía de comportamiento felino\"). Es la única convocatoria abierta hoy en el catálogo de CELEBIOS.",
+      "summary": "Curso 100% en línea sobre lenguaje y comunicación felina: 10 horas de contenido grabado organizadas en 11 temas (territorialidad, percepción, expresiones faciales, vocalizaciones, señales de estrés y afecto, entre otros), acceso 5 meses 24/7 y constancia con valor curricular. Impartido por la Dra. Camila Hernández (médica veterinaria chilena, Máster en Etología Clínica por la Universidad Autónoma de Barcelona, autora de \"Miaulogía: Guía de comportamiento felino\"). Es la única convocatoria abierta hoy en el catálogo de CELEBIOS.",
       "evidence": [
         "redesign-v1/CONTENIDO-REAL.md#L94-L102",
         "redesign-v2/DATOS-REALES-harvest.md#L7-L9",
@@ -16,7 +16,7 @@
       "offer": {
         "price_mxn": 1400,
         "payment_type": "pago_unico",
-        "hours": 12,
+        "hours": 10,
         "topics_count": 11,
         "access_months": 5
       }

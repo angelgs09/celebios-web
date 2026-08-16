@@ -41,7 +41,12 @@ const valor = (bandera) => {
   return i === -1 ? null : args[i + 1]
 }
 
-const dir = valor('--dir') || 'C:/Users/coche/Desktop/CELEBIOS-web/videos'
+// Este default APUNTA A DONDE ESCRIBE comprimir-videos.ps1, y tiene que seguir
+// haciendolo. Antes apuntaba a CELEBIOS-web/videos, que es donde viven los
+// cortes en CRUDO: correr el script sin --dir comparaba bytes contra esos,
+// imprimia "ya esta arriba, se salta" en los once y no subia nada, sin un solo
+// error en pantalla. Es el mismo accidente que obligo a cerrar el aula.
+const dir = valor('--dir') || 'C:/Users/coche/Desktop/CELEBIOS-videos/web'
 const solo = valor('--solo') ? Number(valor('--solo')) : null
 const token = cargarToken()
 
