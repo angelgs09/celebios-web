@@ -482,11 +482,19 @@ async function cargarCursos () {
     const hechas = mias.filter(l => porLeccion.get(l.id)?.aprobado).length
     const pct = mias.length ? Math.round(hechas * 100 / mias.length) : 0
 
+    // La fecha de vencimiento va a la vista. La introduccion habla de "5 meses",
+    // pero los vencimientos reales van del 1-oct-2026 al 5-ene-2027 segun cuando
+    // se inscribio cada quien: a cinco personas les quedan menos de tres meses y
+    // no tenian forma de saberlo hasta que se les cerrara la puerta.
+    const vence = i.expira_en
+      ? ` · vence el ${new Date(i.expira_en).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })}`
+      : ''
+
     const caja = document.createElement('article')
     caja.className = 'placa'
     caja.innerHTML =
       `<h2></h2>
-       <p class="kicker">${hechas} de ${mias.length} lecciones aprobadas · ${pct}%</p>
+       <p class="kicker">${hechas} de ${mias.length} lecciones aprobadas · ${pct}%${vence}</p>
        <div class="barra"><i style="width:${pct}%"></i></div>
        <ul class="lista" style="margin-top:1.5rem"></ul>`
     caja.querySelector('h2').textContent = i.cursos?.titulo ?? 'Curso'
@@ -779,8 +787,15 @@ async function arrancarInterno () {
 
 // La liga de acceso regresa con la sesion en el fragmento de la URL, asi que
 // hay que reaccionar al evento y no solo leer la sesion una vez al cargar.
+//
+// El guard es `!usuario`, o sea "solo la PRIMERA vez". supabase-js emite
+// SIGNED_IN cada vez que se vuelve a la pestana y cada vez que refresca el
+// token, no solo al entrar. Con el guard anterior (leccionAbierta === null)
+// eso reiniciaba la pantalla: la alumna palomeaba las dos casillas del codigo
+// de etica, le entraba un WhatsApp, volvia, y las encontraba vacias. Es el
+// primer paso de las 18 personas que estan por entrar.
 sb.auth.onAuthStateChange((evento) => {
-  if (evento === 'SIGNED_IN' && (leccionAbierta === null)) arrancar()
+  if (evento === 'SIGNED_IN' && !usuario) arrancar()
 })
 
 arrancar()

@@ -249,7 +249,9 @@ if ($Aplicar) {
     # escrita en este archivo -- por eso Correo-Constancia va sin boton -- pero
     # se habia aplicado solo a la plantilla de una persona. Aqui se comprueba
     # contra el aula DESPLEGADA, no contra lo que uno crea que esta desplegado.
-    if (-not $Correccion -and -not $Constancia) {
+    # Solo -Constancia esta exento: es la unica plantilla SIN boton al aula.
+    # -Correccion tambien lleva uno, asi que tiene que pasar por el guard.
+    if (-not $Constancia) {
         try {
             $aula = (Invoke-WebRequest -Uri $AULA -UseBasicParsing -TimeoutSec 20).Content
         } catch {
