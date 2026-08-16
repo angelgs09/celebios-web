@@ -212,7 +212,15 @@ async function cargar () {
   // Tabla de alumnos
   const t = $('#tabla'); t.replaceChildren()
   if (!ins.data.length) {
-    $('#tabla').outerHTML = '<div class="vacio" id="tabla">Todavía no hay inscripciones.</div>'
+    // El vacio va DENTRO de la tabla, no en lugar de ella. Antes esto hacia
+    // outerHTML = '<div id="tabla">…', o sea sustituia el <table> por un <div>
+    // que heredaba el id: en la siguiente pasada, createTHead() no existe en
+    // HTMLDivElement y reventaba cargar() con un TypeError, llevandose por
+    // delante la unica pantalla que hay para editar titulos y video_url.
+    const fila = t.createTBody().insertRow().insertCell()
+    fila.colSpan = 7
+    fila.className = 'vacio'
+    fila.textContent = 'Todavía no hay inscripciones.'
   } else {
     const thead = t.createTHead().insertRow()
     for (const h of ['Alumno','Correo','Curso','Estado','Cómo pagó','Monto','Avance'])

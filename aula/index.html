@@ -48,6 +48,11 @@ header{
 .marca{font-family:"Bricolage Grotesque",sans-serif; font-weight:800; letter-spacing:.02em}
 main{max-width:56rem; margin:0 auto; padding:var(--s6) var(--s5) var(--s7)}
 [hidden]{display:none !important}
+/* mostrar() enfoca la seccion destino para que un lector de pantalla anuncie el
+   cambio de vista. Las secciones llevan tabindex="-1", asi que NO son alcanzables
+   con Tab: el unico foco que reciben es el programatico, y ahi el recuadro del
+   navegador solo seria ruido visual. Los controles conservan el suyo. */
+main > section:focus{outline:none}
 
 button,.btn{
   font:inherit; font-weight:600; cursor:pointer; border-radius:var(--pill);
@@ -119,11 +124,11 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
        Se enciende con EN_MANTENIMIENTO en el script de abajo. Tapa todo lo
        demas: mientras este en true, nadie ve cursos ni lecciones, tenga
        sesion o no. Para reabrir, poner la constante en false y desplegar. -->
-  <section id="v-mantenimiento" hidden>
+  <section id="v-mantenimiento" hidden aria-labelledby="t-mantenimiento">
     <p class="kicker">Aula virtual</p>
     <!-- Sin explicaciones: al alumno se le dice que volvemos, no por que.
          Los detalles internos no salen del equipo. -->
-    <h1>Volvemos muy pronto</h1>
+    <h1 id="t-mantenimiento">Volvemos muy pronto</h1>
     <div class="caja">
       <p>Estamos haciendo unos ajustes en el aula.</p>
       <p><strong>Tu cuenta y tu acceso no cambian.</strong> No tienes que hacer
@@ -133,9 +138,9 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
   </section>
 
   <!-- ============ acceso ============ -->
-  <section id="v-login" hidden>
+  <section id="v-login" hidden aria-labelledby="t-login">
     <p class="kicker">Aula virtual</p>
-    <h1>Entra a tus cursos</h1>
+    <h1 id="t-login">Entra a tus cursos</h1>
     <!-- La liga va PRIMERO y es el submit del formulario: ninguno de los alumnos
          que vienen de Kajabi tiene contrasena, asi que pedirsela de entrada era
          mandarlos a una via muerta. La contrasena queda plegada por si alguien
@@ -163,7 +168,7 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
   </section>
 
   <!-- ============ mis cursos ============ -->
-  <section id="v-cursos" hidden>
+  <section id="v-cursos" hidden aria-labelledby="saludo">
     <p class="kicker">Mis cursos</p>
     <h1 id="saludo">Bienvenida</h1>
     <div id="lista-cursos"></div>
@@ -173,9 +178,9 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
   <!-- Reproduce la seccion "Introducción" de Kajabi. El Código de Ética es de
        CELEBIOS entero, no de este curso; el texto de arriba sí es del curso, y
        habrá que moverlo a la base el día que haya un segundo. -->
-  <section id="v-intro" hidden>
+  <section id="v-intro" hidden aria-labelledby="t-intro">
     <p class="kicker">Antes de empezar</p>
-    <h1>Introducción al curso</h1>
+    <h1 id="t-intro">Introducción al curso</h1>
     <div class="placa">
       <p>Bienvenid@ al aula virtual del curso <b>Lenguaje y comunicación de los gatos</b>.
          A través de este sitio tendrás acceso a todo el contenido.</p>
@@ -187,12 +192,14 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
          participación con validez curricular.</p>
       <p>Si no acreditas alguno, puedes estudiar la clase de nuevo y volver a presentarlo:
          se conserva tu mejor calificación.</p>
-      <!-- Los minutos salen de medir los MP4, no de estimar: el mas corto dura
-           38 min y el mas largo 69, y los once suman 9.85 h. El sitio y la
-           constancia dicen 10 horas; este parrafo tiene que cuadrar con eso. -->
-      <p>Cada módulo dura entre <b>40 minutos y una hora</b>, unas <b>10 horas</b> en total.
-         Administra tu tiempo para alcanzar a completar los 11 módulos y sus evaluaciones
-         dentro de los 5 meses.</p>
+      <!-- Medido con ffprobe sobre los MP4 que se sirven: el mas corto dura 38.3
+           min y el mas largo 68.9, y los once suman 9.85 h. El rango se redondea
+           HACIA AFUERA en los dos extremos (35 y 70) a proposito: decir "entre 40
+           minutos y una hora" prometia un piso mas alto que el real y un techo
+           que 6 de los 11 modulos rebasan. -->
+      <p>Cada módulo dura entre <b>35 minutos y una hora y diez</b>, unas <b>10 horas</b>
+         en total. Administra tu tiempo para alcanzar a completar los 11 módulos y sus
+         evaluaciones dentro de los 5 meses.</p>
     </div>
 
     <h2>Código de ética y conducta</h2>
@@ -238,7 +245,7 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
   </section>
 
   <!-- ============ leccion ============ -->
-  <section id="v-leccion" hidden>
+  <section id="v-leccion" hidden aria-labelledby="lec-titulo">
     <button id="volver" class="btn-min">← Volver a mis cursos</button>
     <p class="kicker" id="lec-kicker"></p>
     <h1 id="lec-titulo"></h1>
@@ -292,12 +299,19 @@ function mostrar (vista) {
 
   // Sin esto, al ocultar la seccion que tenia el foco este se cae al <body>: un
   // lector de pantalla no anuncia nada y el siguiente Tab reinicia el recorrido
-  // desde el encabezado de la pagina. Mover el foco al titulo destino es lo que
-  // convierte el cambio de vista en algo perceptible sin ver la pantalla.
+  // desde el encabezado de la pagina.
+  //
+  // Se enfoca la SECCION y no su <h1>: en #v-leccion el boton "Volver a mis
+  // cursos" va antes del titulo, asi que enfocando el h1 solo se llegaba a el
+  // con Shift+Tab. Enfocando el contenedor, Tab recorre a sus hijos en orden y
+  // el lector de pantalla anuncia igual el titulo, porque la seccion lleva
+  // aria-labelledby apuntando a su h1.
+  //
   // El scroll va DESPUES del focus: si el navegador ignora preventScroll, el
   // ultimo en correr manda, y queremos que mande el scroll al inicio.
-  const titulo = $(vista).querySelector('h1')
-  if (titulo) { titulo.tabIndex = -1; titulo.focus({ preventScroll: true }) }
+  const seccion = $(vista)
+  seccion.tabIndex = -1
+  seccion.focus({ preventScroll: true })
   window.scrollTo(0, 0)
 }
 
@@ -350,6 +364,13 @@ $('#f-login').addEventListener('submit', async e => {
   // shouldCreateUser: false es deliberado. Sin el, escribir un correo que no
   // esta inscrito le CREA una cuenta: un alumno que se equivoca de direccion
   // acaba con dos cuentas y sin su curso, y cualquiera puede ensuciar perfiles.
+  //
+  // Y el mensaje distinto para "no encontramos ese correo" TAMBIEN es deliberado,
+  // sabiendo lo que cuesta: convierte esta pantalla en un oraculo de quien tomo
+  // el curso, porque quien pruebe direcciones sabra cuales estan inscritas. Con
+  // 21 alumnos y sin dato sensible detras, decirle a la persona que se equivoco
+  // de correo vale mas que esa fuga. Si algun dia deja de valer, el cambio es un
+  // solo texto: "Si ese correo esta registrado, te acaba de llegar la liga".
   const { error } = await sb.auth.signInWithOtp({
     email,
     options: { emailRedirectTo: location.origin + '/aula', shouldCreateUser: false }
