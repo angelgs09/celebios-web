@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Aula — CELEBIOS</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png">
 <style>
 /* Auto-alojadas: el aula tenia el access_token del alumno en la pagina y
    ademas pedia la tipografia a Google en cada carga. */
@@ -650,6 +652,9 @@ async function cargarVideo (l, gen) {
 
   const v = document.createElement('video')
   v.controls = true; v.playsInline = true; v.preload = 'metadata'
+  // Sin etiqueta, un lector de pantalla solo anuncia "reproductor de video" y no
+  // dice de que leccion es. Con once en la lista, eso no orienta a nadie.
+  v.setAttribute('aria-label', `Video de la lección ${l.numero}: ${l.titulo}`)
   v.style.cssText = 'width:100%;border-radius:6px;background:#000'
   // La URL firmada caduca. Si el alumno deja la pestana abierta y vuelve horas
   // despues, el siguiente rango que pida el reproductor recibe 403 y el <video>
