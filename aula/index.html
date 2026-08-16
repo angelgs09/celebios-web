@@ -190,8 +190,8 @@ fieldset label:hover{background:rgba(47,168,201,.08)}
       <p>Al finalizar cada módulo hay un cuestionario de 6 preguntas. Si resuelves todos
          obteniendo una calificación mayor a <b>80/100</b>, obtendrás una constancia de
          participación con validez curricular.</p>
-      <p>Si no acreditas alguno, puedes estudiar la clase de nuevo y volver a presentarlo:
-         se conserva tu mejor calificación.</p>
+      <p>Si no acreditas alguno, puedes estudiar la clase de nuevo y volver a presentarlo
+         hasta <b>tres veces por hora</b>: se conserva tu mejor calificación.</p>
       <!-- Medido con ffprobe sobre los MP4 que se sirven: el mas corto dura 38.3
            min y el mas largo 68.9, y los once suman 9.85 h. El rango se redondea
            HACIA AFUERA en los dos extremos (35 y 70) a proposito: decir "entre 40
@@ -275,11 +275,15 @@ const APROBATORIA = 80   // debe coincidir con calificar() en 0001_aula.sql.
 // "Introduccion al curso" en Kajabi): el umbral no lo decide el codigo.
 
 // 14-ago-2026: se cerro el aula porque los MP4 subidos eran los cortes en crudo.
-// El 16-ago se subieron los editados, ya comprimidos, y las 11 lecciones apuntan
-// a ellos: PARA REABRIR BASTA PONER ESTO EN false Y DESPLEGAR. No hay que tocar
-// la base -- los video_url nunca se borraron. Vive aqui arriba y no al final
-// porque el handler de "cerrar sesion" tambien la consulta.
-const EN_MANTENIMIENTO = true
+// 16-ago-2026: REABIERTA. Los once editados estan en Blob, comprimidos (8.41 GB
+// -> 1.35 GB, misma duracion y calidad verificadas cuadro a cuadro), y las once
+// lecciones apuntan a ellos.
+//
+// Para volver a cerrarla: true y desplegar. Tapa todo, tenga sesion o no. Ojo:
+// es una bandera del CLIENTE, asi que no impide que alguien con sesion pida una
+// firma a /api/video a mano. Si algun dia hay que cerrar por el CONTENIDO y no
+// por la interfaz, hay que vaciar tambien lecciones.video_url.
+const EN_MANTENIMIENTO = false
 
 let usuario = null
 let leccionAbierta = null
@@ -691,19 +695,21 @@ async function abrirLeccion (l) {
     // "Sacaste 83%" bajo el titulo de una leccion que el alumno ni ha abierto.
     if (gen !== generacion) return
     if (error || !data?.length) {
-      // calificar() lanza "no inscrito en este curso" en el minuto exacto en que
-      // vence el acceso. Colapsarlo en "vuelve a intentarlo" mandaba al alumno a
-      // reintentar para siempre algo que ya nunca va a funcionar.
-      const vencido = /no inscrito|not enrolled/i.test(error?.message ?? '')
-      return aviso('#msg-examen', vencido
-        ? 'Tu acceso a este curso no está vigente. Escríbenos a contacto@celebios.com'
+      // calificar() distingue tres fallas y cada una necesita otra salida:
+      // reintentar sirve solo en la tercera.
+      const m = error?.message ?? ''
+      return aviso('#msg-examen',
+        /no inscrito|not enrolled/i.test(m)
+          ? 'Tu acceso a este curso no está vigente. Escríbenos a contacto@celebios.com'
+        : /demasiados intentos/i.test(m)
+          ? 'Ya presentaste este examen tres veces seguidas. Espera una hora, vuelve a ver la clase y preséntalo con calma.'
         : 'No se pudo calificar. Vuelve a intentarlo.')
     }
     const r = data[0]
     aviso('#msg-examen',
       r.aprobado
         ? `Sacaste ${r.calificacion}%. Aprobado — guardamos tu mejor calificación.`
-        : `Sacaste ${r.calificacion}%. Necesitas ${minimas} de ${preguntas.length} correctas; puedes volver a intentarlo, tu mejor nota no se pierde.`,
+        : `Sacaste ${r.calificacion}%. Necesitas ${minimas} de ${preguntas.length} correctas. Puedes presentarlo hasta tres veces por hora y se queda tu mejor nota.`,
       r.aprobado ? 'ok' : 'err')
   })
 
